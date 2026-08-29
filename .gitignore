@@ -8,6 +8,7 @@ wheels/
 
 # Virtual environments
 .venv
+.venv-*
 .DS_Store
 experiments/pasan/dataset/Hooktheory.json
 experiments/pasan/dataset/*
