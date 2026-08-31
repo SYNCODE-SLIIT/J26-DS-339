@@ -14,6 +14,7 @@ from .audio_utils import discover_audio_files
 from .compare import compare_pipelines
 from .config import PipelineConfig
 from .errors import ToolUnavailable
+from .listening_report import build_listening_report
 from .manifest import build_manifest
 from .pipelines import PIPELINES, PipelineRunner
 
@@ -27,6 +28,13 @@ def _base_parser() -> argparse.ArgumentParser:
     manifest = subparsers.add_parser("manifest", help="Build an ML index of completed outputs")
     manifest.add_argument("--output-dir", type=Path, default=paths.OUTPUT_DIR)
     manifest.add_argument("--pipelines", nargs="+", choices=sorted(PIPELINES))
+    listening = subparsers.add_parser(
+        "listening-report",
+        help="Build a local HTML page for listening across completed outputs",
+    )
+    listening.add_argument("--input-dir", type=Path, default=paths.INPUT_AUDIO_DIR)
+    listening.add_argument("--output-dir", type=Path, default=paths.OUTPUT_DIR)
+    listening.add_argument("--pipelines", nargs="+", choices=sorted(PIPELINES))
 
     for command in ("run", "compare"):
         child = subparsers.add_parser(command, help=f"{command.title()} extraction pipelines")
@@ -89,6 +97,10 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "manifest":
         frame = build_manifest(args.output_dir.expanduser().resolve(), args.pipelines)
         print(f"Indexed {len(frame)} result(s) in {args.output_dir / 'manifest.parquet'}")
+        return 0
+    if args.command == "listening-report":
+        report = build_listening_report(args.output_dir, args.input_dir, args.pipelines)
+        print(f"Saved listening comparison to {report}")
         return 0
 
     config = _config(args)

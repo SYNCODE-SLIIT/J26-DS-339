@@ -28,9 +28,9 @@ def main() -> None:
                 "source": "basic_pitch",
             }
         )
+    rows.sort(key=lambda row: (row["onset_sec"], row["midi_pitch"]))
     output_path.write_text(json.dumps(rows))
 
 
 if __name__ == "__main__":
     main()
-

@@ -1,5 +1,6 @@
 /.models/
 /outputs/
+/.venv-basic-pitch/
+/.venv-essentia/
 __pycache__/
 .pytest_cache/
-
