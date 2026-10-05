@@ -16,3 +16,6 @@ wheels/
 
 experiments/pasan/dataset/Hooktheory.json
 experiments/pasan/dataset/*
+
+# Generated reference-chord JSON outputs
+/chord_refinement/outputs/chords/*.json
