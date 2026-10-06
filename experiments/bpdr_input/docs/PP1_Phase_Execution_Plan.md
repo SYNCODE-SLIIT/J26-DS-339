@@ -18,6 +18,10 @@ Use alongside [the master plan](PP1_Master_Plan.md) and [the evidence tracker](P
 
 Sequential critical path: **P0 -> P1 -> P2 -> P3 -> P4 -> P5 -> P6**. Maintain documentation, requirements, risks and presentation examples throughout. Teammates develop their own models against agreed fixtures in parallel. No need to wait for finished planner/refinement models to begin BPDR.
 
+**30 September status against that baseline:** The [consolidated P0 scope, claims, draft hand-off, inventory and dated decisions](P0_Scope_Claims_and_Decisions.md) establish the **local P0 gate for independent development**; teammate agreement is still open. P1 engineering is verified. P2's data/crop pipeline, review sheets and one-singer exploratory intervention pilot execute, but all 114 human-review rows remain pending and zero examples are training eligible. Thus P2's trustworthy-target exit gate has **not** passed. P3–P6 are targets, not completed phases. Preserve these dates as the original plan and record actual completion separately in the [evidence tracker](PP1_Evidence_Tracker.md).
+
+The dependency is strict for **research training and evaluation claims**, not for writing code. P3 model/loss/metric implementation and synthetic-fixture checks may proceed while reviewers assess references; fitting on approved anchors and reporting learned comparisons must wait for the P2 review and intervention audits. Do not relabel exploratory examples as reviewed to meet a calendar target.
+
 ## P0. Fix the assessment scope and evidence baseline
 
 **Build purpose:** prevent changing the research question while rushing toward a demonstration.
@@ -28,14 +32,14 @@ Sequential critical path: **P0 -> P1 -> P2 -> P3 -> P4 -> P5 -> P6**. Maintain d
 2. Create a short claims sheet: user problem, technical boundary-error problem, bounded gap, proposed training contribution, main comparison and limits of a controlled pilot.
 3. Freeze first-version input scope: solo singing/humming, supported WAV/FLAC, at most 20 seconds, no intended-note/key entry required for BPDR, preserved time origin/rests.
 4. Define all four statuses: `ACCEPT_UNCHANGED`, `ACCEPT_PREPARED`, `RERECORD_REQUIRED`, `TECHNICAL_FAILURE`. Non-accepted results have no accepted-audio path.
-5. Draft versioned accepted/rejected package examples with IDs, checksums, audio metadata, seconds-based intervals, reasons, operation logs and analyzer/model/policy versions.
+5. Draft versioned accepted/rejected package examples with IDs, checksums, audio metadata and reasons. Keep seconds-based edit intervals, operation logs and analyzer/policy provenance in diagnostics; model version will be recorded only after a model exists.
 6. Review ownership and timing with the melody owner; settle the stale accompaniment-member description and nominate playback/export ownership. Keep an unresolved-decision register if agreement is pending.
 7. Record actual work against proposal W1-W8 and establish this PP1 milestone baseline. Do not backfill unverified completion for 16-27 September.
 8. Start the dataset/permission and compute inventory. Confirm the framework and analyzer can run before booking larger experiments.
 
 ### Outputs and exit gate
 
-Produce `scope.md`, `claims.md`, `contract-v0.1` examples, a resource/data inventory and a dated milestone register. The gate passes when input/output responsibilities and main comparative question are explicit. Team acknowledgment is tracked separately from draft-contract completion; fixtures permit independent implementation meanwhile.
+The consolidated [P0 record](P0_Scope_Claims_and_Decisions.md) contains the local scope, claims, actual contract examples, resource/data inventory, dated milestone register and unresolved-decision list. Together with implemented `contracts.py`, it makes BPDR's input/output responsibility and comparison question explicit, so the **local P0 gate is met**. Team acknowledgment, live integration, reviewer decisions and data-sharing permission are separate open gates; fixtures permit independent implementation meanwhile.
 
 **Examiner-visible evidence:** one annotated architecture and one problem example, with clear ownership. These are design evidence, not a completed proof of concept.
 
@@ -83,15 +87,19 @@ Do not present a few accepted fixtures as a validated musical-usability classifi
 
 Produce a source/split manifest, crop map, reference-review record, intervention manifests, identity audits, generated A/B/C/D examples and exclusions. A/B have identical waveforms; C/D have identical waveforms; only boundary metadata differs within each pair. The known shift is accurate enough under the locked audit tolerance to support the intended comparison.
 
+As of 30 September, the regenerated v0.3 views meet their identity and exploratory renderer audits, but the reference-review record contains no approvals. The 18 paired views are six detuned renderings crossed with three boundary corruptions of **one** phrase/singer; they are not 18 independent performances and cannot be used as training-ready evidence. The failed v0.1, revised v0.2 and current v0.3 audit policies remain visible in [Phase 2 verification](Phase2_Verification.md).
+
 Declare target masks/tolerances before testing final models. Known detuning and references stay out of runtime prediction inputs. Repeated versions are not new independent recordings or singers.
 
 **Examiner-visible evidence:** select the same audio under a false split/merge, then show a separately detuned audio view. The screen makes the two kinds of change distinguishable even before learned results exist.
 
 **4 October decision checkpoint:** if rendering/measurement cannot resolve the small shifts, fix that chain before training at scale. If reference material is insufficient, narrow the pilot and report its limits; do not compensate with inflated augmentation counts.
 
+At the same checkpoint, record reviewer availability and the number of independently approved **training singers and phrases**, not just review-row or augmented-view totals. Prioritize a declared multi-singer training subset and development examples. If reviews are still pending, continue constructed-fixture engineering and present the exploratory laboratory with its limits; do not train a purported BPDR research model on unapproved zero-change anchors.
+
 ## P3. Implement and train the controls first
 
-**Prerequisite:** audited P2 targets and a reliable feature pipeline.
+**Prerequisite for learned research runs:** independently reviewed, audited P2 targets and a reliable feature pipeline. Architecture, loss and metric code may be built and checked against constructed fixtures before reviews arrive.
 
 ### Tasks
 
@@ -102,6 +110,7 @@ Declare target masks/tolerances before testing final models. Known detuning and 
 5. Implement original-audio and conservative-rule reference conditions with common rendering/policy where applicable. Do not add a compulsory BERT-APC reproduction.
 6. Train initial matched baselines; log seeds, parameter counts, optimizer/configuration, updates, checkpoint and source manifest. Measure error on detuned and preservation regions separately.
 7. Check how strongly the augmentation-only baseline reacts to boundary changes. If it already ignores them, document that and retain the fair comparison.
+8. Quantify whether the model's acoustic inputs distinguish the audited 10-, 20- and 30-cent changes on approved training material. PESTO's coarse pitch response in the exploratory audit is a warning, not proof that log-mel features contain or lack the needed fine-shift information.
 
 ### Outputs and exit gate
 
@@ -143,9 +152,10 @@ Freeze the PP1 evaluation specification and chosen settings by 16 October: metri
 2. Report detuned-support cents error, boundary sensitivity, no-change/outside-support alteration, rendered pitch, acceptance/edit coverage and failures. Save raw predictions before the controller and actual delivered results afterward.
 3. Include expressive no-change material, identity controls, natural analyzer-error cases where available, and clear exclusion counts. Estimate paired intervals at independent singer/source level, keeping all related views together; label small-sample intervals descriptive. Report seed variation separately when runs support it; one run does not establish training stability.
 4. Compare preservation at achievable matched acceptance coverage. Do not remove refusals or render failures from the result table without accounting for them.
-5. Connect accepted packages to the fixed melody-understanding adapter. A temporary real extractor supports a preliminary before/after evaluation; a stub supports only contract testing.
-6. Test rejection propagation and seconds/beat mapping. Record which downstream outputs use learned proposed models, baselines, heuristics or fixtures.
-7. Assemble the evidence register, FR1-FR7 acceptance mapping, proposal W1-W8 progress and implemented risk mitigations. Add real user/listening evidence only if it has actually been collected under the applicable protocol.
+5. Evaluate controlled A1-annotation boundary tracks and naturally inferred provisional boundary scores as **separate conditions**. The current A1-derived sharp timing track is not the runtime heuristic score; report any distribution shift and do not infer deployed robustness from synthetic annotation-track invariance alone.
+6. Connect accepted packages to the fixed melody-understanding adapter. A temporary real extractor supports a preliminary before/after evaluation; a stub supports only contract testing.
+7. Test rejection propagation and seconds/beat mapping. Record which downstream outputs use learned proposed models, baselines, heuristics or fixtures.
+8. Assemble the evidence register, FR1-FR7 acceptance mapping, proposal W1-W8 progress and implemented risk mitigations. Add real user/listening evidence only if it has actually been collected under the applicable protocol.
 
 ### Outputs and exit gate
 

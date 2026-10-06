@@ -8,3 +8,6 @@ data/
 runs/
 checkpoints/
 .pytest_cache/
+.tools/
+.jupyter/
+.ipynb_checkpoints/
