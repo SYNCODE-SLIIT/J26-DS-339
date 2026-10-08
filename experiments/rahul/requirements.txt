@@ -1,3 +1,4 @@
 # Verified on Windows/Python 3.12.10 for this component's first milestone.
 lv-chordia==1.1.0
+librosa==1.0.0
 

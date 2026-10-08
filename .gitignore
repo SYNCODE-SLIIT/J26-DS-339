@@ -17,5 +17,12 @@ wheels/
 experiments/pasan/dataset/Hooktheory.json
 experiments/pasan/dataset/*
 
-# Generated reference-chord JSON outputs
-/chord_refinement/outputs/chords/*.json
+# Generated reference-chord outputs
+/experiments/rahul/outputs/chords/*
+!/experiments/rahul/outputs/chords/.gitkeep
+/experiments/rahul/outputs/melody/
+/experiments/rahul/outputs/beats/
+/experiments/rahul/outputs/metadata/
+/experiments/rahul/outputs/basic_chords/
+/experiments/rahul/outputs/aligned/
+/experiments/rahul/outputs/experiments/

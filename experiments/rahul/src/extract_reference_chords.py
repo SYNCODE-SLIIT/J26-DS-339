@@ -9,9 +9,9 @@ import logging
 from collections import Counter
 from pathlib import Path
 
-from chord_refinement import config
-from chord_refinement.src.normalize_chords import parse_chord_label
-from chord_refinement.src.utils import (
+from experiments.rahul import config
+from experiments.rahul.src.normalize_chords import parse_chord_label
+from experiments.rahul.src.utils import (
     audio_duration_seconds,
     consecutive_duplicate_count,
     discover_audio_files,
@@ -27,7 +27,7 @@ FIELDS = [
 def configure_logging(output_dir: Path) -> logging.Logger:
     log_dir = output_dir / "logs"
     log_dir.mkdir(parents=True, exist_ok=True)
-    logger = logging.getLogger("chord_refinement")
+    logger = logging.getLogger("experiments.rahul")
     logger.setLevel(logging.INFO)
     logger.handlers.clear()
     formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
@@ -46,7 +46,7 @@ def recognize(audio_path: Path, vocabulary: str) -> list[dict]:
         from lv_chordia.chord_recognition import chord_recognition
     except ImportError as exc:
         raise RuntimeError(
-            "LV-Chordia is unavailable. Install chord_refinement/requirements.txt; "
+            "LV-Chordia is unavailable. Install experiments/rahul/requirements.txt; "
             "do not substitute a major/minor-only detector."
         ) from exc
 

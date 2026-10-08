@@ -1,4 +1,4 @@
-"""Configuration for isolated reference-chord extraction."""
+"""Configuration for the isolated chord-refinement data pipeline."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 COMPONENT_DIR = Path(__file__).resolve().parent
-REPOSITORY_ROOT = COMPONENT_DIR.parent
+REPOSITORY_ROOT = COMPONENT_DIR.parent.parent
 
 
 def _configured_path(variable: str, default: Path) -> Path:

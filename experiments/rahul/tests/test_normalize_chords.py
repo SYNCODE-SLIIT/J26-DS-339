@@ -1,8 +1,8 @@
 from pathlib import Path
 
-from chord_refinement.src.normalize_chords import normalize_chord_label, parse_chord_label
-from chord_refinement.src.utils import extract_track_id
-from chord_refinement.src.extract_reference_chords import quality_category
+from experiments.rahul.src.normalize_chords import normalize_chord_label, parse_chord_label
+from experiments.rahul.src.utils import extract_track_id
+from experiments.rahul.src.extract_reference_chords import quality_category
 
 
 def test_known_chords_are_normalized() -> None:
