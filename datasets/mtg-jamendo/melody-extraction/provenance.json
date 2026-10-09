@@ -1,0 +1,41 @@
+{
+  "pilot": {
+    "sample_seed": 20261008,
+    "selected_songs": 25,
+    "excerpt_seconds": 30,
+    "source": "vocal-tagged-audio/*.low.mp3",
+    "source_set_note": "MTG-Jamendo voice tag is not a note or vocal-activity annotation"
+  },
+  "separator": {
+    "package": "mlx-audio-separator 0.1.7",
+    "checkpoint": "model_bs_roformer_ep_317_sdr_12.9755.ckpt",
+    "checkpoint_sha256": "5b84f37e8d444c8cb30c79d77f613a41c05868ff9c9ac6c7049c00aefae115aa"
+  },
+  "game": {
+    "source_url": "https://github.com/openvpi/GAME",
+    "source_commit": "f4239345f0fed21890d362c74a35fd857724aa82",
+    "checkpoint_url": "https://github.com/openvpi/GAME/releases/download/v1.0.0/GAME-1.0-medium.zip",
+    "checkpoint_sha256": "e9904159fb0646e1a352b9d2bc74615547cfa3e32d45c7464d440ac142846d93",
+    "environment": {"python": "3.12.13", "torch": "2.14.1", "lightning": "2.6.6", "numpy": "1.26.4"},
+    "settings": {"batch_size": 2, "pitch_format": "number", "other": "official defaults"}
+  },
+  "yourmt3": {
+    "source_url": "https://huggingface.co/spaces/mimbres/YourMT3",
+    "source_commit": "5e66c1ea173a8186e0d20432b841d3180cc015b5",
+    "checkpoint_url": "https://huggingface.co/spaces/mimbres/YourMT3/resolve/main/amt/logs/2024/mc13_256_g4_all_v7_mt3f_sqr_rms_moe_wf4_n8k2_silu_rope_rp_b36_nops/checkpoints/last.ckpt",
+    "checkpoint_sha256": "ae38e415c79efd5592dcb9b658cdb99ddb11d4c4e1eaa364cab04a052473fc25",
+    "model": "YPTF.MoE+Multi (noPS)",
+    "environment": {"python": "3.12.13", "torch": "2.8.0", "torchaudio": "2.8.0", "transformers": "4.45.1", "numpy": "1.26.4"},
+    "settings": {"segment_batch_size": 4, "precision": "float32", "device": "mps"}
+  },
+  "sheetsage2": {
+    "source_url": "https://huggingface.co/m-a-p/SheetSage2",
+    "source_commit": "32c7c7473e7b59e1ed36bd8a8fefbd11ae8d468a",
+    "checkpoint_sha256": "b235f68091a5f5b644000f2b5acb57d1e70432aca2b34ab1b9cf27236e1f4274",
+    "parent_url": "https://huggingface.co/m-a-p/MERT-v2-FullSong",
+    "parent_commit": "d8ba1c745e733b3908ce6ad16ebeb17ac7600a42",
+    "parent_checkpoint_sha256": "e6dd2ab187d6dd62b6521cd7d8f932e237acf0c5757745a7232082e28391350d",
+    "environment": {"python": "3.10.20", "torch": "2.8.0", "torchaudio": "2.8.0", "transformers": "4.45.2", "numpy": "1.24.3", "soundfile": "0.14.0"},
+    "settings": {"precision": "float32", "device": "mps", "input": "30-second original-mix excerpt", "window_seconds": 300, "prompts": ["timestamp", "downbeat_meter", "structure", "key", "chord_full", "melody_full"], "render_audio": false}
+  }
+}
