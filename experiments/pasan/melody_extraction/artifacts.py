@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 import pretty_midi
 
+from .audio_preview import write_audio_previews
 from .models import ExtractionResult, NoteEvent
 
 
@@ -51,6 +52,7 @@ def write_result(result: ExtractionResult, output_dir: Path) -> dict[str, Path]:
         "midi": midi_path,
         "metadata": metadata_path,
     }
+    artifacts.update(write_audio_previews(result.notes, result.audio_path, output_dir))
     if result.pitch_track is not None:
         pitch_path = output_dir / "f0.npz"
         np.savez_compressed(
@@ -74,3 +76,18 @@ def write_result(result: ExtractionResult, output_dir: Path) -> dict[str, Path]:
     }
     metadata_path.write_text(json.dumps(metadata, indent=2, sort_keys=True) + "\n")
     return artifacts
+
+
+def write_cached_audio_previews(output_dir: Path) -> dict[str, Path]:
+    """Add listenable previews to an existing canonical result directory."""
+    output_dir = output_dir.expanduser().resolve()
+    metadata_path = output_dir / "metadata.json"
+    metadata = json.loads(metadata_path.read_text())
+    rows = pd.read_parquet(output_dir / "notes.parquet").to_dict(orient="records")
+    notes = [NoteEvent(**row) for row in rows]
+    previews = write_audio_previews(notes, Path(metadata["audio_path"]), output_dir)
+    metadata.setdefault("artifacts", {}).update(
+        {name: str(path) for name, path in previews.items()}
+    )
+    metadata_path.write_text(json.dumps(metadata, indent=2, sort_keys=True) + "\n")
+    return previews

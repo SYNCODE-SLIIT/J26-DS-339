@@ -24,7 +24,9 @@ def test_result_writes_canonical_artifacts(tmp_path) -> None:
     metadata = json.loads(artifacts["metadata"].read_text())
     assert metadata["key"]["tonic"] == "A"
     assert metadata["note_count"] == 1
+    assert artifacts["melody_audio"].exists()
 
     manifest = build_manifest(tmp_path)
     assert len(manifest) == 1
     assert manifest.iloc[0]["key_mode"] == "minor"
+    assert manifest.iloc[0]["melody_audio_path"] == str(artifacts["melody_audio"])

@@ -25,6 +25,8 @@ def build_manifest(output_dir: Path, pipelines: list[str] | None = None) -> pd.D
                 "notes_parquet": artifacts.get("notes_parquet"),
                 "midi_path": artifacts.get("midi"),
                 "f0_path": artifacts.get("f0"),
+                "melody_audio_path": artifacts.get("melody_audio"),
+                "melody_overlay_path": artifacts.get("melody_overlay"),
                 "note_count": metadata.get("note_count"),
                 "key_tonic": key.get("tonic"),
                 "key_mode": key.get("mode"),
@@ -39,4 +41,3 @@ def build_manifest(output_dir: Path, pipelines: list[str] | None = None) -> pd.D
     frame.to_parquet(output_dir / "manifest.parquet", index=False)
     frame.to_csv(output_dir / "manifest.csv", index=False)
     return frame
-

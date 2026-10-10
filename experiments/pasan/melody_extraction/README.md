@@ -7,6 +7,8 @@ interchangeable pipelines:
 - `notes.parquet` — ML-ready rows: onset, offset, MIDI pitch, confidence, source.
 - `notes.csv` — human-readable copy of the note table.
 - `f0.npz` — frame times, F0 in Hz, confidence, and voiced mask (when available).
+- `melody_audio.mp3` — synthesized extracted notes for quick listening (`.wav` fallback).
+- `melody_overlay.mp3` — extracted notes mixed over the source to check alignment.
 - `metadata.json` — global key estimate, settings, runtime, tool versions, and paths.
 
 The global key is always estimated from the original mix. This is intentional:
@@ -45,6 +47,13 @@ uv run python -m experiments.pasan.melody_extraction.main manifest
 
 This writes `outputs/manifest.parquet` and `outputs/manifest.csv`, with one row
 per song/pipeline and paths to its note, MIDI, F0, key, and metadata artifacts.
+
+Build one local page with audio players for the source, vocal stem, synthesized
+melody, and melody-over-source alignment preview:
+
+```bash
+uv run python -m experiments.pasan.melody_extraction.main listening-report
+```
 
 ## Changing the dataset path
 
@@ -109,10 +118,13 @@ The adapters therefore call small worker scripts in isolated uv environments.
 ### Basic Pitch
 
 ```bash
-uv venv --python 3.10 .venv-basic-pitch
-uv pip install --python .venv-basic-pitch/bin/python basic-pitch
-export MELODY_BASIC_PITCH_PYTHON="$PWD/.venv-basic-pitch/bin/python"
+uv venv --python 3.10 experiments/pasan/melody_extraction/.venv-basic-pitch
+uv pip install --python experiments/pasan/melody_extraction/.venv-basic-pitch/bin/python \
+  -r experiments/pasan/melody_extraction/requirements-basic-pitch.txt
 ```
+
+When this environment is created inside `melody_extraction`, it is discovered
+automatically. `MELODY_BASIC_PITCH_PYTHON` remains available as an override.
 
 ### Essentia Melodia
 
@@ -120,10 +132,13 @@ Use the current Python 3.14 Apple-Silicon wheel, which is compatible with NumPy
 2, in a separate uv environment:
 
 ```bash
-uv venv --python 3.14 .venv-essentia
-uv pip install --python .venv-essentia/bin/python essentia numpy
-export MELODY_ESSENTIA_PYTHON="$PWD/.venv-essentia/bin/python"
+uv venv --python 3.14 experiments/pasan/melody_extraction/.venv-essentia
+uv pip install --python experiments/pasan/melody_extraction/.venv-essentia/bin/python \
+  -r experiments/pasan/melody_extraction/requirements-essentia.txt
 ```
+
+The local environment is discovered automatically; use
+`MELODY_ESSENTIA_PYTHON` only to point at a different environment.
 
 ### GAME
 

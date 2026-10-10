@@ -132,8 +132,10 @@ class PipelineRunner:
         # near 0.01 even for frames it classifies as voiced.
         if "pyin" in track.source:
             return 0.0
+        if track.source == "essentia_melodia":
+            return self.config.essentia_minimum_confidence
         if track.source == "vocal_primary_fullmix_fallback":
-            return 0.01
+            return self.config.fusion_minimum_confidence
         return self.config.minimum_confidence
 
     def _notes_from_track(self, track: PitchTrack) -> list[NoteEvent]:
@@ -197,10 +199,17 @@ class PipelineRunner:
             vocals = self.vocal_stem_for(audio_path)
             vocal_track = extract_pyin(vocals, self.config, source="mlx_pyin_vocals")
             fullmix_track = extract_melodia(audio_path)
-            track = fuse_pitch_tracks(vocal_track, fullmix_track)
+            track = fuse_pitch_tracks(
+                vocal_track,
+                fullmix_track,
+                primary_confidence=self.config.fusion_primary_confidence,
+            )
             return self._notes_from_track(track), track, {
                 "transcription_input": [str(vocals), str(audio_path)],
-                "fusion": "voiced vocal confidence >= 0.01, otherwise full-mix Melodia",
+                "fusion": (
+                    "voiced vocal confidence >= "
+                    f"{self.config.fusion_primary_confidence:.2f}, otherwise full-mix Melodia"
+                ),
             }
 
         raise ValueError(f"Unknown pipeline: {pipeline}")
@@ -248,6 +257,9 @@ class PipelineRunner:
                     "hop_length": self.config.hop_length,
                     "minimum_note_ms": self.config.minimum_note_ms,
                     "minimum_confidence": self.config.minimum_confidence,
+                    "essentia_minimum_confidence": self.config.essentia_minimum_confidence,
+                    "fusion_minimum_confidence": self.config.fusion_minimum_confidence,
+                    "fusion_primary_confidence": self.config.fusion_primary_confidence,
                     "effective_minimum_confidence": (
                         self._confidence_floor(track) if track is not None else None
                     ),

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -30,7 +31,7 @@ def _convert_events(events: Iterable[object]) -> list[NoteEvent]:
                 source="basic_pitch",
             )
         )
-    return notes
+    return sorted(notes, key=lambda note: (note.onset_sec, note.midi_pitch))
 
 
 def transcribe_basic_pitch(
@@ -47,6 +48,7 @@ def transcribe_basic_pitch(
                 text=True,
                 capture_output=True,
                 check=False,
+                env={**os.environ, "TMPDIR": directory},
             )
             if completed.returncode:
                 raise RuntimeError(
@@ -65,4 +67,3 @@ def transcribe_basic_pitch(
         ) from exc
     _, _, events = predict(str(audio_path))
     return _convert_events(events)
-

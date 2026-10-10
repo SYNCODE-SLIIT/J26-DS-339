@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "input": "MTG-Jamendo local vocal-tagged-audio/*.low.mp3; full songs",
+  "dataset_join": "annotations/autotagging.tsv TRACK_ID and splits/split-{0..4}/autotagging-{train,validation,test}.tsv",
+  "vocal_separator": {
+    "package": "mlx-audio-separator 0.1.7",
+    "checkpoint": "model_bs_roformer_ep_317_sdr_12.9755.ckpt",
+    "checkpoint_sha256": "5b84f37e8d444c8cb30c79d77f613a41c05868ff9c9ac6c7049c00aefae115aa"
+  },
+  "game_vocal": {
+    "source": "https://github.com/openvpi/GAME",
+    "source_commit": "f4239345f0fed21890d362c74a35fd857724aa82",
+    "checkpoint": "GAME-1.0-medium/model.pt",
+    "checkpoint_archive_sha256": "e9904159fb0646e1a352b9d2bc74615547cfa3e32d45c7464d440ac142846d93",
+    "input": "separated full vocal WAV",
+    "pitch_shift_semitones": 12,
+    "python": "3.12.13",
+    "numpy": "1.26.4"
+  },
+  "sheetsage2_instrumental": {
+    "source": "https://huggingface.co/m-a-p/SheetSage2",
+    "source_commit": "32c7c7473e7b59e1ed36bd8a8fefbd11ae8d468a",
+    "checkpoint_sha256": "b235f68091a5f5b644000f2b5acb57d1e70432aca2b34ab1b9cf27236e1f4274",
+    "parent": "m-a-p/MERT-v2-FullSong",
+    "parent_commit": "d8ba1c745e733b3908ce6ad16ebeb17ac7600a42",
+    "input": "original full MP3",
+    "python": "3.10.20",
+    "numpy": "1.24.3"
+  },
+  "combined": {
+    "vocal_priority": "game_vocal",
+    "instrumental_fallback": "sheetsage2_instrumental",
+    "minimum_gap_seconds": "max(0.8, 2 * median SheetSage2 beat period)",
+    "maximum_simultaneous_notes": 1
+  }
+}

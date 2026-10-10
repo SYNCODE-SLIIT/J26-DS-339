@@ -20,6 +20,9 @@ class PipelineConfig:
     fmax_hz: float = 2_093.005  # C7
     minimum_note_ms: float = 60.0
     minimum_confidence: float = 0.25
+    essentia_minimum_confidence: float = 0.05
+    fusion_minimum_confidence: float = 0.05
+    fusion_primary_confidence: float = 0.10
 
     separation_model: str = "model_bs_roformer_ep_317_sdr_12.9755.ckpt"
     overwrite: bool = False
@@ -35,4 +38,3 @@ class PipelineConfig:
             input_dir=(input_dir or self.input_dir).expanduser().resolve(),
             output_dir=(output_dir or self.output_dir).expanduser().resolve(),
         )
-
