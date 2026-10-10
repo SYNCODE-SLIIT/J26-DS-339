@@ -9,7 +9,7 @@ Phase 1 implements timing-preserving technical checks and frozen acoustic analys
 From this folder in PowerShell:
 
 ```powershell
-.\Run-Phase1.ps1 -InputAudio 'C:\Users\lnipu\Projects\Music Rp\Input Validation\vocadito\Audio\vocadito_10.wav'
+.\Run-Phase1.ps1 -InputAudio '.\data\vocadito\Audio\vocadito_10.wav'
 ```
 
 The local setup includes an ignored portable uv in `.tools`. On another machine, install [uv](https://docs.astral.sh/uv/getting-started/installation/) first. The script selects this component project and uses its own environment. Python 3.12 or newer is required; `uv.lock` records dependencies. First setup needs network access for dependencies. PESTO's packaged checkpoint is then available offline.
@@ -20,11 +20,11 @@ With uv on PATH, equivalent commands are:
 uv sync --locked
 uv run --locked bpdr-process 'C:\path\recording.wav'
 uv run --locked python -m unittest discover -s tests -v
-uv run --locked bpdr-data-audit --dataset-root 'C:\Users\lnipu\Projects\Music Rp\Input Validation\vocadito' --output 'runs\dataset_inventory.json'
-uv run --locked python -m bpdr_input.verify_dataset --dataset-root 'C:\Users\lnipu\Projects\Music Rp\Input Validation\vocadito'
+uv run --locked bpdr-data-audit --dataset-root 'data\vocadito' --output 'runs\dataset_inventory.json'
+uv run --locked python -m bpdr_input.verify_dataset --dataset-root 'data\vocadito'
 ```
 
-Each call prints its status and a new `runs/<run-id>` directory. Open `report.html` in a browser for original/output playback and plots on accepted runs. Inspect `diagnostics.json` for reasons on stopped runs. Exit code is 0 for accepted audio and 1 for a controlled stop/failure. Raw recordings remain in the existing external dataset.
+Each call prints its status and a new `runs/<run-id>` directory. Open `report.html` in a browser for original/output playback and plots on accepted runs. Inspect `diagnostics.json` for reasons on stopped runs. Exit code is 0 for accepted audio and 1 for a controlled stop/failure. Raw recordings stay in this folder's ignored `data/` directory (`data/vocadito`) and are never committed; pass another `--dataset-root`, or set `BPDR_DATASET_ROOT` for the notebooks, to use a copy elsewhere.
 
 ## Supported behavior
 
@@ -71,8 +71,8 @@ With uv on PATH:
 
 ```powershell
 uv sync --locked --group notebooks
-uv run --locked --group notebooks python -m bpdr_input.notebooks execute --dataset-root 'C:\Users\lnipu\Projects\Music Rp\Input Validation\vocadito'
-uv run --locked bpdr-lab build --dataset-root 'C:\Users\lnipu\Projects\Music Rp\Input Validation\vocadito'
+uv run --locked --group notebooks python -m bpdr_input.notebooks execute --dataset-root 'data\vocadito'
+uv run --locked bpdr-lab build --dataset-root 'data\vocadito'
 ```
 
 `runs/phase2/latest.json` points to a data run with `manifest.json`, `data_summary.json`, `reviews.csv` and `crops/`. The build command creates a new immutable run: keep the old run if it contains reviews. Inspect its printed path and run:
