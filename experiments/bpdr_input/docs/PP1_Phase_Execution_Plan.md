@@ -1,6 +1,6 @@
 # PP1 phase execution plan
 
-**Baseline:** 27 September 2026. **Deadline supplied by user:** 25 October 2026.
+**Baseline:** 27 September 2026. **Rebaselined:** 11 October 2026. **Deadline supplied by user:** 25 October 2026.
 
 Use alongside [the master plan](PP1_Master_Plan.md) and [the evidence tracker](PP1_Evidence_Tracker.md). This file defines build tasks and exit checks. Dates are target windows; passing a calendar date does not establish that a phase is complete. Reuse earlier implementation only after verifying it against the relevant gate.
 
@@ -16,11 +16,38 @@ Use alongside [the master plan](PP1_Master_Plan.md) and [the evidence tracker](P
 | P5 | 17-21 Oct | Frozen preliminary evaluation and accepted-only integration. | Comparative evidence, preservation, design and actual progress. |
 | P6 | 22-25 Oct | Verified demo, evidence pack and presentation rehearsal. | Communication/Q&A, readiness, risk mitigation and user benefits. |
 
-Sequential critical path: **P0 -> P1 -> P2 -> P3 -> P4 -> P5 -> P6**. Maintain documentation, requirements, risks and presentation examples throughout. Teammates develop their own models against agreed fixtures in parallel. No need to wait for finished planner/refinement models to begin BPDR.
+Sequential critical path: **P0 -> P1 -> P2 -> P3 -> P4 -> P5 -> P6**. Maintain documentation, requirements, risks and presentation examples throughout. Teammates develop their own models against agreed fixtures in parallel. No need to wait for finished planner/refinement models to begin BPDR. P2J, added on 11 October for the second data source, runs beside P3 and is not on the critical path.
 
 **30 September status against that baseline:** The [consolidated P0 scope, claims, draft hand-off, inventory and dated decisions](P0_Scope_Claims_and_Decisions.md) establish the **local P0 gate for independent development**; teammate agreement is still open. P1 engineering is verified. P2's data/crop pipeline, review sheets and one-singer exploratory intervention pilot execute, but all 114 human-review rows remain pending and zero examples are training eligible. Thus P2's trustworthy-target exit gate has **not** passed. P3–P6 are targets, not completed phases. Preserve these dates as the original plan and record actual completion separately in the [evidence tracker](PP1_Evidence_Tracker.md).
 
 The dependency is strict for **research training and evaluation claims**, not for writing code. P3 model/loss/metric implementation and synthetic-fixture checks may proceed while reviewers assess references; fitting on approved anchors and reporting learned comparisons must wait for the P2 review and intervention audits. Do not relabel exploratory examples as reviewed to meet a calendar target.
+
+## 11 October status and corrective schedule
+
+Inspected on 11 October: the current review sheet still has 114 pending rows, zero examples are training eligible, and the component has no model, loss or metric code. P2's trustworthy-target gate is open. The P3 window passed without its deliverables and P4 has not started. The critical path is about one week late with 14 days left.
+
+The phase map above stays as the original baseline. The table below is the proposed corrective schedule; confirm it with the supervisor before treating it as agreed.
+
+| Work | Original window | Revised target | What changes |
+|---|---|---|---|
+| P2 review gate | 1-4 Oct | Declared training subset reviewed by 14 Oct | Same requirement. It still blocks research fitting. |
+| P2 intervention coverage | Not planned | Decision by 13 Oct, re-audit by 14 Oct | New. Under audit v0.3 only one training singer can host a shift; see below. |
+| P2J second source and extractor | Not planned | 11-13 Oct | New. Runs beside P3 and is cut first if time is short. Gates J1 and J2 were checked on 11 Oct. |
+| P3 controls | 5-9 Oct | 12-14 Oct | Code and fixture tests start now. Fitting waits for approved anchors. |
+| P4 BPDR, controller and renderer | 10-16 Oct | 15-18 Oct | One run per learned condition under one equal, predeclared budget. |
+| P5 evaluation and integration | 17-21 Oct | 19-21 Oct | Adds the GAME extractor and the natural-boundary condition. Gate J2 passed for a pilot; the melody-extraction owner's confirmation is open. |
+| P6 demonstration and rehearsal | 22-25 Oct | 22-25 Oct | Unchanged. |
+
+A new dataset arrived on 11 October: 1,604 vocal-tagged MTG-Jamendo tracks with the team's melody-extraction pipeline. The [extraction check](Jamendo_Extraction_Verification.md) shows it cannot replace vocadito, and the master plan gives it three supplementary roles. The pipeline was confirmed on a two-song sample and the GAME extractor passed its check against vocadito's annotators. It did not cause the delay and must not extend it.
+
+**Intervention coverage.** The same checks found that the v0.3 renderer needs a reference-reliable span of at least 0.86 seconds, a steady note about 1.06 seconds long. Only 3 of the 30 training crops have one, all from one singer, so the multi-singer training subset required by P2 and P3 cannot be generated under the current policy even with every review approved. A 0.5-second requirement would admit 11 crops from 6 singers. By 13 October choose one:
+
+1. Shorten the plateau and guards, record the change as audit v0.4 on training material only, repeat the identity and realized-shift audits, and disclose the revision with every later result.
+2. Keep v0.3 and report a one-singer pilot as exactly that.
+
+Reviewers should start with crops that can host a shift under the chosen policy, since approving the others cannot produce training examples.
+
+If reviews are still pending on 14 October, follow the existing rule: continue fixture engineering, present the laboratory and the extractor evidence with their limits, and report a narrower pilot. Do not train a purported research model on unapproved anchors, from either source.
 
 ## P0. Fix the assessment scope and evidence baseline
 
@@ -97,9 +124,36 @@ Declare target masks/tolerances before testing final models. Known detuning and 
 
 At the same checkpoint, record reviewer availability and the number of independently approved **training singers and phrases**, not just review-row or augmented-view totals. Prioritize a declared multi-singer training subset and development examples. If reviews are still pending, continue constructed-fixture engineering and present the exploratory laboratory with its limits; do not train a purported BPDR research model on unapproved zero-change anchors.
 
+## P2J. Add the second source and the team extractor
+
+**Prerequisite:** P1 analysis and the mirrored `data/mtg-jamendo` folder. P2J is not a prerequisite for P3 and never blocks it.
+
+**Build purpose:** obtain a real fixed extractor and a natural boundary source for BPDR, and find out with measurements whether Jamendo vocal stems can widen the training material.
+
+### Tasks
+
+1. Mirror the metadata and the unedited pipeline with `Setup-Jamendo.ps1`, then index the local songs with `Run-Extraction.ps1 -IndexOnly`. **Done 11 October:** 1,604 songs indexed.
+2. Install the pinned tools with `Setup-ExtractionTools.ps1 -Stage Full` and run a small named sample with `Run-Extraction.ps1 -First '<ids>' -KeepStems`. Record time per song and every platform substitution. **Gate J1, done 11 October on a two-song sample:** the process works, but the separator needs about 30 seconds of computing per second of music on the development CPU, so a full-length song takes over an hour. Local runs are for short samples only.
+3. Run the same frozen GAME on vocadito recordings, which need no separation. Score its notes against A1 and A2 with `mir_eval`, reporting onset-and-pitch and offset-aware results separately. Compare the raw and the published pitch with the annotated pitch and fix which field BPDR reads. **Gate J2, done 11 October** with `extraction/check_game.py` on 28 recordings of training and development singers: BPDR reads `model_midi_pitch`.
+4. Cut the kept stems into mapped vocal crops of at most 20 seconds, with offsets back to the full song. Inside GAME notes, measure the share of frames where PESTO is voiced and agrees with YIN. Run the existing identity and realized-shift audits. Put each number beside the same number for vocadito. **Gate J3:** `extraction/check_stems.py` gives a first look on the sample; a decision needs stems from many more artists, produced on a GPU machine or the team's Mac.
+5. Partition by `artist_id` with the existing stable-hash grouping, cap the tracks taken per artist, and exclude NoDerivatives tracks before any crop or intervention is made. One artist holds 174 of the 1,604 tracks.
+6. If the voices role goes ahead, prepare the two-reviewer sheet for a declared Jamendo crop subset. Predicted notes and tracker agreement are not approvals. **Gate J4.**
+
+### Outputs and exit gate
+
+Produce a saved extraction run with its `history.log`, a GAME-versus-annotation table on vocadito, a stem-quality table and a dated decision on each role. The extractor and natural-boundary roles need J2. The voices role needs J1, J3 and J4. Record a failed or skipped gate as failed or skipped.
+
+**Status on 11 October:** the run history, the GAME table and a first stem table exist; see the [extraction check](Jamendo_Extraction_Verification.md). J1 holds for a two-song sample only. J2 passed for a pilot. J3 is open and so far uninformative: the single stem measured had 17% reliable frames inside predicted notes against 76% for vocadito, but its track was chosen for being short and is not a typical song. J4 has not started.
+
+Use only `game_vocal`, through `model_midi_pitch`. Never read the instrumental or combined melody as vocal boundaries. Keep the pipeline's files unedited so that a team update can be re-mirrored; platform differences belong in the launcher and in the run history.
+
+**Examiner-visible evidence:** the team's extractor running on a BPDR-accepted recording, and one waveform shown under two model-estimated segmentations. This is integration and problem evidence, not a repair result.
+
+**13 October decision checkpoint:** local extraction is too slow for volume, so the voices role is off the PP1 critical path. Reopen it only if stems from a declared, artist-capped sample are produced on a GPU machine or the team's Mac and pass J3. Do not spend P3 or P4 time on separation. Keep GAME on vocadito for the other two roles, once the melody-extraction owner confirms it as the agreed extractor. If that confirmation does not come, keep the contract stub for D6 and report the natural-boundary condition as remaining work.
+
 ## P3. Implement and train the controls first
 
-**Prerequisite for learned research runs:** independently reviewed, audited P2 targets and a reliable feature pipeline. Architecture, loss and metric code may be built and checked against constructed fixtures before reviews arrive.
+**Prerequisite for learned research runs:** independently reviewed, audited P2 targets and a reliable feature pipeline. Architecture, loss and metric code may be built and checked against constructed fixtures before reviews arrive. Jamendo crops that pass gate J3 may feed engineering runs labelled exploratory; they never stand in for approved anchors in a reported comparison.
 
 ### Tasks
 
@@ -129,7 +183,7 @@ Produce two reloadable baseline checkpoints, rules/reference outputs, an execute
 1. Implement boundary-invariance response loss on A/B and C/D, and local counter-detuning response loss on C-A and D-B. Keep the supervised anchor and smoothness terms.
 2. Verify loss sign, time alignment, region masks, gradients and empty-mask exclusions using constructed curves. A perfectly fitted supervised target already satisfies the desired response relations; the additional objective must earn its value on unseen material.
 3. Train BPDR under the agreed budget and compare development behavior with both learned controls. Use development data for weights, checkpoint selection and thresholds.
-4. Build a controller that checks plausible boundary-view agreement, reliable voicing, protected transitions, correction magnitude and affected fraction. Withhold unsupported edits; do not silently clip oversized proposals.
+4. Build a controller that checks plausible boundary-view agreement, reliable voicing, protected transitions, correction magnitude and affected fraction. Withhold unsupported edits; do not silently clip oversized proposals. The proposal compares the main prediction with up to two other reasonable boundary versions [S1, p. 26]. GAME's alternative segmentations from P2J can supply those versions offline; a runtime source must first be measured against the 30-second target, because GAME on CPU is slow.
 5. Render eligible relative cents corrections into a separate waveform. Retain duration, rests and the agreed timeline; log changed and crossfade intervals.
 6. Reanalyze and verify the candidate. Roll back a failed candidate to a previously checked usable waveform; if none exists, return a reasoned non-accepted status.
 7. Add original/prepared playback, pitch/correction overlays, edit logs and clear reason codes. Keep optional denoising disabled until these core paths pass; track it as remaining proposal work.
@@ -152,8 +206,8 @@ Freeze the PP1 evaluation specification and chosen settings by 16 October: metri
 2. Report detuned-support cents error, boundary sensitivity, no-change/outside-support alteration, rendered pitch, acceptance/edit coverage and failures. Save raw predictions before the controller and actual delivered results afterward.
 3. Include expressive no-change material, identity controls, natural analyzer-error cases where available, and clear exclusion counts. Estimate paired intervals at independent singer/source level, keeping all related views together; label small-sample intervals descriptive. Report seed variation separately when runs support it; one run does not establish training stability.
 4. Compare preservation at achievable matched acceptance coverage. Do not remove refusals or render failures from the result table without accounting for them.
-5. Evaluate controlled A1-annotation boundary tracks and naturally inferred provisional boundary scores as **separate conditions**. The current A1-derived sharp timing track is not the runtime heuristic score; report any distribution shift and do not infer deployed robustness from synthetic annotation-track invariance alone.
-6. Connect accepted packages to the fixed melody-understanding adapter. A temporary real extractor supports a preliminary before/after evaluation; a stub supports only contract testing.
+5. Evaluate controlled A1-annotation boundary tracks and naturally inferred provisional boundary scores as **separate conditions**. The current A1-derived sharp timing track is not the runtime heuristic score; report any distribution shift and do not infer deployed robustness from synthetic annotation-track invariance alone. If gate J2 passed, add GAME-predicted boundaries and their alternative segmentations as a third, natural-analyzer condition.
+6. Connect accepted packages to the fixed melody-understanding adapter. A temporary real extractor supports a preliminary before/after evaluation; a stub supports only contract testing. The planned real extractor is frozen GAME at the team's pinned commit and checkpoint; report note pitch-center change in cents beside note F1.
 7. Test rejection propagation and seconds/beat mapping. Record which downstream outputs use learned proposed models, baselines, heuristics or fixtures.
 8. Assemble the evidence register, FR1-FR7 acceptance mapping, proposal W1-W8 progress and implemented risk mitigations. Add real user/listening evidence only if it has actually been collected under the applicable protocol.
 

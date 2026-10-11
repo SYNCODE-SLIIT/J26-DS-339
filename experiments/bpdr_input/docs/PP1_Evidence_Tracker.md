@@ -1,6 +1,6 @@
 # PP1 evidence and readiness tracker
 
-**Original planning baseline:** 27 September 2026. **Current inspected snapshot:** 30 September 2026. **Owner:** Liyanage L. N. P., IT23141506.
+**Original planning baseline:** 27 September 2026. **Evidence-table snapshot:** 30 September 2026. **Latest dated check:** [11 October 2026](#11-october-second-source-and-schedule-check). **Owner:** Liyanage L. N. P., IT23141506.
 
 Current repository location: `J26-DS-339/experiments/bpdr_input`. Saved [Phase 1](Phase1_Verification.md) and [Phase 2](Phase2_Verification.md) verification records report 28 passing tests and two executable notebooks. Phase 1 technical processing is verified. Phase 2 has audited sources, fixed singer partitions, 57 mapped crops from 38 eligible sources, pending review sheets and an exploratory four-view renderer pilot. Its six audited shifts yield 18 derived pairs from one singer, **not** 18 independent performances. On this snapshot all 114 review rows are pending, zero pairs are training eligible, and the P2 trustworthy-target gate remains open. General musical accuracy, learned controls, BPDR repair/comparison and team integration remain outstanding.
 
@@ -42,6 +42,19 @@ For each evidence item append:
 `Artifact | Version/date | Acceptance criterion | Actual result | Independent denominator | Limitations | Remaining work | Reviewer`
 
 ## Functional acceptance register
+
+### 11 October second-source and schedule check
+
+- **Research gate unchanged:** the current review sheet has 114 pending rows and zero training-eligible examples. No model, loss or metric code exists in the component. The P3 window passed without its deliverables; the delay and a proposed corrective schedule are recorded in the [phase plan](PP1_Phase_Execution_Plan.md). No row in the 30 September table above moves forward because of today's work.
+- **New blocker in W3:** audit v0.3 needs a steady note of about 1.06 seconds. Only 3 of 30 training crops, all from one singer, can host an intervention. A multi-singer training subset cannot be generated under the current policy. The decision is due on 13 October.
+- **Regression:** the 32 component tests pass after the datasets moved into `data/`.
+- **Second source (W3):** 1,604 vocal-tagged MTG-Jamendo tracks are mirrored in `data/mtg-jamendo` with the team's melody-extraction pipeline, unedited. Audited at metadata level: 257 artists, 101.2 hours, no human references, 353 NoDerivatives tracks. Two short songs were extracted. No reviewed target exists from this source.
+- **Extraction (W6):** the complete pipeline ran here for a two-song sample through the component launcher, and the team's listening page displays the result. All five model files match their pinned checksums. The separator needs about 30 seconds of computing per second of music on this CPU, so volume extraction is not practical here. No BPDR-to-extractor adapter exists yet.
+- **Extractor check (W7 groundwork):** GAME was scored against A1 and A2 on 28 vocadito recordings of training and development singers. Onset-and-pitch F1 is 0.63 against A1 and 0.77 against A2; the two annotators agree at 0.73. The unshifted pitch field matches the annotated octave in 1,116 of 1,120 matched notes. This characterizes the candidate extractor; it is not a BPDR result.
+- **E07:** pinned commits and checksums, an unedited mirror, logged substitutions, reproducible setup and check scripts, and a run history that keeps its failures are in place for the second source.
+- **E09:** four risks have named actions: intervention geometry, domain shift with predicted labels, slow extraction on the development CPU, and license limits on derived audio. Four setup problems were found and fixed in the scripts.
+- **Suitability:** the [extraction check](Jamendo_Extraction_Verification.md) concludes the source supplements vocadito and cannot replace it. Gate J1 holds for a small sample and J2 passed for a pilot. J3 is open: the one stem measured came from a track chosen for being short, so it is uninformative about typical songs. J4 has not started.
+- No completion percentage or university mark is inferred.
 
 ### Phase 2 update (27 September 2026)
 
@@ -127,6 +140,8 @@ Track evidence coverage separately from project completion. Filling all E01-E12 
 - [ ] Every status is exercised; non-accepted packages stop downstream processing.
 - [ ] Result plots/table come from the declared independent collection with denominators/failures.
 - [ ] Teammate outputs identify proposed model, baseline, heuristic or fixture provenance.
+- [ ] Extractor evidence names the GAME commit and checkpoint, the pitch field read, and whether each boundary track is annotated, heuristic or model-estimated.
+- [ ] Any Jamendo-derived audio comes from a track whose license permits derivatives and is attributed.
 - [ ] Completion claims have evidence, baseline and limitations.
 - [ ] Business/user evidence distinguishes observed findings from assumptions.
 - [ ] Live demo and labelled offline replay have been rehearsed.

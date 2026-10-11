@@ -49,7 +49,7 @@ Frozen `mir-1k_g7` PESTO loads once per process, runs on CPU in evaluation/infer
 
 ## Research and assessment
 
-Read the [P0 scope, claims and draft hand-off](docs/P0_Scope_Claims_and_Decisions.md), [master plan](docs/PP1_Master_Plan.md), [phase plan](docs/PP1_Phase_Execution_Plan.md), [evidence tracker](docs/PP1_Evidence_Tracker.md) and [Phase 1 verification](docs/Phase1_Verification.md). The local P0 scope is documented; teammate acceptance of the interface and actual data-sharing permission remain open.
+Read the [P0 scope, claims and draft hand-off](docs/P0_Scope_Claims_and_Decisions.md), [master plan](docs/PP1_Master_Plan.md), [phase plan](docs/PP1_Phase_Execution_Plan.md), [evidence tracker](docs/PP1_Evidence_Tracker.md) and [Phase 1 verification](docs/Phase1_Verification.md). The phase plan carries an 11 October status and corrective schedule. The local P0 scope is documented; teammate acceptance of the interface and actual data-sharing permission remain open.
 
 Phase 1 demonstrates the foundation of FR1/FR2/FR6/FR7. BPDR repair, usability calibration, response losses, model comparisons and team integration remain later work. Dataset execution counts are not accuracy or completion percentages. Unit tests use injected pitch fixtures for controlled failure/alignment checks; a separate smoke test uses real frozen PESTO. Full-dataset replay uses real PESTO and no annotation targets.
 
@@ -86,4 +86,32 @@ uv run --locked bpdr-lab interventions --data-run '<data-run>' --limit 2
 
 An unreviewed collection produces no training-ready examples. Two distinct complete approvals, their interval intersection and a successful realized-shift audit are required. `require_training_example` refuses exploratory/failed examples and checks actual waveforms, review/audit/target integrity and paired inputs. References and correction targets stay separate from model-input arrays. Development/evaluation/final holdout are not used for these initial renderer pilots.
 
-The intervention renderer applies a constant local cents shift with waveform crossfades and exact outside-support samples. It is an experiment generator, not the completed repair renderer. Ramp targets are deliberately excluded. Audit v0.3 uses independent YIN for fine shifts (5-cent median, 10-cent 90th-percentile errors), PESTO for coarse consistency (20/40 cents), and explicit plateau/outside coverage and outside-drift-tail checks. The earlier v0.1 failure and v0.2 pilot remain recorded. The 30 September current run passed six shifts and 18 pairs, but all examples remain exploratory because reviewer decisions are pending. One singer and repeated boundary variants cannot establish accuracy or novelty.
+The intervention renderer applies a constant local cents shift with waveform crossfades and exact outside-support samples. It is an experiment generator, not the completed repair renderer. Ramp targets are deliberately excluded. Audit v0.3 uses independent YIN for fine shifts (5-cent median, 10-cent 90th-percentile errors), PESTO for coarse consistency (20/40 cents), and explicit plateau/outside coverage and outside-drift-tail checks. The earlier v0.1 failure and v0.2 pilot remain recorded. The 30 September current run passed six shifts and 18 pairs, but all examples remain exploratory because reviewer decisions are pending. One singer and repeated boundary variants cannot establish accuracy or novelty. A check on 11 October showed why the pilot stays at one singer: audit v0.3 needs a steady note of about 1.06 seconds, and only 3 of the 30 training crops, all from that singer, have one. The phase plan records the decision this requires.
+
+## Second data source and melody extraction
+
+Since 11 October the component also holds 1,604 vocal-tagged MTG-Jamendo tracks and an unedited copy of the team's melody-extraction pipeline. These are full accompanied songs with predicted notes only. They supplement vocadito and do not replace it; read the [extraction check](docs/Jamendo_Extraction_Verification.md) before using them.
+
+```powershell
+.\Setup-Jamendo.ps1                      # mirror metadata and pipeline code into data\mtg-jamendo
+.\Run-Extraction.ps1 -IndexOnly          # write manifest.csv and catalog.json; needs no model
+.\Setup-ExtractionTools.ps1 -Stage Full  # download pinned FFmpeg, GAME, separator, SheetSage2 and MERT (about 3.5 GB plus packages)
+.\Run-Extraction.ps1 -First '1079195,1348174' -KeepStems -Threads 8   # complete pipeline on a named sample
+.\Run-Extraction.ps1 -Limit 2 -VocalOnly -KeepStems                   # next two songs, vocal notes and stems only
+```
+
+`Setup-Jamendo.ps1` copies from the repository's `datasets/mtg-jamendo` and expects the MP3 folders in `data\mtg-jamendo\vocal-tagged-audio`. The older `melody-extraction` pilot is not used. `data/` and `checkpoints/` are ignored, so the mirror, model tools and outputs stay local. `-Stage Vocal` installs only what `-VocalOnly` needs (about 0.9 GB).
+
+The pipeline was written for an Apple Silicon Mac. `extraction/run_local.py` runs its files unchanged and supplies a Windows file lock, the PyTorch build of the same vocal separator, and the environment paths. Each substitution is logged in the pipeline's `history.log`. Stems from this launcher are not expected to match the Mac run sample for sample. The launcher stops before the pipeline starts if a tool is missing or the separator cannot be imported, because the pipeline would otherwise record every selected song as failed.
+
+**Speed.** On this CPU the separator is the bottleneck: tens of seconds of computing per second of music, so a full-length song takes over an hour, while GAME runs at about real time. Use short tracks for local checks and a GPU machine or the team's Mac for volume; the launcher also runs there. `-Threads 8` was the fastest thread setting measured here. `-SeparatorOverlap 2` overlaps fewer chunks: 7 instead of 13 for a 30-second track, about a third less time. On the one track compared, its notes differed from the default no more than two GAME runs on the same stem differ from each other; see the [extraction check](docs/Jamendo_Extraction_Verification.md). It is logged and should not be mixed with default-setting stems.
+
+For BPDR, read only `outputs/game_vocal`, and read its `model_midi_pitch`: the published pitch is raised 12 semitones and scores zero against vocadito's annotated pitch. `-KeepStems` saves each separated vocal in `data\jamendo-vocal-stems`, which the pipeline otherwise deletes. Outputs are predictions, not annotations. The dataset is for non-commercial research, and 353 of the local tracks carry NoDerivatives licenses.
+
+Three checks back the plan's gates. Run the first and third with the launcher environment `checkpoints\melody-extraction\.venv-run\Scripts\python.exe`, and the second with this component's own environment:
+
+```powershell
+python extraction\check_game.py                      # J2: GAME on vocadito training/development singers against A1 and A2
+python extraction\check_stems.py measure --game-run '<J2 run>'   # J3: kept stems against vocadito crops
+python extraction\compare_overlap.py 1079195 --overlap 2         # accuracy cost of the faster separator setting
+```
