@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MTG-Jamendo chord predictions</title>
+  <style>
+    :root { font-family: system-ui, sans-serif; color: #17251e; background: #f3f5f1; }
+    body { max-width: 1100px; margin: 32px auto; padding: 0 18px; }
+    main { background: white; border: 1px solid #d1dacd; border-radius: 18px; padding: 28px; }
+    h1 { margin: 0 0 6px; font-size: 1.8rem; }
+    p { color: #586459; line-height: 1.5; }
+    .controls { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 20px 0; }
+    label { display: grid; gap: 5px; font-weight: 600; }
+    input, select { box-sizing: border-box; width: 100%; font: inherit; padding: 10px; border: 1px solid #b2c0af; border-radius: 8px; background: white; }
+    audio { width: 100%; margin: 8px 0 20px; }
+    .summary { margin: 12px 0; font-weight: 600; }
+    .links a { margin-right: 18px; color: #215f44; }
+    .tablewrap { max-height: 58vh; overflow: auto; border: 1px solid #d7dfd4; border-radius: 8px; }
+    table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+    th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid #e6ebe4; }
+    th { position: sticky; top: 0; background: #eef3ec; }
+    tr.current { background: #dcf2df; }
+    tr:hover { background: #f2f7f0; cursor: pointer; }
+    td:nth-child(2) { font-weight: 700; }
+    @media (max-width: 700px) { .controls { grid-template-columns: 1fr; } main { padding: 16px; } }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Full-song chord predictions</h1>
+  <p>Listen to the original and follow the model's exact chord labels. Click a row to seek. Newly completed songs appear automatically.</p>
+  <div class="controls">
+    <label>Find track ID<input id="search" placeholder="Search extracted songs" inputmode="numeric"></label>
+    <label>Song<select id="song"></select></label>
+    <label>Vocabulary<select id="vocabulary"><option value="submission">Submission (recommended)</option><option value="full">Full (experimental)</option></select></label>
+  </div>
+  <div id="summary" class="summary">Loading…</div>
+  <audio id="audio" controls preload="metadata"></audio>
+  <p class="links"><a id="json" download>JSON</a><a id="csv" download>CSV</a></p>
+  <div class="tablewrap"><table><thead><tr><th>Start</th><th>Model chord</th><th>End</th></tr></thead><tbody id="events"></tbody></table></div>
+</main>
+<script>
+  const search = document.querySelector('#search');
+  const song = document.querySelector('#song');
+  const vocabulary = document.querySelector('#vocabulary');
+  const audio = document.querySelector('#audio');
+  const summary = document.querySelector('#summary');
+  const body = document.querySelector('#events');
+  let tracks = [];
+  let events = [];
+  let loadedId = '';
+  let currentRow = -1;
+  const time = (seconds, precise = false) => {
+    const whole = Math.floor(seconds);
+    const base = `${Math.floor(whole / 60)}:${String(whole % 60).padStart(2, '0')}`;
+    return precise ? `${base}.${String(Math.round((seconds - whole) * 100)).padStart(2, '0')}` : base;
+  };
+
+  function options() {
+    const selected = song.value;
+    const query = search.value.trim();
+    song.replaceChildren();
+    for (const track of tracks.filter(item => item.track_id.includes(query) || item.mtg_track_id.includes(query))) {
+      song.add(new Option(`${track.mtg_track_id} · ${track.chord_segments} segments`, track.track_id));
+    }
+    if (tracks.some(item => item.track_id === selected && (!query || selected.includes(query) || item.mtg_track_id.includes(query)))) song.value = selected;
+    if (!song.value && song.options.length) song.selectedIndex = 0;
+    if (song.value !== loadedId) loadSong();
+  }
+
+  async function refresh() {
+    const name = vocabulary.value === 'full' ? 'catalog-full.json' : 'catalog.json';
+    try {
+      const response = await fetch(`${name}?t=${Date.now()}`, {cache: 'no-store'});
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
+      tracks = data.tracks || [];
+      options();
+      if (!tracks.length) summary.textContent = 'No completed songs for this vocabulary yet.';
+    } catch (error) {
+      tracks = [];
+      song.replaceChildren();
+      summary.textContent = `Cannot read ${name}: ${error.message}. Serve datasets/mtg-jamendo with python -m http.server.`;
+    }
+  }
+
+  async function loadSong() {
+    const track = tracks.find(item => item.track_id === song.value);
+    loadedId = song.value;
+    events = [];
+    body.replaceChildren();
+    if (!track) { audio.removeAttribute('src'); return; }
+    audio.src = track.source_mp3;
+    document.querySelector('#json').href = track.chords_json;
+    document.querySelector('#csv').href = track.chords_csv;
+    summary.textContent = `${track.mtg_track_id} · ${track.artist_id} · ${track.split_0 || 'unsplit'} · ${track.chord_segments} segments · ${time(track.duration_sec)}${track.quality_flags.length ? ' · review: ' + track.quality_flags.join(', ') : ''}`;
+    try {
+      const response = await fetch(`${track.chords_json}?t=${Date.now()}`, {cache: 'no-store'});
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
+      if (loadedId !== track.track_id) return;
+      events = data.events;
+      const fragment = document.createDocumentFragment();
+      events.forEach((event, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${time(event.start_sec, true)}</td><td></td><td>${time(event.end_sec, true)}</td>`;
+        row.children[1].textContent = event.chord_label;
+        row.onclick = () => { audio.currentTime = event.start_sec; };
+        row.dataset.index = index;
+        fragment.append(row);
+      });
+      body.replaceChildren(fragment);
+      currentRow = -1;
+    } catch (error) { summary.textContent += ` · Could not load chords: ${error.message}`; }
+  }
+
+  audio.addEventListener('timeupdate', () => {
+    if (!events.length) return;
+    const t = audio.currentTime;
+    const index = events.findIndex(event => event.start_sec <= t && t < event.end_sec);
+    if (index === currentRow) return;
+    if (currentRow >= 0) body.children[currentRow]?.classList.remove('current');
+    currentRow = index;
+    if (index >= 0) {
+      const row = body.children[index];
+      row.classList.add('current');
+      if (!row.getBoundingClientRect().height) return;
+      row.scrollIntoView({block: 'nearest'});
+    }
+  });
+  search.addEventListener('input', options);
+  song.addEventListener('change', loadSong);
+  vocabulary.addEventListener('change', () => { loadedId = ''; refresh(); });
+  refresh();
+  setInterval(refresh, 10000);
+</script>
+</body>
+</html>
