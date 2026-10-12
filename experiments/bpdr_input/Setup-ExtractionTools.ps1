@@ -1,4 +1,4 @@
-param([ValidateSet('Vocal', 'Full')][string]$Stage = 'Vocal')
+param([ValidateSet('Vocal', 'Full')][string]$Stage = 'Vocal', [switch]$IntelGpu)
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 # Installs the model tools the mirrored melody-extraction pipeline expects, in its own asset layout, under the
@@ -6,6 +6,8 @@ $ProgressPreference = 'SilentlyContinue'
 # provenance files; a mismatch stops the setup. Safe to run again: finished steps are skipped.
 #   -Stage Vocal   FFmpeg, GAME and the BS-RoFormer separator: enough for Run-Extraction.ps1 -VocalOnly
 #   -Stage Full    adds SheetSage2 and its MERT parent (about 2.6 GB) for the complete pipeline
+#   -IntelGpu      adds a second launcher environment with the Intel-GPU build of PyTorch (about 1.4 GB)
+#                  for Run-Extraction.ps1 -Gpu and for training with --device xpu
 $assets = Join-Path $PSScriptRoot 'checkpoints\melody-extraction'
 $models = Join-Path $assets 'models'
 $tools = Join-Path $assets 'tools'
@@ -48,8 +50,13 @@ function New-Environment([string]$Name, [string]$Python) {
 
 function Install-Packages([string]$Python, [string]$What, [string[]]$Arguments) {
     Write-Host "Installing $What"
-    & $uv pip install --quiet --python $Python @Arguments
-    Assert-Native "Installing $What"
+    # Some networks reset connections to the package hosts; finished downloads are cached, so a retry continues.
+    foreach ($attempt in 1..5) {
+        & $uv pip install --quiet --python $Python @Arguments
+        if ($LASTEXITCODE -eq 0) { return }
+        Write-Host "Installing $What was interrupted (attempt $attempt); retrying"
+    }
+    throw "Installing $What failed after 5 attempts"
 }
 
 function Save-Environment([string]$Name, [string]$Python) {
@@ -115,6 +122,14 @@ Install-Packages $runPython 'PyTorch (CPU) for the launcher' (@('torch==2.14.0')
 Install-Packages $runPython 'separator, MIDI and scoring packages' @('audio-separator[cpu]==0.47.0', 'audioread', 'pretty_midi', 'soundfile', 'mir_eval')
 Save-Environment '.venv-run' $runPython
 
+if ($IntelGpu) {
+    # Same launcher packages on the Intel-GPU (xpu) build of PyTorch, kept apart from the verified CPU environment.
+    $gpuPython = New-Environment '.venv-xpu' '3.12'
+    Install-Packages $gpuPython 'PyTorch (Intel GPU) for the launcher' @('torch==2.14.1', '--index-url', 'https://download.pytorch.org/whl/xpu')
+    Install-Packages $gpuPython 'separator, MIDI and scoring packages' @('audio-separator[cpu]==0.47.0', 'audioread', 'pretty_midi', 'soundfile', 'mir_eval')
+    Save-Environment '.venv-xpu' $gpuPython
+}
+
 if ($Stage -eq 'Full') {
     # SheetSage2 and its MERT parent: pinned Hugging Face snapshots in the layout the worker reads offline.
     $sheetPython = New-Environment '.venv-sheetsage2' '3.11'
@@ -162,12 +177,12 @@ $ffmpegVersion = (& (Join-Path $ffmpegBin 'ffmpeg.exe') -version | Select-Object
     recorded_utc = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
     stage = $Stage
     platform = [System.Environment]::OSVersion.VersionString
-    device = 'CPU'
+    device = if (Test-Path -LiteralPath (Join-Path $assets '.venv-xpu\Scripts\python.exe')) { 'CPU by default; Intel GPU (PyTorch xpu) through .venv-xpu when the launcher is run with --device xpu' } else { 'CPU' }
     ffmpeg = "$ffmpegVersion"
     sha256 = $downloads
     environments = 'environment.venv-*.txt beside this file'
     differences_from_team_provenance = @(
-        'Vocal separator runs through audio-separator (PyTorch, CPU) instead of mlx-audio-separator (MLX, Apple GPU); same checkpoint file.',
+        'Vocal separator runs through audio-separator (PyTorch, CPU or Intel GPU) instead of mlx-audio-separator (MLX, Apple GPU); same checkpoint file.',
         'GAME and SheetSage2 run on CPU instead of the Apple GPU.',
         'FFmpeg is the Windows essentials build named above.',
         'Outputs are therefore not expected to be identical to the Mac run and must not be mixed with it without a comparison.'

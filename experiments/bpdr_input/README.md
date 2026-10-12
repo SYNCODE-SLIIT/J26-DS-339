@@ -88,6 +88,24 @@ An unreviewed collection produces no training-ready examples. Two distinct compl
 
 The intervention renderer applies a constant local cents shift with waveform crossfades and exact outside-support samples. It is an experiment generator, not the completed repair renderer. Ramp targets are deliberately excluded. Audit v0.3 uses independent YIN for fine shifts (5-cent median, 10-cent 90th-percentile errors), PESTO for coarse consistency (20/40 cents), and explicit plateau/outside coverage and outside-drift-tail checks. The earlier v0.1 failure and v0.2 pilot remain recorded. The 30 September current run passed six shifts and 18 pairs, but all examples remain exploratory because reviewer decisions are pending. One singer and repeated boundary variants cannot establish accuracy or novelty. A check on 11 October showed why the pilot stays at one singer: audit v0.3 needs a steady note of about 1.06 seconds, and only 3 of the 30 training crops, all from that singer, have one. The phase plan records the decision this requires.
 
+## Phase 3 model code
+
+The three learned conditions share one small encoder (`model.py`), the proposal's losses (`losses.py`), a loader (`examples.py`), measurements (`metrics.py`) and a training command (`training.py`). All of it is checked on constructed fixtures in `tests/test_phase3.py`. No model has been trained to a result.
+
+```powershell
+# Replace <pairs-run> with a Phase 2 experiment folder that holds summary.json.
+.\.venv\Scripts\python.exe -m bpdr_input.training --pairs-run '<pairs-run>' --condition bpdr --mode engineering
+```
+
+`--condition` is `augmentation_only`, `frame_only` or `bpdr`. The default `--mode research` accepts only reviewed, audit-approved pairs and therefore refuses everything today. `--mode engineering` reads the unreviewed pilot pairs for debugging, writes under `runs/engineering` and marks every output `exploratory_not_research`. Each run saves a checkpoint and a record with its seed, settings, parameter count and input hashes.
+
+Training is about 18 times faster on an Intel Arc GPU. Use the GPU environment and `--device xpu`:
+
+```powershell
+$env:PYTHONPATH = "$PWD\src"
+.\checkpoints\melody-extraction\.venv-xpu\Scripts\python.exe -m bpdr_input.training --pairs-run '<pairs-run>' --condition bpdr --mode engineering --device xpu --output-root runs
+```
+
 ## Second data source and melody extraction
 
 Since 11 October the component also holds 1,604 vocal-tagged MTG-Jamendo tracks and an unedited copy of the team's melody-extraction pipeline. These are full accompanied songs with predicted notes only. They supplement vocadito and do not replace it; read the [extraction check](docs/Jamendo_Extraction_Verification.md) before using them.
@@ -104,7 +122,7 @@ Since 11 October the component also holds 1,604 vocal-tagged MTG-Jamendo tracks 
 
 The pipeline was written for an Apple Silicon Mac. `extraction/run_local.py` runs its files unchanged and supplies a Windows file lock, the PyTorch build of the same vocal separator, and the environment paths. Each substitution is logged in the pipeline's `history.log`. Stems from this launcher are not expected to match the Mac run sample for sample. The launcher stops before the pipeline starts if a tool is missing or the separator cannot be imported, because the pipeline would otherwise record every selected song as failed.
 
-**Speed.** On this CPU the separator is the bottleneck: tens of seconds of computing per second of music, so a full-length song takes over an hour, while GAME runs at about real time. Use short tracks for local checks and a GPU machine or the team's Mac for volume; the launcher also runs there. `-Threads 8` was the fastest thread setting measured here. `-SeparatorOverlap 2` overlaps fewer chunks: 7 instead of 13 for a 30-second track, about a third less time. On the one track compared, its notes differed from the default no more than two GAME runs on the same stem differ from each other; see the [extraction check](docs/Jamendo_Extraction_Verification.md). It is logged and should not be mixed with default-setting stems.
+**Speed.** On this CPU the separator is the bottleneck: tens of seconds of computing per second of music, so a full-length song takes over an hour, while GAME runs at about real time. Add `-Gpu` to run the separator on an Intel Arc GPU: about ten times faster with the same result, so a normal song takes 10 to 15 minutes. It needs `.\Setup-ExtractionTools.ps1 -IntelGpu` once (about 1.4 GB). Keep the laptop awake; standby pauses a run. All 1,604 songs still belong on the team's Mac or a CUDA machine, where the launcher also runs. `-Threads 8` was the fastest thread setting measured here. `-SeparatorOverlap 2` overlaps fewer chunks: 7 instead of 13 for a 30-second track, about a third less time. On the one track compared, its notes differed from the default no more than two GAME runs on the same stem differ from each other; see the [extraction check](docs/Jamendo_Extraction_Verification.md). It is logged and should not be mixed with default-setting stems.
 
 For BPDR, read only `outputs/game_vocal`, and read its `model_midi_pitch`: the published pitch is raised 12 semitones and scores zero against vocadito's annotated pitch. `-KeepStems` saves each separated vocal in `data\jamendo-vocal-stems`, which the pipeline otherwise deletes. Outputs are predictions, not annotations. The dataset is for non-commercial research, and 353 of the local tracks carry NoDerivatives licenses.
 

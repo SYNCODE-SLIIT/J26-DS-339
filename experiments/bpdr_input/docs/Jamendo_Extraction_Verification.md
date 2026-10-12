@@ -1,6 +1,6 @@
 # MTG-Jamendo source and melody-extraction check — 11 October 2026
 
-**Confirmed on this machine:** the second data source is mirrored inside the component; the team's pipeline code runs unedited through a launcher; the complete pipeline produced all three outputs for a two-song sample; and the team's listening page shows them. **Also found:** the vocal separator is far too slow on this CPU for full-length songs, and the GAME note model reads performed pitch correctly only through its unshifted field. The two sample tracks were chosen for being short, so they say nothing reliable about the stems of typical songs. Nothing here is a BPDR result or a training-ready collection.
+**Confirmed on this machine:** the second data source is mirrored inside the component; the team's pipeline code runs unedited through a launcher; the complete pipeline produced all three outputs for a two-song sample; and the team's listening page shows them. **Also found:** the vocal separator is far too slow on this CPU for full-length songs but runs about ten times faster, with the same result, on the laptop's Intel Arc GPU; and the GAME note model reads performed pitch correctly only through its unshifted field. The first two sample tracks were chosen for being short and are not typical; one normal-length song has since been measured. Nothing here is a BPDR result or a training-ready collection.
 
 ## What was added
 
@@ -103,6 +103,7 @@ Four problems surfaced during setup, and each one is now handled by the scripts:
 | 2 | Retry of track 382 (211 s) stopped by hand after 7 of 103 separator chunks in 7 min 41 s |
 | 3 | `-First '1079195,1348174'`: vocal stage completed for both; the SheetSage2 worker then crashed on the incomplete download |
 | 4 | Same command resumed: SheetSage2 ran on CPU and both songs reached `complete` |
+| 5 | `-First '1038720' -Gpu -VocalOnly -KeepStems`: a 162-second song separated on the Intel GPU; GAME found 292 notes; the song is `partial` because SheetSage2 was skipped |
 
 Result for the two-song sample, both from training-partition artists with licenses that permit derivatives:
 
@@ -121,16 +122,22 @@ Each track has MIDI, JSON and CSV under all three `outputs/` folders, `manifest.
 |---|---|---:|
 | Separation, pipeline settings, 8 threads | 913 s for the 30.5 s track | 30 s |
 | Separation, 211 s song, default threads | 7 of 103 chunks in 7 min 41 s; about 1 h 50 min projected | 31 s |
+| Separation on the Intel Arc GPU, pipeline settings | 16.6 s for a 10 s excerpt, against 163.5 s on the CPU; 78 chunks of a 162 s song at about 7.9 s each | 4 s |
 | GAME on solo recordings | 527 s for 600 s of vocadito audio, start-up included | 0.9 s |
 | SheetSage2 on CPU | Both sample songs in about 4 minutes, model load included | — |
+| One BPDR training step (8 pairs, 940 frames, four views) | 13.2 s on the CPU, 0.73 s on the Intel Arc GPU | — |
 
-The separator is the whole problem. It processes 8-second chunks every 2 seconds, and one chunk takes 45 to 100 seconds here. At that rate the 101 hours of local audio would need about 3,000 hours. GAME by itself is practical locally.
+The separator is the whole problem. It processes 8-second chunks every 2 seconds, and one chunk takes 45 to 100 seconds on the CPU. At that rate the 101 hours of local audio would need about 3,000 hours. On the Intel Arc GPU a chunk takes about 8 seconds, so a normal song takes 10 to 15 minutes and a sample of 20 to 30 songs fits in a night. All 1,604 songs would still need about 400 hours. GAME by itself is practical locally.
+
+**Standby pauses a run.** During run 5 the laptop entered Modern Standby several times, which stretched 10 minutes of computing to 41 minutes on the clock. Keep the laptop awake and on power for long runs.
 
 Ways to go faster, with what each does to accuracy:
 
 | Option | Speed | Accuracy | Status |
 |---|---|---|---|
-| Same pipeline on a GPU: the team's Mac, or a CUDA machine | Not measured here; the pipeline was built for it | Unchanged: same models and settings | Recommended for any volume. The launcher runs there unchanged; the setup script is Windows-only. |
+| `-Gpu`: the laptop's Intel Arc GPU through the Intel-GPU build of PyTorch | About 10 times faster than the CPU on the same excerpt | Unchanged: same model and settings. The GPU stem differs from the CPU stem by 101 dB below signal level. Peak GPU memory 3.75 GB. | Use it. Install with `Setup-ExtractionTools.ps1 -IntelGpu`. The package's own DirectML route keeps this model on the CPU, so the launcher sets the device itself and logs it. |
+| Same pipeline on the team's Mac or a CUDA machine | Not measured here; the pipeline was built for it | Unchanged: same models and settings | Still the choice for all 1,604 songs. The launcher runs there unchanged; the setup script is Windows-only. |
+| The NPU | — | — | Not attempted. Neither model exists in a form it can run. |
 | `-Threads 8` | 164 s against 207 s (default 14) and 281 s (4) for a 10 s excerpt | Unchanged | Use it. About 20% faster. |
 | `-SeparatorOverlap 2` | 635 s against 913 s on the same track; 7 chunks instead of 13 | Stem differs from the default stem by 29.9 dB below signal level. GAME notes agree with the default-stem notes at onset F1 0.79, against 0.81 for two GAME runs on the identical stem. | No cost visible on one track beyond GAME's own run-to-run variation. The comparison built the separator directly; the launcher option was confirmed to pass the same setting but has not produced pipeline outputs. Logged when used. Do not mix with default-setting stems. |
 | Separate only a short excerpt of each song | About six times less work for a 35 s excerpt of a median song | Unchanged for the excerpt | Not built. The team pipeline is full-song by design; this would be a BPDR-side step. |
@@ -173,7 +180,18 @@ What this shows:
 
 **This comparison is uninformative about typical songs.** The two sample tracks were picked because they are the shortest eligible ones, which is what made a complete local run possible. By their titles and tags they are a 30-second "song loop" and an ambient piece, not ordinary songs with a sung melody. Track 1348174 gave no crop: GAME found a single 5-second note. In track 1079195, GAME reported 26 notes in the window while PESTO found a voice in a quarter of those frames. On the same stem, two GAME runs agreed at onset F1 0.81 with 37 and 47 notes, against 0.95 on vocadito. One vocadito crop also scored only 0.08 for voicing inside notes, so the mask depends on PESTO's voicing decision as well as on the audio.
 
-**Gate J3 is open.** One crop from an atypical track cannot characterize the stems of 257 artists, in either direction. What the look does establish is that a voice tag plus predicted notes is not evidence of usable singing, so any Jamendo material needs automatic screening before review. A fair sample needs stems from full songs by many artists, which this machine cannot produce.
+**One normal-length song, added after the GPU option worked.** Track 1038720 (162 seconds, a training-partition artist, license permits derivatives) was separated on the GPU and gave two crops. Phase 1 accepted both.
+
+| Per crop | 1038720 at 55 s | 1038720 at 125 s | vocadito median |
+|---|---:|---:|---:|
+| PESTO voiced inside GAME notes | 0.68 | 0.71 | 0.84 |
+| Reliable inside GAME notes | 0.50 | 0.40 | 0.76 |
+| Longest reliable span | 0.30 s | 0.40 s | 0.40 s |
+| Able to host an audited shift | No | No | 1 of 14 |
+
+So a real song's stem is usable by the input path and gives roughly half to two thirds of vocadito's reliable share, with reliable spans of similar length. Neither crop has a note long enough for the v0.3 shift, which is the same limit most vocadito crops hit. This is one song by one artist.
+
+**Gate J3 is open.** One song cannot characterize the stems of 257 artists, in either direction. What the checks do establish is that the path from song to accepted crop works, and that a voice tag plus predicted notes is not evidence of usable singing, so any Jamendo material needs automatic screening before review. A fair sample needs stems from full songs by many artists; with the GPU option this machine can now produce 20 to 30 of them in a night.
 
 ## A finding about the existing vocadito plan
 
@@ -201,15 +219,15 @@ BPDR accepts a short unaccompanied single voice and learns a relative correction
 
 1. **Fixed downstream extractor: supported.** Running the same frozen GAME before and after preparation gives the proposal's extraction comparison and a real D6 hand-off. Fractional pitch allows that comparison in cents, where note F1 may not move for 10 to 30-cent changes. It needs GAME only, on BPDR's own solo audio, at about real-time speed. The melody-extraction owner still has to confirm GAME as the agreed extractor.
 2. **Natural boundary condition: supported.** The current boundary tracks come from A1 annotation timings, while runtime has only an audio-derived score. GAME gives model-estimated boundaries and, through repeated or re-thresholded decoding, alternative segmentations of one unchanged waveform. That is the natural-analyzer condition the proposal asks to test separately, and a source for the controller's "other reasonable boundary versions" in offline evaluation.
-3. **More independent voices: not supported yet.** Extraction is impractical locally, there is no human reference, and no informative stem sample exists. It stays optional, off the critical path, and behind J3 and J4. The shortage it was meant to ease is real, though: see the vocadito finding above.
+3. **More independent voices: not supported yet.** There is no human reference, and only one normal song has been measured. Extraction of a sample is now practical on the laptop's GPU. The role stays optional, off the critical path, and behind J3 and J4. The shortage it was meant to ease is real, though: see the vocadito finding above.
 
 ## Gates
 
 | Gate | Check | Status on 11 October |
 |---|---|---|
-| J1 | The pipeline completes on local songs; time recorded | Works on a two-song sample. Not practical for volume on this CPU. |
+| J1 | The pipeline completes on local songs; time recorded | Works on a two-song sample, and on a normal-length song through the GPU option. A sample of tens of songs is practical on the GPU; all 1,604 are not. |
 | J2 | GAME on vocadito against A1 and A2; pitch field fixed | Passed for a pilot. Read `model_midi_pitch`; label offset-aware results. |
-| J3 | Stems cut to 20-second crops; reliability and shift audit against vocadito | Open. The one crop measured came from a track chosen for being short and is uninformative. Needs stems from full songs by many artists. |
+| J3 | Stems cut to 20-second crops; reliability and shift audit against vocadito | Open. One normal song gave 40 to 50% reliable frames against 76% for vocadito. Needs stems from full songs by many artists, which the GPU option now allows. |
 | J4 | Two-reviewer sheet for a declared Jamendo crop subset | Not started. Depends on J3. |
 
 Until J3 and J4 pass, Jamendo crops may support engineering runs that are labelled exploratory. They do not enter the reviewed comparison.
@@ -220,4 +238,4 @@ MTG-Jamendo is released for non-commercial research and academic use, with per-t
 
 ## Evidence locations
 
-All under ignored folders, so they stay on this machine: `data/mtg-jamendo/melody-extraction-pipeline/history.log`, `manifest.csv` and `outputs/`; `checkpoints/melody-extraction/local-provenance.json`; and `runs/extraction_checks/` with `0e9888a4…/game_on_vocadito.json` (J2), `3fa67dcd…/stems_vs_vocadito.json` (J3) and `c357df60…/overlap_comparison.json`. Rerun the commands in the README to regenerate them.
+All under ignored folders, so they stay on this machine: `data/mtg-jamendo/melody-extraction-pipeline/history.log`, `manifest.csv` and `outputs/`; `checkpoints/melody-extraction/local-provenance.json`; and `runs/extraction_checks/` with `0e9888a4…/game_on_vocadito.json` (J2), `3fa67dcd…/stems_vs_vocadito.json` and `ed4b3433…/stems_vs_vocadito.json` (J3, before and after the normal-length song) and `c357df60…/overlap_comparison.json`. The GPU probe's timings are recorded in this file only. Rerun the commands in the README to regenerate them.

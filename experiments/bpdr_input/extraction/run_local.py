@@ -19,7 +19,7 @@ ASSETS = COMPONENT/'checkpoints'/'melody-extraction'
 STEMS = COMPONENT/'data'/'jamendo-vocal-stems'
 
 
-def platform_shims(overlap=None):
+def platform_shims(overlap=None, device=None):
     """Return the substitutions made; an empty list means the pipeline runs natively."""
     used = []
     if not installed('fcntl'):
@@ -43,18 +43,29 @@ def platform_shims(overlap=None):
                 raise AttributeError(name)
             # Same constructor, load_model and separate calls; imported only when a stem is needed.
             from audio_separator.separator import Separator
-            if overlap is None:
+            if overlap is None and device is None:
                 return Separator
             import inspect
-            chunking = dict(inspect.signature(Separator.__init__).parameters['mdxc_params'].default, overlap=overlap)
-            return lambda **options: Separator(**options, mdxc_params=chunking)
+            import torch
+
+            def configured(**options):
+                if overlap is not None:
+                    options['mdxc_params'] = dict(inspect.signature(Separator.__init__).parameters['mdxc_params'].default, overlap=overlap)
+                separator = Separator(**options)
+                if device is not None:
+                    # The package selects only CUDA, Apple or DirectML devices itself; an Intel GPU is set here.
+                    separator.torch_device = torch.device(device)
+                return separator
+            return configured
         shim.__getattr__ = __getattr__
         sys.modules['mlx_audio_separator'] = shim
         used.append('vocal separator: audio-separator (PyTorch) instead of mlx-audio-separator, same BS-RoFormer checkpoint')
         if overlap is not None:
             used.append(f'vocal separator: chunk overlap {overlap} instead of the model default 4; faster, stems differ from the default')
-    elif overlap is not None:
-        raise SystemExit('--separator-overlap applies only to the PyTorch separator substitution')
+        if device is not None:
+            used.append(f'vocal separator: runs on PyTorch device {device} instead of the CPU; same model and settings')
+    elif overlap is not None or device is not None:
+        raise SystemExit('--separator-overlap and --device apply only to the PyTorch separator substitution')
     return used
 
 
@@ -134,6 +145,7 @@ def main():
     parser.add_argument('--keep-stems', action='store_true', help=f'Keep each separated vocal WAV in {STEMS.relative_to(COMPONENT)}')
     parser.add_argument('--threads', type=int, help='CPU threads for the separator; changes speed, not the model')
     parser.add_argument('--separator-overlap', type=int, choices=(2, 3, 4), help='Fewer overlapping chunks: faster separation, slightly different stems')
+    parser.add_argument('--device', choices=('xpu',), help='Run the separator on an Intel GPU; needs the xpu build of PyTorch')
     args, forwarded = parser.parse_known_args()
     if os.name == 'nt' and not sys.flags.utf8_mode:
         # The pipeline writes text with the platform encoding; match the Mac's UTF-8.
@@ -143,7 +155,7 @@ def main():
     local_ffmpeg = Path(os.environ['MELODY_MODEL_ASSETS'])/'tools'/'ffmpeg'/'bin'
     if local_ffmpeg.is_dir():
         os.environ['PATH'] = str(local_ffmpeg)+os.pathsep+os.environ['PATH']
-    shims = platform_shims(args.separator_overlap)
+    shims = platform_shims(args.separator_overlap, args.device)
     root = args.pipeline.resolve()
     if not (root/'run.py').exists():
         parser.error(f'No pipeline at {root}. Run Setup-Jamendo.ps1 first.')
@@ -155,6 +167,10 @@ def main():
         print(f'Indexed {len(tracks)} local MP3s: {module.MANIFEST}')
         return 0
     problems = missing_tools(module, args.vocal_only)
+    if args.device == 'xpu':
+        import torch
+        if not (hasattr(torch, 'xpu') and torch.xpu.is_available()):
+            problems.append('no Intel GPU is visible to this PyTorch build; use the .venv-xpu environment')
     if problems:
         print('Extraction tools are incomplete; nothing was run:\n  '+'\n  '.join(problems), file=sys.stderr)
         return 2

@@ -54,6 +54,10 @@ For each evidence item append:
 - **E07:** pinned commits and checksums, an unedited mirror, logged substitutions, reproducible setup and check scripts, and a run history that keeps its failures are in place for the second source.
 - **E09:** four risks have named actions: intervention geometry, domain shift with predicted labels, slow extraction on the development CPU, and license limits on derived audio. Four setup problems were found and fixed in the scripts.
 - **Suitability:** the [extraction check](Jamendo_Extraction_Verification.md) concludes the source supplements vocadito and cannot replace it. Gate J1 holds for a small sample and J2 passed for a pilot. J3 is open: the one stem measured came from a track chosen for being short, so it is uninformative about typical songs. J4 has not started.
+- **Owner's position, same day:** no musically experienced reviewer is available, and the coverage decision is deferred. The working path in the phase plan therefore applies: fixture-verified model code, labelled exploratory runs on one singer's 18 pairs, and the GAME extractor evidence. A reviewed comparison of the three conditions is not on that path.
+- **vocadito license:** its Zenodo record lists CC BY 4.0; recorded in the P0 file.
+- **Phase 3 code (W4), later the same day:** `losses.py`, `model.py`, `examples.py`, `metrics.py` and `training.py` exist with 16 fixture tests; the suite now has 48 passing tests. Research mode refuses the unreviewed pilot pairs; engineering mode loads all 18 and stamps its outputs exploratory. A 30-update smoke run completed on CPU and GPU. No model has been trained to a result and no checkpoint supports a claim.
+- **Intel GPU:** the pinned separator runs on the laptop's Arc GPU about 10 times faster with a stem 101 dB from the CPU stem, and a BPDR training step is about 18 times faster. One normal-length song was extracted this way: 292 predicted notes, two crops accepted by Phase 1, 40 to 50% reliable frames.
 - No completion percentage or university mark is inferred.
 
 ### Phase 2 update (27 September 2026)

@@ -30,8 +30,8 @@ The phase map above stays as the original baseline. The table below is the propo
 
 | Work | Original window | Revised target | What changes |
 |---|---|---|---|
-| P2 review gate | 1-4 Oct | Declared training subset reviewed by 14 Oct | Same requirement. It still blocks research fitting. |
-| P2 intervention coverage | Not planned | Decision by 13 Oct, re-audit by 14 Oct | New. Under audit v0.3 only one training singer can host a shift; see below. |
+| P2 review gate | 1-4 Oct | No date: no reviewer is available on 11 Oct | Same requirement. It still blocks research fitting. The working path below applies until two reviewers are named. |
+| P2 intervention coverage | Not planned | Deferred by the owner on 11 Oct | New. Under audit v0.3 only one training singer can host a shift; see below. The re-audit is automatic and needs no musician. |
 | P2J second source and extractor | Not planned | 11-13 Oct | New. Runs beside P3 and is cut first if time is short. Gates J1 and J2 were checked on 11 Oct. |
 | P3 controls | 5-9 Oct | 12-14 Oct | Code and fixture tests start now. Fitting waits for approved anchors. |
 | P4 BPDR, controller and renderer | 10-16 Oct | 15-18 Oct | One run per learned condition under one equal, predeclared budget. |
@@ -40,14 +40,21 @@ The phase map above stays as the original baseline. The table below is the propo
 
 A new dataset arrived on 11 October: 1,604 vocal-tagged MTG-Jamendo tracks with the team's melody-extraction pipeline. The [extraction check](Jamendo_Extraction_Verification.md) shows it cannot replace vocadito, and the master plan gives it three supplementary roles. The pipeline was confirmed on a two-song sample and the GAME extractor passed its check against vocadito's annotators. It did not cause the delay and must not extend it.
 
-**Intervention coverage.** The same checks found that the v0.3 renderer needs a reference-reliable span of at least 0.86 seconds, a steady note about 1.06 seconds long. Only 3 of the 30 training crops have one, all from one singer, so the multi-singer training subset required by P2 and P3 cannot be generated under the current policy even with every review approved. A 0.5-second requirement would admit 11 crops from 6 singers. By 13 October choose one:
+**Intervention coverage.** The same checks found that the v0.3 renderer needs a reference-reliable span of at least 0.86 seconds, a steady note about 1.06 seconds long. Only 3 of the 30 training crops have one, all from one singer, so the multi-singer training subset required by P2 and P3 cannot be generated under the current policy even with every review approved. A 0.5-second requirement would admit 11 crops from 6 singers. The owner deferred this on 11 October. When it is taken up, choose one:
 
 1. Shorten the plateau and guards, record the change as audit v0.4 on training material only, repeat the identity and realized-shift audits, and disclose the revision with every later result.
 2. Keep v0.3 and report a one-singer pilot as exactly that.
 
 Reviewers should start with crops that can host a shift under the chosen policy, since approving the others cannot produce training examples.
 
-If reviews are still pending on 14 October, follow the existing rule: continue fixture engineering, present the laboratory and the extractor evidence with their limits, and report a narrower pilot. Do not train a purported research model on unapproved anchors, from either source.
+**Working path without reviewers (owner's position, 11 October).** No musically experienced reviewer is available, and the owner deferred the coverage decision. Zero examples are therefore training eligible, whatever happens with audits, datasets or hardware. Until two reviewers are named, PP1 work is:
+
+1. Model, loss and metric code verified on constructed fixtures (the P3 build order).
+2. Engineering runs on the audited exploratory pairs, labelled exploratory in every output.
+3. The GAME extractor adapter and the natural-boundary evidence on vocadito.
+4. The demonstration paths that need no trained comparison: unchanged input, controlled stops, boundary-only change and local detuning.
+
+This is the narrower pilot the plan already allows. It shows the mechanism executing; it cannot show a reviewed comparison of the three conditions. Ask the supervisor who may count as a reviewer with relevant musical experience, since that single answer decides whether the reviewed comparison is possible before 25 October. Do not train a purported research model on unapproved anchors, from either source.
 
 ## P0. Fix the assessment scope and evidence baseline
 
@@ -138,18 +145,19 @@ At the same checkpoint, record reviewer availability and the number of independe
 4. Cut the kept stems into mapped vocal crops of at most 20 seconds, with offsets back to the full song. Inside GAME notes, measure the share of frames where PESTO is voiced and agrees with YIN. Run the existing identity and realized-shift audits. Put each number beside the same number for vocadito. **Gate J3:** `extraction/check_stems.py` gives a first look on the sample; a decision needs stems from many more artists, produced on a GPU machine or the team's Mac.
 5. Partition by `artist_id` with the existing stable-hash grouping, cap the tracks taken per artist, and exclude NoDerivatives tracks before any crop or intervention is made. One artist holds 174 of the 1,604 tracks.
 6. If the voices role goes ahead, prepare the two-reviewer sheet for a declared Jamendo crop subset. Predicted notes and tracker agreement are not approvals. **Gate J4.**
+7. **Done 11 October: probe of the laptop's Intel Arc GPU.** No Mac is needed. The separator package has no Intel-GPU path of its own, and its DirectML path deliberately keeps this model on the CPU, so the probe used the Intel-GPU build of PyTorch (`torch 2.14.1+xpu`) in a separate `.venv-xpu` environment. The same 10-second excerpt took 16.6 seconds against 163.5 on the CPU, and the stem differed from the CPU stem by 101 dB below signal level, which is the same result. The launcher now has a logged `-Gpu` option. A BPDR training step is about 18 times faster on the same GPU (0.73 against 13.2 seconds), so `training.py` has `--device xpu`. The NPU stays out of scope for PP1: neither model exists in a form it can run, and converting them would be a project of its own.
 
 ### Outputs and exit gate
 
 Produce a saved extraction run with its `history.log`, a GAME-versus-annotation table on vocadito, a stem-quality table and a dated decision on each role. The extractor and natural-boundary roles need J2. The voices role needs J1, J3 and J4. Record a failed or skipped gate as failed or skipped.
 
-**Status on 11 October:** the run history, the GAME table and a first stem table exist; see the [extraction check](Jamendo_Extraction_Verification.md). J1 holds for a two-song sample only. J2 passed for a pilot. J3 is open and so far uninformative: the single stem measured had 17% reliable frames inside predicted notes against 76% for vocadito, but its track was chosen for being short and is not a typical song. J4 has not started.
+**Status on 11 October:** the run history, the GAME table and a first stem table exist; see the [extraction check](Jamendo_Extraction_Verification.md). J1 holds for a two-song sample only. J2 passed for a pilot. J3 is open: one normal-length song, separated on the laptop's GPU, gave 40 to 50% reliable frames inside predicted notes against 76% for vocadito. The earlier 17% came from a track chosen for being short. J4 has not started.
 
 Use only `game_vocal`, through `model_midi_pitch`. Never read the instrumental or combined melody as vocal boundaries. Keep the pipeline's files unedited so that a team update can be re-mirrored; platform differences belong in the launcher and in the run history.
 
 **Examiner-visible evidence:** the team's extractor running on a BPDR-accepted recording, and one waveform shown under two model-estimated segmentations. This is integration and problem evidence, not a repair result.
 
-**13 October decision checkpoint:** local extraction is too slow for volume, so the voices role is off the PP1 critical path. Reopen it only if stems from a declared, artist-capped sample are produced on a GPU machine or the team's Mac and pass J3. Do not spend P3 or P4 time on separation. Keep GAME on vocadito for the other two roles, once the melody-extraction owner confirms it as the agreed extractor. If that confirmation does not come, keep the contract stub for D6 and report the natural-boundary condition as remaining work.
+**13 October decision checkpoint:** the voices role stays off the PP1 critical path. The laptop's GPU can now separate a normal song in 10 to 15 minutes, so a declared, artist-capped sample of 20 to 30 songs is possible overnight with `Run-Extraction.ps1 -First '<ids>' -Gpu -VocalOnly -KeepStems`; `check_stems.py plan` names the tracks. Reopen the role only if that sample passes J3. Run it unattended and do not spend P3 or P4 working time on it. Keep GAME on vocadito for the other two roles, once the melody-extraction owner confirms it as the agreed extractor. If that confirmation does not come, keep the contract stub for D6 and report the natural-boundary condition as remaining work.
 
 ## P3. Implement and train the controls first
 
@@ -165,6 +173,22 @@ Use only `game_vocal`, through `model_midi_pitch`. Never read the instrumental o
 6. Train initial matched baselines; log seeds, parameter counts, optimizer/configuration, updates, checkpoint and source manifest. Measure error on detuned and preservation regions separately.
 7. Check how strongly the augmentation-only baseline reacts to boundary changes. If it already ignores them, document that and retain the fair comparison.
 8. Quantify whether the model's acoustic inputs distinguish the audited 10-, 20- and 30-cent changes on approved training material. PESTO's coarse pitch response in the exploratory audit is a warning, not proof that log-mel features contain or lack the needed fine-shift information.
+
+### Build order (approved by the owner and built on 11 October)
+
+Everything below was built and tested without reviewers, because it uses constructed fixtures first. Code is in `src/bpdr_input`, tests in `tests/test_phase3.py`. All 16 new tests pass, and the 32 earlier ones still do. This is code that executes correctly on fixtures; no model has been trained to a result.
+
+| Step | File | What it contains | Checked by |
+|---|---|---|---|
+| 1 | `losses.py` | The masked mean absolute difference, the anchor and smoothness losses, and the two response losses exactly as in the proposal [S1, pp. 21-22]. Empty masks are excluded and counted. | Constructed curves with known answers: correct value and sign (`rC - rA = -e`), masks respected, gradients flow. |
+| 2 | `model.py` | The compact encoder [S1, p. 21]: four bidirectional Transformer layers, width 128, four heads, feed-forward 512, dropout 0.1, positions, padding mask, one cents value per frame. Built with 71 inputs or with 70. | Output shape, padding has no effect, parameter counts recorded for both sizes. |
+| 3 | `examples.py` | The loader. Research mode accepts a pair only through `require_training_example`. A separate engineering mode reads audited exploratory pairs from the training split, writes to its own `runs/engineering` folder and stamps every output as exploratory. Normalization is fitted on training data only. | Research mode refuses exploratory pairs; engineering outputs carry the stamp; no target reaches the inputs. |
+| 4 | `metrics.py` | Plateau correction error in cents, boundary sensitivity, alteration outside the detuned support, edit coverage. | A zero-output model fails the detuning measure; the frame-only model gives identical A/B outputs under deterministic inference. |
+| 5 | `training.py` | One command for the three conditions with the same budget: supervised warm-up, then AdamW. Saves a checkpoint and a run record with seed, configuration, parameter count, updates and input hashes. | A tiny set is fitted, saved and reloaded to the same predictions. |
+
+The research gate is never loosened to make engineering runs possible. With the audit decision deferred, engineering data is the existing one-singer pilot: six shifts and 18 pairs. That is enough to debug learning and not enough to compare the three conditions.
+
+Checked on the real pilot pairs: research mode refuses them, engineering mode loads all 18, and the two models have 802,433 and 802,305 parameters. A 30-update smoke run of the training command completed on the CPU and on the Intel GPU and saved a stamped run record. After 30 updates the model still outputs almost zero, as expected; the smoke run shows the command works, not that anything was learned. Run it with `python -m bpdr_input.training --pairs-run <run> --condition bpdr --mode engineering`; the command is not yet a console script, because adding one means regenerating the lock file.
 
 ### Outputs and exit gate
 
@@ -184,7 +208,7 @@ Produce two reloadable baseline checkpoints, rules/reference outputs, an execute
 2. Verify loss sign, time alignment, region masks, gradients and empty-mask exclusions using constructed curves. A perfectly fitted supervised target already satisfies the desired response relations; the additional objective must earn its value on unseen material.
 3. Train BPDR under the agreed budget and compare development behavior with both learned controls. Use development data for weights, checkpoint selection and thresholds.
 4. Build a controller that checks plausible boundary-view agreement, reliable voicing, protected transitions, correction magnitude and affected fraction. Withhold unsupported edits; do not silently clip oversized proposals. The proposal compares the main prediction with up to two other reasonable boundary versions [S1, p. 26]. GAME's alternative segmentations from P2J can supply those versions offline; a runtime source must first be measured against the 30-second target, because GAME on CPU is slow.
-5. Render eligible relative cents corrections into a separate waveform. Retain duration, rests and the agreed timeline; log changed and crossfade intervals.
+5. Render eligible relative cents corrections into a separate waveform. Retain duration, rests and the agreed timeline; log changed and crossfade intervals. The proposal renders repairs with Praat through Parselmouth [S1, p. 26]; the current librosa renderer only generates interventions. Build the repair renderer with Parselmouth, or record the deviation and its reason.
 6. Reanalyze and verify the candidate. Roll back a failed candidate to a previously checked usable waveform; if none exists, return a reasoned non-accepted status.
 7. Add original/prepared playback, pitch/correction overlays, edit logs and clear reason codes. Keep optional denoising disabled until these core paths pass; track it as remaining proposal work.
 
