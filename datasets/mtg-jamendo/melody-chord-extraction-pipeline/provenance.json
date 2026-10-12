@@ -41,5 +41,23 @@
     "ensemble": "five bundled pretrained networks",
     "vocabularies": ["submission", "full"],
     "label_format": "original LV-Chordia/JAMS chord label; no quality simplification"
+  },
+  "key": {
+    "version": 1,
+    "selected_key_input": "combined melody notes only",
+    "method": "Krumhansl-Kessler major/minor profiles, capped note-duration pitch classes, small phrase-ending tonic tie-break",
+    "source": "https://onlinelibrary.wiley.com/doi/full/10.1080/03640210701864089"
+  },
+  "key_comparison": {
+    "version": 1,
+    "method": "independent submission-chord-tone profile",
+    "usage": "diagnostic only; never selected for normalization"
+  },
+  "roman": {
+    "version": 1,
+    "basis": "Perera proposal section 3.7.1: chromatic relative root plus coarse family, mode kept separately",
+    "families": ["MAJ", "MIN", "DOM7", "DIM", "HDIM7", "DIM7", "AUG", "SUS2", "SUS4"],
+    "input_key": "key.json melody_key.selected only",
+    "unsupported_labels": "preserved with null basic_label and explicit mapping_status"
   }
 }

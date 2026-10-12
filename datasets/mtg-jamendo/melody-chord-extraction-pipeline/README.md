@@ -1,13 +1,17 @@
 # Full-song melody + chord extraction
 
-One command extracts **five separate results for each complete local MP3** in
+One command extracts **nine resumable results for each complete local MP3** in
 `../vocal-tagged-audio/`, in this order:
 
 1. GAME vocal notes, from a separated vocal stem, shifted up 12 semitones.
 2. SheetSage2 instrumental melody from the original MP3.
 3. A monophonic combined melody: GAME first; SheetSage2 only in long vocal gaps.
-4. LV-Chordia chords decoded with its `submission` vocabulary.
-5. The same LV-Chordia model decoded with its `full` vocabulary.
+4. A key estimate from the combined **melody only**.
+5. LV-Chordia chords decoded with its `submission` vocabulary.
+6. The same LV-Chordia model decoded with its `full` vocabulary.
+7. An independent submission-chord key estimate and disagreement diagnostic.
+8. Key-relative basic chords from the submission labels.
+9. Key-relative basic chords from the full labels.
 
 This folder contains its own extraction code and results. It **reuses the
 existing pinned model files and GAME/SheetSage2 environments** in
@@ -32,8 +36,9 @@ runner looks for them in `../melody-extraction/`; set `MELODY_MODEL_ASSETS` to
 another directory with the same layout if necessary. `ffmpeg` and `ffprobe`
 must be on `PATH`. The current vocal separator uses Apple Silicon/MLX, so this
 specific setup needs a compatible Mac. The SheetSage2 worker remains loaded
-across songs in one run, but the runner still finishes and records all five
-stages for one song before starting the next.
+across songs in one run, but the runner still finishes and records all nine
+stages for one song before starting the next. Already saved melody and chord
+stages are reused when adding key and basic chord results.
 
 ## Run, stop, resume
 
@@ -69,6 +74,11 @@ melody-chord-extraction-pipeline/
       chords/
         submission.json/.csv
         full.json/.csv
+      key.json               key estimated only from combined melody
+      key_comparison.json    chord diagnostic and review flags
+      roman/
+        submission.json/.csv
+        full.json/.csv
   work/                     temporary stems and logs
 ```
 
@@ -86,6 +96,31 @@ Chord JSON and CSV save full-song segment times and the **exact** LV-Chordia
 label, plus parsed root, quality, and bass degree. `N` means no chord.
 `submission` and `full` use the same pretrained model but different allowed
 label vocabularies; full's rare labels are not automatically more accurate.
+`key.json` ranks 24 major/minor keys using duration-weighted melodic pitch
+classes and a small phrase-ending tonic tie-break. It records the top three
+candidates, score gap, and a qualitative confidence. These confidence labels
+measure score separation, not calibrated correctness. This file is produced
+even if chord extraction fails. `key_comparison.json` estimates the key from
+submission chords as a **diagnostic only**. `key_agreement=disagree` and
+low-confidence estimates set review flags in the manifest and comparison
+file; the chord estimate never replaces the melody key and
+is never used to make Roman labels. Both estimates are predictions, and a
+low-confidence key may be wrong. The estimator uses C#/Db-equivalent pitch
+classes and writes one canonical spelling for each; it does not infer notation
+or detect modulations.
+
+The `roman/` files preserve the original chord label and times, and add the
+root's chromatic distance from the **melody-derived tonic**, a Roman root,
+and the proposal's basic family: `MAJ`, `MIN`, `DOM7`, `DIM`, `HDIM7`, `DIM7`,
+`AUG`, `SUS2`, or `SUS4`. `N` stays separate. For example, in C major,
+`G:9` becomes `V:DOM7` and `A:min7` becomes `vi:MIN`; bass inversions and
+extensions remain available in the original chord file. These labels encode
+relative root and coarse chord structure, not a full functional analysis.
+Power chords, rootless labels, and other unsupported qualities remain marked
+`unsupported_quality` with no invented basic label. If melodic evidence is
+insufficient, Roman labels are marked `key_unavailable` instead of using the
+diagnostic chord key. Original chords are never altered.
+
 No synthetic chord MIDI is saved because a chord symbol does not determine a
 unique voicing. None of these outputs is a human-verified annotation.
 
@@ -93,6 +128,8 @@ Each stage writes its own files atomically, with JSON as the final commit
 marker. Resume checks the output triplet/pair, content, and source MP3 size and
 modification time; missing or damaged stages are recomputed. The `history.log`
 and manifest record failures without discarding completed stages.
+Derived key, comparison, and Roman outputs record hashes of their input JSONs
+so a changed upstream result invalidates and rebuilds only its dependents.
 
 ## Listen while it runs
 
@@ -107,4 +144,5 @@ It lists a song as soon as one stage is saved and refreshes every 10 seconds.
 Select GAME, SheetSage2, or combined MIDI melody; listen to the original MP3
 and the synthesized melody with separate controls; and follow the timed
 `submission` or `full` chord labels. Click a chord row to seek. The page also
+shows the melody-derived key, chord diagnostic and relative basic label, and
 links to each available MIDI/JSON/CSV file.

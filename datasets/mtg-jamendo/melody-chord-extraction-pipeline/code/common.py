@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import io
 import json
 import math
@@ -17,7 +18,8 @@ OUTPUTS = ROOT / "outputs"
 WORK = ROOT / "work"
 MELODIES = ("game_vocal", "sheetsage2_instrumental", "combined")
 CHORDS = ("submission", "full")
-STAGES = (*MELODIES, *CHORDS)
+ROMAN = ("roman_submission", "roman_full")
+STAGES = (*MELODIES, "key", *CHORDS, "key_comparison", *ROMAN)
 CSV_COLUMNS = ("track_id", "onset_sec", "offset_sec", "midi_pitch",
                "midi_pitch_rounded", "velocity", "source", "model_midi_pitch")
 
@@ -80,6 +82,21 @@ def chord_paths(vocabulary: str, track: dict[str, str]) -> dict[str, Path]:
     return {suffix: directory / f"{vocabulary}.{suffix}" for suffix in ("json", "csv")}
 
 
+def key_path(track: dict[str, str]) -> Path:
+    return track_dir(track) / "key.json"
+
+
+def comparison_path(track: dict[str, str]) -> Path:
+    return track_dir(track) / "key_comparison.json"
+
+
+def roman_paths(vocabulary: str, track: dict[str, str]) -> dict[str, Path]:
+    if vocabulary not in CHORDS:
+        raise ValueError(vocabulary)
+    directory = track_dir(track) / "roman"
+    return {suffix: directory / f"{vocabulary}.{suffix}" for suffix in ("json", "csv")}
+
+
 def atomic_text(path: Path, content: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
@@ -88,6 +105,10 @@ def atomic_text(path: Path, content: str) -> None:
         os.replace(temporary, path)
     finally:
         temporary.unlink(missing_ok=True)
+
+
+def sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def valid_notes(notes: list[dict], duration_sec: float) -> bool:

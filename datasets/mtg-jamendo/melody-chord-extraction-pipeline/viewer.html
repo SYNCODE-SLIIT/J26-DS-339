@@ -45,6 +45,8 @@ td:nth-child(2){font-weight:700}
     <option value="sheetsage2_instrumental">SheetSage2 instrumental</option>
   </select>
   <p id="detail" class="small"></p>
+  <p id="keyDetail" class="small">Key estimate pending.</p>
+  <p><a id="keyJson">Melody key JSON</a><a id="comparisonJson">Key comparison JSON</a></p>
   <label for="original">Original full song</label>
   <audio id="original" controls preload="metadata"></audio>
   <label for="midiSeek">Extracted MIDI melody</label>
@@ -73,7 +75,8 @@ td:nth-child(2){font-weight:700}
   </select>
   <p id="chordDetail" class="small">No chord result yet.</p>
   <p>Chord files: <a id="chordJson">JSON</a><a id="chordCsv">CSV</a></p>
-  <div class="chord-wrap"><table><thead><tr><th>Start</th><th>Predicted chord</th><th>End</th></tr></thead><tbody id="chordRows"></tbody></table></div>
+  <p>Key-relative plan: <a id="romanJson">JSON</a><a id="romanCsv">CSV</a></p>
+  <div class="chord-wrap"><table><thead><tr><th>Start</th><th>Predicted chord</th><th>Basic plan</th><th>End</th></tr></thead><tbody id="chordRows"></tbody></table></div>
 </main>
 <script>
 const $ = id => document.getElementById(id);
@@ -145,6 +148,15 @@ async function loadSelection() {
   if ($('method').selectedOptions[0]?.disabled) $('method').value = methods.find(method => song.melody?.[method]) || '';
   const melody = song.melody?.[$('method').value];
   $('detail').textContent = `Track ${song.mtg_track_id} · artist ${song.artist_id || 'unknown'} · ${song.split_0 || 'no split-0 label'} · ${Math.round(song.duration_sec)} seconds · ${song.status}${melody ? ` · ${melody.note_count} ${$('method').value} notes` : ' · melody pending'}`;
+  const key = song.key;
+  const comparison = song.key_comparison;
+  const melodyKey = key?.melody;
+  const chordKey = comparison?.chord_diagnostic;
+  $('keyDetail').textContent = key ?
+    `Melody key: ${melodyKey ? `${melodyKey.tonic} ${melodyKey.mode} (${melodyKey.confidence} confidence)` : 'insufficient evidence'} · chord-only diagnostic: ${comparison ? (chordKey ? `${chordKey.tonic} ${chordKey.mode}` : 'insufficient evidence') : 'pending'}${comparison ? ` · ${comparison.agreement}` : ''}${comparison?.review_reasons.length ? ` — review: ${comparison.review_reasons.join(', ')}` : ''}. Roman labels always use the melody key.` :
+    'Key estimate pending.';
+  if (key) $('keyJson').href = key.json; else $('keyJson').removeAttribute('href');
+  if (comparison) $('comparisonJson').href = comparison.json; else $('comparisonJson').removeAttribute('href');
   for (const [id, key] of [['midi','midi'],['json','json'],['csv','csv']]) {
     if (melody) $(id).href = melody[key]; else $(id).removeAttribute('href');
   }
@@ -162,26 +174,31 @@ async function loadChords(song) {
   for (const option of $('chordMethod').options) option.disabled = !song.chords?.[option.value];
   if ($('chordMethod').selectedOptions[0]?.disabled) $('chordMethod').value = Object.keys(song.chords || {})[0] || '';
   const selected = song.chords?.[$('chordMethod').value];
+  const roman = song.roman?.[$('chordMethod').value];
   if (!selected) {
     $('chordDetail').textContent = 'Chord extraction pending.';
     $('chordJson').removeAttribute('href'); $('chordCsv').removeAttribute('href');
+    $('romanJson').removeAttribute('href'); $('romanCsv').removeAttribute('href');
     return;
   }
-  $('chordDetail').textContent = `${selected.segment_count} chord segments${selected.quality_flags.length ? ` · review: ${selected.quality_flags.join(', ')}` : ''}. Click a row to seek the original and MIDI.`;
+  $('chordDetail').textContent = `${selected.segment_count} chord segments${selected.quality_flags.length ? ` · review: ${selected.quality_flags.join(', ')}` : ''}${roman ? ` · ${roman.mapping_counts.mapped} basic labels mapped` : ' · basic labels pending'}. Click a row to seek the original and MIDI.`;
   $('chordJson').href = selected.json; $('chordCsv').href = selected.csv;
+  if (roman) { $('romanJson').href = roman.json; $('romanCsv').href = roman.csv; }
+  else { $('romanJson').removeAttribute('href'); $('romanCsv').removeAttribute('href'); }
   try {
-    const response = await fetch(selected.json);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const data = await response.json();
+    const responses = await Promise.all([fetch(selected.json), roman ? fetch(roman.json) : Promise.resolve(null)]);
+    if (!responses[0].ok || (responses[1] && !responses[1].ok)) throw new Error('Could not load chord or basic labels');
+    const [data, romanData] = await Promise.all([responses[0].json(), responses[1] ? responses[1].json() : null]);
     if (token !== chordToken) return;
     chords = data.events;
     const rows = document.createDocumentFragment();
-    chords.forEach(event => {
+    chords.forEach((event, index) => {
       const row = document.createElement('tr');
       const start = document.createElement('td'); start.textContent = preciseTime(event.start_sec);
       const label = document.createElement('td'); label.textContent = event.chord_label;
+      const basic = document.createElement('td'); basic.textContent = romanData?.events[index]?.basic_label || (romanData?.events[index]?.mapping_status || '—');
       const end = document.createElement('td'); end.textContent = preciseTime(event.end_sec);
-      row.append(start, label, end);
+      row.append(start, label, basic, end);
       row.onclick = () => seekAll(event.start_sec);
       rows.append(row);
     });

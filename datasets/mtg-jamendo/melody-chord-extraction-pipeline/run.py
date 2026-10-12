@@ -1,4 +1,4 @@
-"""Extract five symbolic results per full song, save each stage, and resume safely."""
+"""Extract melody, chords, melody-derived key, and relative chord plans per song."""
 
 from __future__ import annotations
 
@@ -17,9 +17,12 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent / "code"))
 from chords import completed as chord_complete, save as save_chords, verify_model  # noqa: E402
 from combine import combine  # noqa: E402
+from comparison import completed as comparison_complete, save as save_comparison  # noqa: E402
 from common import (ASSETS, CHORDS, DATASET, MELODIES, ROOT, STAGES, WORK, atomic_text,
                     inventory, melody_complete)  # noqa: E402
+from key import completed as key_complete, save as save_key  # noqa: E402
 from melody import GameExtractor, verify_melody_assets  # noqa: E402
+from roman import completed as roman_complete, save as save_roman  # noqa: E402
 
 
 MANIFEST = ROOT / "manifest.csv"
@@ -30,6 +33,10 @@ MANIFEST_COLUMNS = ("track_id", "mtg_track_id", "artist_id", "album_id", "annota
                     "split_0", "split_1", "split_2", "split_3", "split_4", "tags",
                     "status", "game_notes", "sheetsage_notes", "combined_notes",
                     "submission_chords", "full_chords", "submission_flags", "full_flags",
+                    "key_tonic", "key_mode", "key_confidence", "chord_key_tonic",
+                    "chord_key_mode", "key_agreement", "key_review_flag", "key_review_reasons",
+                    "roman_submission_mapped",
+                    "roman_full_mapped", "roman_submission_unmapped", "roman_full_unmapped",
                     "error_stage", "error", "updated_utc")
 
 
@@ -65,10 +72,24 @@ def scan_existing(tracks: list[dict[str, str]]) -> dict[str, dict[str, dict]]:
             result = melody_complete(method, track)
             if result is not None:
                 stages[method] = result
+        if "combined" in stages:
+            result = key_complete(track)
+            if result is not None:
+                stages["key"] = result
         for vocabulary in CHORDS:
             result = chord_complete(track, vocabulary)
             if result is not None:
                 stages[vocabulary] = result
+        if "key" in stages and "submission" in stages:
+            result = comparison_complete(track)
+            if result is not None:
+                stages["key_comparison"] = result
+        if "key" in stages:
+            for vocabulary in CHORDS:
+                if vocabulary in stages:
+                    result = roman_complete(track, vocabulary)
+                    if result is not None:
+                        stages[f"roman_{vocabulary}"] = result
         if stages:
             results[track["track_id"]] = stages
     return results
@@ -91,6 +112,12 @@ def publish(tracks: list[dict[str, str]], results: dict[str, dict[str, dict]],
                         for vocab in CHORDS}
         flags = {vocab: ";".join(stages[vocab]["quality_flags"]) if vocab in stages else ""
                  for vocab in CHORDS}
+        key = stages.get("key", {})
+        comparison = stages.get("key_comparison", {})
+        melodic_key = key.get("melody_key", {}).get("selected") or {}
+        chord_key = comparison.get("chord_key", {}).get("selected") or {}
+        roman_counts = {vocab: stages.get(f"roman_{vocab}", {}).get("mapping_counts", {})
+                        for vocab in CHORDS}
         duration = durations.get(track_id, next((float(result["duration_sec"])
                                                for result in stages.values()), None))
         rows.append({**track, "duration_audio_sec": duration if duration is not None else "",
@@ -100,6 +127,20 @@ def publish(tracks: list[dict[str, str]], results: dict[str, dict[str, dict]],
                      "submission_chords": chord_counts["submission"],
                      "full_chords": chord_counts["full"],
                      "submission_flags": flags["submission"], "full_flags": flags["full"],
+                     "key_tonic": melodic_key.get("tonic", ""),
+                     "key_mode": melodic_key.get("mode", ""),
+                     "key_confidence": melodic_key.get("confidence", ""),
+                     "chord_key_tonic": chord_key.get("tonic", ""),
+                     "chord_key_mode": chord_key.get("mode", ""),
+                     "key_agreement": comparison.get("agreement", ""),
+                     "key_review_flag": comparison.get("review_flag", ""),
+                     "key_review_reasons": ";".join(comparison.get("review_reasons", [])),
+                     "roman_submission_mapped": roman_counts["submission"].get("mapped", ""),
+                     "roman_full_mapped": roman_counts["full"].get("mapped", ""),
+                     "roman_submission_unmapped": sum(value for status, value in roman_counts["submission"].items()
+                                                       if status not in ("mapped", "no_chord")) if roman_counts["submission"] else "",
+                     "roman_full_unmapped": sum(value for status, value in roman_counts["full"].items()
+                                                 if status not in ("mapped", "no_chord")) if roman_counts["full"] else "",
                      "error_stage": error_stage, "error": error,
                      "updated_utc": now if status != "pending" else ""})
         if stages:
@@ -121,6 +162,18 @@ def publish(tracks: list[dict[str, str]], results: dict[str, dict[str, dict]],
                     "segment_count": chord_counts[vocab],
                     "quality_flags": stages[vocab]["quality_flags"],
                 } for vocab in CHORDS if vocab in stages},
+                "key": {"json": f"{folder}/key.json", "melody": melodic_key}
+                       if "key" in stages else None,
+                "key_comparison": {"json": f"{folder}/key_comparison.json",
+                                   "chord_diagnostic": chord_key,
+                                   "agreement": comparison.get("agreement"),
+                                   "review_reasons": comparison.get("review_reasons", [])}
+                                  if "key_comparison" in stages else None,
+                "roman": {vocab: {
+                    "json": f"{folder}/roman/{vocab}.json",
+                    "csv": f"{folder}/roman/{vocab}.csv",
+                    "mapping_counts": roman_counts[vocab],
+                } for vocab in CHORDS if f"roman_{vocab}" in stages},
             })
     buffer = io.StringIO(newline="")
     writer = csv.DictWriter(buffer, fieldnames=MANIFEST_COLUMNS, extrasaction="ignore")
@@ -273,7 +326,8 @@ def main() -> int:
                         stages[stage] = result
                         if errors.get(track_id, ("", ""))[0] == stage:
                             errors.pop(track_id, None)
-                        count = len(result["events"] if stage in CHORDS else result["notes"])
+                        count = (len(result["events"]) if stage in CHORDS or stage.startswith("roman_")
+                                 else 1 if stage in ("key", "key_comparison") else len(result["notes"]))
                         log(track_id, stage, f"complete count={count}")
                         print(f"  {stage}: {count}", flush=True)
                     except KeyboardInterrupt:
@@ -297,14 +351,23 @@ def main() -> int:
                             raise RuntimeError("Combined melody files failed validation")
                         return result
                     attempt("combined", combined_result)
+                if "combined" in stages:
+                    attempt("key", lambda: save_key(track))
                 for vocabulary in CHORDS:
                     attempt(vocabulary, lambda vocab=vocabulary: save_chords(
                         track, vocab, duration,
                         chord_recognition(str(DATASET / track["source_mp3"]), chord_dict_name=vocab)))
+                if "key" in stages and "submission" in stages:
+                    attempt("key_comparison", lambda: save_comparison(track))
+                if "key" in stages:
+                    for vocabulary in CHORDS:
+                        if vocabulary in stages:
+                            attempt(f"roman_{vocabulary}",
+                                    lambda vocab=vocabulary: save_roman(track, vocab))
                 completed = len(stages) == len(STAGES)
                 log(track_id, "song_end", "complete" if completed else "partial_or_failed")
-                print(f"  {'complete' if completed else 'incomplete'}; saved {len(stages)}/5 stages", flush=True)
-            log("*", "run_end", f"selected={len(selected)} complete={sum(len(results[t['track_id']]) == 5 for t in selected)}")
+                print(f"  {'complete' if completed else 'incomplete'}; saved {len(stages)}/{len(STAGES)} stages", flush=True)
+            log("*", "run_end", f"selected={len(selected)} complete={sum(len(results[t['track_id']]) == len(STAGES) for t in selected)}")
         except KeyboardInterrupt:
             log("*", "interrupted", "Ctrl-C; rerun the same command")
             print("Stopped. Saved stages remain available for resume.", flush=True)
