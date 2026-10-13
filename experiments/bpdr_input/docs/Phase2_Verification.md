@@ -1,5 +1,7 @@
 # Phase 2 implementation and evidence — 30 September 2026
 
+> Historical verification snapshot. Use [the current evidence tracker](PP1_Evidence_Tracker.md) for the active relocated data/pair/notebook paths and today's status. Older hashed manifests and audit outcomes below remain provenance, not a second current plan.
+
 **Engineering implemented:** source/annotation validation, fixed singer partitions, mapped crops, pending human review, identity/local-detuning renderer, split/merge/jitter metadata, audited A/B/C/D inputs and executable notebooks. **Research gate remains open:** actual reviewer decisions are not yet available, so training-ready examples remain zero.
 
 **30 September recheck:** the existing manifest and review sheet were inspected again. All 114 decisions remain `pending`; the empty `reviewed` run does not signify human approval. The 27 September v0.1/v0.2 pilots remain saved as historical engineering evidence. A fresh v0.3 exploratory run and notebook execution are recorded below; neither is a newly collected human review or learned research result.

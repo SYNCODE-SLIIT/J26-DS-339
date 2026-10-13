@@ -1,281 +1,100 @@
-# PP1 master plan: BPDR and team integration
+# BPDR master plan
 
-**Project:** J26-DS-339  
-**Individual:** Liyanage L. N. P., IT23141506  
-**Planning date:** 27 September 2026. **Dataset and schedule update:** 11 October 2026  
-**User-supplied PP1 deadline:** 25 October 2026  
-**Implementation location:** `experiments/bpdr_input` in the J26-DS-339 repository  
-**Reference dataset:** `data/vocadito`, local only  
-**Second data source, added 11 October:** `data/mtg-jamendo`, local only, with the team's melody-extraction pipeline
+**Current baseline: 12 October 2026. Owner: Liyanage L. N. P., IT23141506.** This is the authoritative scope and research plan. The [execution plan](PP1_Phase_Execution_Plan.md) gives tasks; the [evidence tracker](PP1_Evidence_Tracker.md) records actual results. Earlier versions are recoverable in `private/cleanup_2026-10-12/recovery.zip`.
 
-## 1. What PP1 must demonstrate
+## 1. Research purpose and system boundary
 
-Build a working input-validation and bounded-repair component, accompanied by a small reproducible experiment that makes BPDR's research question visible. The examiner should be able to identify the recording problem, see the proposed mechanism execute, inspect comparative evidence, and distinguish completed work from remaining research.
+The project turns a short sung/hummed idea into genre-conditioned harmony while preserving musical identity:
 
-This is a progress-presentation plan, not a requirement to finish the complete research project by 25 October. The critical PP1 deliverables are functioning core paths, an implemented research mechanism, preliminary independent evaluation, credible progress records and an understandable demonstration.
+```mermaid
+flowchart LR
+    A[Short solo vocal] --> B[BPDR: validate and preserve or minimally repair]
+    B -->|Accepted WAV and status| M[Melody understanding]
+    M --> P[Relative-root and family planner]
+    P --> R[Context-aware chord refinement]
+    M --> R
+    B -->|Re-record or failure| X[Stop before generation]
+```
 
-Read this master plan with the [consolidated P0 scope, claims and draft hand-off](P0_Scope_Claims_and_Decisions.md). Then execute [the phase plan](PP1_Phase_Execution_Plan.md) in dependency order and maintain [the evidence and readiness tracker](PP1_Evidence_Tracker.md). All dates are planning targets. The supplied rubric does not specify the presentation date, slide count or speaking duration.
+BPDR owns audio integrity, assessment, conservative pitch repair, preservation, rollback and an auditable accepted-only package. Melody understanding owns notes, rests, rhythm, key, phrases and embeddings. Planning/refinement own harmony and genre conditioning. Component numbering varies across proposals; use names and owner IDs. Full source mapping and unresolved team contracts are in the [project audit](Project_Audit_2026-10-12.md).
 
-### Source precedence and dated implementation position
+The research question is whether boundary-invariance and local counter-detuning response losses, together with supervised preservation anchors, improve held-out small-detuning repair without damaging acceptable singing, relative to matched augmentation-only and frame-only controls. A Transformer, a separator or a successful pipeline run is not the contribution. A model that always predicts zero does not demonstrate successful repair.
 
-The four proposal PDFs, kept since 10 October in the ignored `private/proposals` folder, define the component proposals. Their searchable text was rechecked on 27 September and matches the versions reviewed earlier. The PP1 mark sheet defines assessment expectations. The supplied BERT-APC paper informs the related-work distinction. Older unified input/harmony-critic drafts and exploratory novelty documents are background, not additional mandatory BPDR scope.
+Operating scope: one unaccompanied voice, WAV/FLAC, 0.25-20 seconds. Preserve the original, sample-time origin, internal rests, note order, tempo, expressive variation and duration. Do not infer intended notes by snapping to a scale, replace rhythm, synthesize gap-filling notes, repair heavily clipped recordings or treat multiple singers as supported. Jamendo separation is an offline data-preparation step, not a newly promised production input feature. Whistling appears in one figure but is outside the written singing/humming prototype scope unless separately validated. [S1 pp11,23-28]
 
-The proposals, BERT-APC and the rubric are in the ignored `private/` folder and vocadito is in `data/vocadito`; the earlier `Input Validation` folder was moved into the component on 10 October. Development takes place only in the supplied repository at `experiments/bpdr_input`. The 27 September starting baseline was a Phase 0 package, draft hand-off contracts and a dataset-audit command. **As inspected on 30 September**, Phase 1 technical audio acceptance, timing-preserving conversion, frozen acoustic analysis, package checks and failure paths have execution evidence. Phase 2 source/annotation validation, singer partitions, crop provenance, review sheets and an exploratory A/B/C/D intervention pilot also execute. See [Phase 1](Phase1_Verification.md), [Phase 2](Phase2_Verification.md) and the [current evidence tracker](PP1_Evidence_Tracker.md). Human reviews, training-ready examples, learned controls, BPDR repair, comparative accuracy and live team integration remain unverified. Existing workspace design documents and the residual-event toy experiment do not establish a trained BPDR component. This plan does not infer completion from the earlier September schedule.
+## 2. Verified foundation and remaining work
 
-The dataset contains 40 mono 44.1 kHz WAVs, 40 F0 references, two note annotations per recording and metadata with 29 singer IDs. Nineteen original recordings exceed 20 seconds; Phase 2 makes mapped shorter crops instead of silently truncating them. The Phase 2 audit read all source/annotation files, excluded two sources with out-of-bounds note ends and produced 57 crops from 38 sources. Its fixed singer partitions yield 30 training, 14 development, 9 PP1-evaluation and 4 final-holdout crops. These are provenance/engineering findings, not reviewer approval, general reference accuracy or recorded redistribution permission.
-
-### Second data source added on 11 October
-
-The team now has 1,604 vocal-tagged MTG-Jamendo tracks and a melody-extraction pipeline that predicts notes from them: GAME on a separated vocal stem, SheetSage2 on the original mix, and a combined melody. The [extraction check](Jamendo_Extraction_Verification.md) records what was observed. The tracks are full accompanied songs of 30 to 1,703 seconds with no F0, note or singer annotation. They cannot replace vocadito: the Phase 2 reference checks cannot run on them and Phase 1 would stop every one for duration.
-
-The proposal's design therefore stands. vocadito stays the reference and evaluation collection, and participant recordings stay the main-study source [S1, pp. 16-17]. The new source is a supplement in three roles, each behind its own gate:
-
-| Role | What it adds | What it needs | Position after the 11 October checks |
-|---|---|---|---|
-| Fixed downstream extractor | The same frozen GAME before and after preparation, for the proposal's extraction comparison and for D6 | GAME on BPDR's own solo audio; no separation | P5. Gate J2 passed for a pilot; the melody-extraction owner's confirmation is open. |
-| Natural boundary condition | Model-estimated boundaries, and alternative segmentations of one unchanged waveform | GAME on vocadito crops; no separation | P5. Gate J2 passed for a pilot. |
-| More independent voices | Artist-separated vocal stems for training and development | Separation, crops of at most 20 seconds, a reliability mask without human references, the shift audit and two-reviewer approval | Not supported yet and off the critical path: there is no human reference. Gate J3 is open; one normal song gave 40 to 50% reliable frames against 76% for vocadito, and the laptop's GPU can now produce a proper sample. |
-
-Only the `game_vocal` output concerns BPDR, read through `model_midi_pitch`: the published pitch is one octave higher and scores zero against vocadito's annotated pitch. The instrumental and combined melodies serve the harmony components. Every pipeline output is a prediction and is called a pseudo-label wherever BPDR uses it.
-
-On 11 October the complete pipeline ran on the development machine for a two-song sample, and GAME was scored against vocadito's two annotators on 28 recordings of training and development singers. GAME runs at about real time there. The vocal separator needs about 30 seconds of computing per second of music on the CPU and about 4 on the laptop's Intel Arc GPU, so a sample of tens of songs is practical locally and the full set is not. Adding this source does not move the critical path: the learned controls and BPDR still depend on reviewed anchors.
-
-### Intervention coverage found on 11 October
-
-The same checks exposed a limit in the existing vocadito plan. The v0.3 renderer needs one reference-reliable span of at least 0.86 seconds, which means a steady note about 1.06 seconds long. Only 3 of the 30 vocadito training crops offer one, and all three come from a single singer. The planned multi-singer training subset therefore cannot be generated under the current policy, whatever the reviewers decide. Section 8 lists the corrective choice; the [extraction check](Jamendo_Extraction_Verification.md) has the numbers.
-
-## 2. How the marks work
-
-The supplied one-page rubric gives PP1 a **15% contribution to the course**. The five category weights total 100% of the PP1 mark. Subcriterion weights below are calculated by multiplying their category weight by their internal share. [R, p. 1]
-
-| Rubric area | PP1 weight | Evidence to prepare |
-|---|---:|---|
-| LO1: problem and proof of concept | **10%** | Show the failure/uncertainty the component addresses, then execute the proposed solution. |
-| LO2: applied specialized knowledge and technologies | **25%** | Explain acoustic analysis, data design, learning objective, fair comparisons and actual implementation decisions. |
-| LO3: implementation | **40%** | Demonstrate design, substantial completed work, best practices, functional requirements and risk controls. |
-| LO4: communication | **15%** | Clear presentation, effective visual evidence, time management and confident evidence-based Q&A. |
-| LO5: commercialization potential | **10%** | Supported user benefits, credible intended users, alternatives and feasible cost assumptions. |
-
-| Subcriterion | Effective points out of 100 | Concrete BPDR evidence |
-|---|---:|---|
-| Problem definition | 3 | One real vocal example; distinguish unchanged audio with wrong boundary metadata from locally detuned audio. |
-| Proof of concept | 7 | Actual correction predictions, rendered output, unchanged/failure paths and preliminary comparison. |
-| Specialized knowledge pillars | 7.5 | Applied MIR/audio processing, supervised learning, controlled interventions and statistical evaluation. |
-| Technology application and understanding | 17.5 | Explain feature units/alignment, frozen analyzer, Transformer, loss implementation, masking, controller and renderer using saved runs. |
-| Design excellence | 8 | Implemented modular processing, immutable originals, explicit states, rollback and accepted-only hand-off. |
-| Completion | 12 | Dated work-package progress with accepted deliverables and truthful corrective actions. |
-| Standards/best practices | 8 | Source-separated splits, versioned contracts/configurations, reproducible runs and meaningful tests. |
-| User/functional requirements | 8 | Proposal FR1-FR7 mapped to working paths and realistic acceptance evidence. |
-| Risk mitigation | 4 | Data, rendering, scientific and integration risks with actual actions or an executable mitigation plan. |
-| Communication and Q&A | 9 | Problem-to-mechanism-to-result narrative; explain limitations and comparisons. |
-| Presentation skills | 6 | Readable plots, labelled audio, practiced transitions and timed rehearsal. |
-| Commercial potential | 10 | Observed user/workflow evidence, achievable benefits and measured cost/latency; planned validation is labelled remaining work. |
-| **Total** | **100** | Evidence should support each area; a screenshot alone is insufficient. |
-
-The published bands are Excellent 75-100, Good 60-74, Average 40-59 and Below Average 0-39. A PP1 mark of 80 would contribute 12 percentage points to the course: `80 x 0.15`.
-
-### The completion requirement
-
-The Excellent completion descriptor refers to satisfactory work of approximately 50% **where applicable**, with no identifiable delay against the project plan. It does not provide an official percentage formula or mean that every feature must be half complete. The Good descriptor allows minor delays when corrective actions are identified and being executed.
-
-Maintain the proposal's original work breakdown and a separately dated PP1 milestone plan. Do not silently remove overdue work or count slides, downloads, generated variants or unrelated older components as implemented research. If reporting a completion percentage, show its denominator, weighting method, accepted deliverables, exclusions and snapshot date. Get the baseline interpretation reviewed with the supervisor.
-
-The rubric has **LO1**, not a separately defined Q1 requirement. If "Q1" means the gap/proof-of-concept area, use the LO1 evidence above. If it means Q1-ranked publications, this mark sheet does not impose that requirement. It does explicitly assess Q&A under communication.
-
-## 3. Make the problem, gap and contribution distinguishable
-
-| Layer | Proposal-faithful statement | What the examiner sees |
+| Area | Present evidence | Remaining gate |
 |---|---|---|
-| User problem | A short solo recording may carry a useful melody despite small pitch errors or uncertain note transitions. Preparation must preserve the performed musical idea. | Original playback, measured pitch and one clear affected interval. |
-| Technical problem | A false split or merge changes provisional note-boundary information without changing the audio. A repair model can react to that representation error. | The same waveform and checksum under nominal and corrupted boundary tracks. Show any measured change in the chosen baseline's correction. |
-| Bounded research gap | The reviewed evidence does not establish whether minimal repair can resist plausible split/merge corruption while retaining a correct response to small local detuning and preserving acceptable input. | Paired boundary-only and local-detuning cases, evaluated together. |
-| Proposed contribution | Time-aligned correction-response training combines boundary invariance, local counter-detuning and supervised preservation anchors. | Four aligned views, implemented losses and saved predictions from the trained model. |
-| Evidence of advantage | The additional objective must improve held-out repair while meeting a predefined preservation margin at comparable acceptance coverage, relative to same-data augmentation-only and matched frame-only controls. | A preliminary source-separated result table including uncertainty, failures and coverage. |
+| Technical audio path | Original retention, channel handling, resampling, frozen acoustics, checked export and failure paths | Musical suitability and repair permission remain unvalidated |
+| Reference laboratory | 40 sources, 29 singers, 57 mapped crops; 114 pending review rows | Actual independent reviews and approved intervals |
+| Interventions | Six audited shifts/18 variants of one phrase from one singer | Broader independent-source coverage; variants are not new performances |
+| Learned implementation | Encoder, losses, loader, metrics, recorded engineering fits | Development selection, held-out study, no-change endpoint and uncertainty |
+| Extractor compatibility | GAME pilot on 28 Vocadito recordings; accepted-audio check on 17 crops | Melody-owner agreement and repeat checks after real repair |
+| Jamendo | 1,604 local tracks, three retained stems and limited screening | Common builder, representative sample, reviewed anchors and J3/J4 |
+| Delivered repair | Not implemented | Controller, framewise renderer, remeasurement and rollback |
 
-BPDR's novelty is a proposed **training formulation and its measured effect**. The Transformer, continuous pitch correction, audio libraries and general consistency learning are supporting established methods. A functioning pipeline demonstrates implementation; an advantage needs fair comparative evidence. [S1, pp. 11-22]
+Use the current tracker for run IDs and regression results. Existing training metrics are measured on training pairs; they are not accuracy on independent data. No trained checkpoint currently establishes BPDR's research benefit.
 
-### Related-work distinction that can be defended
+## 3. Two datasets, two distinct sources of evidence
 
-The supplied BERT-APC paper already describes segmentation-dependent correction and tests displacement of existing boundaries. Its Section IV-H and Table VIII concern boundary shifts, including modest degradation at small shifts; they do not report the explicit insertion/deletion split/merge intervention used in this BPDR proposal. Present that specific distinction rather than saying prior methods ignore segmentation uncertainty. Its published scores concern different data and tasks and must not be compared directly with BPDR's pilot scores. [B, pp. 3, 12-13]
-
-BERT-APC is related-work evidence, not an extra mandatory trained baseline: the submitted BPDR proposal retains three trainable conditions. Do not add older drafts' per-loss ablations or extra models to the PP1 critical path. [S1, pp. 17-18]
-
-### What would fail to demonstrate the contribution
-
-- A denoising/upload application without the BPDR training objective.
-- A flat zero-correction curve described as robustness: it can be boundary-invariant while failing repair.
-- Corrections taken directly from injected ground truth and presented as model predictions.
-- Improvement against original audio only, without the same-data learned controls.
-- Tiny-set fitting or hand-picked audio presented as independent accuracy evidence.
-- A model that rejects nearly everything while reporting good error on the few remaining clips.
-- A chord-quality score from the older harmony critic presented as proof of BPDR repair.
-
-The purpose is to make the proposed contribution inspectable. If results are inconclusive or favor the simpler models, say so and show the next experiment. PP1 does not authorize inventing successful novelty results.
-
-## 4. Define the PP1 build boundary
-
-### Required target for a credible BPDR PP1 demonstration
-
-This target is our planning interpretation of the rubric, not a university-prescribed feature list:
-
-1. Original retention, decoding/integrity checks, a timing-preserving working copy and clear statuses.
-2. Frozen performed-pitch analysis, aligned acoustic features and explicitly provisional boundaries.
-3. Audited source manifest, source-group splits and verified four-view interventions.
-4. Implemented augmentation-only, frame-only and BPDR models with saved checkpoints and a first fair controlled comparison.
-5. Original and conservative-rule reference conditions, a bounded edit controller, separate rendering and rollback.
-6. Original/prepared playback, correction/pitch plots and recorded changed intervals.
-7. Accepted-only output package and a working fixed-extractor adapter or clearly identified contract stub. The candidate extractor is the frozen GAME model used by the team's pipeline. It becomes "the agreed melody extractor" of the proposal [S1, p. 11] only when gate J2 of the [extraction check](Jamendo_Extraction_Verification.md) passes and the melody-extraction owner confirms it.
-8. Preliminary independent results, requirements/progress/risk evidence and a rehearsed presentation.
-
-One equally budgeted run per learned model can establish initial PP1 execution if resources limit runs; predeclare this and disclose that seed stability is not established. Three seeds remain the proposal's preferred research setting where feasible. Do not give BPDR extra unreported search or training resources.
-
-### Remaining research after PP1
-
-Complete the main-study data collection and sample-size decision, broader natural-error evaluation, repeated runs, full blinded listening and downstream-benefit evaluation, long-term robustness and final reporting after the appropriate gates. Optional denoising is within the proposal but can remain a clearly tracked incomplete feature if core evidence needs priority.
-
-Cloud deployment, subscriptions, accounts, extra formats, whistling, long recordings, multi-singer recovery, rhythm replacement and the older post-generation critic are outside the initial BPDR demonstration. A small local interface is sufficient. Record deferred proposal tasks as remaining work rather than declaring them completed.
-
-## 5. Design the examiner's demonstration
-
-Use one labelled evidence screen with an operational view and a research-comparison view. Prediction generation reads an actual checkpoint; cached results identify their run and cannot masquerade as a fresh live calculation.
-
-| Case | Action | Evidence | Meaning |
+| Collection | Use now | Use after gates | Limits |
 |---|---|---|---|
-| D1: acceptable reference | Process a reviewed usable vocal. | Original/output playback, status, duration and empty musical-edit log. | Useful input can be accepted without unnecessary tuning. |
-| D2: boundary-only error | Keep the waveform fixed; select false split or merge metadata. | Boundary tracks and same-model correction curves; pairwise sensitivity. | Only the machine representation changed. This tests invariance. |
-| D3: controlled local detuning | Process a verified detuned version of D1. | Known evaluation-only detuning, predicted correction and independently remeasured rendered pitch. | This tests whether invariance coexists with actual corrective response. |
-| D4: expression/no-change | Process a reviewed vibrato/slide or preserved transposition example. | Correction magnitude, edit eligibility and explanation. | Expression is not automatically an error. |
-| D5: non-accepted input | Use a corrupt file or unusable recording. | Reasoned status and no accepted-audio reference; downstream stops. | Failure handling is part of the functioning solution. |
-| D6: traceable hand-off | Send an accepted package to the extractor adapter: frozen GAME when it is available, otherwise a labelled stub. | Timed output, common ID and recorded component versions. | Shows integration. A stub proves only the contract. |
+| Vocadito | Human F0/A1/A2 reference checks, controlled boundary cases, candidate review anchors | Reviewed multi-singer training/development and held-out reference evaluation | Small, with varying recording conditions; note labels do not identify an intended tune |
+| MTG-Jamendo | Separated-vocal preparation and model-boundary engineering experiments | Supplementary preservation anchors after license, suitability, review and shift audits | Accompaniment, bleed/reverb/backing voices, no human F0/note reference or verified singer identity |
 
-Live showcase examples explain the mechanism; the result table covers the declared independent evaluation collection. Include successes, a failure/uncertain case and exclusions. Do not select all evaluation cases after seeing favorable outputs.
+Both sources stay in this component. Jamendo extends the proposal; it does not replace Vocadito or the proposed participant study. Adult participant recordings, guide-melody cases and free humming remain a later ethics/consent-dependent study. The proposed 8 adults x 6 phrases is a planning estimate, not collected data or a justified final sample size. Determine main-study size from pilot precision/power. [S1 pp16-17]
 
-### Four-view evidence
+Vocadito: split by singer before cropping/augmentation. Jamendo: split by source/artist before crops, cap initial sampling at one song per artist, check exact and near-duplicate audio, and retain every descendant in its parent's partition. Artists are proxies; recurring singers/collaborations can still cross artist groups. Keep evaluation/final-holdout sources untouched during geometry design and tuning. Any unfamiliar-melody claim also needs melody-level separation.
 
-| View | Waveform | Boundary track | Training target |
-|---|---|---|---|
-| A | Reviewed acceptable source | Nominal | Zero correction |
-| B | Identical to A | Corrupted split/merge/jitter | Zero correction |
-| C | Verified local detuning of A | Nominal under the controlled pairing rule | Negative injected detuning |
-| D | Identical to C | Corresponding corrupted track | Same target as C |
+References must record `human_annotation` versus `model_estimate`. A GAME prediction or two agreeing trackers cannot count as two reviewers. An acceptable reference has target **zero correction**; a known audited local detuning has target **negative injected cents** on the validated plateau, zero outside support, with ramps excluded until validated. Neither GAME nor dataset MIDI notes are commands to overwrite the singer's pitch. Agreement checks assess reliability, not intended musical correctness.
 
-For controlled factorial testing, declare how nominal/corrupted tracks are held across paired waveforms. Recompute spectral/pitch features after waveform rendering. Test naturally recomputed analyzer boundaries separately. Detuning targets and reference curves are evaluation/training supervision, not runtime information about an unknown user's intention.
+Two musically experienced reviewers independently approve usable reference intervals, identify ambiguous transitions, and record reasons resolving disagreements. Both sources require that gate before research anchors. For Jamendo, additionally document whether model-estimated pitch is sufficient for the approved experimental role; do not manufacture human F0 files to satisfy the Vocadito loader. If changing the two-reviewer methodology, record and obtain supervisor agreement on the change before research claims. [S1 pp16-17]
 
-**Current boundary-provenance limit:** the current Phase 2 nominal track is a sharp, timing-only representation made from A1 annotation onsets and offsets; the corrupt track edits that representation. Phase 1 runtime analysis instead emits a continuous provisional boundary score inferred from audio. Controlled A/B/C/D identity checks therefore establish the laboratory intervention, not robustness to real analyzer errors or an end-to-end deployed repair path. Before claiming runtime benefit, evaluate the fixed models with the runtime score and natural analyzer errors, disclose the feature mismatch, and keep those results distinct from the annotation-track experiment.
+Dataset terms: Vocadito is described by its [official record](https://zenodo.org/records/5578807). MTG-Jamendo's [official terms](https://github.com/MTG/mtg-jamendo-dataset#license) restrict the dataset to non-commercial research/academic use and provide individual audio licenses. Preserve attribution and license metadata; exclude NoDerivatives and unknown-license tracks from the transformation/release pilot. The local assessment counted 353 NoDerivatives tracks; verify licenses in each new manifest. Do not infer rights from the repository's code license.
 
-**Planned natural-boundary source, 11 October:** boundaries predicted by the frozen GAME model on the same waveform, together with alternative segmentations obtained by changing its decoding settings. These are model estimates rather than annotations, so they are the closest available stand-in for runtime boundary error. Report them as a third condition, separate from the A1 annotation tracks and from the Phase 1 heuristic score. The source itself was checked on 11 October on 28 vocadito recordings: two decodings with identical settings agree at onset F1 0.95, and boundary thresholds of 0.1 and 0.4 move the note count per recording from 33.5 to 36.0 and 30.6. GAME mostly ends a note where the next begins, so its track is essentially an onset track. No BPDR model has been evaluated under this condition yet.
+## 4. Reuse models; own the preparation path
 
-Use two musically experienced reviewers for acceptable zero-change anchors, logging disagreements and reasons. Flag/guard ambiguous transitions. Define a realized-shift tolerance before generating the training corpus and reject interventions outside it: the negative injected curve is trustworthy supervision only after that audit. Supplement the frozen analyzer with appropriate reference/manual or alternative measurement checks; agreement with the same tracker alone does not independently certify rendering accuracy.
+Retain the team's pinned BS-RoFormer separator and GAME commit/checkpoint, verified by hash. The newer melody/chord pipeline's vocal stage uses those same models. Its instrumental melody, combined melody, chords, key and Roman labels belong to other work and are not BPDR supervision. Its combined output fills vocal rests and resolves note overlaps; do not use it to evaluate vocal preservation. Read unshifted `model_midi_pitch`, retain stems, and save each decode because GAME has no exposed extraction seed.
 
-Explain the losses in ordinary language first: boundary changes alone should not change the repair; known local detuning should produce the opposite corrective change; already acceptable material should be preserved. Keep the precise proposal equations in technical backup material. [S1, pp. 21-22]
+The planned common builder produces immutable manifests with source/artist/singer identity as available, license, partition, crop origin, source/crop/accepted hashes, references and their type, model versions, decoded boundaries, reliability masks, review state and exclusions. For Vocadito: solo source -> mapped crop -> Phase 1 -> GAME boundary adapter, retaining human references. For Jamendo: licensed/grouped song -> kept stem -> mapped <=20-second crop -> Phase 1 -> GAME -> single-voice/pitch/bleed screening -> review queue. The existing Vocadito builder is reused behind a source-specific adapter; it cannot load Jamendo as-is.
 
-## 6. Minimum measurement specification
+Start with the three stems already present, then a declared training-artist sample of 20-30 normal songs. First run five artists and inspect yield before increasing volume. Use GPU separation and record model/platform/overlap settings. Do not mix settings silently. Full-song separation is the baseline; excerpt-first separation remains experimental until J5 is repeated across artists/windows. Do not process all 1,604 songs before yield and independent-source coverage are measured.
 
-| Measurement | PP1 interpretation |
-|---|---|
-| Correction error in cents | Primary outcome on reliable controlled detuned regions; compare BPDR against augmentation-only and frame-only. Report source/singer denominators. |
-| Boundary sensitivity | Difference between correction curves for identical audio with changed boundary metadata. Interpret jointly with repair error. |
-| Preservation | Unnecessary correction on no-change examples and outside detuning support; expression/transition examples; report listener evidence only when actually collected. |
-| Realized repair | Difference between rendered audio pitch and the reference, with identity-render controls. |
-| Acceptance/edit coverage | Count all four statuses and distinguish audio acceptance from fraction actually edited. Report harms and refusal/failure counts. |
-| Extraction | Same fixed extractor, same reference notes, before/after preparation. A stub cannot establish extraction benefit. The planned extractor is frozen GAME, read through `model_midi_pitch`; because its note pitch is fractional, report the change in note pitch center in cents beside note F1. GAME's offsets follow a different convention from the annotations (offset-aware F1 0.30 to 0.42 against 0.65 between the two annotators), so label offset-aware results. GAME samples its boundaries, so repeat the extraction and report its own run-to-run variation beside any before/after difference. |
-| Latency | Actual median and 95th percentile on named hardware; the proposal's 30-second target is not a measured result. |
+## 5. Repair quality is an acceptance gate
 
-Use a reliable-frame mask fixed independently of the compared models; exclude empty-mask cases with logged reasons. Report detuned and preservation regions separately. Normalize/fill features using training data only; keep singer groups and their augmented descendants in one partition. Do not treat frames or variants as new participants.
+The proposal's runtime is a frozen acoustic analyzer, BPDR predictor and deterministic permission rules, followed by local rendering and remeasurement. Offline controls do not become additional production stages. [S1 pp23-27]
 
-Estimate paired uncertainty by resampling independent singer groups (or source recordings when singer identity is unavailable), keeping paired methods/views together. Report seed variation separately; one run cannot establish training stability. Small PP1 holdout intervals are descriptive pilot evidence, not precise population estimates.
+1. Assess technical integrity and musical suitability. Current Phase 1 proves the former only. Calibrate the latter on labelled suitable/unsuitable examples including silence, noise, leakage, multiple voices and acceptable expressive singing.
+2. Predict relative cents corrections under the main and reasonable alternate boundary views. Require reliable voicing, sufficient support, bounded uncertainty and agreement; protect onsets/offsets, rests and expressivity. Corrections beyond allowed limits are withheld, not silently clipped.
+3. Render only permitted intervals with a duration-preserving framewise method; the proposal names Praat/Parselmouth. The artificial constant-shift generator is not the production renderer. Pin the renderer and audit zero-change identity, realized pitch, transitions and changes outside edit support.
+4. Remeasure delivered audio. Preserve sample count/time origin and rests; verify pitch error on supported regions, protected-region drift and audible artifacts. Compare the same frozen extractor before/after and against its repeat variation.
+5. Roll back a failed candidate to a previously checked usable waveform; otherwise return a reasoned non-accepted status. Withheld edits may produce `ACCEPT_UNCHANGED` only if the input is suitable. Emit `ACCEPT_PREPARED` only after all applicable checks pass.
 
-Report raw model predictions before the controller and delivered audio afterward. Apply comparable policies and rendering to correction methods. Original audio receives necessary conversion only. Compare at attainable matched acceptance coverage; disclose if matching is not possible.
+Freeze numerical bounds on training/development data before held-out testing. Report abstentions/edit coverage, failures and harmful edits with repair error; accepting everything or correcting nothing cannot alone demonstrate accuracy. Thresholds in current Phase 1 are provisional engineering settings, not calibrated musical guarantees.
 
-Choose thresholds, loss weights, model selection and metric definitions using development data. Keep an untouched PP1 evaluation subset distinct from any final-research test set if the PP1 observations will guide later changes. A corrected model needs fresh independent evaluation for confirmatory claims. Never relabel a previously examined subset as unseen.
+## 6. Fair study and output assurance
 
-The proposal's +/-10-30-cent interventions may remain within conventional note-matching tolerances. A constant note F1 does not by itself mean small-pitch repair failed. Cents error and rendering/preservation checks are needed; final-extractor benefits are a separate hypothesis.
+Compare original input, a declared conservative rule baseline, augmentation-only, frame-only and BPDR. The three learned conditions share data, partitions, capacity as appropriate, source weighting, optimizer/update budgets and selection protocol. Fit normalization on training sources only. Use at least three predeclared seeds where feasible and label a one-seed run exploratory. Select checkpoints/weights/controller thresholds on development data; freeze before evaluation. Disable denoising in the initial comparison. If introduced later, all correction conditions share one fixed noise policy; the original control receives only necessary decoding/format conversion. Conditional denoising requires a reliable nonsinging noise interval, feature recomputation and preservation/rollback checks, with its effects recorded separately from pitch repair. [S1 pp17-22,26]
 
-Do not promise an arbitrary accuracy percentage now. Decide the meaningful preservation margin and practical effect target before reading held-out results. Present observed effect size and uncertainty, even if the outcome is inconclusive.
+Keep three boundary conditions separate: controlled human-annotation tracks, the operating audio heuristic, and GAME model-estimated tracks. Training currently uses A1 timings while runtime uses a heuristic; quantify that distribution change rather than claiming synthetic invariance proves runtime robustness.
 
-## 7. How the colleagues' components align
+Evaluate jointly: plateau correction error, boundary-response sensitivity, preservation inside/outside support, dedicated no-change cases (vibrato, slides, acceptable transposition), rendered pitch/artifacts, harmful-edit rate, technical integrity, edit/acceptance coverage, latency and same-extractor note performance. Include onset+pitch and offset-aware results with their conventions. Show raw predictions and delivered/controller outcomes at comparable coverage. Pair comparisons by independent singer/source and give 95% intervals with denominators, exclusions and failures. Repeated frames/variants are not sample size. Blinded listening uses fixed playback conditions; a small listener sample is a pilot.
 
-For team readiness, prepare individual implementation evidence and a shared contract. The rubric header identifies a student and group; it does not establish identical marks for all members. Each member should explain and demonstrate their own contribution.
+Use held-out Vocadito references for the first controlled pilot. Keep Jamendo robustness/yield results separate and do not score accuracy against the same pseudo-labels used to select examples. Participant data is needed for broader real-user or intended-melody claims. If no independently reviewed examples exist, continue useful engineering work but report no supervised comparative result.
 
-| Owner | Proposal contribution | PP1 research evidence target | BPDR dependency |
-|---|---|---|---|
-| You: IT23141506 | Minimal repair learned to separate boundary-only changes from local detuning. | Paired audio experiment, three-model comparison, preservation and accepted-only delivery. | Independent of finished chord models. |
-| Perera E. V.: IT23439078 | Shared CNN/Transformer melody understanding and unified musical representation. | Actual audio-to-timed-note output, labelled provenance for beat/key/phrase fields, annotated baseline results and first proposed-model training evidence. Joint-learning benefit remains a hypothesis. | Immediate integration partner; freeze input/timeline/adapter. |
-| Perera P. D.: IT23148086 | Test explicit key-relative root/family planning beyond normalization and auxiliary supervision. | Audited mapping, actual plan inference, transposition/unsupported-label tests and preliminary fair baseline comparison. Full coherence advantage needs later shared evaluation. | Consumes extracted melody, not BPDR raw features. |
-| Jayakody J. A. S. R.: IT23157132 | Contextual basic-to-rich refinement, including candidate alternatives. | Audited chord pairs, functioning learned refinement/baseline, fixed event timing and plan-adherence checks. Multiple candidates are not proof of multiple valid answers. | Consumes aligned melody and planner output. |
+## 7. Integration and schedule
 
-### Decisions to settle in Phase 0
+The accepted package contains request/source IDs, status, WAV path/hash/rate/count/channels, time-origin/crop mapping, reason codes and links to versioned diagnostics, analyzer/model/controller/renderer policies and edit intervals. Consumer validation rejects missing/tampered audio and non-accepted statuses. Do not downsample or recrop without explicit mapping. The current `ProcessingResult` schema 0.1 is a proposed contract; the melody owner must accept the actual format. GAME is a fixed baseline adapter until that owner identifies the agreed extractor.
 
-- **One ownership diagram:** the shared architecture figures show BPDR -> understanding -> planning -> refinement. Melody-understanding prose/WBS still assigns the fourth member to accompaniment generation. Resolve that stale contradiction; assign simple playback/export explicitly. [S2 pp. 38-40, 49; S3 p. 23; S4 p. 26]
-- **One timeline:** BPDR preserves duration/rests; understanding proposes silence trimming. Preserve the accepted waveform origin and map any internal analysis windows back to it. [S1 pp. 26-29; S2 pp. 30, 42]
-- **One musical contract:** understanding owns seconds-to-beats/key/metre estimates. Planner root/family labels are not full harmonic-function labels. Refinement preserves root, family and timing in the agreed PP1 path; substitutions are separate future scope. [S3 pp. 19-24; S4 pp. 22-29]
-- **One label provenance policy:** genre-labelled MP3s do not automatically provide verified timed melody/rich-chord targets. Mark automatic extractions as pseudo-labels and audit them. [S3 p. 16; S4 pp. 20-21]
-- **One bounded demo excerpt:** BPDR supports up to 20 seconds while planner examples span 4-16 bars. Choose compatible excerpts without silent truncation.
-- **One extractor version (added 11 October):** the proposal gives final melody extraction to the second component and defines usable input by "the agreed melody extractor" [S1, pp. 11, 27]. The melody-extraction pipeline pins GAME, the vocal separator and SheetSage2 by commit and checksum. Confirm with the melody-extraction owner that this GAME is the agreed extractor. BPDR then uses that same commit and checkpoint, so before/after comparisons and the hand-off refer to one extractor. The pipeline's published GAME pitch is raised 12 semitones for the melody consumers; BPDR compares pitch only through `model_midi_pitch`, which gate J2 showed to match the annotated pitch. The Mac pipeline and the Windows launcher use different separator implementations, so their outputs are not mixed without a comparison.
+H1 currently supports technical format compatibility, not repair correctness or team acceptance. Extend H1 after actual `ACCEPT_PREPARED` output, and once on evaluation data with extractor repeat variation. For repaired audio, require preserved timing/rests and no unintended degradation outside permitted edits; inside edited support, measure pitch against the declared correction reference. Do not require repaired pitch to match the deliberately detuned input. Later isolate raw-vocal, prepared-vocal and reference-melody downstream paths under fixed planner/refiner settings to measure error propagation.
 
-If a teammate's model is unavailable, use a fixed existing baseline adapter and label it. Fixture-backed arrows show integration mechanics, not completed team model performance. Do not wait for the full chain to begin BPDR experiments.
+The previous user planning target is **25 October**. The supplied proposal's schedule figure lists an initial PP1 prototype on **26-28 October**; neither establishes the official slot here. The proposal places controls in Nov-Dec, BPDR study Dec-Jan, integrated evaluation around Feb 2027 and final submission around Apr 2027 (estimated). Do not promise the whole scientific study by October. The execution plan separates a near-term engineering prototype from the subsequent reviewed study.
 
-## 8. Requirements, progress, risks and business evidence
+## Sources
 
-Map the proposal's FR1-FR7 to capture/upload, original retention, assess/preserve/prepare, bounded edits, playback/feedback, checked export and evaluation plots. For each requirement record the implemented path, an acceptance check, evidence location and remaining limitations. An empty/corrupt-input test is necessary reliability evidence; tests that merely confirm a constant output are not accuracy evidence. [S1 pp. 28-29]
-
-Maintain W1-W8 from proposal Table 11: literature/gap, design/protocol, data/interventions, models/experiments, prototype/preparation, integration, evaluation and reporting. Its planning weights total 640 hours. Do not mistake them for actual hours spent. A team-defined progress indicator can use agreed milestone weights within each package, but must remain distinct from rubric marks. Exact progress is currently unverified.
-
-| Risk | Required action before PP1 |
-|---|---|
-| Small or unreliable reference set | Audit available vocadito material, review anchors, report independent singer/source counts and pilot limits. Participant collection follows the proposal's approval/consent conditions. |
-| Reviewers unavailable before training | Prioritize independent review of a declared multi-singer training subset and suitable development examples. Continue model/loss engineering with constructed fixtures, but do not train or claim research accuracy on unapproved anchors; retain the 4 October checkpoint and mark a narrower PP1 pilot honestly if reviews remain pending. |
-| Renderer/measurement cannot resolve small shifts | Identity controls and measured intervention checks before generating training labels. Improve the chain or narrow the experiment transparently. |
-| Laboratory boundaries differ from runtime estimates | Record A1 versus analyzer provenance on every result; test naturally estimated boundaries separately before an end-to-end robustness claim. |
-| Baseline already ignores boundaries / BPDR adds no gain | Test baseline sensitivity; retain frame-only and augmentation-only controls; report a negative result rather than hiding it. |
-| Compute/dataset delay | Benchmark one small run early; use equal predeclared reduced budgets; keep the original milestone and record corrective action. |
-| Rejected input leaks downstream | Non-accepted statuses have no accepted path; adapter must enforce this and tests must exercise the stop. |
-| Team integration unavailable | Freeze contract fixtures and a temporary extractor; separate integration status from research results. |
-| Demo interruption | Prepare an offline replay of the actual saved run, audio and metrics with run IDs; rehearse fallback disclosure. |
-| Intervention geometry excludes most singers | Under audit v0.3 only one of 14 training singers has a note long enough to host a shift. Decide by 13 October: shorten the plateau and guards under a new audit version, repeat the identity and realized-shift audits, and disclose the revision; or report a one-singer pilot as exactly that. Do not describe one singer's variants as a multi-singer set. |
-| Second source is a different domain with predicted labels | Keep vocadito as reference and evaluation. Use only `game_vocal` through `model_midi_pitch`. Pass gates J3 and J4 before any Jamendo crop is training-eligible, screen crops automatically first, and report Jamendo material as its own condition. |
-| Extraction is too slow on the development CPU | Measured at about 30 seconds per second of music for the separator on the CPU and about 4 on the laptop's Intel Arc GPU, with the same result. Use `-Gpu` for samples of tens of songs; all 1,604 songs still belong on the team's Mac or a CUDA machine. Keep the laptop awake, because standby pauses a run. The extractor and boundary roles need no separation. |
-| Model training is slow on the CPU | One training step took 13 seconds on the CPU and 0.7 on the Intel Arc GPU. Train with `--device xpu` in the `.venv-xpu` environment, record the device in every run, and use the same device for all three conditions. |
-| License limits on derived or played audio | Build interventions only from tracks whose license permits derivatives. Use no NoDerivatives track in demonstration audio, attribute excerpts, and keep use non-commercial. |
-| Critical path is about one week late at 11 October | Keep the original windows visible, follow the dated corrective schedule in the phase plan, lock one equal-budget run per learned condition, and narrow the claim rather than skip a gate. |
-
-Commercial evidence can remain small and realistic: identify a specific target workflow, document what user problem was actually observed, show how the prototype helps, compare appropriate existing approaches and estimate processing cost from measured time/hardware. If no user pilot has occurred, show the planned protocol and label demand/pricing as hypotheses. Do not invent interviews, adoption, willingness to pay, revenue or ownership rights. A business canvas alone is weak evidence of commercial potential. [R, LO5]
-
-## 9. Presentation narrative and examiner questions
-
-Use the actual allocated presentation slot once provided. Suggested time proportions: problem/gap 15%, method and applied technology 20%, live evidence/results 35%, completion/requirements/risks 20%, benefits/next work 10%. This is a planning choice, not the rubric's mark distribution or an official time rule.
-
-Presentation sequence:
-
-1. State the user problem with one audible/visible example.
-2. Show prior capability and the narrower unanswered question.
-3. Locate BPDR in the team architecture and identify your responsibility.
-4. Explain A/B/C/D and the training-response objective.
-5. Demonstrate unchanged input, boundary-only change, local detuning and a controlled failure.
-6. Show comparative preliminary results and preservation/coverage, including limitations.
-7. Show implemented architecture, FR acceptance and actual completed work against the plan.
-8. Explain mitigations, achievable user benefit and next research milestones.
-
-Be ready to answer: Why not remove boundaries? What prevents zero correction? How are targets known? Why is this different from BERT-APC? How were singers split? Which curves are measurements versus predictions? Was the rendered shift correct? What if the singer intended that note? Why are three models needed? How much is implemented? What fails? Which teammate outputs are learned, baseline or fixtures? Why might note F1 remain unchanged?
-
-Answers must point to a source, implemented operation or saved run. "We use a Transformer" is not a sufficient novelty or technology-depth answer. Acknowledge when intended melody is ambiguous, when public-data evidence is only a pilot, and when the comparative advantage is not established.
-
-## 10. PP1 exit gate
-
-By 25 October, aim to hand over a working local BPDR prototype, three saved learned conditions with an initial fair comparison, reviewed paired examples, rendered audio verification, accepted-only contract evidence, a requirements/progress/risk register and a rehearsed presentation backed by actual artifacts.
-
-The core gate is not met if only a polished interface or prewritten plots exist. If required evidence is incomplete, keep the status explicit, show executed corrective actions and narrow the claim. The examiner should be able to see **what was built, why it addresses the problem, what was tested, and what is still unknown**.
-
-## Source register
-
-PDF page numbers below are positions within the supplied files. Literature/market statements in the proposals are not all re-verified by this planning task. The PDFs live in the ignored `private/` folder, so these links open only on the owner's machine.
-
-- **R:** [PP1 Assessment Criteria (1).pdf](<../private/assessment/PP1 Assessment Criteria (1).pdf>), p. 1, all five learning-outcome sections and grade bands. The complete page was extracted and visually inspected.
-- **S1:** [IT23141506_J26_DS_339.pdf](../private/proposals/IT23141506_J26_DS_339.pdf), gap p. 14; objectives p. 15; controlled data/comparisons pp. 16-22; architecture pp. 24-27; FR/NFR pp. 28-29; WBS p. 35; failure tests p. 40.
-- **S2:** [IT23439078_J26_DS_339.pdf](../private/proposals/IT23439078_J26_DS_339.pdf), gap/objectives pp. 24-28; data pp. 29-30; evaluation pp. 31-36; architecture/ownership pp. 38-40; requirements pp. 41-43; schedule p. 49.
-- **S3:** [IT23148086_J26_DS_339.pdf](../private/proposals/IT23148086_J26_DS_339.pdf), gap/question pp. 14-15; controls pp. 16-18; representation/contracts pp. 19-24; requirements p. 25; work packages p. 30.
-- **S4:** [IT23157132_J26_DS_339.pdf](../private/proposals/IT23157132_J26_DS_339.pdf), gap/objectives pp. 17-19; data/model pp. 20-23; experiments pp. 24-25; boundaries/requirements pp. 28-30; experimental appendix pp. 38-40.
-- **B:** [BERT-APC.pdf](../private/papers/BERT-APC.pdf), architecture p. 3; segmentation experiment Section IV-H p. 12 and Table VIII p. 13. These complete relevant pages were extracted and visually inspected. The downloaded PDF's generic journal-template header is not treated as publication metadata.
-- **Previous planning baseline:** `BPDR_Development_Plan.md`, kept outside this repository in the owner's earlier `Validation Framework/output` workspace. Its September dates remain a historical plan, not proof of completed work. This PP1 package supplies the rebased assessment milestone plan.
-- **J:** the team's melody-extraction pipeline, mirrored unedited at `data/mtg-jamendo/melody-extraction-pipeline` from repository commits `554d258` and `830dcba` of 9 October: `README.md`, `run.py` and `provenance.json`. Dataset terms: `data/mtg-jamendo/README.md` and `audio_licenses.txt`. Local observations: [extraction check](Jamendo_Extraction_Verification.md).
-- **G:** [GAME](https://github.com/openvpi/GAME) at commit `f423934`, `README.md`. Its capability statements are the authors' and are not verified by this plan.
+- S1: supplied IT23141506 proposal, all 43 PDF pages; scope pp11-17, comparisons/losses pp17-23, diagrams pp24-25, delivery pp26-28, schedule p36.
+- S2: supplied IT23439078 proposal, all 57 pages; architecture p38, datasets pp29-30, accepted-only contracts pp53-55.
+- S3: supplied IT23148086 proposal, all 37 pages; representation/scope pp19-24, upstream-error isolation p18.
+- S4: supplied IT23157132 proposal, all 44 pages; data/context pp20-25, architecture p26, refinement mapping ambiguities pp10-11,23.
+- Source copies remain in `private/proposals`; exact source hashes and full-page audit are recorded in [Project_Audit_2026-10-12.md](Project_Audit_2026-10-12.md). Historical rubric/work-package details remain in the recovery snapshot.

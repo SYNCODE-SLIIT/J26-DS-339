@@ -2,6 +2,8 @@
 
 **Confirmed on this machine:** the second data source is mirrored inside the component; the team's pipeline code runs unedited through a launcher; the complete pipeline produced all three outputs for a two-song sample; and the team's listening page shows them. **Also found:** the vocal separator is far too slow on this CPU for full-length songs but runs about ten times faster, with the same result, on the laptop's Intel Arc GPU; and the GAME note model reads performed pitch correctly only through its unshifted field. The first two sample tracks were chosen for being short and are not typical; one normal-length song has since been measured. Nothing here is a BPDR result or a training-ready collection.
 
+**Added 12 October:** three further checks and a decision are recorded in [their own section](#12-october-hand-off-crop-and-excerpt-checks). The team's GAME reads BPDR's accepted audio as well as the original, notes decoded from a 20-second crop match notes cut from a full recording, and one excerpt separated by itself matched the full-song stem. The owner decided that BPDR builds its own data path on the same pinned models, using from each dataset only what suits the component.
+
 ## What was added
 
 ```text
@@ -13,6 +15,8 @@ experiments/bpdr_input/
   extraction/check_game.py     gate J2: GAME against vocadito's two annotators
   extraction/check_stems.py    gate J3: kept stems against vocadito crops
   extraction/compare_overlap.py  accuracy cost of the faster separator setting
+  extraction/check_handoff.py  gate H1, added 12 October: GAME on BPDR's accepted audio against the original
+  extraction/check_excerpt.py  gate J5, added 12 October: an excerpt separated by itself against the full-song stem
   data/mtg-jamendo/            ignored, local only
     annotations/  splits/  LICENSE  README.md  audio_licenses.txt
     vocal-tagged-audio/NN/*.low.mp3
@@ -221,14 +225,83 @@ BPDR accepts a short unaccompanied single voice and learns a relative correction
 2. **Natural boundary condition: supported.** The current boundary tracks come from A1 annotation timings, while runtime has only an audio-derived score. GAME gives model-estimated boundaries and, through repeated or re-thresholded decoding, alternative segmentations of one unchanged waveform. That is the natural-analyzer condition the proposal asks to test separately, and a source for the controller's "other reasonable boundary versions" in offline evaluation.
 3. **More independent voices: not supported yet.** There is no human reference, and only one normal song has been measured. Extraction of a sample is now practical on the laptop's GPU. The role stays optional, off the critical path, and behind J3 and J4. The shortage it was meant to ease is real, though: see the vocadito finding above.
 
+## 12 October: hand-off, crop and excerpt checks
+
+Three questions decide how BPDR should take data from this source, and whether the next component can read what BPDR delivers. All three were measured with the pinned GAME model. GAME samples its note boundaries and its `extract` command has no seed option, so two decodes of the same audio differ. Every comparison below is read against that run-to-run figure, called the noise floor. Scores use `mir_eval` defaults (50 ms onset, 50 cents pitch); offsets are not scored.
+
+### Does GAME read BPDR's accepted audio like the original? (gate H1)
+
+BPDR delivers a mono 22,050 Hz PCM24 WAV, while GAME works at 44,100 Hz and gate J2 fed it the original files. `extraction/check_handoff.py` decoded the 17 crops of the J3 run three times: the crop as given to Phase 1, the same crop again, and the Phase 1 accepted WAV.
+
+| Mean per crop: onset F1 / onset-and-pitch F1 | vocadito: 14 crops, 14 training singers | Jamendo stems: 3 crops, 2 tracks |
+|---|---:|---:|
+| Same crop decoded twice (noise floor) | 0.96 / 0.91 | 0.90 / 0.87 |
+| Accepted WAV against the crop as given | 0.96 / 0.93 | 0.91 / 0.87 |
+| Notes from the full recording or full-song stem, cut to the window, against the crop | 0.95 / 0.91 | 0.90 / 0.84 |
+
+The same decodes of the vocadito crops, scored against the two annotators:
+
+| GAME input | Against A1 | Against A2 |
+|---|---:|---:|
+| Crop as given | 0.73 / 0.60 | 0.83 / 0.74 |
+| Same crop, second decode | 0.72 / 0.59 | 0.83 / 0.73 |
+| Accepted WAV | 0.74 / 0.61 | 0.84 / 0.75 |
+| Full recording, cut to the window | 0.73 / 0.60 | 0.84 / 0.73 |
+
+What this shows:
+
+- **Hand-off.** GAME's notes on the accepted WAV agree with its notes on the original at the noise floor, and they are no worse against either annotator. Converting to mono 22,050 Hz costs nothing measurable here. **Gate H1 passes for technical preparation, as a pilot.** Every one of these crops was `ACCEPT_UNCHANGED`: no repair exists yet, so the check must be repeated on prepared audio.
+- **Crop or full recording.** Notes decoded from a 20-second crop agree with notes cut from the full recording at the noise floor on vocadito. On the three Jamendo crops the onset-and-pitch figure is 0.84 against a floor of 0.87, which three crops cannot settle. BPDR can therefore decode each accepted crop itself. That is the audio the next component will receive.
+- **Cost.** One decode of the 17 crops (275 seconds of audio) took 500 and 565 seconds when nothing else was running, about 2 seconds per second of audio. That is about twice as slow as the 0.9 seconds measured in gate J2 on full recordings, and the cause is not established. Until it is measured again, budget the data path's boundary step, which decodes every accepted crop and then repeats it, at the slower rate. The first decode took 1,056 seconds because the excerpt check below ran beside it.
+- **Reproducibility.** With no seed, a nominal boundary track is one recorded decode. Repeat decodes are real alternative segmentations and have to be saved, not regenerated.
+
+### Does an excerpt separated by itself match the full-song stem? (gate J5)
+
+Separation is the slow stage, and BPDR needs crops of at most 20 seconds. `extraction/check_excerpt.py` separated seconds 45 to 85 of track 1038720 on the Intel GPU with the pipeline's settings, then compared seconds 55 to 75 with the same window of the stem kept from the full-song run.
+
+| Measure | Result |
+|---|---|
+| Difference between the two stems | 40 dB below signal level; best-match gain 1.000 |
+| GAME, full-song stem decoded twice (noise floor) | Onset F1 0.97, onset-and-pitch 0.94; 59 and 58 notes |
+| GAME, full-song stem against excerpt stem | Onset F1 0.98, onset-and-pitch 0.97; 59 and 57 notes |
+| Audio separated | 40 seconds in place of 162, a quarter of the song |
+| Separation time | 221 seconds, taken while the hand-off check was running, so it is not a clean speed figure |
+
+No cost is visible beyond GAME's own variation. This is one window of one track. **Gate J5 is open** until the same holds on several windows from several artists. Excerpt stems are logged as such and are not mixed with full-song stems before then.
+
+Separating excerpts raises a question that is not solved: the J3 crop rule picks the windows with the most predicted singing from full-song notes, which an excerpt run does not have. The window has to be chosen before separation by a fixed rule, such as fixed positions in the song or a cheap measure on the mix. None has been measured. See the phase plan.
+
+### The team's newer pipeline, examined and not adopted
+
+On 12 October the team merged `melody-chord-extraction-pipeline` (repository commit `f2ad4f0`). It runs nine stages per song: the same three melody stages, then chords from LV-Chordia, a key estimate and key-relative chord labels. It was read, not run.
+
+- Its vocal stage (`code/melody.py`) is the same separation and GAME code as the mirrored `melody-extraction-pipeline`, with the same checkpoints, the same 12-semitone shift and the same `model_midi_pitch` field. It gives BPDR no more accurate notes.
+- Chords, key and Roman labels describe the accompaniment. BPDR's input is an unaccompanied voice, so they are not BPDR inputs.
+- It still deletes the vocal stem after note extraction.
+- It does not run through the launcher as it stands. Its start-up check looks for `bin/python` without `.exe`; it needs `lv-chordia` 1.1.0, which is in neither launcher environment; the launcher's index option, vocal-only option and tool check call names it no longer has; and it has no way to run the vocal stage alone without recording the other stages as errors.
+- Its outputs move to `outputs/<mtg_track_id>/melody/game_vocal.json`.
+
+### Decision of 12 October
+
+The owner decided that BPDR uses from each dataset only what suits the component, and builds its own data path instead of running either team pipeline for its data. The measurements above support the following shape, which the [phase plan](PP1_Phase_Execution_Plan.md) turns into tasks:
+
+- **Same models.** The pinned BS-RoFormer checkpoint and the pinned GAME commit and checkpoint stay exactly as the team has them. BPDR's notes then mean the same as the melody component's notes. A different separator or note model would need its own J2 and H1 before use.
+- **Own orchestration.** Selection by artist and license, separation with stems kept, crops of at most 20 seconds, Phase 1 on every crop, GAME on the accepted crop, screening and packaging all live in the component.
+- **Both datasets through one path.** vocadito keeps its human references and stays the only evaluation material. Jamendo adds voices for exploratory training material. Each example records which kind of reference it has.
+- **The mirror stays.** `data/mtg-jamendo/melody-extraction-pipeline` remains unedited as the reference for the team's format and as the working route to full-song stems.
+
+Nothing in this decision changes what makes an example training eligible. Jamendo crops still need gates J3 and J4.
+
 ## Gates
 
-| Gate | Check | Status on 11 October |
+| Gate | Check | Status on 12 October |
 |---|---|---|
 | J1 | The pipeline completes on local songs; time recorded | Works on a two-song sample, and on a normal-length song through the GPU option. A sample of tens of songs is practical on the GPU; all 1,604 are not. |
 | J2 | GAME on vocadito against A1 and A2; pitch field fixed | Passed for a pilot. Read `model_midi_pitch`; label offset-aware results. |
 | J3 | Stems cut to 20-second crops; reliability and shift audit against vocadito | Open. One normal song gave 40 to 50% reliable frames against 76% for vocadito. Needs stems from full songs by many artists, which the GPU option now allows. |
 | J4 | Two-reviewer sheet for a declared Jamendo crop subset | Not started. Depends on J3. |
+| J5 | An excerpt separated by itself matches the full-song stem | Open. One window of one track matched within GAME's own variation. Needs several windows from several artists. |
+| H1 | GAME on BPDR's delivered audio agrees with GAME on the original within its own variation, and is no worse against A1 and A2 | Passed for technical preparation on 14 vocadito training crops and 3 Jamendo crops. To be repeated whenever preparation changes and once a repair exists; the final run uses the PP1-evaluation singers and belongs to P5. |
 
 Until J3 and J4 pass, Jamendo crops may support engineering runs that are labelled exploratory. They do not enter the reviewed comparison.
 
@@ -238,4 +311,4 @@ MTG-Jamendo is released for non-commercial research and academic use, with per-t
 
 ## Evidence locations
 
-All under ignored folders, so they stay on this machine: `data/mtg-jamendo/melody-extraction-pipeline/history.log`, `manifest.csv` and `outputs/`; `checkpoints/melody-extraction/local-provenance.json`; and `runs/extraction_checks/` with `0e9888a4…/game_on_vocadito.json` (J2), `3fa67dcd…/stems_vs_vocadito.json` and `ed4b3433…/stems_vs_vocadito.json` (J3, before and after the normal-length song) and `c357df60…/overlap_comparison.json`. The GPU probe's timings are recorded in this file only. Rerun the commands in the README to regenerate them.
+All under ignored folders, so they stay on this machine: `data/mtg-jamendo/melody-extraction-pipeline/history.log`, `manifest.csv` and `outputs/`; `checkpoints/melody-extraction/local-provenance.json`; and `runs/extraction_checks/` with `0e9888a4…/game_on_vocadito.json` (J2), `3fa67dcd…/stems_vs_vocadito.json` and `ed4b3433…/stems_vs_vocadito.json` (J3, before and after the normal-length song) and `c357df60…/overlap_comparison.json`. The 12 October checks are in `be8e05a2…/handoff_and_crop_check.json` (H1 and crop against full recording) and `d0a56681…/excerpt_comparison.json` (J5). The GPU probe's timings are recorded in this file only. Rerun the commands in the README to regenerate them.

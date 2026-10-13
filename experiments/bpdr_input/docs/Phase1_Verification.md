@@ -1,5 +1,7 @@
 # Phase 1 verification — 27 September 2026
 
+> Historical verification snapshot. Use [the current evidence tracker](PP1_Evidence_Tracker.md) and `runs/phase1_dataset/summary.json` for active relocated paths and current regression status. Example IDs and external-data wording below describe the original execution; both datasets now live inside the component.
+
 **Implemented:** unchanged musical-audio path, controlled stops, frozen acoustic analysis and inspectable outputs. All project artifacts remain inside `experiments/bpdr_input`. Raw vocadito is read-only and external.
 
 ## Observed results

@@ -1,154 +1,52 @@
-# PP1 evidence and readiness tracker
+# BPDR current evidence and readiness
 
-**Original planning baseline:** 27 September 2026. **Evidence-table snapshot:** 30 September 2026. **Latest dated check:** [11 October 2026](#11-october-second-source-and-schedule-check). **Owner:** Liyanage L. N. P., IT23141506.
+**Latest update: 13 October 2026; foundation snapshot: 12 October. Owner: Liyanage L. N. P., IT23141506.** This file records current implementation and saved evidence; it does not infer a completion percentage, marks or research accuracy. Dated verification documents remain historical records. Previous tracker/plans are in the verified recovery archive.
 
-Current repository location: `J26-DS-339/experiments/bpdr_input`. Saved [Phase 1](Phase1_Verification.md) and [Phase 2](Phase2_Verification.md) verification records report 28 passing tests and two executable notebooks. Phase 1 technical processing is verified. Phase 2 has audited sources, fixed singer partitions, 57 mapped crops from 38 eligible sources, pending review sheets and an exploratory four-view renderer pilot. Its six audited shifts yield 18 derived pairs from one singer, **not** 18 independent performances. On this snapshot all 114 review rows are pending, zero pairs are training eligible, and the P2 trustworthy-target gate remains open. General musical accuracy, learned controls, BPDR repair/comparison and team integration remain outstanding.
+**13 October:** Gate B has an executable [training-only coverage audit](Coverage_Audit_2026-10-13.md). Shorter geometries yield reference support across six singers, but a selected six-singer acoustic probe gives three singers with at least one fully audited shift and one with all six. Coarse PESTO -10-cent rejections need diagnosis; v0.3 stays active, reviews/manifests stay unchanged and research eligibility remains zero. The regression suite now has **51 passing tests**; log `runs/coverage/regression_2026-10-13.txt`. The common dataset builder remains planned.
 
-Use this register while executing [the phase plan](PP1_Phase_Execution_Plan.md). It records evidence and implementation state; it does not calculate university marks or claim present readiness.
+## Current register
 
-## Status rules
+| Area | State | Evidence / independent denominator | Still required |
+|---|---|---|---|
+| Original/technical audio preservation | Implemented and regression-verified | `pipeline.py`, `contracts.py`; full replay of 40 sources, 21 unchanged and 19 duration stops | Musical suitability calibration |
+| Frozen acoustics | Implemented; real PESTO smoke passes | Masked 70 features plus provisional boundary column; original timing/rest checks | Natural-boundary/runtime validation |
+| Vocadito data | Audited local collection | 40 recordings, 29 singers; 57 mapped crops, two annotation exclusions | Reference approval and broader support |
+| Human review | Pending | 114 review rows; decisions `{'pending': 114}` | Actual two-reviewer approvals and intervals |
+| Research-ready material | Not available | Data summary: 0 training-ready examples; current paired summary: 0 eligible | Review AND intervention audits |
+| Four-view interventions | Engineering execution verified | 18 audited exploratory pairs; 1 phrase, 1 singer | Revised multi-source geometry audit |
+| Three learned conditions | Code implemented, fixture-verified | `model/losses/examples/metrics/training.py`; two 30-update BPDR CPU/XPU smoke records | Matched fits, dev selection, held-out comparison |
+| Jamendo preparation | Pilot execution only | 1,604 raw tracks, three retained stems; representative J3 remains open | Common builder, screening and reviewed anchors |
+| GAME reference check (J2) | Pilot passed | 28 recordings, 20 training/development singers; onset+pitch F1 0.63 vs A1, 0.77 vs A2 | Owner agreement; no BPDR benefit inferred |
+| Accepted-audio format (H1) | Technical pilot passed | 14 Vocadito crops and 3 Jamendo crops; unchanged technical preparation only | Edited-region-aware check after actual repair |
+| Excerpt separation (J5) | Experimental/open | One window of one track | Multiple artists/windows before adopting |
+| Musical repair/controller/rollback | Not implemented | No accepted repaired output was credited | Gate F of execution plan |
+| Independent effect/listening | Not demonstrated | Training fit is explicitly own-data; no held-out BPDR advantage | Gate G and adequate independent sources |
+| Live team integration | Not agreed/verified | Proposed package and baseline GAME adapter | Melody-owner acceptance and actual consumer |
+| Regression after cleanup | **48 tests passed** | `runs/project_audit_2026-10-12/regression_tests.txt`; includes real frozen-pitch smoke | Execution proof, not research accuracy |
 
-- **Documented:** a design, requirement or claim has a source or draft artifact.
-- **Scaffolded:** implementation structure exists, but behavior is not verified.
-- **Implemented:** behavior executes; acceptance checks may remain.
-- **Verified:** declared acceptance checks pass with saved evidence.
-- **Integrated:** verified behavior works across the agreed component interface.
-- **Demo-ready:** verified/integrated artifacts have passed a rehearsal on the demo machine.
-- **Unverified:** no sufficient artifact was inspected to credit implementation.
+## Active artifact locations
 
-Use separate fields for implementation state and research outcome. "Verified experiment execution; inconclusive effect" is a legitimate entry. "Model trained" does not mean "novelty confirmed."
+- Current source/review run: `runs/phase2/15fb678d1f44406ab4da3fddd7c2f809` (`manifest.json`, `data_summary.json`, `reviews.csv`, `crops`).
+- Current exploratory pairs: `runs/phase2/15fb678d1f44406ab4da3fddd7c2f809/exploratory/fda19aa33ede4aba8fa4b4087bb3afdc`; reviewed pointer remains a verified zero-example gate result.
+- Latest executed notebooks: `runs/notebooks/bcfca999f47741b0a4c5f40c6dad98a7`, verified pointer; two notebooks, zero saved cell errors. They were preserved, not re-executed in this audit.
+- Full technical replay: `runs/phase1_dataset/summary.json`; all 40 referenced run directories exist. Old example IDs in the dated Phase 1 note are historical; use this summary for current paths.
+- J2: `runs/extraction_checks/0e9888a443b74de28b55a0150ab9735e/game_on_vocadito.json`.
+- J3: `runs/extraction_checks/3fa67dcd34ee4245ba24de232bd8c3ec/stems_vs_vocadito.json` and `ed4b3433e8554f65bdc963dc5f250749/stems_vs_vocadito.json`.
+- H1/crop check: `runs/extraction_checks/be8e05a22853497193474c22c8c6118e/handoff_and_crop_check.json`.
+- J5: `runs/extraction_checks/d0a5668191734830bf22948b6bb2a3cd/excerpt_comparison.json`.
+- Engineering checkpoints/records: `runs/engineering`; both are 30-update BPDR fits labelled `exploratory_not_research`, not research-ready models.
+- Cleanup/source/hash verification: `runs/project_audit_2026-10-12` and `private/cleanup_2026-10-12`.
 
-## Evidence register
+The older `a57b...` laboratory run, audit history and original source hashes are retained as historical evidence, including its pre-relocation absolute paths. Current launchers use the active `15fb...` run; do not silently rewrite historical hashed manifests.
 
-Add a concrete artifact path, version/run ID, date, result and reviewer to each row as work proceeds. The current-state column below supersedes the historical 27 September foundation baseline; it credits executed engineering without implying a research outcome or university mark.
+## Quality gates to close
 
-| ID | Rubric area / points | Claim or deliverable | Current state at 30 September | Phase |
-|---|---|---|---|---|
-| E01 | LO1 problem / 3 | Proposal-faithful problem/gap and sourced related-work distinction. | Documented; notebook 02 illustrates same-waveform boundary corruption and separate detuning. No trained response difference yet. | P0, P2 |
-| E02 | LO1 proof of concept / 7 | Executing BPDR mechanism, real paired examples and rendered output. | Exploratory pairs/rendering execute; BPDR model, repair controller and comparative learned proof of concept are unverified. | P4-P5 |
-| E03 | LO2 pillars / 7.5 | Applied MIR, ML/data design, controlled experiments and evaluation. | Frozen MIR analysis, singer-separated data and controlled intervention engineering execute; learned/evaluation outcomes pending. | P1-P5 |
-| E04 | LO2 technologies / 17.5 | Actual features, losses, model inference, controller/renderer and technical explanation. | Frozen features and intervention renderer execute; trained losses, model inference and repair renderer/controller pending. | P1-P5 |
-| E05 | LO3 design / 8 | Modular flow, original preservation, statuses, rollback and accepted-only contract. | Original preservation, technical statuses and accepted-file validation execute; musical repair rollback and live teammate hand-off pending. | P0-P5 |
-| E06 | LO3 completion / 12 | Accepted deliverables against baseline and actual corrective actions. | P1 and P2 engineering recorded against the dated baseline; review gate blocks research training; percentage unverified. | All |
-| E07 | LO3 practices / 8 | Split/permission manifests, versions, reproducibility and meaningful tests. | Checksums, fixed singer splits, crop provenance, audit-policy history and 28 saved passing tests; permissions/review and model runs pending. | P0-P5 |
-| E08 | LO3 requirements / 8 | FR1-FR7 linked to acceptance evidence. | Technical portions of FR1/FR2/FR6/FR7 execute; musical decision, repair and full user feedback remain unverified. | P0-P5 |
-| E09 | LO3 risks / 4 | Logged risks and executed mitigation or concrete execution plan. | Annotation exclusions, strengthened review/input gate and v0.1-to-v0.3 audit history are documented; reviewer delay and A1/runtime boundary shift need action. | All |
-| E10 | LO4 communication / 9 | Rehearsed structure, accurate explanations and evidence-based Q&A. | Narrative planned; rehearsal unverified. | P6 |
-| E11 | LO4 presentation / 6 | Readable visuals, clear delivery and time management. | Planned; actual deck/delivery unverified. | P6 |
-| E12 | LO5 potential / 10 | Supported achievable benefits, intended users, alternatives and feasible cost. | Proposal business assumptions documented; observed user/cost evidence unverified. | P0-P6 |
+- [ ] Gate B: training-only geometry yields a justified independent-source collection, or report a limited pilot.
+- [ ] Gate C/J3: common two-dataset builder and representative screened yield, with source/reference/license provenance.
+- [ ] Gate D/J4: real independent reference approvals plus verified intervention support.
+- [ ] Gate E: fair controls, development selection, separate no-change cases and frozen evaluation protocol.
+- [ ] Gate F: permission, actual rendering, post-checks, rollback and four-status behavior.
+- [ ] Gate G/H1: no unintended rest/timing/non-target damage; edited pitch matches the declared correction, with independent evaluation and consumer validation.
+- [ ] Prototype: rehearse actual implemented behavior, show remaining gates and confirm official slot.
 
-For each evidence item append:
-
-`Artifact | Version/date | Acceptance criterion | Actual result | Independent denominator | Limitations | Remaining work | Reviewer`
-
-## Functional acceptance register
-
-### 11 October second-source and schedule check
-
-- **Research gate unchanged:** the current review sheet has 114 pending rows and zero training-eligible examples. No model, loss or metric code exists in the component. The P3 window passed without its deliverables; the delay and a proposed corrective schedule are recorded in the [phase plan](PP1_Phase_Execution_Plan.md). No row in the 30 September table above moves forward because of today's work.
-- **New blocker in W3:** audit v0.3 needs a steady note of about 1.06 seconds. Only 3 of 30 training crops, all from one singer, can host an intervention. A multi-singer training subset cannot be generated under the current policy. The decision is due on 13 October.
-- **Regression:** the 32 component tests pass after the datasets moved into `data/`.
-- **Second source (W3):** 1,604 vocal-tagged MTG-Jamendo tracks are mirrored in `data/mtg-jamendo` with the team's melody-extraction pipeline, unedited. Audited at metadata level: 257 artists, 101.2 hours, no human references, 353 NoDerivatives tracks. Two short songs were extracted. No reviewed target exists from this source.
-- **Extraction (W6):** the complete pipeline ran here for a two-song sample through the component launcher, and the team's listening page displays the result. All five model files match their pinned checksums. The separator needs about 30 seconds of computing per second of music on this CPU, so volume extraction is not practical here. No BPDR-to-extractor adapter exists yet.
-- **Extractor check (W7 groundwork):** GAME was scored against A1 and A2 on 28 vocadito recordings of training and development singers. Onset-and-pitch F1 is 0.63 against A1 and 0.77 against A2; the two annotators agree at 0.73. The unshifted pitch field matches the annotated octave in 1,116 of 1,120 matched notes. This characterizes the candidate extractor; it is not a BPDR result.
-- **E07:** pinned commits and checksums, an unedited mirror, logged substitutions, reproducible setup and check scripts, and a run history that keeps its failures are in place for the second source.
-- **E09:** four risks have named actions: intervention geometry, domain shift with predicted labels, slow extraction on the development CPU, and license limits on derived audio. Four setup problems were found and fixed in the scripts.
-- **Suitability:** the [extraction check](Jamendo_Extraction_Verification.md) concludes the source supplements vocadito and cannot replace it. Gate J1 holds for a small sample and J2 passed for a pilot. J3 is open: the one stem measured came from a track chosen for being short, so it is uninformative about typical songs. J4 has not started.
-- **Owner's position, same day:** no musically experienced reviewer is available, and the coverage decision is deferred. The working path in the phase plan therefore applies: fixture-verified model code, labelled exploratory runs on one singer's 18 pairs, and the GAME extractor evidence. A reviewed comparison of the three conditions is not on that path.
-- **vocadito license:** its Zenodo record lists CC BY 4.0; recorded in the P0 file.
-- **Phase 3 code (W4), later the same day:** `losses.py`, `model.py`, `examples.py`, `metrics.py` and `training.py` exist with 16 fixture tests; the suite now has 48 passing tests. Research mode refuses the unreviewed pilot pairs; engineering mode loads all 18 and stamps its outputs exploratory. A 30-update smoke run completed on CPU and GPU. No model has been trained to a result and no checkpoint supports a claim.
-- **Intel GPU:** the pinned separator runs on the laptop's Arc GPU about 10 times faster with a stem 101 dB from the CPU stem, and a BPDR training step is about 18 times faster. One normal-length song was extracted this way: 292 predicted notes, two crops accepted by Phase 1, 40 to 50% reliable frames.
-- No completion percentage or university mark is inferred.
-
-### Phase 2 update (27 September 2026)
-
-- E01: same-waveform boundary corruptions and a separately detuned waveform are visible in notebook 02. This illustrates the experiment, not a trained-model advantage.
-- E03/E04/E07: annotation validation, immutable crop provenance, singer-separated partitions, renderer/audit policies, A/B/C/D identities, target/input separation and executable notebooks are verified.
-- E09: annotation overruns are excluded; overlaps/uncertainty are masked; fine versus coarse pitch measurement is explicit; empty reviews and failed audits block training eligibility.
-- W3: 40 sources audited; 38 yield 57 mapped crops. Six v0.2-audited shifts produce 18 exploratory pairs from one phrase/singer. Human reviews remain pending; training-ready count is zero.
-- E02/W4/W7: no BPDR checkpoint, comparative learned result or general accuracy study exists yet. W6 live team integration remains open.
-- Human review is pending by user instruction; see [the review guide](Reference_Review_Guide.md). No completion percentage is inferred.
-
-### 30 September research-gate check
-
-- The saved 57-crop manifest contains 30 training, 14 development, 9 PP1-evaluation and 4 final-holdout crops. These counts are **crops**, whereas independent singer counts are 14/6/6/3. The two annotation-bounds exclusions remain visible; do not turn repeated shifts or boundary variants into additional independent subjects.
-- The current review sheet still has 114 pending rows. A reviewed-run directory with zero eligible examples is a valid empty-gate check, not an approved training collection. P3 architecture/tests can proceed on constructed fixtures, but research fitting must wait for independently reviewed and audited anchors.
-- The four-view pilot uses A1 annotation-onset tracks; operational analysis emits a provisional audio-derived boundary score. Record these as different feature provenances and evaluate runtime-like boundaries separately before claiming deployed robustness.
-- The original v0.1 renderer audit failed all six candidates; v0.2 relaxed only PESTO's coarse consistency limits while retaining the YIN fine-shift limits. The revision was made on exploratory training material and must accompany every later result description. Neither audit establishes general accuracy.
-- A fresh 30 September v0.3 exploratory run added plateau/outside coverage and outside-drift-tail checks, regenerated A1 onset-plus-offset boundary tracks, and again yielded six audited shifts/18 paired views from one singer. The loader rechecks actual approvals and all input hashes. The updated repository source passes 32 tests; both notebooks execute with plots and playback. See [the exact run IDs and metrics](Phase2_Verification.md). These engineering checks do not close the two-reviewer gate or prove BPDR accuracy.
-- The [consolidated P0 record](P0_Scope_Claims_and_Decisions.md) now makes the local scope, gap, draft interface, actual contract examples, resources and dated decisions explicit. Team ownership confirmation, dataset redistribution terms, repair/controller checkpoints, comparative evaluation, business evidence and presentation rehearsal remain open. No project completion percentage or university mark is inferred.
-
-### Phase 1 update (27 September 2026)
-
-- E03/E04: acoustic extraction executes with real frozen PESTO; learned BPDR losses/models remain unverified.
-- E05/E07: original preservation, timing tolerance, actual exported-file checks, rejection propagation, locked dependencies and meaningful failure tests verified.
-- E08: foundational FR1/FR2/FR6/FR7 behavior executes; see the requirement-by-requirement limits in `Phase1_Verification.md`.
-- E09: stereo cancellation, malformed input, missing analyzer and unchecked downstream input have exercised mitigations.
-- E02 remains unverified: Phase 1 does not establish the proposed training advantage.
-- W5 now has a verified technical unchanged path and acoustic/report outputs; renderer/controller/repair remain outstanding. W4/W6/W7 retain their research/integration gates. No completion percentage is assigned.
-- Human musical-fixture review and presentation-machine listening/rehearsal remain open.
-
-| Proposal requirement | What must work | Acceptance evidence to save |
-|---|---|---|
-| FR1 | Short supported recording/upload with understandable instructions. | Valid upload/capture and supported-limit checks. |
-| FR2 | Original retained; technical failure distinguished from re-record request. | Source checksum and exercised failure branches. |
-| FR3 | Assess/preserve/prepare from measured evidence. | Reviewed usable fixture, diagnostics and justified outcome. |
-| FR4 | Supported local edits preserve timing, rests and event order. | Interval log, time/sample checks and expressive no-change cases. |
-| FR5 | Original/prepared playback, intervals and practical feedback. | Working comparison screen and observed task evidence if collected. |
-| FR6 | Export only checked accepted audio and diagnostics. | Package validation, render rollback and downstream rejection test. |
-| FR7 | Aligned measured-pitch plots and traceable operation logs. | Plots labelled by units/source/run and type of reference/prediction. |
-
-## Completion register: preserve the proposal baseline
-
-Proposal Table 11 allocates these planning hours. They are weights/estimates, not verified hours spent. Do not enter elapsed time or download counts as completed deliverables.
-
-| WBS | Work package | Proposal weight | Inspected deliverables and open gate at 30 September | Current completion credit |
-|---|---|---:|---|---|
-| W1 | Literature and gap | 50 h | Proposal and sourced gap/related-work distinction exist; acceptance against the original W1 scope not signed off. | Not calculated. |
-| W2 | Design, protocol and ethics | 50 h | Consolidated P0 scope/claims and PP1 protocol/contract documented; team acknowledgment, human review and approval status remain open. | Not calculated. |
-| W3 | Data and interventions | 120 h | Forty sources read, 57 mapped crops, singer splits and one-singer audited exploratory pairs execute; human-reviewed targets and broader training corpus absent. | Not calculated. |
-| W4 | Models and experiments | 140 h | No learned control or BPDR checkpoint/comparison verified. | Not calculated. |
-| W5 | Prototype and preparation | 90 h | Technical input validation, frozen acoustics, report/playback and accepted-file checks execute; musical repair/controller and rollback absent. | Not calculated. |
-| W6 | Integration | 50 h | Draft accepted-only contract and package checks execute; real cross-component extraction not verified. | Not calculated. |
-| W7 | Evaluation and analysis | 100 h | Renderer and data-pipeline audits execute; independent BPDR research evaluation absent. | Not calculated. |
-| W8 | Documentation and assessment | 40 h | Plans, verification records and two runnable notebooks exist; result-backed deck/rehearsal not verified. | Not calculated. |
-| **Total** | | **640 h** | | **No unsupported completion percentage.** |
-
-If the team chooses a weighted milestone indicator, first define and review acceptance weights within each WBS package. Then calculate `sum(package weight x accepted milestone fraction) / 640 x 100`. This is a team-defined planning indicator, not the rubric's official mark formula, actual labor or an automatic 50% certificate. Retain its baseline date and do not reweight completed items retroactively.
-
-Track evidence coverage separately from project completion. Filling all E01-E12 rows does not itself establish 50% of research completed. The rubric's completion qualification and timing judgment still apply.
-
-## Experiment record template
-
-| Field | Value to enter from the actual run |
-|---|---|
-| Run ID / date / commit or version | |
-| Source manifest / singer groups / crop map | |
-| Train / development / evaluation split IDs | |
-| Method / checkpoint / seed / parameter count | |
-| Training and selection budget / hardware | |
-| Intervention / renderer / identity-audit version | |
-| Independent mask / region / metric configuration | |
-| Controller version / raw versus delivered output | |
-| Singer/source counts / exclusions / failures | |
-| Observed results / uncertainty / limitations | |
-
-## Final demonstration checklist
-
-- [ ] The problem and gap can be explained from a real example.
-- [ ] A/B share the same waveform; C/D share the same waveform.
-- [ ] Model inputs exclude known intervention targets and reviewer reference labels.
-- [ ] All three learned conditions have actual reloadable checkpoints and comparable budgets.
-- [ ] The experiment includes repair and preservation, not boundary invariance alone.
-- [ ] Renderer identity/shift audits and controller outcomes are traceable.
-- [ ] Every status is exercised; non-accepted packages stop downstream processing.
-- [ ] Result plots/table come from the declared independent collection with denominators/failures.
-- [ ] Teammate outputs identify proposed model, baseline, heuristic or fixture provenance.
-- [ ] Extractor evidence names the GAME commit and checkpoint, the pitch field read, and whether each boundary track is annotated, heuristic or model-estimated.
-- [ ] Any Jamendo-derived audio comes from a track whose license permits derivatives and is attributed.
-- [ ] Completion claims have evidence, baseline and limitations.
-- [ ] Business/user evidence distinguishes observed findings from assumptions.
-- [ ] Live demo and labelled offline replay have been rehearsed.
-- [ ] Q&A and timing are practiced against the confirmed presentation slot.
-
-Leave unchecked items visible until their acceptance evidence exists.
+Use [the execution plan](PP1_Phase_Execution_Plan.md) to close these gates. Do not change a pending box because of downloads, more variants, fixtures or elapsed dates.
