@@ -35,6 +35,8 @@ The consumer calls `require_accepted_audio` and validates the actual package/fil
 
 1. Use both datasets, with Vocadito reference/evaluation and Jamendo screened exploratory material. Participant recording remains a later proposal commitment.
 2. Reuse pinned separator/GAME models, keep the team mirror unedited, and build source-specific adapters here. Read GAME `model_midi_pitch`; do not import instrumental/combined melody/chords/key into BPDR.
+
+   **13 October:** the common adapters execute on both datasets. The [fresh five-artist sample](Jamendo_Five_Artist_Sample_2026-10-13.md) has individual separator receipts and yields six Jamendo screen crops from three artists, plus three Vocadito candidates: eighteen pending reviews, zero research-ready examples. Only five of eighteen tested shifts pass v0.3 across two artists; fine shift errors and voiced audit coverage need diagnosis alongside the earlier quantization issue. Human references and model estimates remain distinct; musical-suitability calibration and independent approval remain open.
 3. Retain two independent musically experienced reviews and waveform/shift audits for research anchors. Automatic screening prioritizes review; it cannot replace it.
 4. Investigate intervention geometry on training data under a new audit version; retain quality tolerances unless evidence justifies a revision. No broad training claim from the current single-singer pilot.
 5. Freeze controller/renderer settings before held-out evaluation; preserve usable original audio when proposed edits fail.

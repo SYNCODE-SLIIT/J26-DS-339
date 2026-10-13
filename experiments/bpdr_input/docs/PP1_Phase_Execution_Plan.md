@@ -30,6 +30,8 @@ Output: current inventory, retention check, test log and [cleanup report](Cleanu
 
 **13 October measured update:** [the first coverage audit](Coverage_Audit_2026-10-13.md) finds potential support in six singers for shorter candidates, but only three singers with any passing shift and one with all six in a six-singer probe. Two -10-cent rejections involve PESTO's coarse pitch-bin stepping despite fine YIN agreement. Keep v0.3 active; Gate B remains open. Diagnose the coarse-consistency rule and inspect further crops while Gate C builds the common source path. No review or quality threshold was bypassed.
 
+**Fresh Jamendo update:** [the five-artist sample](Jamendo_Five_Artist_Sample_2026-10-13.md) finds v0.3 support in three crops/two artists. Five of eighteen variants pass across two crops/two artists, and none passes all six. Fine shift error and loss of common voiced audit coverage are additional failures. Diagnose renderer/tracker behavior and support selection under the existing error/preservation requirements before expanding or counting training pairs. Artist proxies and model masks do not replace reviewed reference voices.
+
 Current audit v0.3 admits suitable supports in only three Vocadito training crops from one singer. That is insufficient for a general multi-singer learned claim. Review effort alone cannot fix this geometry.
 
 1. On training sources only, enumerate reference-reliable spans and stable pitch/transition masks; count singers, recordings and crops independently.
@@ -41,7 +43,7 @@ Output: policy comparison with independent-source denominators and exclusions; n
 
 ## Gate C / P2J: build the component's data path on the pinned models
 
-**These are planned modules, not commands already available.** Keep the working unedited melody mirror as the shared-model/format reference.
+**13 October implementation:** the shared builder, typed source adapters, pinned GAME adapter, screen/masks, pending review queue, integrity verifier and listening index are available. After the initial six-crop pilot, [five new training artists](Jamendo_Five_Artist_Sample_2026-10-13.md) completed full-song GPU separation and GAME with individual receipts. The current common run has ten unchanged outputs, nine screen candidates, eighteen pending reviews and zero research-ready examples. Resume guards reject different separator settings or changed frozen selection metadata. Keep the working unedited melody mirror as the shared-model/format reference. The table remains the full exit criteria; measured preliminary yield does not satisfy single-voice/leakage calibration or reference approval.
 
 | Planned responsibility | Required behavior | Meaningful check |
 |---|---|---|
@@ -53,7 +55,7 @@ Output: policy comparison with independent-source denominators and exclusions; n
 | Suitability screen | Voicing/reliable support, leakage/overlap indicators, boundary ambiguity and exclusions | Silence/choir/leakage/weak pitch fixtures are withheld; screening is not reviewer approval |
 | Manifest/review packaging | One immutable record shape for both datasets, versioned masks/references, lineage and independent reviews | Source changes invalidate derived record; pending/rejected examples cannot become research eligible |
 
-Start with the existing stems for plumbing. Then separate five normal songs from distinct training artists using declared license/settings selection, and measure crop yield, reliable share and audited-support count. If viable, increase to 20-30 artists. Report song/artist/crop/frame counts separately. J3 assesses representative usable yield; its thresholds are predeclared before expansion and reviewer selection. Current 40-50% reliable shares on one song do not establish a collection threshold or accuracy.
+The existing-stem plumbing stage and frozen five-artist sample are complete. Seven Jamendo crops were prepared from four artists; six crops from three artists enter review. One song has no five-predicted-vocal-second window; one crop is withheld for low voicing/reliable pitch. Three crops/two artists support v0.3 probes; five of eighteen variants pass and no crop passes all six. Next, review the candidates and diagnose renderer/audit coverage, then decide whether an independently sourced 20-30-artist expansion is justified. Keep song/artist/crop/frame counts separate and predeclare expansion criteria. The observed fractions are descriptive screening yield, not population suitability or accuracy.
 
 J1 (execution) and J2 (GAME on Vocadito) are existing pilot evidence. J3 (representative stem suitability) remains open. J5 (excerpt/full-song equivalence) is optional; keep full-song separation as baseline until repeated across windows/artists. Cut J5 first if short of time.
 

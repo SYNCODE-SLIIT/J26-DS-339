@@ -18,7 +18,7 @@ BPDR means Boundary-Pitch Disentangled Repair. This component checks a short sol
 - Model/loss/metric/training code for BPDR, augmentation-only and frame-only conditions. Existing 30-update CPU/XPU runs are engineering smoke runs on one singer's repeated examples.
 - Component-local Jamendo mirror and pinned extraction tools, three saved vocal stems, and pilot GAME/audio-format checks.
 
-**What remains:** musical-usability validation, two-reviewer approved training anchors, broader intervention coverage, the common two-dataset builder, independent model selection/evaluation, repair controller/renderer/rollback and live team integration. The current saved data summary has **zero training-ready examples**. Technical acceptance and training fit are not repair accuracy.
+**What remains:** musical-usability validation, two-reviewer approved training anchors, broader intervention coverage, representative Jamendo yield, independent model selection/evaluation, repair controller/renderer/rollback and live team integration. The current saved data summary has **zero training-ready examples**. Technical acceptance and training fit are not repair accuracy.
 
 ## Folder guide
 
@@ -53,7 +53,17 @@ The project uses Python 3.12+ and a component-local uv lock. On a fresh machine,
 
 **Vocadito** is the original development/reference collection: 40 recordings from 29 singers with F0 and two note annotations. Preserve its source/singer split and untouched evaluation partitions. Its annotations describe performed singing and are not intended-note correction targets.
 
-**MTG-Jamendo** adds accompanied songs for exploratory vocal preparation. Keep artist/source groups separated, filter licenses, retain separated vocal WAVs, crop to <=20 seconds, and screen leakage, multiple voices and pitch reliability. There are 1,604 local tracks and three retained stems; a common builder is planned, not implemented. See the master plan before generating a new collection.
+**MTG-Jamendo** adds accompanied songs for exploratory vocal preparation. Keep artist/source groups separated, filter licenses, retain separated vocal WAVs, crop to <=20 seconds, and inspect leakage, multiple voices and pitch reliability. There are 1,604 local tracks and eight retained stems, including five fresh sources with individual receipts. The [five-artist sample](docs/Jamendo_Five_Artist_Sample_2026-10-13.md) prepared seven Jamendo crops: six screen candidates from three artists. Together with three Vocadito candidates, the current run has eighteen pending review rows and zero research-ready examples. Five of eighteen tested shifts pass v0.3 across two artists; review, renderer accuracy and voiced audit coverage remain open.
+
+```powershell
+& '.\.venv\Scripts\python.exe' -B -m bpdr_input.data_builder verify '.\runs\preparation\d274ed728d3d46f3b2661ba5291e61da'
+& '.\.venv\Scripts\python.exe' -B -m bpdr_input.data_builder build --vocadito-singers 3 --jamendo-artists 5 --jamendo-tracks 1101810,1071484,86270,1113639,1086669
+& '.\.venv\Scripts\python.exe' -B -m bpdr_input.separation_adapter plan --count 5
+```
+
+Build outputs live in `runs/preparation/<run-id>` with a manifest, summary and pending review sheet. A local listening page can be generated with `python -m bpdr_input.preparation_report '<run-path>'`. Each run records typed references and both accepted-crop GAME decodes; the existing Phase 2 review sheets are preserved.
+
+Use the [current listening page](runs/preparation/d274ed728d3d46f3b2661ba5291e61da/review.html). `jamendo_batch --selection '<selection-json>' --resume '<batch-path>'` reuses verified completed receipts and refuses changed selection/settings. `jamendo_yield '<completed-batch-path>'` measures the fixed v0.3 support and shifts in a new evidence directory; it does not create eligible training pairs. Historical runs retain their original hashes; new extraction can change live metadata/history, so do not rewrite old manifests to make them appear current.
 
 The existing working extraction route is:
 
