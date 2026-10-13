@@ -1,17 +1,18 @@
 # Full-song melody + chord extraction
 
-One command extracts **nine resumable results for each complete local MP3** in
+One command extracts **ten resumable results for each complete local MP3** in
 `../vocal-tagged-audio/`, in this order:
 
 1. GAME vocal notes, from a separated vocal stem, shifted up 12 semitones.
 2. SheetSage2 instrumental melody from the original MP3.
 3. A monophonic combined melody: GAME first; SheetSage2 only in long vocal gaps.
-4. A key estimate from the combined **melody only**.
-5. LV-Chordia chords decoded with its `submission` vocabulary.
-6. The same LV-Chordia model decoded with its `full` vocabulary.
-7. An independent submission-chord key estimate and disagreement diagnostic.
-8. Key-relative basic chords from the submission labels.
-9. Key-relative basic chords from the full labels.
+4. SheetSage2 beat times, downbeats, and meter from the original full MP3.
+5. A key estimate from the combined **melody only**.
+6. LV-Chordia chords decoded with its `submission` vocabulary.
+7. The same LV-Chordia model decoded with its `full` vocabulary.
+8. An independent submission-chord key estimate and disagreement diagnostic.
+9. Key-relative basic chords from the submission labels.
+10. Key-relative basic chords from the full labels.
 
 This folder contains its own extraction code and results. It **reuses the
 existing pinned model files and GAME/SheetSage2 environments** in
@@ -36,9 +37,9 @@ runner looks for them in `../melody-extraction/`; set `MELODY_MODEL_ASSETS` to
 another directory with the same layout if necessary. `ffmpeg` and `ffprobe`
 must be on `PATH`. The current vocal separator uses Apple Silicon/MLX, so this
 specific setup needs a compatible Mac. The SheetSage2 worker remains loaded
-across songs in one run, but the runner still finishes and records all nine
+across songs in one run, but the runner still finishes and records all ten
 stages for one song before starting the next. Already saved melody and chord
-stages are reused when adding key and basic chord results.
+stages are reused when adding beat, key, and basic chord results.
 
 ## Run, stop, resume
 
@@ -52,6 +53,11 @@ one song. Ctrl-C stops the run; completed stages remain saved and the next run
 resumes the current song. Failed songs are logged and skipped on the usual
 next-song run; `--retry-failed` retries them. An explicit `--track-id` also
 retries that track. Only one runner can hold the pipeline lock at a time.
+Songs that already have melody and chords but no beat files are selected for
+beat backfill; the other validated stages are reused. SheetSage2 must run
+once again for those songs because its original temporary `beat.lab` files
+were discarded after melody extraction. New songs save beats during the same
+SheetSage2 transcription as instrumental melody.
 
 ## Saved data
 
@@ -71,6 +77,8 @@ melody-chord-extraction-pipeline/
         game_vocal.mid/.json/.csv
         sheetsage2_instrumental.mid/.json/.csv
         combined.mid/.json/.csv
+      beats/
+        beats.json/.csv         SheetSage2 beat grid and meter
       chords/
         submission.json/.csv
         full.json/.csv
@@ -92,6 +100,15 @@ Melody JSON and CSV save full-song note onsets/offsets in seconds, MIDI pitch,
 velocity, and source; the MIDI is a listening/DAW copy. GAME's original model
 pitch is retained as `model_midi_pitch` in the JSON/CSV alongside the shifted
 pitch. Combined melody metadata includes the beat-derived minimum vocal gap.
+`beats.json` and `beats.csv` save one row per SheetSage2 beat: time from the
+start of the full MP3, zero-based beat and bar indexes, beat position within
+the bar, predicted meter, and a downbeat flag. JSON also retains the separate
+`downbeat.lab` times and reports whether they match the beat-position flags.
+The median beat period and its reciprocal in beats per minute summarize the
+event rate; in compound meters such as 6/8 this rate is not necessarily the
+musical quarter-note tempo. Beats, downbeats, meter, and bars are model
+predictions, not verified annotations. The beat files are linked to the same
+track ID, MP3 path, and source fingerprint as the other outputs.
 Chord JSON and CSV save full-song segment times and the **exact** LV-Chordia
 label, plus parsed root, quality, and bass degree. `N` means no chord.
 `submission` and `full` use the same pretrained model but different allowed

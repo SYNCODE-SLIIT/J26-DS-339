@@ -15,6 +15,7 @@ from pathlib import Path
 
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "code"))
+from beats import complete as beats_complete  # noqa: E402
 from chords import completed as chord_complete, save as save_chords, verify_model  # noqa: E402
 from combine import combine  # noqa: E402
 from comparison import completed as comparison_complete, save as save_comparison  # noqa: E402
@@ -32,6 +33,7 @@ MANIFEST_COLUMNS = ("track_id", "mtg_track_id", "artist_id", "album_id", "annota
                     "source_mp3", "duration_annotation_sec", "duration_audio_sec",
                     "split_0", "split_1", "split_2", "split_3", "split_4", "tags",
                     "status", "game_notes", "sheetsage_notes", "combined_notes",
+                    "beat_count", "median_beat_period_sec", "median_beat_rate_bpm",
                     "submission_chords", "full_chords", "submission_flags", "full_flags",
                     "key_tonic", "key_mode", "key_confidence", "chord_key_tonic",
                     "chord_key_mode", "key_agreement", "key_review_flag", "key_review_reasons",
@@ -72,6 +74,9 @@ def scan_existing(tracks: list[dict[str, str]]) -> dict[str, dict[str, dict]]:
             result = melody_complete(method, track)
             if result is not None:
                 stages[method] = result
+        result = beats_complete(track)
+        if result is not None:
+            stages["beats"] = result
         if "combined" in stages:
             result = key_complete(track)
             if result is not None:
@@ -113,6 +118,7 @@ def publish(tracks: list[dict[str, str]], results: dict[str, dict[str, dict]],
         flags = {vocab: ";".join(stages[vocab]["quality_flags"]) if vocab in stages else ""
                  for vocab in CHORDS}
         key = stages.get("key", {})
+        beats = stages.get("beats", {})
         comparison = stages.get("key_comparison", {})
         melodic_key = key.get("melody_key", {}).get("selected") or {}
         chord_key = comparison.get("chord_key", {}).get("selected") or {}
@@ -124,6 +130,9 @@ def publish(tracks: list[dict[str, str]], results: dict[str, dict[str, dict]],
                      "status": status, "game_notes": counts["game_vocal"],
                      "sheetsage_notes": counts["sheetsage2_instrumental"],
                      "combined_notes": counts["combined"],
+                     "beat_count": len(beats["beats"]) if beats else "",
+                     "median_beat_period_sec": beats.get("median_beat_period_sec", ""),
+                     "median_beat_rate_bpm": beats.get("median_beat_rate_bpm", ""),
                      "submission_chords": chord_counts["submission"],
                      "full_chords": chord_counts["full"],
                      "submission_flags": flags["submission"], "full_flags": flags["full"],
@@ -156,6 +165,9 @@ def publish(tracks: list[dict[str, str]], results: dict[str, dict[str, dict]],
                     "csv": f"{folder}/melody/{method}.csv",
                     "note_count": counts[method],
                 } for method in MELODIES if method in stages},
+                "beats": {"json": f"{folder}/beats/beats.json",
+                          "csv": f"{folder}/beats/beats.csv",
+                          "beat_count": len(beats["beats"])} if beats else None,
                 "chords": {vocab: {
                     "json": f"{folder}/chords/{vocab}.json",
                     "csv": f"{folder}/chords/{vocab}.csv",
@@ -232,6 +244,13 @@ class SheetSageWorker:
         result = melody_complete("sheetsage2_instrumental", track)
         if result is None:
             raise RuntimeError("SheetSage2 reported DONE without validated output")
+        return result
+
+    def extract_beats(self, track: dict[str, str], duration: float) -> dict:
+        self.transcribe(track, duration)
+        result = beats_complete(track)
+        if result is None:
+            raise RuntimeError("SheetSage2 reported DONE without validated beat output")
         return result
 
     def close(self) -> None:
@@ -327,6 +346,7 @@ def main() -> int:
                         if errors.get(track_id, ("", ""))[0] == stage:
                             errors.pop(track_id, None)
                         count = (len(result["events"]) if stage in CHORDS or stage.startswith("roman_")
+                                 else len(result["beats"]) if stage == "beats"
                                  else 1 if stage in ("key", "key_comparison") else len(result["notes"]))
                         log(track_id, stage, f"complete count={count}")
                         print(f"  {stage}: {count}", flush=True)
@@ -343,6 +363,14 @@ def main() -> int:
                         game = GameExtractor()
                     attempt("game_vocal", lambda: game.extract(track, duration))
                 attempt("sheetsage2_instrumental", lambda: sheet.transcribe(track, duration))
+                if "sheetsage2_instrumental" in stages and "beats" not in stages:
+                    beat_result = beats_complete(track)
+                    if beat_result is not None:
+                        stages["beats"] = beat_result
+                        log(track_id, "beats", f"complete count={len(beat_result['beats'])} (with SheetSage2 melody)")
+                        publish(tracks, results, errors, durations)
+                    else:
+                        attempt("beats", lambda: sheet.extract_beats(track, duration))
                 if "game_vocal" in stages and "sheetsage2_instrumental" in stages:
                     def combined_result() -> dict:
                         combine(track, duration)

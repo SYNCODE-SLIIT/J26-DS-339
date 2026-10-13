@@ -27,6 +27,13 @@
     "python": "3.10.20",
     "numpy": "1.24.3"
   },
+  "beats": {
+    "source": "SheetSage2 beat.lab and downbeat.lab from the original full MP3",
+    "model_revision": "32c7c7473e7b59e1ed36bd8a8fefbd11ae8d468a",
+    "time_origin": "full_song_start",
+    "fields": "beat time, beat position, predicted meter, downbeat, bar index",
+    "tempo_summary": "60 divided by the median beat interval; event rate, not always quarter-note BPM"
+  },
   "combined": {
     "vocal_priority": "game_vocal",
     "instrumental_fallback": "sheetsage2_instrumental",

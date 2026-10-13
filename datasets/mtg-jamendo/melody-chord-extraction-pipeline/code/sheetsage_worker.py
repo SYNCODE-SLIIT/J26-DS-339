@@ -10,6 +10,7 @@ import tempfile
 import time
 from pathlib import Path
 
+from beats import complete as beats_complete, save as save_beats
 from common import ASSETS, DATASET, melody_complete, write_notes
 
 
@@ -34,32 +35,38 @@ def median_beat(path: Path) -> float:
     return float(statistics.median(intervals)) if len(intervals) >= 3 else 0.5
 
 
-def transcribe(model, row: dict) -> int:
+def transcribe(model, row: dict) -> tuple[int, int]:
     import pretty_midi
 
     track_id = row["track_id"]
+    melody_done = melody_complete("sheetsage2_instrumental", row)
+    beats_done = beats_complete(row)
     with tempfile.TemporaryDirectory(prefix="sheetsage2-") as folder:
         directory = Path(folder)
         model.transcribe(str(DATASET / row["source_mp3"]), output_dir=directory, dtype="fp32")
-        midi_path = directory / "melody_instrumental.mid"
-        if not midi_path.exists():
-            raise FileNotFoundError(midi_path)
-        notes = []
-        for instrument in pretty_midi.PrettyMIDI(str(midi_path)).instruments:
-            for note in instrument.notes:
-                notes.append({"onset_sec": round(float(note.start), 5),
-                              "offset_sec": round(float(note.end), 5),
-                              "midi_pitch": int(note.pitch),
-                              "midi_pitch_rounded": int(note.pitch),
-                              "velocity": int(note.velocity),
-                              "source": "sheetsage2_instrumental"})
-        write_notes("sheetsage2_instrumental", row, notes,
-                    duration_sec=float(row["duration_sec"]), metadata={
-                        "median_beat_sec": median_beat(directory / "beat.lab"),
-                        "model_revision": MODEL_REVISION,
-                        "base_model_revision": BASE_REVISION,
-                    })
-        return len(notes)
+        if melody_done is None:
+            midi_path = directory / "melody_instrumental.mid"
+            if not midi_path.exists():
+                raise FileNotFoundError(midi_path)
+            notes = []
+            for instrument in pretty_midi.PrettyMIDI(str(midi_path)).instruments:
+                for note in instrument.notes:
+                    notes.append({"onset_sec": round(float(note.start), 5),
+                                  "offset_sec": round(float(note.end), 5),
+                                  "midi_pitch": int(note.pitch),
+                                  "midi_pitch_rounded": int(note.pitch),
+                                  "velocity": int(note.velocity),
+                                  "source": "sheetsage2_instrumental"})
+            melody_done = write_notes("sheetsage2_instrumental", row, notes,
+                                      duration_sec=float(row["duration_sec"]), metadata={
+                                          "median_beat_sec": median_beat(directory / "beat.lab"),
+                                          "model_revision": MODEL_REVISION,
+                                          "base_model_revision": BASE_REVISION,
+                                      })
+        if beats_done is None:
+            beats_done = save_beats(row, float(row["duration_sec"]),
+                                    directory / "beat.lab", directory / "downbeat.lab")
+        return len(melody_done["notes"]), len(beats_done["beats"])
 
 
 def main() -> None:
@@ -80,13 +87,13 @@ def main() -> None:
             continue
         row = json.loads(line)
         track_id = row["track_id"]
-        if melody_complete("sheetsage2_instrumental", row):
+        if melody_complete("sheetsage2_instrumental", row) and beats_complete(row):
             print(f"DONE\t{track_id}\tresumed", flush=True)
             continue
         start = time.monotonic()
         try:
-            count = transcribe(model, row)
-            print(f"DONE\t{track_id}\t{count}\t{time.monotonic() - start:.1f}s", flush=True)
+            melody_count, beat_count = transcribe(model, row)
+            print(f"DONE\t{track_id}\tmelody={melody_count}\tbeats={beat_count}\t{time.monotonic() - start:.1f}s", flush=True)
         except Exception as exc:
             print(f"ERROR\t{track_id}\t{type(exc).__name__}: {exc}", flush=True)
 
