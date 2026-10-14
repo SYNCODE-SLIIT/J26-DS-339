@@ -4,6 +4,10 @@
 
 ## Immediate sequence
 
+**Owner direction — reviewers unavailable:** [continue without experienced review for now](Reviewer_Deferral_2026-10-14.md). Proceed with Gate F controls/diagnostics and B/C/E engineering evidence, preserving exploratory labels and pending reviews. Gate D/J4 is deferred until reviewers are available, not an immediate action item that stops engineering. Formal musical validation and research-ready anchors remain uncredited; the future review workflow below is retained.
+
+**Current work gate: Gate F — usable delivered audio (renderer validation), open.** Include this gate label and a concrete gate-specific next action in progress/next-step reports. Gate D/J4 independent reference approvals are deferred until reviewers are available; Gate B voice/support coverage and Gate E matched research fits remain open. Gate F engineering proceeds now on saved controlled evidence. No research or delivery gate is credited from fixtures alone.
+
 **Coverage audit -> common dataset path -> screened multi-source sample -> actual reference reviews -> matched learning -> conservative delivered audio -> independent evaluation -> accepted-only integration.** Model/controller engineering and contract fixtures can proceed while reviews are pending. Research fitting requires the reference gate. A calendar date never overrides a gate.
 
 | Priority | Target window | Deliverable | Exit requirement |
@@ -65,6 +69,8 @@ J1 (execution) and J2 (GAME on Vocadito) are existing pilot evidence. J3 (repres
 
 ## Gate D / J4: actual approved reference anchors
 
+**Deferred by owner, 14 October:** no musically experienced reviewers are currently available. The numbered steps below are for future execution when reviewers are available. Current engineering work uses automatic checks, known controlled targets and existing typed references, without fabricated approval or a research-loader bypass. Research-ready examples remain zero. See [the staged no-reviewer workflow](Reviewer_Deferral_2026-10-14.md).
+
 1. Prioritize sources that can host audited detuning, then send independent review sheets to two musically experienced reviewers through the owner's research workflow. Do not fabricate or infer their approval.
 2. Review acceptability, stable support, uncertain transitions and permission to preserve the reference. Record distinct identities, decisions, agreed intervals and reasons resolving disagreement.
 3. Preserve human annotations for Vocadito. For Jamendo retain `model_estimate` provenance even after a recording is judged acceptable; any additional human pitch annotation is a separately documented task.
@@ -86,6 +92,16 @@ Retain current `model.py`, `losses.py`, `examples.py`, `metrics.py`, `training.p
 Exit: reloadable conditions, fair protocol and independently executable metrics. Training-fit improvement alone passes no research-effect gate.
 
 ## Gate F: usable delivered audio
+
+**Latest completed step — phase/amplitude feasibility:** [fixed diagnostics](Phase_Feasibility_2026-10-14.md) reconstruct all 64 existing waveforms, measure 72 ramps per method and pass eleven known controls. Destructive fundamental mixing is observed; it is not an auditory rating or proof of a sole cause. All **123 checks pass**. **Next — Gate F (open):** predeclare one phase-aware joining candidate, retaining all original interior targets, full audit, exact identity/time/outside/rest checks and both YIN windows. No post-outcome tuning or automatic adoption. **Future — Gate D/J4 (deferred):** actual musical reviews when available; continue engineering now under the owner decision.
+
+**Prior completed step — boundary-taper comparison:** [the fixed 32-case experiment](Boundary_Comparison_2026-10-14.md) increases aggregate full passes from 26 to 27, but loses vibrato-220/crossing and worsens the shorter-window maximum transition peak. All fine/preservation checks and eight exact zero identities pass; the declared advancement filter refuses the candidate. That stage passed **119 checks**. Preserve both windows and all baseline decisions; do not tune the refused taper setting or proceed as if it validated real vocals. A bounded training-only vocal/listening comparison waits for justified controlled evidence. No renderer adoption, research pair or accepted repaired package is credited.
+
+**Prior completed direction/transition diagnosis:** [frozen evidence](Framewise_Diagnostics_2026-10-14.md) reproduces all original audit values and local samples. The 26/32 baseline pass count is unchanged; all 17 opposing coarse changes in six rejects are below 0.001 cent, with no acceptance-rule change. Transition contrasts demonstrate a blending contribution to measured peaks and estimator-window sensitivity. That stage passed 112 checks and closes no research/delivery gate.
+
+**Framewise candidate tested 14 October:** [the controlled Praat/Parselmouth experiment](Framewise_Renderer_2026-10-14.md) passes 26/32 full audits and all 32 fine-error checks; six per-frame coarse-direction rejects remain. Eight exact identities and one supplied changing-curve transaction verify, with 108 regression checks passing. Count/time/outside/rest preservation is measured on controls only. The candidate and new per-frame audit remain separate from active v0.3. Next, diagnose the rejects and predeclare a bounded existing-training-vocal/listening comparison; no production adoption or accepted repaired package is credited.
+
+**Prediction adapter completed 14 October:** [frozen checkpoint to permission preview](Prediction_Adapter_2026-10-14.md) preserves 70/71 inputs, constructs sign/gap-separated candidate intervals and checks worst alternate-view disagreement. One seen S29 crop gives 940-frame curves, maximum about 0.17 cents and no edit request; six constructed adapter cases and 102 regression checks pass. Missing/uncalibrated uncertainty, expressivity protection and production policy still prevent runtime edits. No audio is rendered, model fitted or accepted package created. Next, evaluate a duration-preserving framewise renderer candidate; permission/uncertainty calibration and actual reference reviews remain open.
 
 **14 October engineering progress:** [permission/rollback fixtures](Controller_Fixtures_2026-10-14.md) verify nine constructed outcomes and 93 regression checks. Invalid proposals are withheld without clipping; physical/post-pitch failures roll back exactly. This is a separate fixture harness with no accepted package. Runtime uncertainty/proposal generation, calibrated limits, the framewise renderer, expressive preservation and accepted-only delivery remain open; the active data path and v0.3 renderer/policy are unchanged.
 

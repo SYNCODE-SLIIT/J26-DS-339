@@ -18,6 +18,26 @@
     "engineering_cpu": "runs/engineering/9cd3c1a81e274e728a08e5e278bc8790",
     "engineering_xpu": "runs/engineering/d699b0286bea4c2f8d8b4c62c80ba6b1",
     "portable_decision": "docs/Portable_Pipeline_Decision_2026-10-14.md",
-    "controller_fixtures": "runs/controller_fixtures/77e32684041d41fab54d9cd74416e662/evidence.json"
+    "controller_fixtures": "runs/controller_fixtures/77e32684041d41fab54d9cd74416e662/evidence.json",
+    "prediction_preview": "runs/prediction_preview/9ef4b3ca61bb4b4aac2c341770c81e56/evidence.json",
+    "framewise_fixtures": "runs/framewise_fixtures/1ae10a68d8c94dcc89d18c45719cef6f/evidence.json",
+    "framewise_diagnostics": "runs/framewise_diagnostics/4ece4923dc68495ba7efd2580733d89e/evidence.json",
+    "boundary_comparison": "runs/boundary_comparison/e69c9a73c3f54f7c843701f5dadbf522/evidence.json",
+    "phase_feasibility": "runs/phase_feasibility/d215daf94aa749ce8798f72ab13976d9/evidence.json",
+    "reviewer_deferral": "docs/Reviewer_Deferral_2026-10-14.md"
+  },
+  "current_gate": {
+    "work": "Gate F \u2014 usable delivered audio / renderer validation",
+    "state": "open",
+    "next_action": "Predeclare one phase-aware joining candidate on the fixed controls, unchanged interior targets and audit; continue engineering without experienced reviewers for now",
+    "pending_prerequisite": "Gate D/J4 \u2014 deferred until experienced musical reviewers are available",
+    "training_ready_examples": 0
+  },
+  "review_policy": {
+    "status": "deferred_by_owner",
+    "reason": "Experienced musical reviewers currently unavailable",
+    "engineering_continues": true,
+    "automatic_checks_are_musical_approvals": false,
+    "future_review_required_for_proposed_research_anchors": true
   }
 }

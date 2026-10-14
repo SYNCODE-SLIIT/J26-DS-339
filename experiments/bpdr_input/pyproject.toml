@@ -9,6 +9,9 @@ description = "PP1 experimental workspace for Boundary-Pitch Disentangled Repair
 requires-python = ">=3.12"
 dependencies = ["numpy>=2.0", "scipy>=1.13", "soundfile>=0.13", "librosa>=0.11", "matplotlib>=3.9", "pesto-pitch>=1.0"]
 
+[project.optional-dependencies]
+rendering = ["praat-parselmouth==0.4.7"]
+
 [project.scripts]
 bpdr-data-audit = "bpdr_input.inventory:main"
 bpdr-process = "bpdr_input.pipeline:main"

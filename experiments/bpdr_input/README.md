@@ -35,6 +35,10 @@ BPDR means Boundary-Pitch Disentangled Repair. This component checks a short sol
 
 ## Run the existing foundation
 
+**Owner update — reviewers deferred:** experienced musical reviewers are unavailable. Continue automated checks, controlled comparisons and provisional engineering now; add independent musical review later. Gate D/J4 is **deferred/open**, with pending records preserved, rather than a task that stops this engineering sequence. See [the revised no-reviewer workflow](docs/Reviewer_Deferral_2026-10-14.md). No review approvals or research-ready examples are inferred.
+
+**Current work gate: Gate F — usable delivered audio (experimental renderer validation). Gate F is open.** When reporting the next step, name the gate, the action and what evidence would close it. This describes the current engineering work; it does not imply earlier research gates are complete. Gate D/J4 (actual independent reference approvals) is deferred until reviewers are available, Gate B (independent voice/support coverage) is open, and Gate E (matched research fits/evaluation) is not complete. Research-ready examples remain zero; engineering continues now.
+
 Gate B started on 13 October: see the [coverage audit and measured limitations](docs/Coverage_Audit_2026-10-13.md). The active rendering policy and research review gate remain unchanged.
 
 From this component folder in PowerShell:
@@ -82,7 +86,19 @@ The [14 October diagnosis and reviewer packet](docs/Audit_Diagnostics_and_Review
 
 The [wider calibration](docs/Renderer_Calibration_2026-10-14.md) is now complete: 108 real-crop measurements across both datasets and 216 constructed-control measurements. Candidates improve Jamendo/control totals but each loses a Vocadito success. Those three Vocadito crops represent only one singer. Keep the active renderer; 36 matched audio comparisons are ready for listening. Actual independent reviews and research eligibility remain pending. That calibration stage passed **81 checks**.
 
-The [permission and rollback fixture step](docs/Controller_Fixtures_2026-10-14.md) verifies nine constructed controller outcomes; the latest full suite passes **93 checks**. Both notebooks explain the permission rules, exact rollback and measured constructed pitch case. These are engineering fixtures with illustrative bounds and supplied proposals, not a calibrated runtime controller or accepted repaired output. Actual reviews and research eligibility remain pending.
+The [permission and rollback fixture step](docs/Controller_Fixtures_2026-10-14.md) verifies nine constructed controller outcomes; that fixture stage passed **93 checks**. Both notebooks explain the permission rules, exact rollback and measured constructed pitch case. These are engineering fixtures with illustrative bounds and supplied proposals, not a calibrated runtime controller or accepted repaired output. Actual reviews and research eligibility remain pending.
+
+The [prediction-to-permission adapter](docs/Prediction_Adapter_2026-10-14.md) now reads the saved engineering checkpoint, constructs candidate intervals and withholds runtime edits when uncertainty/expressivity/permission are uncalibrated. The seen S29 crop produces 940-frame predictions below the provisional request threshold; no audio is edited. Six constructed adapter cases verify interval grouping/refusal, and that adapter stage passed **102 checks**. Both maintained notebooks include this step; useful repair, real reviews and the framewise renderer remain open.
+
+The [framewise renderer candidate](docs/Framewise_Renderer_2026-10-14.md) is now tested on 32 constructed changing/constant-curve cases: 26 full audits pass, with all fine-error checks passing and six stricter coarse-direction rejects retained. Eight identities, exact timing/outside/rest preservation and one supplied-fixture transaction verify. That renderer stage passed **108 checks** and both notebooks include the results. The optional `rendering` dependency is pinned; the candidate is unadopted, real vocal quality/reviews remain open, and no accepted repaired package exists.
+
+The same WAVs show an additional transition limitation: five YIN peaks above 30 cents in excluded ramp/guard windows, maximum about 42.42 cents. This is an estimator diagnostic, not a musical verdict. A guarded audit pass does not validate transitions or authorize delivery; the current notebook/report keeps this open gate visible.
+
+**Completed Gate F diagnosis:** [direction and transition diagnosis](docs/Framewise_Diagnostics_2026-10-14.md) replays all 32 audits and reproduces all saved local waveforms exactly. All 17 opposing coarse changes in the six rejects are below 0.001 cent; the six baseline rejects remain. Full/local/oracle contrasts show both a blending contribution to measured peaks and YIN-window sensitivity. That stage passed **112 checks**; both maintained notebooks retain its evidence.
+
+**Prior completed step — Gate F:** [controlled boundary-taper comparison](docs/Boundary_Comparison_2026-10-14.md) gives 27/32 full passes versus 26/32, all fine/preservation checks passing and eight exact zero identities. It loses one baseline pass and worsens the shorter-window maximum peak (58.24 to 59.40 cents), so the declared advancement filter refuses it. It remains unadopted; no accepted repaired package or research example exists. That stage passed **119 checks** and both maintained notebooks retain its regressions. Do not treat the taper candidate as ready for the bounded vocal comparison.
+
+**Current completed step — Gate F:** [phase/amplitude feasibility](docs/Phase_Feasibility_2026-10-14.md) reconstructs all 64 saved local waveforms exactly and measures 72 ramps per existing method. Destructive fundamental mixing appears in the controls: measured ratios below half the phase-aligned reference occur in 25 baseline and 45 taper ramps. These are narrowband diagnostics, not auditory quality scores. All **123 regression checks pass**. **Next — Gate F (open):** declare one phase-aware joining candidate and test the fixed controls, original targets and preservation checks. **Future — Gate D/J4 (deferred):** experienced musical review when available. Both maintained notebooks reflect this owner decision; engineering continues now with no adopted renderer or accepted repaired package.
 
 The existing working extraction route is:
 
