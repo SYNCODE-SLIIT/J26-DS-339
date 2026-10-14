@@ -32,7 +32,11 @@ Output: current inventory, retention check, test log and [cleanup report](Cleanu
 
 **Fresh Jamendo update:** [the five-artist sample](Jamendo_Five_Artist_Sample_2026-10-13.md) finds v0.3 support in three crops/two artists. Five of eighteen variants pass across two crops/two artists, and none passes all six. Fine shift error and loss of common voiced audit coverage are additional failures. Diagnose renderer/tracker behavior and support selection under the existing error/preservation requirements before expanding or counting training pairs. Artist proxies and model masks do not replace reviewed reference voices.
 
+**14 October diagnosis:** [all eighteen decisions replay](Audit_Diagnostics_and_Review_2026-10-14.md); local-versus-full comparisons rule out crossfade contamination of the tested audit interiors. Controlled vibrato exposes phase-vocoder fine errors. A declared FFT/hop comparison gives 6/18, 10/18 and 9/18 passes, but loses some active successes and no crop passes all six. Keep the active renderer/policy; extend versioned calibration and audible checks on existing training material before adopting a candidate. A nine-crop, two-sheet independent review bundle is ready; actual human decisions remain pending.
+
 Current audit v0.3 admits suitable supports in only three Vocadito training crops from one singer. That is insufficient for a general multi-singer learned claim. Review effort alone cannot fix this geometry.
+
+**Wider calibration completed 14 October:** [108 real-crop and 216 constructed-control measurements](Renderer_Calibration_2026-10-14.md) retain those limits. Both FFT-1024 candidates lose an active Vocadito success; hop 128 still fails two wide/fast vibrato controls. No renderer is adopted. A labelled 36-clip comparison page is ready, and 81 regression checks pass. Next, collect the actual independent original-reference decisions and audible observations, then address independently identified voice support under a declared policy. Keep model/controller fixtures exploratory while reviews are pending; do not resume extraction or research fitting from aggregate candidate gains alone.
 
 1. On training sources only, enumerate reference-reliable spans and stable pitch/transition masks; count singers, recordings and crops independently.
 2. Evaluate shorter plateau/guard candidates as a new versioned policy. A 0.5-second support is a coverage hypothesis, not an approved setting. Keep existing fine/coarse realized-shift and outside-drift tolerances unless measured justification supports revision.
@@ -82,6 +86,8 @@ Retain current `model.py`, `losses.py`, `examples.py`, `metrics.py`, `training.p
 Exit: reloadable conditions, fair protocol and independently executable metrics. Training-fit improvement alone passes no research-effect gate.
 
 ## Gate F: usable delivered audio
+
+**14 October engineering progress:** [permission/rollback fixtures](Controller_Fixtures_2026-10-14.md) verify nine constructed outcomes and 93 regression checks. Invalid proposals are withheld without clipping; physical/post-pitch failures roll back exactly. This is a separate fixture harness with no accepted package. Runtime uncertainty/proposal generation, calibrated limits, the framewise renderer, expressive preservation and accepted-only delivery remain open; the active data path and v0.3 renderer/policy are unchanged.
 
 1. Specify provisional permission policy: reliable support, correction magnitude/affected fraction, uncertainty and alternate-boundary agreement, protected transitions, rests and expressive cases. Calibrate values on development data; over-limit proposals are withheld rather than clipped.
 2. Implement the proposal's duration-preserving local renderer (Praat/Parselmouth candidate), independently of the artificial detuning generator. Record its version and decisions.

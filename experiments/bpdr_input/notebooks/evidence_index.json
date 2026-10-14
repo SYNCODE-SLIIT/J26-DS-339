@@ -1,0 +1,23 @@
+{
+  "updated": "2026-10-14",
+  "purpose": "Current, explicit evidence selection for the two maintained panel notebooks; update after every completed BPDR step.",
+  "maintained_notebooks": [
+    "01_input_validation_and_analysis.ipynb",
+    "02_data_review_and_paired_experiments.ipynb"
+  ],
+  "evidence": {
+    "phase2": "runs/phase2/15fb678d1f44406ab4da3fddd7c2f809",
+    "exploratory": "runs/phase2/15fb678d1f44406ab4da3fddd7c2f809/exploratory/fda19aa33ede4aba8fa4b4087bb3afdc",
+    "coverage": "runs/coverage/1993b73598b94feeb4de15d3588f65e9/summary.json",
+    "preparation": "runs/preparation/d274ed728d3d46f3b2661ba5291e61da",
+    "yield": "runs/jamendo_yield/de2f85a01b194c4eab009aa95b14e496/evidence.json",
+    "diagnostics": "runs/audit_diagnostics/c71f8e700e0b43aeade92c6832f075e2/diagnostics.json",
+    "initial_renderer": "runs/renderer_candidates/966a7845435e4a198ab02af828714b39/comparison.json",
+    "calibration": "runs/renderer_calibration/7b8a3cfaab7349f5b574db6d7d552683/calibration.json",
+    "review_bundle": "runs/review_bundles/5d35fe91ab1846ee8ab56e16289879ed",
+    "engineering_cpu": "runs/engineering/9cd3c1a81e274e728a08e5e278bc8790",
+    "engineering_xpu": "runs/engineering/d699b0286bea4c2f8d8b4c62c80ba6b1",
+    "portable_decision": "docs/Portable_Pipeline_Decision_2026-10-14.md",
+    "controller_fixtures": "runs/controller_fixtures/77e32684041d41fab54d9cd74416e662/evidence.json"
+  }
+}

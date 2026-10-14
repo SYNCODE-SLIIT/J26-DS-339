@@ -1,6 +1,6 @@
 # BPDR vocal input component
 
-Owner: Liyanage L. N. P., IT23141506. Updated 12 October 2026.
+Owner: Liyanage L. N. P., IT23141506. Updated 14 October 2026.
 
 BPDR means Boundary-Pitch Disentangled Repair. This component checks a short solo singing/humming recording, preserves usable input, and is intended to make only small justified pitch repairs before melody understanding. All component work stays here in `experiments/bpdr_input`.
 
@@ -16,7 +16,7 @@ BPDR means Boundary-Pitch Disentangled Repair. This component checks a short sol
 - Original retention, technical checks, frozen PESTO analysis and checked mono 22,050 Hz PCM24 WAV export. Supported input is WAV/FLAC, 0.25-20 seconds. Duration, time origin and internal rests are preserved.
 - Vocadito inventory, singer partitions, 57 mapped crops, review sheets, audited artificial detuning and four-view boundary experiments.
 - Model/loss/metric/training code for BPDR, augmentation-only and frame-only conditions. Existing 30-update CPU/XPU runs are engineering smoke runs on one singer's repeated examples.
-- Component-local Jamendo mirror and pinned extraction tools, three saved vocal stems, and pilot GAME/audio-format checks.
+- Component-local Jamendo mirror and pinned extraction tools, eight saved vocal stems, and pilot GAME/audio-format checks.
 
 **What remains:** musical-usability validation, two-reviewer approved training anchors, broader intervention coverage, representative Jamendo yield, independent model selection/evaluation, repair controller/renderer/rollback and live team integration. The current saved data summary has **zero training-ready examples**. Technical acceptance and training fit are not repair accuracy.
 
@@ -47,6 +47,19 @@ From this component folder in PowerShell:
 
 Open the generated `report.html` for playback and diagnostics. `ACCEPT_UNCHANGED` means no musical correction; channel selection, resampling and encoding are logged. `ACCEPT_PREPARED` is reserved for a future verified repair path. Rejected/failed outputs carry no accepted WAV.
 
+## Keep the panel notebooks current
+
+Maintain these two notebooks in presentation order:
+
+1. [Input validation and analysis](notebooks/01_input_validation_and_analysis.ipynb): a fresh unchanged technical demonstration, original/working-copy playback, measured features, timing and controlled stops.
+2. [Datasets, experiments and research readiness](notebooks/02_data_review_and_paired_experiments.ipynb): Vocadito/Jamendo roles, review gates, A/B/C/D construction, measured coverage/renderer limits, learning scaffold and historical smoke records, accepted-only hand-off and future pipeline scope.
+
+After every completed BPDR step, update the affected cells and [explicit evidence index](notebooks/evidence_index.json). Clear stale outputs and execute both from fresh kernels. The executor records source/executed/HTML hashes and updates `runs/notebooks/latest.json` only after both succeed. Present the latest verified executed notebooks or their HTML exports; edit the maintained files above. Missing/changed evidence stops instead of silently rerunning extraction, interventions or model fitting. Notebook 1's fresh preparation/stop fixtures remain an explicit technical demonstration.
+
+Keep implemented behavior, historical engineering execution, actual research validity and planned features distinct. Source-revision differences in old training records are visible. Review approvals, repair accuracy, delivered repaired audio and cross-platform integration must not be credited before verification. Keep failed/pending gates and independent singer/source counts visible.
+
+The 14 October inventory found two maintained notebooks and four dated executed copies, with no redundant working notebook. Historical copies and before-edit backups are evidence/recovery material, not current presentation sources. Remove a notebook only after checking dependencies and redundancy, preserving recovery, and staying within this component. Continue updating the existing two instead of creating a separate notebook for each experiment.
+
 The project uses Python 3.12+ and a component-local uv lock. On a fresh machine, install uv and run `uv sync --locked` here; `uv sync --locked --group notebooks` includes the notebook tools. Existing launchers use the ignored portable uv in `.tools` when present.
 
 ## Use the datasets correctly
@@ -64,6 +77,12 @@ The project uses Python 3.12+ and a component-local uv lock. On a fresh machine,
 Build outputs live in `runs/preparation/<run-id>` with a manifest, summary and pending review sheet. A local listening page can be generated with `python -m bpdr_input.preparation_report '<run-path>'`. Each run records typed references and both accepted-crop GAME decodes; the existing Phase 2 review sheets are preserved.
 
 Use the [current listening page](runs/preparation/d274ed728d3d46f3b2661ba5291e61da/review.html). `jamendo_batch --selection '<selection-json>' --resume '<batch-path>'` reuses verified completed receipts and refuses changed selection/settings. `jamendo_yield '<completed-batch-path>'` measures the fixed v0.3 support and shifts in a new evidence directory; it does not create eligible training pairs. Historical runs retain their original hashes; new extraction can change live metadata/history, so do not rewrite old manifests to make them appear current.
+
+The [14 October diagnosis and reviewer packet](docs/Audit_Diagnostics_and_Review_2026-10-14.md) reuse those extracted crops. All eighteen baseline decisions replay. A declared renderer candidate gives 10/18 passes versus the active 5/18, but loses two existing successes and yields no all-six crop; it is not adopted. Two independent blank reviewer sheets and a listening page are ready. This initial diagnostic stage passed 78 checks; the wider calibration below updates the current evidence. Actual reviews and research eligibility remain pending.
+
+The [wider calibration](docs/Renderer_Calibration_2026-10-14.md) is now complete: 108 real-crop measurements across both datasets and 216 constructed-control measurements. Candidates improve Jamendo/control totals but each loses a Vocadito success. Those three Vocadito crops represent only one singer. Keep the active renderer; 36 matched audio comparisons are ready for listening. Actual independent reviews and research eligibility remain pending. That calibration stage passed **81 checks**.
+
+The [permission and rollback fixture step](docs/Controller_Fixtures_2026-10-14.md) verifies nine constructed controller outcomes; the latest full suite passes **93 checks**. Both notebooks explain the permission rules, exact rollback and measured constructed pitch case. These are engineering fixtures with illustrative bounds and supplied proposals, not a calibrated runtime controller or accepted repaired output. Actual reviews and research eligibility remain pending.
 
 The existing working extraction route is:
 

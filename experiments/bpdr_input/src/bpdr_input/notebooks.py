@@ -6,6 +6,8 @@ from pathlib import Path
 import subprocess
 import sys
 import uuid
+from .pipeline import checksum
+from .notebook_evidence import load_index
 
 
 def configure_kernel(component):
@@ -40,7 +42,12 @@ def main():
     destination = component/'runs'/'notebooks'/uuid.uuid4().hex
     destination.mkdir(parents=True)
     rows = []
-    for path in sorted((component/'notebooks').glob('*.ipynb')):
+    index, evidence = load_index(component)
+    index_hash = checksum(component/'notebooks/evidence_index.json')
+    # Execute only the declared maintained notebooks, never archive/vendor copies.
+    for name in index['maintained_notebooks']:
+        path = component/'notebooks'/name
+        source_hash = checksum(path)
         notebook = nbformat.read(path, as_version=4)
         nbformat.validate(notebook)
         print('Executing', path.name, flush=True)
@@ -55,8 +62,18 @@ def main():
         html, _ = HTMLExporter().from_notebook_node(notebook)
         (destination/(path.stem+'.html')).write_text(html, encoding='utf-8')
         rows.append(dict(notebook=path.name, executed_copy=str(destination/path.name), html_export=str(destination/(path.stem+'.html')),
+                         source_sha256=source_hash, executed_sha256=checksum(destination/path.name),
+                         html_sha256=checksum(destination/(path.stem+'.html')),
                          code_cells=sum(cell.cell_type == 'code' for cell in notebook.cells), plot_outputs=plots, audio_outputs=audio, errors=0))
+        if checksum(path) != source_hash:
+            raise RuntimeError('Maintained notebook changed during execution')
+    if checksum(component/'notebooks/evidence_index.json') != index_hash:
+        raise RuntimeError('Panel evidence selection changed during execution')
     (destination/'verification.json').write_text(json.dumps(rows, indent=2), encoding='utf-8')
+    (destination/'provenance.json').write_text(json.dumps(dict(evidence_index_sha256=index_hash,
+        evidence_index=index, interpreter=sys.executable, verification_sha256=checksum(destination/'verification.json'),
+        limitations=['Notebook execution and plots are engineering evidence, not research accuracy',
+                     'Review decisions remain human-owned; no extraction, research fitting or policy adoption is performed']), indent=2), encoding='utf-8')
     (component/'runs'/'notebooks'/'latest.json').write_text(json.dumps({'path': str(destination)}, indent=2), encoding='utf-8')
     print('NOTEBOOK_RUN:', destination)
     return 0

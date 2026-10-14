@@ -32,11 +32,19 @@ Operating scope: one unaccompanied voice, WAV/FLAC, 0.25-20 seconds. Preserve th
 | Learned implementation | Encoder, losses, loader, metrics, recorded engineering fits | Development selection, held-out study, no-change endpoint and uncertainty |
 | Extractor compatibility | GAME pilot on 28 Vocadito recordings; accepted-audio check on 17 crops | Melody-owner agreement and repeat checks after real repair |
 | Jamendo | 1,604 tracks, eight stems; fresh five-artist sample yields six screen crops from three artists and five passing shifts across two artists | Manual suitability, broader audited support, reviewed anchors and J3/J4 |
-| Delivered repair | Not implemented | Controller, framewise renderer, remeasurement and rollback |
+| Delivered repair | Permission/rollback mechanics verified on constructed engineering fixtures; no delivered repair | Calibrated runtime proposal/permission, framewise renderer, real-audio remeasurement and accepted delivery |
 
 Use the current tracker for run IDs and regression results. Existing training metrics are measured on training pairs; they are not accuracy on independent data. No trained checkpoint currently establishes BPDR's research benefit.
 
+**Panel notebook requirement (owner, 14 October):** maintain the existing two notebooks exactly in line with completed work. Update affected cells and `notebooks/evidence_index.json` after each step, execute with fresh kernels and verify outputs before presenting. Keep historical engineering fits and planned features explicit; no invented approvals or accuracy. Check redundancy and preserve recovery before notebook cleanup inside BPDR. The [README notebook workflow](../README.md#keep-the-panel-notebooks-current) defines maintained sources versus dated executed evidence.
+
+**14 October follow-up:** [renderer diagnostics and the independent review bundle](Audit_Diagnostics_and_Review_2026-10-14.md) reuse the current extracted material. The best aggregate tested setting gives 10/18 audit passes versus 5/18 active, but regresses two existing successes and still yields no all-six crop. Treat it as a calibration candidate, not an adopted repair path. The active v0.3 policy/renderer and zero research eligibility remain unchanged; actual independent reviews and broader expressive-control validation are next.
+
+**14 October wider calibration:** [both datasets and twelve expressive control profiles](Renderer_Calibration_2026-10-14.md) are measured with unchanged gates. Vocadito gives 17/18 passes for all three renderers, but each candidate loses one active case and gains another; its three crops cover two recordings and only S29. Jamendo reproduces 5/18, 10/18 and 9/18. Constructed fine-only checks give 47/72, 70/72 and 63/72; even the strongest candidate fails demanding vibrato. Retain the active renderer, complete real reference reviews and matched listening, and address independent-voice coverage before research fitting. Passing variants do not create eligible data.
+
 ## 3. Two datasets, two distinct sources of evidence
+
+**14 October controller fixtures:** [engineering permission and rollback](Controller_Fixtures_2026-10-14.md) now verify nine constructed outcomes, with 93 regression checks passing. The planner withholds invalid proposals; post-render failures return the exact preserved source. Supplied corrections/uncertainties, illustrative bounds and the laboratory renderer are fixture inputs, not adopted production policy. No `ACCEPT_PREPARED` package or research example is created. The notebooks include the measured mechanics and remaining gates.
 
 | Collection | Use now | Use after gates | Limits |
 |---|---|---|---|
@@ -54,6 +62,8 @@ Two musically experienced reviewers independently approve usable reference inter
 Dataset terms: Vocadito is described by its [official record](https://zenodo.org/records/5578807). MTG-Jamendo's [official terms](https://github.com/MTG/mtg-jamendo-dataset#license) restrict the dataset to non-commercial research/academic use and provide individual audio licenses. Preserve attribution and license metadata; exclude NoDerivatives and unknown-license tracks from the transformation/release pilot. The local assessment counted 353 NoDerivatives tracks; verify licenses in each new manifest. Do not infer rights from the repository's code license.
 
 ## 4. Reuse models; own the preparation path
+
+**14 October direction:** a future macOS/Windows melody/chord pipeline will provide an optional BPDR exporter, following the [saved owner brief and integration decision](Portable_Pipeline_Decision_2026-10-14.md). Preserve its existing outputs/default behavior and validate both platforms before integration. For now, use the already extracted baseline; portable-pipeline implementation is deferred and does not block review or intervention diagnostics.
 
 Retain the team's pinned BS-RoFormer separator and GAME commit/checkpoint, verified by hash. The newer melody/chord pipeline's vocal stage uses those same models. Its instrumental melody, combined melody, chords, key and Roman labels belong to other work and are not BPDR supervision. Its combined output fills vocal rests and resolves note overlaps; do not use it to evaluate vocal preservation. Read unshifted `model_midi_pitch`, retain stems, and save each decode because GAME has no exposed extraction seed.
 
