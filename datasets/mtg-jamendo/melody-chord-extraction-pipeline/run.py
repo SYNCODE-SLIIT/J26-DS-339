@@ -16,13 +16,13 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "code"))
 from beats import complete as beats_complete  # noqa: E402
-from chords import completed as chord_complete, save as save_chords, verify_model  # noqa: E402
+from chords import completed as chord_complete, verify_model  # noqa: E402
 from combine import combine  # noqa: E402
 from comparison import completed as comparison_complete, save as save_comparison  # noqa: E402
 from common import (ASSETS, CHORDS, DATASET, MELODIES, ROOT, STAGES, WORK, atomic_text,
                     inventory, melody_complete)  # noqa: E402
 from key import completed as key_complete, save as save_key  # noqa: E402
-from melody import GameExtractor, verify_melody_assets  # noqa: E402
+from melody import verify_melody_assets  # noqa: E402
 from roman import completed as roman_complete, save as save_roman  # noqa: E402
 
 
@@ -66,6 +66,18 @@ def prior_rows() -> dict[str, dict[str, str]]:
         return {row["track_id"]: row for row in csv.DictReader(stream)}
 
 
+def compact_result(result: dict) -> dict:
+    """Keep catalog fields and counts, not every note/beat/chord in RAM."""
+    return {key: len(value) if key in ("notes", "beats", "events") else value
+            for key, value in result.items()
+            if key not in ("selection", "downbeat_lab_times_sec")}
+
+
+def item_count(result: dict, key: str) -> int:
+    value = result[key]
+    return value if isinstance(value, int) else len(value)
+
+
 def scan_existing(tracks: list[dict[str, str]]) -> dict[str, dict[str, dict]]:
     results: dict[str, dict[str, dict]] = {}
     for track in tracks:
@@ -73,28 +85,28 @@ def scan_existing(tracks: list[dict[str, str]]) -> dict[str, dict[str, dict]]:
         for method in MELODIES:
             result = melody_complete(method, track)
             if result is not None:
-                stages[method] = result
+                stages[method] = compact_result(result)
         result = beats_complete(track)
         if result is not None:
-            stages["beats"] = result
+            stages["beats"] = compact_result(result)
         if "combined" in stages:
             result = key_complete(track)
             if result is not None:
-                stages["key"] = result
+                stages["key"] = compact_result(result)
         for vocabulary in CHORDS:
             result = chord_complete(track, vocabulary)
             if result is not None:
-                stages[vocabulary] = result
+                stages[vocabulary] = compact_result(result)
         if "key" in stages and "submission" in stages:
             result = comparison_complete(track)
             if result is not None:
-                stages["key_comparison"] = result
+                stages["key_comparison"] = compact_result(result)
         if "key" in stages:
             for vocabulary in CHORDS:
                 if vocabulary in stages:
                     result = roman_complete(track, vocabulary)
                     if result is not None:
-                        stages[f"roman_{vocabulary}"] = result
+                        stages[f"roman_{vocabulary}"] = compact_result(result)
         if stages:
             results[track["track_id"]] = stages
     return results
@@ -111,9 +123,9 @@ def publish(tracks: list[dict[str, str]], results: dict[str, dict[str, dict]],
         error_stage, error = errors.get(track_id, ("", ""))
         status = ("complete" if len(stages) == len(STAGES) else "failed" if error
                   else "partial" if stages else "pending")
-        counts = {method: len(stages[method]["notes"]) if method in stages else ""
+        counts = {method: item_count(stages[method], "notes") if method in stages else ""
                   for method in MELODIES}
-        chord_counts = {vocab: len(stages[vocab]["events"]) if vocab in stages else ""
+        chord_counts = {vocab: item_count(stages[vocab], "events") if vocab in stages else ""
                         for vocab in CHORDS}
         flags = {vocab: ";".join(stages[vocab]["quality_flags"]) if vocab in stages else ""
                  for vocab in CHORDS}
@@ -130,7 +142,7 @@ def publish(tracks: list[dict[str, str]], results: dict[str, dict[str, dict]],
                      "status": status, "game_notes": counts["game_vocal"],
                      "sheetsage_notes": counts["sheetsage2_instrumental"],
                      "combined_notes": counts["combined"],
-                     "beat_count": len(beats["beats"]) if beats else "",
+                     "beat_count": item_count(beats, "beats") if beats else "",
                      "median_beat_period_sec": beats.get("median_beat_period_sec", ""),
                      "median_beat_rate_bpm": beats.get("median_beat_rate_bpm", ""),
                      "submission_chords": chord_counts["submission"],
@@ -167,7 +179,7 @@ def publish(tracks: list[dict[str, str]], results: dict[str, dict[str, dict]],
                 } for method in MELODIES if method in stages},
                 "beats": {"json": f"{folder}/beats/beats.json",
                           "csv": f"{folder}/beats/beats.csv",
-                          "beat_count": len(beats["beats"])} if beats else None,
+                          "beat_count": item_count(beats, "beats")} if beats else None,
                 "chords": {vocab: {
                     "json": f"{folder}/chords/{vocab}.json",
                     "csv": f"{folder}/chords/{vocab}.csv",
@@ -230,7 +242,7 @@ class SheetSageWorker:
             raise RuntimeError(f"SheetSage2 worker did not initialize: {message}")
         print(f"SheetSage2 device: {message[1]}", flush=True)
 
-    def transcribe(self, track: dict[str, str], duration: float) -> dict:
+    def _transcribe_once(self, track: dict[str, str], duration: float) -> dict:
         self.start()
         assert self.process is not None and self.process.stdin is not None
         row = {**track, "duration_sec": duration}
@@ -245,6 +257,20 @@ class SheetSageWorker:
         if result is None:
             raise RuntimeError("SheetSage2 reported DONE without validated output")
         return result
+
+    def transcribe(self, track: dict[str, str], duration: float) -> dict:
+        for attempt_number in (1, 2):
+            try:
+                return self._transcribe_once(track, duration)
+            except (BrokenPipeError, RuntimeError) as exc:
+                if attempt_number == 2 or not sheet_worker_failure(exc):
+                    raise
+                log(track["track_id"], "sheetsage2_instrumental",
+                    f"worker_restart after {type(exc).__name__}: {exc}")
+            finally:
+                # Each song gets a new process so its MPS allocations are released.
+                self.close()
+        raise AssertionError("unreachable")
 
     def extract_beats(self, track: dict[str, str], duration: float) -> dict:
         self.transcribe(track, duration)
@@ -266,6 +292,52 @@ class SheetSageWorker:
         self.process = None
 
 
+def sheet_worker_failure(exc: BaseException | str) -> bool:
+    message = str(exc).lower()
+    return (isinstance(exc, BrokenPipeError)
+            or "out of memory" in message
+            or "broken pipe" in message
+            or "worker exited" in message)
+
+
+def model_resource_failure(exc: BaseException | str) -> bool:
+    message = str(exc).lower()
+    return ("out of memory" in message
+            or "no metal device available" in message
+            or "worker exited -9" in message)
+
+
+def extract_game(track: dict[str, str], duration: float) -> dict:
+    result = subprocess.run(
+        [sys.executable, str(ROOT / "code" / "game_worker.py")],
+        input=json.dumps({"track": track, "duration_sec": duration}),
+        capture_output=True, text=True)
+    if result.returncode:
+        lines = (result.stderr or result.stdout).strip().splitlines()
+        detail = lines[-1][-400:] if lines else "no error details"
+        raise RuntimeError(f"GAME worker exited {result.returncode}: {detail}")
+    saved = melody_complete("game_vocal", track)
+    if saved is None:
+        raise RuntimeError("GAME worker exited without validated output")
+    return saved
+
+
+def extract_chords(track: dict[str, str], vocabulary: str, duration: float) -> dict:
+    result = subprocess.run(
+        [sys.executable, str(ROOT / "code" / "chord_worker.py")],
+        input=json.dumps({"track": track, "vocabulary": vocabulary,
+                          "duration_sec": duration}),
+        capture_output=True, text=True)
+    if result.returncode:
+        lines = (result.stderr or result.stdout).strip().splitlines()
+        detail = lines[-1][-400:] if lines else "no error details"
+        raise RuntimeError(f"LV-Chordia worker exited {result.returncode}: {detail}")
+    saved = chord_complete(track, vocabulary)
+    if saved is None:
+        raise RuntimeError("LV-Chordia worker exited without validated output")
+    return saved
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--limit", type=int, help="Process this many next incomplete songs")
@@ -279,8 +351,6 @@ def main() -> int:
         verify_model()
     except (ImportError, FileNotFoundError, RuntimeError) as exc:
         parser.exit(2, f"Model setup error: {exc}\nSee README.md.\n")
-    from lv_chordia import chord_recognition
-
     WORK.mkdir(parents=True, exist_ok=True)
     with (WORK / "run.lock").open("w") as lock:
         try:
@@ -313,7 +383,6 @@ def main() -> int:
         print(f"Selected {len(selected)} full songs; {len(tracks)} local MP3s. "
               f"Complete: {sum(len(result) == len(STAGES) for result in results.values())}.", flush=True)
         log("*", "run_start", f"selected={len(selected)} retry_failed={args.retry_failed}")
-        game = None
         sheet = SheetSageWorker()
         try:
             for number, track in enumerate(selected, 1):
@@ -342,7 +411,7 @@ def main() -> int:
                     log(track_id, stage, "start")
                     try:
                         result = action()
-                        stages[stage] = result
+                        stages[stage] = compact_result(result)
                         if errors.get(track_id, ("", ""))[0] == stage:
                             errors.pop(track_id, None)
                         count = (len(result["events"]) if stage in CHORDS or stage.startswith("roman_")
@@ -359,14 +428,28 @@ def main() -> int:
                     publish(tracks, results, errors, durations)
 
                 if "game_vocal" not in stages:
-                    if game is None:
-                        game = GameExtractor()
-                    attempt("game_vocal", lambda: game.extract(track, duration))
+                    attempt("game_vocal", lambda: extract_game(track, duration))
+                if ("game_vocal" not in stages
+                        and errors.get(track_id, ("", ""))[0] == "game_vocal"
+                        and model_resource_failure(errors[track_id][1])):
+                    log(track_id, "song_end", "partial_or_failed; batch stopped after GAME worker failure")
+                    log("*", "halted", f"GAME worker unavailable at {track_id}; saved stages remain available")
+                    print("GAME worker ran out of memory or has no Metal device. "
+                          "Stopping this batch to prevent more incomplete songs.", flush=True)
+                    return 2
                 attempt("sheetsage2_instrumental", lambda: sheet.transcribe(track, duration))
+                if ("sheetsage2_instrumental" not in stages
+                        and errors.get(track_id, ("", ""))[0] == "sheetsage2_instrumental"
+                        and sheet_worker_failure(errors[track_id][1])):
+                    log(track_id, "song_end", "partial_or_failed; batch stopped after worker failure")
+                    log("*", "halted", f"SheetSage2 worker failed twice at {track_id}; saved stages remain available")
+                    print("SheetSage2 failed twice after a fresh worker start. "
+                          "Stopping this batch to prevent more incomplete songs.", flush=True)
+                    return 2
                 if "sheetsage2_instrumental" in stages and "beats" not in stages:
                     beat_result = beats_complete(track)
                     if beat_result is not None:
-                        stages["beats"] = beat_result
+                        stages["beats"] = compact_result(beat_result)
                         log(track_id, "beats", f"complete count={len(beat_result['beats'])} (with SheetSage2 melody)")
                         publish(tracks, results, errors, durations)
                     else:
@@ -382,9 +465,16 @@ def main() -> int:
                 if "combined" in stages:
                     attempt("key", lambda: save_key(track))
                 for vocabulary in CHORDS:
-                    attempt(vocabulary, lambda vocab=vocabulary: save_chords(
-                        track, vocab, duration,
-                        chord_recognition(str(DATASET / track["source_mp3"]), chord_dict_name=vocab)))
+                    attempt(vocabulary, lambda vocab=vocabulary: extract_chords(
+                        track, vocab, duration))
+                    if (vocabulary not in stages
+                            and errors.get(track_id, ("", ""))[0] == vocabulary
+                            and model_resource_failure(errors[track_id][1])):
+                        log(track_id, "song_end", "partial_or_failed; batch stopped after chord worker failure")
+                        log("*", "halted", f"LV-Chordia worker failed at {track_id}; saved stages remain available")
+                        print("LV-Chordia worker ran out of memory. "
+                              "Stopping this batch to prevent more incomplete songs.", flush=True)
+                        return 2
                 if "key" in stages and "submission" in stages:
                     attempt("key_comparison", lambda: save_comparison(track))
                 if "key" in stages:

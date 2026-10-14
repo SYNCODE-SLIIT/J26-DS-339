@@ -36,10 +36,12 @@ as described in `../melody-extraction-pipeline/README.md`. By default the
 runner looks for them in `../melody-extraction/`; set `MELODY_MODEL_ASSETS` to
 another directory with the same layout if necessary. `ffmpeg` and `ffprobe`
 must be on `PATH`. The current vocal separator uses Apple Silicon/MLX, so this
-specific setup needs a compatible Mac. The SheetSage2 worker remains loaded
-across songs in one run, but the runner still finishes and records all ten
-stages for one song before starting the next. Already saved melody and chord
-stages are reused when adding beat, key, and basic chord results.
+specific setup needs a compatible Mac. GAME, SheetSage2, and LV-Chordia now run
+in separate processes for each song, releasing their model memory before the
+next song.
+The runner retains only result counts and metadata in memory. Already saved
+melody and chord stages are reused when adding beat, key, and basic chord
+results.
 
 ## Run, stop, resume
 
@@ -53,6 +55,11 @@ one song. Ctrl-C stops the run; completed stages remain saved and the next run
 resumes the current song. Failed songs are logged and skipped on the usual
 next-song run; `--retry-failed` retries them. An explicit `--track-id` also
 retries that track. Only one runner can hold the pipeline lock at a time.
+If the SheetSage2 worker runs out of memory or exits, the runner retries that
+song once with a fresh worker. If the retry also fails, it records the error
+and stops the batch instead of producing partial results for later songs.
+It also stops if GAME cannot access Metal or a GAME/LV-Chordia worker runs out
+of memory.
 Songs that already have melody and chords but no beat files are selected for
 beat backfill; the other validated stages are reused. SheetSage2 must run
 once again for those songs because its original temporary `beat.lab` files
