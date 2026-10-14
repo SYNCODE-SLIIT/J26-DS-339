@@ -19,7 +19,7 @@ WORK = ROOT / "work"
 MELODIES = ("game_vocal", "sheetsage2_instrumental", "combined")
 CHORDS = ("submission", "full")
 ROMAN = ("roman_submission", "roman_full")
-STAGES = (*MELODIES, "key", *CHORDS, "key_comparison", *ROMAN)
+STAGES = (*MELODIES, "beats", "key", *CHORDS, "key_comparison", *ROMAN)
 CSV_COLUMNS = ("track_id", "onset_sec", "offset_sec", "midi_pitch",
                "midi_pitch_rounded", "velocity", "source", "model_midi_pitch")
 
