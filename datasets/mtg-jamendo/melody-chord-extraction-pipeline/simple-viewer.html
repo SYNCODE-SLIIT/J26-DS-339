@@ -43,11 +43,18 @@
   .chord-row-time { min-width: 7.5rem; color: #526052; font-variant-numeric: tabular-nums; }
   .beat-links { margin: .45rem 0; }
   .beat-links a { color: #245c40; margin-right: .7rem; }
+  .bpdr-section { margin-top: 1.2rem; padding-top: .7rem; border-top: 1px solid #d7ded3; }
+  .bpdr-section h3 { margin: 0 0 .3rem; }
+  .bpdr-section p { margin: .3rem 0; }
 </style>
 </head>
 <body>
 <h1>Extracted songs</h1>
-<p>285 track folders. Use your browser’s Find command to locate a track ID, then open it to compare the original song and combined melody.</p>
+<p>285 track folders are listed below. Enter any newly extracted track ID to open it without loading a full song index.</p>
+<label for="track-lookup">Track ID</label>
+<input id="track-lookup" inputmode="numeric" placeholder="e.g. 388 or track_0000388">
+<button type="button" id="open-track">Open track</button>
+<span id="track-lookup-status" role="status"></span>
 <p class="hint">The combined melody plays through the same native audio controls as the original song. Its audio is made from the saved MIDI notes when you open a track. Beat and chord data load only for opened songs; no catalog is needed. <span id="midi-status" class="midi-status">MIDI player is loading…</span></p>
 <main>
 <details id="track_0000382"><summary><code>track_0000382</code></summary>
@@ -6466,17 +6473,151 @@
     seekBoth(row.closest('details'), row.dataset.seek);
   });
   document.addEventListener('timeupdate', function (event) {
-    if (event.target.tagName === 'AUDIO') {
+    if (event.target.tagName === 'AUDIO' && !event.target.classList.contains('bpdr-audio')) {
       var card = event.target.closest('details');
       if (card && card.open) showPosition(card, event.target.currentTime);
     }
   }, true);
   document.addEventListener('seeking', function (event) {
-    if (event.target.tagName === 'AUDIO') {
+    if (event.target.tagName === 'AUDIO' && !event.target.classList.contains('bpdr-audio')) {
       var card = event.target.closest('details');
       if (card && card.open) showPosition(card, event.target.currentTime);
     }
   }, true);
+}());
+</script>
+<script>
+(function () {
+  // Read only the open song's BPDR record; do not load crop audio until played.
+  async function showBpdr(card) {
+    if (!card.id || !/^track_\d+$/.test(card.id)) return;
+    var section = card.querySelector('.bpdr-section');
+    if (!section) {
+      section = document.createElement('section');
+      section.className = 'bpdr-section';
+      var title = document.createElement('h3');
+      title.textContent = 'BPDR vocal crop';
+      section.appendChild(title);
+      card.appendChild(section);
+    }
+    section.replaceChildren(section.firstChild);
+    var status = document.createElement('p');
+    status.textContent = 'Checking this track…';
+    section.appendChild(status);
+    try {
+      var base = 'outputs/' + card.id + '/bpdr/';
+      var response = await fetch(base + 'record.json', {cache: 'no-store'});
+      if (!card.open) return;
+      if (response.status === 404) {
+        status.textContent = 'No BPDR export yet for this track (or this track is ineligible).';
+        return;
+      }
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      var record = await response.json();
+      var crop = record.crop || {};
+      var screen = record.screen || {};
+      var start = Number(crop.offset_seconds);
+      status.textContent = 'Crop starts at ' + (Number.isFinite(start) ? start.toFixed(2) : '?') +
+        ' seconds in the original. Screen: ' + (screen.status || 'unknown') +
+        (screen.reasons && screen.reasons.length ? ' (' + screen.reasons.join(', ') + ')' : '') +
+        '. This is a model-derived vocal crop, not a verified note reference.';
+      if (record.status === 'exported' && record.artifacts && record.artifacts['vocal.wav']) {
+        var player = document.createElement('audio');
+        player.className = 'bpdr-audio';
+        player.controls = true;
+        player.preload = 'none';
+        player.src = base + 'vocal.wav';
+        section.appendChild(player);
+      }
+    } catch (error) {
+      status.textContent = 'Could not read BPDR record: ' + error.message;
+    }
+  }
+  document.addEventListener('toggle', function (event) {
+    if (event.target.tagName === 'DETAILS' && event.target.open) showBpdr(event.target);
+  }, true);
+  document.addEventListener('play', function (event) {
+    if (!event.target.classList.contains('bpdr-audio')) return;
+    event.target.closest('details').querySelectorAll('audio').forEach(function (player) {
+      if (player !== event.target) player.pause();
+    });
+  }, true);
+}());
+</script>
+<script>
+(function () {
+  var input = document.getElementById('track-lookup');
+  var status = document.getElementById('track-lookup-status');
+  async function openTrack() {
+    var digits = input.value.trim().replace(/^track_/, '');
+    if (!/^\d+$/.test(digits)) {
+      status.textContent = 'Enter a numeric track ID.';
+      return;
+    }
+    var id = 'track_' + digits.padStart(7, '0');
+    var card = document.getElementById(id);
+    if (!card) {
+      status.textContent = 'Loading ' + id + '…';
+      try {
+        var response = await fetch('outputs/' + id + '/melody/combined.json', {cache: 'no-store'});
+        if (!response.ok) throw new Error(response.status === 404 ? 'Combined melody not extracted yet.' : 'HTTP ' + response.status);
+        var data = await response.json();
+        if (data.mtg_track_id !== id || !Array.isArray(data.notes) ||
+            !Number.isFinite(Number(data.duration_sec)) ||
+            !/^vocal-tagged-audio\/\d+\/\d+\.low\.mp3$/.test(data.source_mp3)) {
+          throw new Error('Saved melody identity or format is invalid.');
+        }
+        card = document.createElement('details');
+        card.id = id;
+        card.innerHTML = '<summary><code></code></summary>' +
+          '<strong class="original-label">Original full song</strong><audio controls preload="none"></audio>' +
+          '<strong class="combined-label">Combined melody · GAME vocal + SheetSage2 instrumental</strong>' +
+          '<audio controls preload="none" class="combined-audio"></audio>' +
+          '<div class="player-actions"><button type="button" class="midi-play">Play melody</button>' +
+          '<button type="button" class="midi-both">Play both</button>' +
+          '<span class="render-status">Preparing melody audio…</span></div>' +
+          '<script type="application/json" class="combined-notes"><\/script>' +
+          '<section class="analysis" aria-label="Beats and chords"><h3>Beats and chords</h3>' +
+          '<div class="analysis-toolbar"><label>Chord set <select class="chord-vocabulary">' +
+          '<option value="submission">Submission</option><option value="full">Full</option></select></label>' +
+          '<button type="button" class="refresh-analysis">Refresh data</button></div>' +
+          '<p class="beat-summary">Open this song to load beats.</p>' +
+          '<div class="music-timeline" title="Click to seek both players"><div class="beat-lane"></div>' +
+          '<div class="chord-lane"></div><div class="timeline-playhead"></div></div>' +
+          '<p class="timeline-help">Thin marks: beats · bold marks: downbeats. Click the timeline or a chord below to seek both players.</p>' +
+          '<p class="current-position">0:00 · beat — · chord —</p>' +
+          '<p class="chord-status">Open this song to load chords.</p>' +
+          '<div class="chord-list" aria-label="Chord segments"></div><p class="beat-links"></p></section>' +
+          '<p class="files">Melody MIDI: <a class="game-link">GAME vocal</a>' +
+          '<a class="sheet-link">SheetSage2 instrumental</a><a class="combined-link">Combined</a></p>' +
+          '<p class="files">Chord CSV: <a class="submission-link">Submission</a>' +
+          '<a class="full-link">Full</a></p>';
+        card.querySelector('code').textContent = id;
+        card.querySelector('audio').src = '../' + data.source_mp3;
+        var notes = card.querySelector('.combined-notes');
+        notes.dataset.duration = String(data.duration_sec);
+        notes.textContent = JSON.stringify(data.notes.map(function (note) {
+          return [note.onset_sec, note.offset_sec, note.midi_pitch_rounded];
+        }));
+        [['game-link', 'melody/game_vocal.mid'], ['sheet-link', 'melody/sheetsage2_instrumental.mid'],
+         ['combined-link', 'melody/combined.mid'], ['submission-link', 'chords/submission.csv'],
+         ['full-link', 'chords/full.csv']].forEach(function (pair) {
+          card.querySelector('.' + pair[0]).href = 'outputs/' + id + '/' + pair[1];
+        });
+        document.querySelector('main').prepend(card);
+      } catch (error) {
+        status.textContent = error.message;
+        return;
+      }
+    }
+    card.open = true;
+    card.scrollIntoView({block: 'start'});
+    status.textContent = 'Opened ' + id + '.';
+  }
+  document.getElementById('open-track').addEventListener('click', openTrack);
+  input.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter') openTrack();
+  });
 }());
 </script>
 </body>

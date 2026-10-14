@@ -5,3 +5,5 @@
 /history.log
 /__pycache__/
 /code/__pycache__/
+__pycache__/
+/.venv-bpdr/

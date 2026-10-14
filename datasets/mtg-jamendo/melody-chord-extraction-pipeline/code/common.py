@@ -24,6 +24,10 @@ CSV_COLUMNS = ("track_id", "onset_sec", "offset_sec", "midi_pitch",
                "midi_pitch_rounded", "velocity", "source", "model_midi_pitch")
 
 
+def python_in(environment: Path) -> Path:
+    return environment / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
+
+
 def inventory() -> list[dict[str, str]]:
     """Local full MP3s joined to MTG annotations and all five official splits."""
     annotations = {}

@@ -3,11 +3,14 @@
 from __future__ import annotations
 
 import csv
+import hashlib
+import json
+import os
 import re
 import subprocess
 from pathlib import Path
 
-from common import ASSETS, DATASET, WORK, melody_complete, read_notes, write_notes
+from common import ASSETS, DATASET, WORK, atomic_text, melody_complete, python_in, read_notes, write_notes
 
 
 GAME_ROOT = ASSETS / "tools" / "GAME"
@@ -18,8 +21,8 @@ SEPARATOR_MODEL = "model_bs_roformer_ep_317_sdr_12.9755.ckpt"
 def verify_melody_assets() -> None:
     required = (GAME_MODEL, GAME_ROOT / "infer.py",
                 ASSETS / "models" / "mlx-audio-separator" / SEPARATOR_MODEL,
-                ASSETS / ".venv-game" / "bin" / "python",
-                ASSETS / ".venv-sheetsage2" / "bin" / "python",
+                python_in(ASSETS / ".venv-game"),
+                python_in(ASSETS / ".venv-sheetsage2"),
                 ASSETS / "models" / "hf-home")
     absent = [str(path) for path in required if not path.exists()]
     if absent:
@@ -47,20 +50,40 @@ class GameExtractor:
         for folder in (self.stems, self.mixes, self.raw):
             folder.mkdir(parents=True, exist_ok=True)
 
-    def stem(self, track: dict[str, str], seconds: float) -> Path:
+    def stem(self, track: dict[str, str], seconds: float, *, bpdr_verified: bool = False) -> Path:
         import soundfile as sf
 
         track_id = track["track_id"]
         target = self.stems / f"{track_id}.wav"
+        receipt_path = self.stems / f"{track_id}.receipt.json"
+        model_path = ASSETS / "models" / "mlx-audio-separator" / SEPARATOR_MODEL
+
+        def digest(path: Path) -> str:
+            with path.open("rb") as stream:
+                return hashlib.file_digest(stream, "sha256").hexdigest()
+
+        def expected_receipt() -> dict:
+            return {"track_id": track_id, "source_mp3": track["source_mp3"],
+                    "source_sha256": digest(DATASET / track["source_mp3"]),
+                    "separator_sha256": digest(model_path),
+                    "backend": "audio-separator-pytorch" if os.name == "nt" else "mlx-audio-separator"}
+
         source_mtime = (DATASET / track["source_mp3"]).stat().st_mtime_ns
         if target.exists():
             try:
                 if (target.stat().st_mtime_ns >= source_mtime and
                         abs(sf.info(target).duration - seconds) < 2.0):
-                    return target
-            except RuntimeError:
+                    if not bpdr_verified:
+                        return target
+                    if receipt_path.is_file():
+                        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+                        if all(receipt.get(k) == v for k, v in expected_receipt().items()) \
+                                and receipt.get("stem_sha256") == digest(target):
+                            return target
+            except (RuntimeError, ValueError, OSError):
                 pass
             target.unlink()
+            receipt_path.unlink(missing_ok=True)
         stereo_mix = self.mixes / f"{track_id}.wav"
         if (not stereo_mix.exists() or not stereo_mix.stat().st_size or
                 stereo_mix.stat().st_mtime_ns < source_mtime):
@@ -70,6 +93,26 @@ class GameExtractor:
                             "-ar", "44100", "-ac", "2", "-c:a", "pcm_s16le",
                             str(temporary_mix)], check=True)
             temporary_mix.replace(stereo_mix)
+        if os.name == "nt":
+            worker = python_in(ASSETS / ".venv-separator-windows")
+            if not worker.is_file():
+                raise FileNotFoundError("Windows separator environment missing")
+            result = subprocess.run([str(worker), str(Path(__file__).with_name("windows_separator_worker.py"))],
+                                    input=__import__("json").dumps({
+                                        "source": str(stereo_mix), "destination": str(target),
+                                        "model": str(ASSETS / "models" / "mlx-audio-separator" / SEPARATOR_MODEL)}),
+                                    capture_output=True, text=True)
+            if result.returncode:
+                raise RuntimeError(f"Windows vocal separator exited {result.returncode}: "
+                                   f"{(result.stderr or result.stdout)[-900:]}")
+            if abs(sf.info(target).duration - seconds) >= 2.0:
+                target.unlink(missing_ok=True)
+                raise RuntimeError("Windows separator stem duration mismatch")
+            stereo_mix.unlink(missing_ok=True)
+            if bpdr_verified:
+                atomic_text(receipt_path, json.dumps({**expected_receipt(),
+                            "stem_sha256": digest(target)}, indent=2) + "\n")
+            return target
         if self.separator is None:
             from mlx_audio_separator import Separator
 
@@ -89,9 +132,12 @@ class GameExtractor:
         if not target.exists() or not target.stat().st_size:
             raise RuntimeError(f"Separator produced no vocal WAV: {found}")
         stereo_mix.unlink(missing_ok=True)
+        if bpdr_verified:
+            atomic_text(receipt_path, json.dumps({**expected_receipt(),
+                        "stem_sha256": digest(target)}, indent=2) + "\n")
         return target
 
-    def extract(self, track: dict[str, str], seconds: float) -> dict:
+    def extract(self, track: dict[str, str], seconds: float, *, keep_stem: bool = False) -> dict:
         existing = melody_complete("game_vocal", track)
         if existing is not None:
             return existing
@@ -100,8 +146,8 @@ class GameExtractor:
         raw_mid = self.raw / f"{track_id}.mid"
         raw_csv.unlink(missing_ok=True)
         raw_mid.unlink(missing_ok=True)
-        stem = self.stem(track, seconds)
-        command = [str(ASSETS / ".venv-game" / "bin" / "python"),
+        stem = self.stem(track, seconds, bpdr_verified=keep_stem)
+        command = [str(python_in(ASSETS / ".venv-game")),
                    str(GAME_ROOT / "infer.py"), "extract", str(stem),
                    "-m", str(GAME_MODEL), "--output-formats", "mid,csv",
                    "--pitch-format", "number", "--output-dir", str(self.raw)]
@@ -128,7 +174,8 @@ class GameExtractor:
             "pitch_shift_semitones": 12,
             "model_source": "GAME-1.0-medium on separated vocal stem",
         })
-        stem.unlink(missing_ok=True)
+        if not keep_stem:
+            stem.unlink(missing_ok=True)
         raw_csv.unlink(missing_ok=True)
         raw_mid.unlink(missing_ok=True)
         return data

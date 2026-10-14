@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import argparse
 import csv
-import fcntl
 import io
 import json
 import os
@@ -16,10 +15,11 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "code"))
 from beats import complete as beats_complete  # noqa: E402
+from bpdr.export import Export as BPDRExport  # noqa: E402
 from chords import completed as chord_complete, verify_model  # noqa: E402
 from combine import combine  # noqa: E402
 from comparison import completed as comparison_complete, save as save_comparison  # noqa: E402
-from common import (ASSETS, CHORDS, DATASET, MELODIES, ROOT, STAGES, WORK, atomic_text,
+from common import (ASSETS, CHORDS, DATASET, MELODIES, ROOT, STAGES, WORK, atomic_text, python_in,
                     inventory, melody_complete)  # noqa: E402
 from key import completed as key_complete, save as save_key  # noqa: E402
 from melody import verify_melody_assets  # noqa: E402
@@ -39,6 +39,7 @@ MANIFEST_COLUMNS = ("track_id", "mtg_track_id", "artist_id", "album_id", "annota
                     "chord_key_mode", "key_agreement", "key_review_flag", "key_review_reasons",
                     "roman_submission_mapped",
                     "roman_full_mapped", "roman_submission_unmapped", "roman_full_unmapped",
+                    "bpdr_status", "bpdr_screen", "bpdr_crop_start_sec",
                     "error_stage", "error", "updated_utc")
 
 
@@ -68,6 +69,9 @@ def prior_rows() -> dict[str, dict[str, str]]:
 
 def compact_result(result: dict) -> dict:
     """Keep catalog fields and counts, not every note/beat/chord in RAM."""
+    if result.get("schema_version") == "bpdr-track-v1":
+        return {"status": result["status"], "screen": result.get("screen", {}),
+                "crop": result.get("crop", {}), "training_eligible": False}
     return {key: len(value) if key in ("notes", "beats", "events") else value
             for key, value in result.items()
             if key not in ("selection", "downbeat_lab_times_sec")}
@@ -78,7 +82,7 @@ def item_count(result: dict, key: str) -> int:
     return value if isinstance(value, int) else len(value)
 
 
-def scan_existing(tracks: list[dict[str, str]]) -> dict[str, dict[str, dict]]:
+def scan_existing(tracks: list[dict[str, str]], bpdr: BPDRExport) -> dict[str, dict[str, dict]]:
     results: dict[str, dict[str, dict]] = {}
     for track in tracks:
         stages = {}
@@ -107,13 +111,23 @@ def scan_existing(tracks: list[dict[str, str]]) -> dict[str, dict[str, dict]]:
                     result = roman_complete(track, vocabulary)
                     if result is not None:
                         stages[f"roman_{vocabulary}"] = compact_result(result)
+        if bpdr.includes(track["track_id"]):
+            result = bpdr.complete(track)
+            if result is not None:
+                stages["bpdr"] = compact_result(result)
         if stages:
             results[track["track_id"]] = stages
     return results
 
 
+def song_complete(track: dict[str, str], stages: dict[str, dict], bpdr: BPDRExport) -> bool:
+    return (all(stage in stages for stage in STAGES)
+            and (not bpdr.includes(track["track_id"]) or "bpdr" in stages))
+
+
 def publish(tracks: list[dict[str, str]], results: dict[str, dict[str, dict]],
-            errors: dict[str, tuple[str, str]], durations: dict[str, float]) -> None:
+            errors: dict[str, tuple[str, str]], durations: dict[str, float],
+            bpdr: BPDRExport) -> None:
     rows = []
     listed = []
     now = timestamp()
@@ -121,7 +135,7 @@ def publish(tracks: list[dict[str, str]], results: dict[str, dict[str, dict]],
         track_id = track["track_id"]
         stages = results.get(track_id, {})
         error_stage, error = errors.get(track_id, ("", ""))
-        status = ("complete" if len(stages) == len(STAGES) else "failed" if error
+        status = ("complete" if song_complete(track, stages, bpdr) else "failed" if error
                   else "partial" if stages else "pending")
         counts = {method: item_count(stages[method], "notes") if method in stages else ""
                   for method in MELODIES}
@@ -132,6 +146,7 @@ def publish(tracks: list[dict[str, str]], results: dict[str, dict[str, dict]],
         key = stages.get("key", {})
         beats = stages.get("beats", {})
         comparison = stages.get("key_comparison", {})
+        bpdr_result = stages.get("bpdr", {})
         melodic_key = key.get("melody_key", {}).get("selected") or {}
         chord_key = comparison.get("chord_key", {}).get("selected") or {}
         roman_counts = {vocab: stages.get(f"roman_{vocab}", {}).get("mapping_counts", {})
@@ -162,6 +177,9 @@ def publish(tracks: list[dict[str, str]], results: dict[str, dict[str, dict]],
                                                        if status not in ("mapped", "no_chord")) if roman_counts["submission"] else "",
                      "roman_full_unmapped": sum(value for status, value in roman_counts["full"].items()
                                                  if status not in ("mapped", "no_chord")) if roman_counts["full"] else "",
+                     "bpdr_status": bpdr_result.get("status", "") if bpdr.includes(track_id) else "ineligible",
+                     "bpdr_screen": bpdr_result.get("screen", {}).get("status", ""),
+                     "bpdr_crop_start_sec": bpdr_result.get("crop", {}).get("offset_seconds", ""),
                      "error_stage": error_stage, "error": error,
                      "updated_utc": now if status != "pending" else ""})
         if stages:
@@ -198,6 +216,11 @@ def publish(tracks: list[dict[str, str]], results: dict[str, dict[str, dict]],
                     "csv": f"{folder}/roman/{vocab}.csv",
                     "mapping_counts": roman_counts[vocab],
                 } for vocab in CHORDS if f"roman_{vocab}" in stages},
+                "bpdr": {"record": f"{folder}/bpdr/record.json",
+                         "vocal": f"{folder}/bpdr/vocal.wav" if bpdr_result.get("status") == "exported" else None,
+                         "status": bpdr_result.get("status"),
+                         "screen": bpdr_result.get("screen", {}).get("status")}
+                        if bpdr_result else None,
             })
     buffer = io.StringIO(newline="")
     writer = csv.DictWriter(buffer, fieldnames=MANIFEST_COLUMNS, extrasaction="ignore")
@@ -233,7 +256,7 @@ class SheetSageWorker:
         env = os.environ.copy()
         env.update({"PYTORCH_ENABLE_MPS_FALLBACK": "1", "HF_HUB_OFFLINE": "1"})
         self.process = subprocess.Popen(
-            [str(ASSETS / ".venv-sheetsage2" / "bin" / "python"),
+            [str(python_in(ASSETS / ".venv-sheetsage2")),
              str(ROOT / "code" / "sheetsage_worker.py")],
             stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
             text=True, bufsize=1, env=env)
@@ -307,10 +330,11 @@ def model_resource_failure(exc: BaseException | str) -> bool:
             or "worker exited -9" in message)
 
 
-def extract_game(track: dict[str, str], duration: float) -> dict:
+def extract_game(track: dict[str, str], duration: float, *, keep_stem: bool = False) -> dict:
     result = subprocess.run(
         [sys.executable, str(ROOT / "code" / "game_worker.py")],
-        input=json.dumps({"track": track, "duration_sec": duration}),
+        input=json.dumps({"track": track, "duration_sec": duration,
+                          "keep_stem": keep_stem}),
         capture_output=True, text=True)
     if result.returncode:
         lines = (result.stderr or result.stdout).strip().splitlines()
@@ -320,6 +344,22 @@ def extract_game(track: dict[str, str], duration: float) -> dict:
     if saved is None:
         raise RuntimeError("GAME worker exited without validated output")
     return saved
+
+
+def obtain_game_stem(track: dict[str, str], duration: float) -> Path:
+    """Regenerate a historical song's stem only when an opt-in export needs it."""
+    result = subprocess.run(
+        [sys.executable, str(ROOT / "code" / "game_worker.py")],
+        input=json.dumps({"track": track, "duration_sec": duration,
+                          "mode": "stem_only"}), capture_output=True, text=True)
+    if result.returncode:
+        lines = (result.stderr or result.stdout).strip().splitlines()
+        raise RuntimeError(f"Vocal stem worker exited {result.returncode}: "
+                           f"{lines[-1][-400:] if lines else 'no error details'}")
+    stem = WORK / "stems" / f"{track['track_id']}.wav"
+    if not stem.is_file() or not stem.stat().st_size:
+        raise RuntimeError("Vocal stem worker produced no WAV")
+    return stem
 
 
 def extract_chords(track: dict[str, str], vocabulary: str, duration: float) -> dict:
@@ -354,10 +394,24 @@ def main() -> int:
     WORK.mkdir(parents=True, exist_ok=True)
     with (WORK / "run.lock").open("w") as lock:
         try:
-            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except BlockingIOError:
+            if os.name == "nt":
+                import msvcrt
+                lock.write("0")
+                lock.flush()
+                lock.seek(0)
+                msvcrt.locking(lock.fileno(), msvcrt.LK_NBLCK, 1)
+            else:
+                import fcntl
+                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except (BlockingIOError, OSError):
             parser.exit(2, "Another extraction run is active.\n")
         tracks = inventory()
+        try:
+            bpdr = BPDRExport(tracks)
+        except (ValueError, FileNotFoundError) as exc:
+            parser.exit(2, f"BPDR setup error: {exc}\n")
+        if not python_in(ROOT / ".venv-bpdr").is_file():
+            parser.exit(2, "BPDR environment missing; install bpdr-requirements.txt (see README.md).\n")
         if args.track_id is not None:
             try:
                 wanted = str(int(args.track_id.removeprefix("track_")))
@@ -366,22 +420,28 @@ def main() -> int:
             if wanted not in {track["track_id"] for track in tracks}:
                 parser.error(f"Track {args.track_id} has no local MP3")
         previous = prior_rows()
-        results = scan_existing(tracks)
+        results = scan_existing(tracks, bpdr)
         errors = {track_id: (row.get("error_stage", ""), row["error"])
                   for track_id, row in previous.items() if row.get("error")
                   and row.get("error_stage") not in results.get(track_id, {})}
         durations = {track_id: float(row["duration_audio_sec"])
                      for track_id, row in previous.items() if row.get("duration_audio_sec")}
-        publish(tracks, results, errors, durations)
+        publish(tracks, results, errors, durations, bpdr)
         selected = [track for track in tracks
-                    if len(results.get(track["track_id"], {})) < len(STAGES)
-                    and (args.track_id is None or track["track_id"] == wanted)
+                    if (args.track_id is None or track["track_id"] == wanted)
+                    and not song_complete(track, results.get(track["track_id"], {}), bpdr)
                     and (args.retry_failed or args.track_id is not None
                          or track["track_id"] not in errors)]
+        # Backfill songs with saved stages first, finishing core-complete songs
+        # before older partial ones; only then begin untouched MP3s.
+        selected.sort(key=lambda track: (
+            not bool(results.get(track["track_id"])),
+            not all(stage in results.get(track["track_id"], {}) for stage in STAGES),
+            int(track["track_id"])))
         if args.limit is not None:
             selected = selected[:args.limit]
         print(f"Selected {len(selected)} full songs; {len(tracks)} local MP3s. "
-              f"Complete: {sum(len(result) == len(STAGES) for result in results.values())}.", flush=True)
+              f"Complete: {sum(song_complete(t, results.get(t['track_id'], {}), bpdr) for t in tracks)}.", flush=True)
         log("*", "run_start", f"selected={len(selected)} retry_failed={args.retry_failed}")
         sheet = SheetSageWorker()
         try:
@@ -398,11 +458,12 @@ def main() -> int:
                     except Exception as exc:
                         errors[track_id] = ("audio", f"{type(exc).__name__}: {exc}"[:500])
                         log(track_id, "audio", f"failed {errors[track_id][1]}")
-                        publish(tracks, results, errors, durations)
+                        publish(tracks, results, errors, durations, bpdr)
                         print(f"[{number}/{len(selected)}] {track['mtg_track_id']}: {errors[track_id][1]}", flush=True)
                         continue
                 print(f"[{number}/{len(selected)}] {track['mtg_track_id']}", flush=True)
-                log(track_id, "song_start", f"remaining={','.join(stage for stage in STAGES if stage not in stages)}")
+                required = (*STAGES, *(("bpdr",) if bpdr.includes(track_id) else ()))
+                log(track_id, "song_start", f"remaining={','.join(stage for stage in required if stage not in stages)}")
 
                 def attempt(stage: str, action) -> None:
                     if stage in stages:
@@ -416,7 +477,7 @@ def main() -> int:
                             errors.pop(track_id, None)
                         count = (len(result["events"]) if stage in CHORDS or stage.startswith("roman_")
                                  else len(result["beats"]) if stage == "beats"
-                                 else 1 if stage in ("key", "key_comparison") else len(result["notes"]))
+                                 else 1 if stage in ("key", "key_comparison", "bpdr") else len(result["notes"]))
                         log(track_id, stage, f"complete count={count}")
                         print(f"  {stage}: {count}", flush=True)
                     except KeyboardInterrupt:
@@ -425,10 +486,12 @@ def main() -> int:
                         errors[track_id] = (stage, f"{type(exc).__name__}: {exc}"[:500])
                         log(track_id, stage, f"failed {errors[track_id][1]}")
                         print(f"  {stage}: {errors[track_id][1]}", flush=True)
-                    publish(tracks, results, errors, durations)
+                    publish(tracks, results, errors, durations, bpdr)
 
+                bpdr_needed = bpdr.includes(track_id) and "bpdr" not in stages
                 if "game_vocal" not in stages:
-                    attempt("game_vocal", lambda: extract_game(track, duration))
+                    attempt("game_vocal", lambda: extract_game(track, duration,
+                                                               keep_stem=bpdr_needed))
                 if ("game_vocal" not in stages
                         and errors.get(track_id, ("", ""))[0] == "game_vocal"
                         and model_resource_failure(errors[track_id][1])):
@@ -437,6 +500,18 @@ def main() -> int:
                     print("GAME worker ran out of memory or has no Metal device. "
                           "Stopping this batch to prevent more incomplete songs.", flush=True)
                     return 2
+                if bpdr_needed and "game_vocal" in stages:
+                    def export_bpdr() -> dict:
+                        stem = obtain_game_stem(track, duration)
+                        bpdr_result = bpdr.export(track, stem)
+                        stem.unlink(missing_ok=True)
+                        stem.with_suffix(".receipt.json").unlink(missing_ok=True)
+                        return bpdr_result
+                    attempt("bpdr", export_bpdr)
+                    if "bpdr" not in stages:
+                        log("*", "halted", f"BPDR failed at {track_id}; saved stages remain available")
+                        print("BPDR failed; stopping this batch. Rerun with --retry-failed after resolving the error.", flush=True)
+                        return 2
                 attempt("sheetsage2_instrumental", lambda: sheet.transcribe(track, duration))
                 if ("sheetsage2_instrumental" not in stages
                         and errors.get(track_id, ("", ""))[0] == "sheetsage2_instrumental"
@@ -451,7 +526,7 @@ def main() -> int:
                     if beat_result is not None:
                         stages["beats"] = compact_result(beat_result)
                         log(track_id, "beats", f"complete count={len(beat_result['beats'])} (with SheetSage2 melody)")
-                        publish(tracks, results, errors, durations)
+                        publish(tracks, results, errors, durations, bpdr)
                     else:
                         attempt("beats", lambda: sheet.extract_beats(track, duration))
                 if "game_vocal" in stages and "sheetsage2_instrumental" in stages:
@@ -482,17 +557,17 @@ def main() -> int:
                         if vocabulary in stages:
                             attempt(f"roman_{vocabulary}",
                                     lambda vocab=vocabulary: save_roman(track, vocab))
-                completed = len(stages) == len(STAGES)
+                completed = song_complete(track, stages, bpdr)
                 log(track_id, "song_end", "complete" if completed else "partial_or_failed")
-                print(f"  {'complete' if completed else 'incomplete'}; saved {len(stages)}/{len(STAGES)} stages", flush=True)
-            log("*", "run_end", f"selected={len(selected)} complete={sum(len(results[t['track_id']]) == len(STAGES) for t in selected)}")
+                print(f"  {'complete' if completed else 'incomplete'}; saved {len(stages)}/{len(required)} stages", flush=True)
+            log("*", "run_end", f"selected={len(selected)} complete={sum(song_complete(t, results.get(t['track_id'], {}), bpdr) for t in selected)}")
         except KeyboardInterrupt:
             log("*", "interrupted", "Ctrl-C; rerun the same command")
             print("Stopped. Saved stages remain available for resume.", flush=True)
             return 130
         finally:
             sheet.close()
-            publish(tracks, results, errors, durations)
+            publish(tracks, results, errors, durations, bpdr)
         return 0 if not any(track["track_id"] in errors for track in selected) else 1
 
 
