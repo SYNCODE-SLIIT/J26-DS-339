@@ -156,10 +156,12 @@ In another terminal, serve the dataset directory:
 python3 -m http.server 8765 --directory datasets/mtg-jamendo
 ```
 
-Open [the viewer](http://127.0.0.1:8765/melody-chord-extraction-pipeline/viewer.html).
-It lists a song as soon as one stage is saved and refreshes every 10 seconds.
-Select GAME, SheetSage2, or combined MIDI melody; listen to the original MP3
-and the synthesized melody with separate controls; and follow the timed
-`submission` or `full` chord labels. Click a chord row to seek. The page also
-shows the melody-derived key, chord diagnostic and relative basic label, and
-links to each available MIDI/JSON/CSV file.
+Open [the simple viewer](http://127.0.0.1:8765/melody-chord-extraction-pipeline/simple-viewer.html).
+It keeps a fixed list of the tracks included when the HTML was generated, with
+native players for the original song and synthesized combined melody. Opening
+one track loads only its beat and chord JSON. The timeline shows predicted
+beats, downbeats, and exact `submission` or `full` chord labels; its chord rows
+and timeline seek both players. Use **Refresh data** after extracting a missing
+beat file while the page is open. Newly extracted track IDs require updating
+the HTML song list; existing listed tracks need no HTML update when their beat
+or chord files change.
