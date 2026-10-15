@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-14",
+  "updated": "2026-10-15",
   "purpose": "Current, explicit evidence selection for the two maintained panel notebooks; update after every completed BPDR step.",
   "maintained_notebooks": [
     "01_input_validation_and_analysis.ipynb",
@@ -25,13 +25,17 @@
     "boundary_comparison": "runs/boundary_comparison/e69c9a73c3f54f7c843701f5dadbf522/evidence.json",
     "phase_feasibility": "runs/phase_feasibility/d215daf94aa749ce8798f72ab13976d9/evidence.json",
     "reviewer_deferral": "docs/Reviewer_Deferral_2026-10-14.md",
-    "phase_comparison": "runs/phase_comparison/6bdf0a7f2d3741e6a1a7c1c48dfa39de/evidence.json"
+    "phase_comparison": "runs/phase_comparison/6bdf0a7f2d3741e6a1a7c1c48dfa39de/evidence.json",
+    "anchor_feasibility": "runs/anchor_feasibility/fa470618ad02487d90cb4436c2864e47/evidence.json",
+    "known_source_control": "runs/known_source_control/1d7a2f6206d94eb5993cfe2cbd0b56f2/evidence.json",
+    "known_control_diagnostics": "runs/known_control_diagnostics/bf53253259254eef89f9bb3fe09e24bd/evidence.json",
+    "source_estimation_protocol": "runs/known_control_diagnostics/bf53253259254eef89f9bb3fe09e24bd/source_estimation_protocol.json"
   },
   "current_gate": {
-    "work": "Gate F \u2014 usable delivered audio / renderer validation",
+    "work": "Gate F — usable delivered audio / renderer validation",
     "state": "open",
-    "next_action": "Predeclare source-anchored local resynthesis feasibility and boundary phase/pitch constraints; keep the refused polar join unadopted",
-    "pending_prerequisite": "Gate D/J4 \u2014 deferred until experienced musical reviewers are available",
+    "next_action": "Run the declared audio-only source-estimation feasibility on the eight existing constructed sources; withhold construction F0/phase from the estimator and use it only in scoring. No new rendering or vocal trial yet.",
+    "pending_prerequisite": "Gate D/J4 — deferred until experienced musical reviewers are available",
     "training_ready_examples": 0
   },
   "review_policy": {
