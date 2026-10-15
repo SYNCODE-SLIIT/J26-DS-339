@@ -26,3 +26,6 @@ experiments/pasan/dataset/*
 /experiments/rahul/outputs/basic_chords/
 /experiments/rahul/outputs/aligned/
 /experiments/rahul/outputs/experiments/
+
+# Phase 2 generated dataset copies
+/experiments/pasan/notebooks/phase2_dataset_v1/
