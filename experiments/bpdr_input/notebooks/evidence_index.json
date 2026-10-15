@@ -24,12 +24,13 @@
     "framewise_diagnostics": "runs/framewise_diagnostics/4ece4923dc68495ba7efd2580733d89e/evidence.json",
     "boundary_comparison": "runs/boundary_comparison/e69c9a73c3f54f7c843701f5dadbf522/evidence.json",
     "phase_feasibility": "runs/phase_feasibility/d215daf94aa749ce8798f72ab13976d9/evidence.json",
-    "reviewer_deferral": "docs/Reviewer_Deferral_2026-10-14.md"
+    "reviewer_deferral": "docs/Reviewer_Deferral_2026-10-14.md",
+    "phase_comparison": "runs/phase_comparison/6bdf0a7f2d3741e6a1a7c1c48dfa39de/evidence.json"
   },
   "current_gate": {
     "work": "Gate F \u2014 usable delivered audio / renderer validation",
     "state": "open",
-    "next_action": "Predeclare one phase-aware joining candidate on the fixed controls, unchanged interior targets and audit; continue engineering without experienced reviewers for now",
+    "next_action": "Predeclare source-anchored local resynthesis feasibility and boundary phase/pitch constraints; keep the refused polar join unadopted",
     "pending_prerequisite": "Gate D/J4 \u2014 deferred until experienced musical reviewers are available",
     "training_ready_examples": 0
   },
