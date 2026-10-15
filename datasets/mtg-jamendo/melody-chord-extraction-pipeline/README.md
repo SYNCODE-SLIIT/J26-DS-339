@@ -1,18 +1,19 @@
 # Full-song melody + chord extraction
 
-One command extracts **ten resumable results for each complete local MP3** in
+One command extracts **ten core results plus BPDR for each eligible local MP3** in
 `../vocal-tagged-audio/`, in this order:
 
 1. GAME vocal notes, from a separated vocal stem, shifted up 12 semitones.
-2. SheetSage2 instrumental melody from the original MP3.
-3. A monophonic combined melody: GAME first; SheetSage2 only in long vocal gaps.
-4. SheetSage2 beat times, downbeats, and meter from the original full MP3.
-5. A key estimate from the combined **melody only**.
-6. LV-Chordia chords decoded with its `submission` vocabulary.
-7. The same LV-Chordia model decoded with its `full` vocabulary.
-8. An independent submission-chord key estimate and disagreement diagnostic.
-9. Key-relative basic chords from the submission labels.
-10. Key-relative basic chords from the full labels.
+2. A BPDR vocal crop and feature export for license-eligible voice-tagged songs.
+3. SheetSage2 instrumental melody from the original MP3.
+4. A monophonic combined melody: GAME first; SheetSage2 only in long vocal gaps.
+5. SheetSage2 beat times, downbeats, and meter from the original full MP3.
+6. A key estimate from the combined **melody only**.
+7. LV-Chordia chords decoded with its `submission` vocabulary.
+8. The same LV-Chordia model decoded with its `full` vocabulary.
+9. An independent submission-chord key estimate and disagreement diagnostic.
+10. Key-relative basic chords from the submission labels.
+11. Key-relative basic chords from the full labels.
 
 This folder contains its own extraction code and results. It **reuses the
 existing pinned model files and GAME/SheetSage2 environments** in
@@ -49,7 +50,9 @@ results.
 .venv/bin/python datasets/mtg-jamendo/melody-chord-extraction-pipeline/run.py --limit 10
 ```
 
-Run the **same command again** to process the next 10 incomplete songs. Omit
+Run the **same command again** to process the next 10 incomplete songs. Completed
+older songs missing BPDR are backfilled first, then new songs run all stages
+one song at a time. Omit
 `--limit` to process all remaining songs, or use `--track-id 382` to process
 one song. Ctrl-C stops the run; completed stages remain saved and the next run
 resumes the current song. Failed songs are logged and skipped on the usual
@@ -74,9 +77,9 @@ melody-chord-extraction-pipeline/
   code/                     shared format, GAME, SheetSage2, combination, chords
   provenance.json           pinned model and method information
   requirements.txt          pinned chord package
-  viewer.html               original audio, MIDI melody player, chord timeline
+  simple-viewer.html        original audio, MIDI melody, chords, BPDR crop
   manifest.csv              every local track, annotation IDs, splits, status
-  catalog.json              available results for the viewer
+  catalog.json              available results and per-track BPDR links
   history.log               append-only stage history and errors
   outputs/
     track_0000382/
@@ -94,6 +97,13 @@ melody-chord-extraction-pipeline/
       roman/
         submission.json/.csv
         full.json/.csv
+      bpdr/                  only on license-eligible voice-tagged tracks
+        record.json          crop mapping, screening, hashes and provenance
+        vocal.wav            listenable vocal crop, when exported
+        features.npz         71-column boundary features, when exported
+        boundaries.json      crop GAME notes, when exported
+        masks.npz            screen masks, when exported
+        reviews.csv          pending review slots, when applicable
   work/                     temporary stems and logs
 ```
 
@@ -164,11 +174,97 @@ python3 -m http.server 8765 --directory datasets/mtg-jamendo
 ```
 
 Open [the simple viewer](http://127.0.0.1:8765/melody-chord-extraction-pipeline/simple-viewer.html).
-It keeps a fixed list of the tracks included when the HTML was generated, with
-native players for the original song and synthesized combined melody. Opening
-one track loads only its beat and chord JSON. The timeline shows predicted
+It keeps its original song list and accepts any newer extracted track through
+the **Track ID** box; that lookup loads only the selected song's combined
+melody JSON. Native players compare the original song and synthesized melody.
+Opening one track loads only its beat, chord, and BPDR record JSON. The timeline shows predicted
 beats, downbeats, and exact `submission` or `full` chord labels; its chord rows
 and timeline seek both players. Use **Refresh data** after extracting a missing
-beat file while the page is open. Newly extracted track IDs require updating
-the HTML song list; existing listed tracks need no HTML update when their beat
-or chord files change.
+beat file while the page is open. Newly extracted tracks can be opened by ID
+without regenerating the HTML song list.
+
+## BPDR vocal-input export
+
+BPDR runs as an ordinary resumable stage for each local voice-tagged track with a
+recognized Creative Commons BY/BY-SA/BY-NC/BY-NC-SA license. There is no
+artist selection, five-track cap, run ID, or separate output root. Vocadito is
+not used. Existing songs with the ten core stages complete are visited first
+to add BPDR; each new song then runs GAME, BPDR, SheetSage2, beats, chords, key,
+and Roman numerals before moving to the next song. Every stage uses the same
+`history.log`, `manifest.csv`, `catalog.json`, runner lock, and retry behavior.
+A failed BPDR attempt stops the batch after logging the error; run again with
+`--retry-failed` once the cause is fixed. Ctrl-C preserves completed results.
+
+Set up the isolated feature environment once:
+
+```bash
+uv venv --python 3.12 datasets/mtg-jamendo/melody-chord-extraction-pipeline/.venv-bpdr
+uv pip install --python datasets/mtg-jamendo/melody-chord-extraction-pipeline/.venv-bpdr/bin/python \
+  -r datasets/mtg-jamendo/melody-chord-extraction-pipeline/bpdr-requirements.txt
+```
+
+Use the normal run command from above; no BPDR flags are needed. BPDR reuses
+the vocal stem made by the GAME stage for a new song. A song extracted before
+BPDR existed needs its stem separated once more. The full temporary stem is
+deleted only after the BPDR record is committed. GAME's published +12-semitone
+melody stays unchanged; BPDR uses unshifted model pitch to choose and decode a
+crop. GAME, separator, PESTO, and chord work run in separate processes, so the
+runner does not retain their model tensors across songs. System memory limits
+can still stop a worker; the runner saves prior stages and stops on a BPDR or
+known model-memory failure.
+
+Each eligible song gets `outputs/<mtg_track_id>/bpdr/record.json` with source,
+model, crop, screen, and artifact hashes. An exported crop also gets
+`vocal.wav` (mono 22,050 Hz PCM24), `features.npz`, `boundaries.json`, and
+`masks.npz`. A withheld crop may have only its record. Candidate crops get a
+per-track `reviews.csv`; a human's saved decisions are never replaced by
+resume. The viewer loads the record only when its track card is opened and
+shows a player for the vocal crop when a WAV exists. This is a short excerpt,
+starting at the original-song offset written in `record.json`; it is not a
+full-song melody or ground-truth annotation.
+
+The crop policy chooses complete GAME-note spans bounded by predicted rests
+when possible, at most 20 seconds, with at least five predicted singing
+seconds. A continuous vocal passage can instead use note boundaries and is
+flagged for review. The record maps original stem sample indexes and seconds
+to the exported WAV. Technical checks cover finite audio, supported channels,
+duration, silence, and clipping. They do not establish one singer, musical
+acceptability, or correct pitch. No denoising, time stretch, intonation
+correction, or section concatenation occurs.
+
+`features.npz` uses the frozen BPDR `analysis.py` implementation: columns
+0–63 are log-mel dB; 64 pitch cents relative to A4; 65 PESTO confidence; 66
+voiced flag; 67 adjacent voiced pitch change in cents; 68 log RMS dB; 69
+onset score; and 70 a crop-GAME note-edge score. The 70-column frame-only
+control is a slice of this matrix. Unvoiced `f0_hz` is NaN in the archive;
+the masked model input uses zero pitch only in column 64. The audio-derived
+heuristic boundary is separately named in `masks.npz` and is never silently
+substituted for GAME's column 70. PESTO uses frozen `mir-1k_g7`, 20 ms frames,
+1024-sample centered windows, 64 mel bands, and 0.8 voicing confidence.
+
+All BPDR exports remain `exploratory_not_research` and
+`training_eligible=false`: they are model-derived inputs, not approved
+training pairs. Human review and an independent validation step would be
+needed before training. The five original pilot crops were migrated to their
+track folders, hash-checked, and the separate pilot folder removed.
+
+### Windows adapter
+
+The BPDR route resolves `Scripts/python.exe`, uses a Windows file lock, and
+runs the same checkpoint through a separate PyTorch `audio-separator` worker
+with CUDA when available or CPU otherwise. The worker is isolated from the
+main and PESTO environments. Set up that worker separately on Windows:
+
+```powershell
+uv venv --python 3.12 datasets/mtg-jamendo/melody-chord-extraction-pipeline/.venv-bpdr
+uv pip install --python datasets/mtg-jamendo/melody-chord-extraction-pipeline/.venv-bpdr/Scripts/python.exe -r datasets/mtg-jamendo/melody-chord-extraction-pipeline/bpdr-requirements.txt
+uv venv --python 3.12 datasets/mtg-jamendo/melody-extraction/.venv-separator-windows
+uv pip install --python datasets/mtg-jamendo/melody-extraction/.venv-separator-windows/Scripts/python.exe -r datasets/mtg-jamendo/melody-chord-extraction-pipeline/bpdr-windows-separator-requirements.txt
+```
+
+The existing GAME, SheetSage2, LV-Chordia and shared asset setup is still
+needed for a combined run. PyTorch versus MLX can differ numerically; records
+include model and backend provenance. The Windows adapter has not been executed or compared against Mac
+outputs in this checkout. See the [audio-separator project](https://github.com/nomadkaraoke/python-audio-separator)
+for Windows backend support and the [PESTO project](https://github.com/SonyCSLParis/pesto)
+for the frozen pitch model.
