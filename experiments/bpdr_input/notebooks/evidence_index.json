@@ -40,12 +40,14 @@
     "segment_comparison_protocol": "runs/support_fragmentation/fc21ac54b04a4ee8b623f684c374f613/segment_comparison_protocol.json",
     "segment_phase": "runs/segment_phase/7cb66194012549168a6765ed034b855d/evidence.json",
     "phase_regression_diagnostics": "runs/phase_regression_diagnostics/9a019681b7184066b1a15a5c78d1645e/evidence.json",
-    "context_ablation_protocol": "runs/phase_regression_diagnostics/9a019681b7184066b1a15a5c78d1645e/context_ablation_protocol.json"
+    "context_ablation_protocol": "runs/phase_regression_diagnostics/9a019681b7184066b1a15a5c78d1645e/context_ablation_protocol.json",
+    "context_ablation": "runs/context_ablation/354b67b2137f4237a67078327dcf7fb1/evidence.json",
+    "harmonic_feasibility_protocol": "runs/context_ablation/354b67b2137f4237a67078327dcf7fb1/harmonic_feasibility_protocol.json"
   },
   "current_gate": {
     "work": "Gate F — usable delivered audio / renderer validation",
     "state": "open",
-    "next_action": "Implement and freeze the declared filter/Hilbert-context ablation, then compare saved B/C with new D/E on all 18 fixed sources; seal predictions before synthetic scoring. Preserve every mask/failure; no vocal correction or adoption.",
+    "next_action": "Implement and freeze the declared unchanged-source amplitude/harmonic feasibility diagnostic across B/C/D/E and all 18 sources; preserve every short/invalid interval and seal source-only fits before synthetic scoring. No waveform correction or adoption.",
     "pending_prerequisite": "Gate D/J4 — deferred until experienced musical reviewers are available",
     "training_ready_examples": 0
   },
