@@ -1,6 +1,8 @@
 # Audio-only source-estimation feasibility protocol — 15 October 2026
 
-**Gate F open. Status: declared, not executed.** This protocol follows the [frozen control diagnosis](Known_Control_Diagnosis_2026-10-15.md). It is the next bounded engineering check before defining a practical renderer; it is not a promised vocal correction method.
+**Gate F open. Status at declaration: declared, not executed.**
+
+**Execution update, 15 October:** this unchanged protocol has now run; [five estimated and three refused](Source_Estimation_2026-10-15.md). The original machine-readable declaration/hash is preserved as the prospective specification. This protocol follows the [frozen control diagnosis](Known_Control_Diagnosis_2026-10-15.md). It is the next bounded engineering check before defining a practical renderer; it is not a promised vocal correction method.
 
 Machine-readable declaration: [source_estimation_protocol.json](../runs/known_control_diagnostics/bf53253259254eef89f9bb3fe09e24bd/source_estimation_protocol.json). Its selection, fixed parameters and source hashes are frozen before the future experiment. The declaration SHA-256 is recorded in [diagnosis final verification](../runs/known_control_diagnostics/bf53253259254eef89f9bb3fe09e24bd/final_verification.json). A runner must verify the declaration hash before and after measuring and snapshot estimator/scorer code separately. Any method change needs a separately labelled declaration/run; do not tune and overwrite this one.
 
