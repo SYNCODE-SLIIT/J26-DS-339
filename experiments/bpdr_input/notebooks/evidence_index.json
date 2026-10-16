@@ -81,13 +81,16 @@
     "support_geometry_panel": "runs/support_geometry/84240d57a663460ea7f99903888fc00d/panel_evidence.json",
     "support_acoustic_pilot": "runs/support_acoustic_pilot/f71cccdef29941edbdc8d2e449412114/evidence.json",
     "support_acoustic_pilot_verification": "runs/support_acoustic_pilot/f71cccdef29941edbdc8d2e449412114/independent_verification.json",
-    "support_acoustic_pilot_panel": "runs/support_acoustic_pilot/f71cccdef29941edbdc8d2e449412114/panel_evidence.json"
+    "support_acoustic_pilot_panel": "runs/support_acoustic_pilot/f71cccdef29941edbdc8d2e449412114/panel_evidence.json",
+    "support_development_audit": "runs/support_development_audit/527f39f955af4e0b894d3674d9d761ea/evidence.json",
+    "support_development_audit_verification": "runs/support_development_audit/527f39f955af4e0b894d3674d9d761ea/independent_verification.json",
+    "support_development_audit_panel": "runs/support_development_audit/527f39f955af4e0b894d3674d9d761ea/panel_evidence.json"
   },
   "current_gate": {
-    "work": "Gate C fixed-support acoustic pilot completed (2 pass / 2 fail); remaining frozen development audits next; Gate E/F open",
+    "work": "Gate C fixed-support development audit completed (7 pass / 17 fail / 4 unattempted); Gate E development packaging next; F open",
     "state": "open",
-    "next_action": "Gate C prerequisite for Gate E: separately declare completion of the same -30/+30-cent audit on the remaining ten development phrases with locked multi-interior geometry. Reuse these four measured pilot attempts; do not rerun them or search alternate supports/renderers/thresholds. Keep the two geometry-refused development phrases, every failed direction and all 24 prospective shift outcomes visible. Audit completion must precede any paired-view packaging or model fit. Training candidates still require final acoustic masks; main comparison and diagnostic fits are unchanged. No musical approval, model adoption or repair-accuracy claim. Gate E open, D/J4 deferred and Gate F open.",
-    "pending_prerequisite": "Complete fixed-support development audits before packaging; final training masks and preservation-safe learning still required; D/J4 deferred",
+    "next_action": "Gate E validation preparation, with Gate C eligibility safeguards retained: declare and package only the seven passing fixed-support shift cases into A/B/C/D development views (split, merge and jitter: 21 planned variants from six phrases / three recordings / three singers). Reuse saved waveforms, acoustics and private masks/targets; retain Gaussian boundary sigma 0.04 seconds and the existing 71-column contract. Keep all 17 measured failures and four unattempted geometry keys in the inventory; failed cases stay outside targets. Keep the existing training-only normalizer, singer partitions and all original no-change development controls. No new rendering, audit retries, support/threshold search or fit. Verify packaging and loader refusals before any separately declared frozen-model evaluation. These would remain exploratory development examples, not research-approved training data. Gate E open, D/J4 review deferred, F open.",
+    "pending_prerequisite": "Package seven passing development cases with loader guards before frozen-model evaluation; preservation-safe learning and research review remain unresolved",
     "training_ready_examples": 0,
     "engineering_pair_examples": 936,
     "training_ready_examples_definition": "Actual reviewed research examples; engineering examples are reported separately",
@@ -102,7 +105,12 @@
     "support_geometry_training_annotation_candidates": 29,
     "support_acoustic_pilot_new_updates": 0,
     "support_acoustic_pilot_passed_shifts": 2,
-    "support_acoustic_pilot_failed_shifts": 2
+    "support_acoustic_pilot_failed_shifts": 2,
+    "support_development_audit_new_updates": 0,
+    "support_development_passed_shifts": 7,
+    "support_development_failed_shifts": 17,
+    "support_development_geometry_refused_keys": 4,
+    "planned_human_reference_development_variants": 21
   },
   "review_policy": {
     "status": "deferred_by_owner",
