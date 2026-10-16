@@ -29,3 +29,8 @@ experiments/pasan/dataset/*
 
 # Phase 2 generated dataset copies
 /experiments/pasan/notebooks/phase2_dataset_v1/
+
+# Reproducible Phase 2 artifacts (kept locally; notebooks and code are tracked)
+/experiments/pasan/notebooks/phase2_dataset_v2/
+/experiments/pasan/notebooks/phase2_runs_v2/
+/experiments/pasan/notebooks/.ipynb_checkpoints/
