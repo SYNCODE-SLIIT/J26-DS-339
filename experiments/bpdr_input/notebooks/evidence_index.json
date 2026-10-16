@@ -84,17 +84,20 @@
     "support_acoustic_pilot_panel": "runs/support_acoustic_pilot/f71cccdef29941edbdc8d2e449412114/panel_evidence.json",
     "support_development_audit": "runs/support_development_audit/527f39f955af4e0b894d3674d9d761ea/evidence.json",
     "support_development_audit_verification": "runs/support_development_audit/527f39f955af4e0b894d3674d9d761ea/independent_verification.json",
-    "support_development_audit_panel": "runs/support_development_audit/527f39f955af4e0b894d3674d9d761ea/panel_evidence.json"
+    "support_development_audit_panel": "runs/support_development_audit/527f39f955af4e0b894d3674d9d761ea/panel_evidence.json",
+    "support_development_packaging": "runs/support_development_packaging/779ea64608384daa9014865187c365b4/evidence.json",
+    "support_development_packaging_verification": "runs/support_development_packaging/779ea64608384daa9014865187c365b4/independent_verification.json",
+    "support_development_packaging_panel": "runs/support_development_packaging/779ea64608384daa9014865187c365b4/panel_evidence.json"
   },
   "current_gate": {
-    "work": "Gate C fixed-support development audit completed (7 pass / 17 fail / 4 unattempted); Gate E development packaging next; F open",
+    "work": "Gate E development packaging complete: 19 Vocadito + 285 Jamendo variants; frozen-model development evaluation next; F open",
     "state": "open",
-    "next_action": "Gate E validation preparation, with Gate C eligibility safeguards retained: declare and package only the seven passing fixed-support shift cases into A/B/C/D development views (split, merge and jitter: 21 planned variants from six phrases / three recordings / three singers). Reuse saved waveforms, acoustics and private masks/targets; retain Gaussian boundary sigma 0.04 seconds and the existing 71-column contract. Keep all 17 measured failures and four unattempted geometry keys in the inventory; failed cases stay outside targets. Keep the existing training-only normalizer, singer partitions and all original no-change development controls. No new rendering, audit retries, support/threshold search or fit. Verify packaging and loader refusals before any separately declared frozen-model evaluation. These would remain exploratory development examples, not research-approved training data. Gate E open, D/J4 review deferred, F open.",
-    "pending_prerequisite": "Package seven passing development cases with loader guards before frozen-model evaluation; preservation-safe learning and research review remain unresolved",
+    "next_action": "Gate E frozen-model development evaluation: separately declare evaluation of the three historically selected model checkpoints (augmentation-only update 25, frame-only update 50, BPDR update 300), using their verified Windows CPU exports and the unchanged training-only normalizer. Compare each with zero correction on the explicit 304-pair development catalog (19 Vocadito / 285 Jamendo) and all 88 retained no-change originals. Report both datasets separately and recording/singer-or-artist-proxy-aware macros, direction/corruption coverage, preservation, boundary sensitivity and actual counter-detuning response. This is post-selection exploratory development diagnosis: no checkpoint reselection, fitting, gain/loss search, rendering or production adoption. Keep all audit and boundary refusals visible; reserve PP1/final holdouts. Human review remains deferred (D/J4), Gate E and F open, research-ready examples zero.",
+    "pending_prerequisite": "Frozen-model development evaluation on current combined catalog; preservation-safe recovery and research review remain unresolved",
     "training_ready_examples": 0,
     "engineering_pair_examples": 936,
     "training_ready_examples_definition": "Actual reviewed research examples; engineering examples are reported separately",
-    "engineering_development_examples": 285,
+    "engineering_development_examples": 304,
     "model_optimizer_updates": 900,
     "diagnostic_optimizer_updates": 800,
     "multisource_diagnostic_updates": 300,
@@ -110,7 +113,12 @@
     "support_development_passed_shifts": 7,
     "support_development_failed_shifts": 17,
     "support_development_geometry_refused_keys": 4,
-    "planned_human_reference_development_variants": 21
+    "historical_matched_comparison_development_examples": 285,
+    "human_reference_development_examples": 19,
+    "jamendo_development_examples": 285,
+    "unobservable_boundary_variants_refused": 2,
+    "support_development_packaging_new_updates": 0,
+    "historical_planned_human_reference_development_variants": 21
   },
   "review_policy": {
     "status": "deferred_by_owner",
