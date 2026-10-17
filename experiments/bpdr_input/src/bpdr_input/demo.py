@@ -204,9 +204,10 @@ def _index(out, results, hand_off_prepared):
 Accepted recordings then go through the proposal's conservative rule-based correction: singer's own tuning, chromatic grid, one constant correction per stable held note,
 permission limits, Praat rendering, re-measurement and rollback. Hand-off of prepared audio: <b>{'ON (ACCEPT_PREPARED)' if hand_off_prepared else 'OFF: downstream receives the unchanged audio; verified candidates are attached for comparison'}</b>.</p>
 <table><tr><th>input</th><th>kind</th><th>detail</th><th>hand-off</th><th>rule outcome</th><th>notes proposed for correction</th><th>notes withheld</th></tr>{rows}</table>
-<h2>Learned BPDR transformer: diagnosed experiment</h2>
-<p>Not used in this demonstration. Two defects were found and fixed (33-cent pitch resolution of the frozen analyzer; a mean-absolute anchor that pins the output at zero).
-A held-out-singer test after 2,400 updates still shows no correction on new voices (response gain about 0), so the learned path stays experimental. See the project plan for the next step.</p>''', encoding='utf-8')
+<h2>Learned BPDR transformer</h2>
+<p><a href="../bpdr_explainer/bpdr_explainer.html"><b>BPDR transformer explainer</b></a>: research gap, the proposed four-view method, the three matched models on held-out controlled synthetic voices,
+and one phrase corrected end to end by the BPDR transformer through the same permission, rendering and audit path.
+On real singing the transformer does not yet transfer to new singers (held-out-singer response gain about 0), so it is not used on the recordings above.</p>''', encoding='utf-8')
 
 
 def main():
