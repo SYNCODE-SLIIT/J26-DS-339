@@ -34,3 +34,4 @@ experiments/pasan/dataset/*
 /experiments/pasan/notebooks/phase2_dataset_v2/
 /experiments/pasan/notebooks/phase2_runs_v2/
 /experiments/pasan/notebooks/.ipynb_checkpoints/
+datasets/mtg-jamendo/phase3-prepared/
