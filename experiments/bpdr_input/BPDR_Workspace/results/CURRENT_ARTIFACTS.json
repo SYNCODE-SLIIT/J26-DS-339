@@ -1,0 +1,80 @@
+{
+  "organized_at": "2026-10-18",
+  "purpose": "Neutral current dataset, method, input/output and evaluation walkthrough",
+  "research_status": "engineering_prototype_verified_research_incomplete",
+  "checkpoint_training": "Synthetic pretraining plus real Vocadito/Jamendo adaptation with synthetic replay",
+  "selected_checkpoint": {
+    "path": "BPDR_Workspace/selected_model/bpdr.pt",
+    "sha256": "4d8543a78720b6b1f3e111ec20465d61fdf5d251132d264c588c72045ac9416a"
+  },
+  "notebooks": [
+    {
+      "source": "notebooks/01_input_validation_and_analysis.ipynb",
+      "source_sha256": "4f17197fc2fb9f87ea47c8ab425bb61711514aa0a23403205b469a345190d215",
+      "executed_html": "BPDR_Workspace/results/reports/01_input_validation_and_analysis.html",
+      "html_sha256": "1344ad620601692b7584b87c7a2093245332abc7526947f73e139443ca689b91",
+      "full_executed_notebook": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\runs\\notebooks\\403f8f789fe44402a630c9ee17b23282\\01_input_validation_and_analysis.ipynb",
+      "full_executed_html": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\runs\\notebooks\\403f8f789fe44402a630c9ee17b23282\\01_input_validation_and_analysis.html",
+      "outputs_preserved": 20
+    },
+    {
+      "source": "notebooks/02_data_review_and_paired_experiments.ipynb",
+      "source_sha256": "3d94c657abb7646f1d4c22b8c1d7cff8ce0775f118981fea8d6d0ea18f91563a",
+      "executed_html": "BPDR_Workspace/results/reports/02_data_review_and_paired_experiments.html",
+      "html_sha256": "0a461ce56e41280619168bcb167407cbfa1cf8fdc0cdcba11f5f3a4835d163e4",
+      "full_executed_notebook": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\runs\\notebooks\\403f8f789fe44402a630c9ee17b23282\\02_data_review_and_paired_experiments.ipynb",
+      "full_executed_html": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\runs\\notebooks\\403f8f789fe44402a630c9ee17b23282\\02_data_review_and_paired_experiments.html",
+      "outputs_preserved": 76
+    }
+  ],
+  "review_package": {
+    "path": "runs/completion_release/6f1caa93a213401aa9102a0d109858d8/BPDR_presentation_completion.zip",
+    "sha256": "f5ff6849fcf541ef96a20b393aa4e0129f041221fbbed62b2c0a2e6ecf7d8dc4",
+    "files": 412
+  },
+  "handover": "docs/Presentation_Readiness_2026-10-17.md",
+  "recovery": "runs/reorganization/91022b07b01340dcb0d919caca1628b4/recovery_before_layout.zip",
+  "organization_record": "runs/organization/e30e4e7217a6481eb098a2f99290a0e7",
+  "prepared_handoff_enabled": false,
+  "research_ready_examples": 0,
+  "limitations": [
+    "Controlled synthetic pitch-repair evidence; reliable real-singer repair unproven",
+    "Expert review deferred; no completed novice/listener study",
+    "Review ZIP is not a portable runtime or full dataset bundle"
+  ],
+  "examples": [
+    {
+      "kind": "Generated phrase with a known injected local detuning",
+      "input": "runs/controlled_study/fbcd1fec3c0a417bb7c82369010e4bf6/heldout/heldout_voice_00/phrase_02/variant_1/C.wav",
+      "output": "runs/model_runtime/bf801dbba3ad405dbd7abb295b13bf66/experimental_candidate.wav",
+      "reference": "runs/controlled_study/fbcd1fec3c0a417bb7c82369010e4bf6/heldout/heldout_voice_00/phrase_02/variant_1/A.wav",
+      "before_cents": -19.797458294594662,
+      "after_cents": 1.4845682906965294,
+      "scope": "One controlled generated example; not original-dataset or population accuracy",
+      "accepted_downstream_unchanged": true
+    },
+    {
+      "kind": "Real HumTrans recording mixed with recorded rain",
+      "input": "runs/environmental_noise_study/cafba265f7064be48af281d508128efb/4_rain_20/noisy.wav",
+      "output": "runs/noise_preview/3501929195414db593bc84094e91cda3/experimental_noise_candidate.wav",
+      "reference": "runs/environmental_noise_study/cafba265f7064be48af281d508128efb/4_rain_20/baseline.wav",
+      "snr_gain_db": 2.4552485814924965,
+      "reference_attenuation_db": 2.9587598538644206,
+      "median_pitch_change_cents": 0.084218732564878,
+      "scope": "Known added-noise mixture; not naturally co-recorded noisy novice validation",
+      "accepted_downstream_unchanged": true
+    }
+  ],
+  "source_execution": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\runs\\notebooks\\403f8f789fe44402a630c9ee17b23282",
+  "full_output_view": true,
+  "code_inputs_available_in_sources": true,
+  "finalization_record": "runs/finalization/81e01ac9967d4fe7bc11099de306b8ad",
+  "previous_organization_recovery": "runs/organization/e30e4e7217a6481eb098a2f99290a0e7/recovery_before_organization.zip",
+  "archival_selected_checkpoint": {
+    "path": "runs/presentation_release/9c028c6fc3184b17ac5a9291f2b05233/models/bpdr.pt",
+    "sha256": "4d8543a78720b6b1f3e111ec20465d61fdf5d251132d264c588c72045ac9416a"
+  },
+  "workspace": "BPDR_Workspace",
+  "reorganization_record": "runs/reorganization/91022b07b01340dcb0d919caca1628b4",
+  "previous_layout_recovery": "runs/finalization/81e01ac9967d4fe7bc11099de306b8ad/before_changes.zip"
+}

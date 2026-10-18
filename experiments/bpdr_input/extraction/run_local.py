@@ -13,7 +13,7 @@ import subprocess
 import sys
 import types
 
-COMPONENT = Path(__file__).resolve().parents[1]
+COMPONENT = next(p for p in Path(__file__).resolve().parents if p.name == 'bpdr_input' and (p/'pyproject.toml').is_file())
 PIPELINE = COMPONENT/'data'/'mtg-jamendo'/'melody-extraction-pipeline'
 ASSETS = COMPONENT/'checkpoints'/'melody-extraction'
 STEMS = COMPONENT/'data'/'jamendo-vocal-stems'

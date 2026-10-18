@@ -19,7 +19,7 @@ from bpdr_input.dataset import DataPolicy, singer_splits
 from bpdr_input.interventions import AuditPolicy, audit_shift, independent_pitch, longest_span, render_local, select_support
 from bpdr_input.pipeline import process
 
-COMPONENT = Path(__file__).resolve().parents[1]
+COMPONENT = next(p for p in Path(__file__).resolve().parents if p.name == 'bpdr_input' and (p/'pyproject.toml').is_file())
 DATASET = COMPONENT/'data'/'mtg-jamendo'
 STEMS = COMPONENT/'data'/'jamendo-vocal-stems'
 CHECKPOINTS = COMPONENT/'checkpoints'

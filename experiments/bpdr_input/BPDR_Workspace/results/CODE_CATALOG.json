@@ -1,0 +1,812 @@
+[
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/__init__.py",
+    "group": ".",
+    "description": "BPDR workspace with grouped source files and stable public imports.",
+    "sha256": "4dcc8e89151d28007a599d87a5e9968bd3876492760a3b4b44947914b404674f"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/application/__init__.py",
+    "group": "application",
+    "description": "application responsibilities.",
+    "sha256": "f1fce6ef08ec4fb2f19746fa70a1cb88cefe376008bd7702d517a9fa8809fd73"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/application/app.py",
+    "group": "application",
+    "description": "Local vocal-processing interface. Start with Run-System.ps1.",
+    "sha256": "d568189591bcd7567c8e53055487f2e8cc9df98528e38efbdd845a634c84ca58"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/application/legacy_interface.py",
+    "group": "application",
+    "description": "Compatibility entry for earlier launchers; the active interface is app.py.",
+    "sha256": "5e73f9147f7105c6af0289637de4a2ab7d871b9abec21bbeead376f9651650f8"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/application/saved_results.py",
+    "group": "application",
+    "description": "Verified input/output examples from completed runs; no fitting or inference.",
+    "sha256": "987eb5b83337ca5fc84120692eccef633ab987338cfa2d1b4f3161a1e1b82b28"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/audio/__init__.py",
+    "group": "audio",
+    "description": "audio responsibilities.",
+    "sha256": "95ec5ed11cc036b0bbeaf367bf9b4576fe8c62f4dd0f745f377247dafa52fa80"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/audio/analysis.py",
+    "group": "audio",
+    "description": "Measured acoustics only; no intended-note inference or musical correction.",
+    "sha256": "44e28c9a505fdedbc36385b3bfd0e33dffd9179006b8660e56a7b9f52845e42e"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/audio/contracts.py",
+    "group": "audio",
+    "description": "Versioned hand-off data structures, independent of future audio/model code.",
+    "sha256": "3f9c707d01c52d0b326b6aeb9bd3a3ecacfc052f60d76c32e86941b412f9b5f9"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/audio/model_pins.py",
+    "group": "audio",
+    "description": "Shared immutable pins for the team's vocal models.",
+    "sha256": "4df21a82ee25488e0d1afc0f7159f9f550e92621d26ebf8ce1fa3bee484c368f"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/audio/pipeline.py",
+    "group": "audio",
+    "description": "Phase 1 integrity, unchanged-audio and acoustic-analysis entry point.",
+    "sha256": "1644ddc61af2518ef9d785c5798bc756ea778f12b004029ab003eb3d17f400b7"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/__init__.py",
+    "group": "experiments",
+    "description": "experiments responsibilities.",
+    "sha256": "43f57713dfd74656d6601646169b6f0630d176c1d5caa5f24009b3c4e3ce814f"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/__init__.py",
+    "group": "experiments/audio",
+    "description": "experiments/audio responsibilities.",
+    "sha256": "560f9924e0bd724bcbef2b4990af16663f69ce698b3524e7315b55874d5e8283"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/anchor_feasibility.py",
+    "group": "experiments/audio",
+    "description": "Conditional constructed-phase closure budgets; not a renderer or runtime policy.",
+    "sha256": "59bc9361b6b397b24dc2ca13d57a7b6c26bd76f7d1eb7077f3c2f76c06cc88d8"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/audit_diagnostics.py",
+    "group": "experiments/audio",
+    "description": "Replay existing detuning artifacts and diagnose failures without changing any gate.",
+    "sha256": "82a7e97f3c4939df079bb9b39820e8c2c15837efdeace8754f7c6fd97b38097c"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/boundary_comparison.py",
+    "group": "experiments/audio",
+    "description": "Predeclared all-case boundary-taper comparison; no tuning, fitting or adoption.",
+    "sha256": "586bdc4ae26cc43c9615031c20dd728a0bdc45744c8663fba071a977c47ba645"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/boundary_renderer.py",
+    "group": "experiments/audio",
+    "description": "Experimental boundary-taper candidate, separate from active renderer/policy.",
+    "sha256": "3fa55467754c4484ce0990691a8b848145a78513a14517d15736d746020cfbbc"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/context_ablation.py",
+    "group": "experiments/audio",
+    "description": "Fixed-center D/E context diagnostic; no waveform rendering or acceptance.",
+    "sha256": "f78a2fda74b664fe522947a4eaaa0e30bfe939de1081f46689348828330ea74e"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/context_ablation_experiment.py",
+    "group": "experiments/audio",
+    "description": "Execute declared context ablation; freeze predictions before truth scoring.",
+    "sha256": "b2d5b3448d6f09dc69da53fe17a1ca5ea0dc37f4f3853f24fb4e8a6ea71393a0"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/context_ablation_scoring.py",
+    "group": "experiments/audio",
+    "description": "Four-arm synthetic scoring, called only after source-only predictions seal.",
+    "sha256": "bb97f8d2cd14471e4a5c009de2cd11cc2a125b1cc6127e1fd02ad743ccc55acf"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/controller_fixtures.py",
+    "group": "experiments/audio",
+    "description": "Record constructed permission/rollback cases using the unchanged v0.3 shift auditor.",
+    "sha256": "cde35140e84a3350ce4cb972406e670e35deac899f29ad8ad0093aa45b866c89"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/demo.py",
+    "group": "experiments/audio",
+    "description": "PP1 end-to-end demonstration: validation path + the proposal's rule-based correction condition.",
+    "sha256": "9b2562301a2d7ffe964c7e93deaeef141f366c3366548f77967bdf9d2b79332c"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/estimated_harmonic_experiment.py",
+    "group": "experiments/audio",
+    "description": "Bounded 20-request audio-only correction experiment, without policy adoption.",
+    "sha256": "6581b3f0de2271fcc1192738628c20ae7de63b5a7e3f74e6119082550a3591f2"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/estimated_harmonic_renderer.py",
+    "group": "experiments/audio",
+    "description": "Experimental strict local phase edits from frozen audio-only estimates.",
+    "sha256": "0c222f73f28b2988202843e78b0e3636eef7a23ff3e26b9fa5ac46b46d2e305e"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/framewise_diagnostics.py",
+    "group": "experiments/audio",
+    "description": "Frozen replay and diagnostic contrasts; does not change any acceptance policy.",
+    "sha256": "ad6a3fe33f11b7f4955ac84602eb5bd451a9cc1d679397bee0d68735de01262a"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/framewise_fixtures.py",
+    "group": "experiments/audio",
+    "description": "Declared controlled framewise rendering experiments; no adoption or real-vocal edits.",
+    "sha256": "7b88d1ab8bbb901d0dcafb2cf4ec5accd9668e193bee979817fd1c1c13c53731"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/harmonic_separation.py",
+    "group": "experiments/audio",
+    "description": "Fixed three-harmonic source decomposition, without correction or oracle inputs.",
+    "sha256": "68b4bde1221b26f88123f5c1e71cb4ae8decea148046b44b51e34d31acc392fe"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/harmonic_separation_experiment.py",
+    "group": "experiments/audio",
+    "description": "Declared source-only decomposition; seal all fits before construction scoring.",
+    "sha256": "21028629bf9bff4f4ebaedb3a34d7aa4a2a73d1badbf8017b6f8728d492ddbe9"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/known_control_diagnostics.py",
+    "group": "experiments/audio",
+    "description": "Read-only replay of fixed oracle WAVs; no renderer or acceptance-policy changes.",
+    "sha256": "5cbb01fe51b10aa143b86b1d7491c51165a7f453fb0a26be613eb2fd045709f3"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/known_source_control.py",
+    "group": "experiments/audio",
+    "description": "Oracle-only constructed phase-anchored audio controls, never ordinary vocal repair.",
+    "sha256": "a343433b2da483cdd067e998dd2462349d3e40e8bc26b15293b9814dc62b49f1"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/phase_comparison.py",
+    "group": "experiments/audio",
+    "description": "Fixed 32-case polar joining experiment, with unchanged audits and diagnostics.",
+    "sha256": "b06b9f3612567e261eb1212998eef722127ad438be3cf0d36ff6d5ecf258aee2"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/phase_feasibility.py",
+    "group": "experiments/audio",
+    "description": "Constructed-signal phase/amplitude diagnostic; no new rendered delivery or approval.",
+    "sha256": "bae3fc01ad24257cbe0fdb8bbb5c4ab6ce906ca412a7ce3a74d18259f5a9519d"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/phase_regression_diagnostics.py",
+    "group": "experiments/audio",
+    "description": "Read-only geometry/amplitude diagnosis of already sealed phase predictions.",
+    "sha256": "199a355aa8bd5637183db03b8d59c69dcfc2466a5a8f5360aeb5e32aa0b8e62f"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/phase_renderer.py",
+    "group": "experiments/audio",
+    "description": "Experimental ramp-only analytic amplitude/phase joining; no production permission.",
+    "sha256": "549fd15004186314a58a96219ab1ede24e49bf3f73a1a97d82a34182f6c61c12"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/prediction_preview.py",
+    "group": "experiments/audio",
+    "description": "Frozen checkpoint-to-controller wiring on one previously used training crop; no edits or fitting.",
+    "sha256": "6bf1c3475a5a1886cdfffb16a64ae3f7aed59a82b74a35e1f2bcb0921f0ade95"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/renderer_calibration.py",
+    "group": "experiments/audio",
+    "description": "Frozen training-only renderer calibration; no policy adoption or training pairs.",
+    "sha256": "8892246dd5f138ee40893fc643b19be16d26c668937b1a2e62da8c2c3f7e687e"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/renderer_candidates.py",
+    "group": "experiments/audio",
+    "description": "Declared training-only renderer comparison; never adopts a renderer or creates pairs.",
+    "sha256": "5cc1847653d488e71de7b9c53e5c650d8083af26485436bf725533fe5465652a"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/segment_phase.py",
+    "group": "experiments/audio",
+    "description": "Declared local phase diagnostic on frozen support; never an audio renderer.",
+    "sha256": "138c734b0a9375d4cc7bbd7cc689d22b97aea35a116502327195b01f5068d5d5"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/segment_phase_experiment.py",
+    "group": "experiments/audio",
+    "description": "Frozen A/B/C phase diagnostic; source-only predictions seal before scoring.",
+    "sha256": "e5e1523553c9e9d77f542f4531dd3b9845079a50224f82dfeefcd622414535e0"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/segment_phase_scoring.py",
+    "group": "experiments/audio",
+    "description": "Separate post-seal synthetic frequency scorer; never imported by estimator.",
+    "sha256": "0e689e9aec789c0e588f1b36159e159c4d913bb51e258b64fe110de775301f36"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/source_estimation_experiment.py",
+    "group": "experiments/audio",
+    "description": "Seal audio-only predictions before separate construction-truth scoring.",
+    "sha256": "f905186cd30baf8f831b0b364895b4dadb7e3f61d889cfd4ecdc704a3de867bc"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/source_estimator.py",
+    "group": "experiments/audio",
+    "description": "Fixed audio-only fundamental diagnostic; no construction metadata or renderer.",
+    "sha256": "16502a57cd14e11e301488db57edb3f67dc8f9f9c4e790e49fa89ef57ce8cf07"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/audio/source_transfer.py",
+    "group": "experiments/audio",
+    "description": "Frozen source-only transfer screen; no vocal correction or annotations input.",
+    "sha256": "1e516a463b77bf932761fa28c2e45be6e61f874ec229291a58fb27322f987052"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/evaluation/__init__.py",
+    "group": "experiments/evaluation",
+    "description": "experiments/evaluation responsibilities.",
+    "sha256": "c19d769c296d80658adbb7200c6bed010473d891bccd1e3a034131c972042477"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/evaluation/baseline_evaluation.py",
+    "group": "experiments/evaluation",
+    "description": "Original and rule requested-correction references on the same 304 dev variants.",
+    "sha256": "b4589cd0a5289249f511e2153ea50e7711db8a004e30524eda4088a08316b9cf"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/evaluation/cue_features.py",
+    "group": "experiments/evaluation",
+    "description": "Runtime-only tuning-cue features derived from one view's own pitch track.",
+    "sha256": "d7c048de574fd8dc2f41d12615b331d6b62f09de7ed9ac48f10170a28acef18e"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/evaluation/environmental_noise_study.py",
+    "group": "experiments/evaluation",
+    "description": "Fixed-policy stress test with field-recorded environmental noise.",
+    "sha256": "d1538e84ce18b6859eb29b6d218e12f74bf066129fc4d1d2f2b5476a0bea05fa"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/evaluation/generalization_probe.py",
+    "group": "experiments/evaluation",
+    "description": "Challenge the frozen model when the detuned note is never the longest.",
+    "sha256": "0ecbe3c543c9160d64f2d734d41e90476678993b685762f8f05eeacaac534fba"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/evaluation/humming_experiment.py",
+    "group": "experiments/evaluation",
+    "description": "HumTrans audio intake, alignment diagnostics and local-detuning transfer probe.",
+    "sha256": "6a7f0a0e82e93ce646e96a0dd47225f93625c40896dfbf351076b7e2067e5d88"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/evaluation/humming_intake.py",
+    "group": "experiments/evaluation",
+    "description": "Bounded research-only HumTrans intake; no full 14.7-GB archive download.",
+    "sha256": "b502bb1e91e895b00589a050805836d2810e48abbbf3f251797d8056af0ce518"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/evaluation/humming_intake_extension.py",
+    "group": "experiments/evaluation",
+    "description": "Prospective longer-note HumTrans development sampling, before model scoring.",
+    "sha256": "6c17598e8267fdb390725de7316a9926a938b8c513cd10325aa082fd99b3d69a"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/evaluation/noise_study.py",
+    "group": "experiments/evaluation",
+    "description": "Bounded source-preservation study: real training recordings + known added noise.",
+    "sha256": "c8fce7a5147ad8335ab5907b0e35c8e7436dc2a52a6cb19b523c8aa499fc16ff"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/evaluation/reference_cue_ceiling.py",
+    "group": "experiments/evaluation",
+    "description": "Gate E R0: reference-cue ceiling, executing runs/reference_cue_ceiling/declaration.json.",
+    "sha256": "7b48d5ab0fc4a3b743bf3d1917b0cd425bdcdf0f144be433d6786d02c23c15d3"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/evaluation/rule_evaluation.py",
+    "group": "experiments/evaluation",
+    "description": "Decision-level evaluation of the rule-based correction on the frozen development variants.",
+    "sha256": "045ae2110eb393b131048d7861ee7731cc50d168106a9d21b19cba4e031ab3d1"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/evaluation/runtime_cue_diagnosis.py",
+    "group": "experiments/evaluation",
+    "description": "Gate E step 1: runtime-cue, conflicting-target and gradient-flow diagnosis on TRAINING records only.",
+    "sha256": "ace4a244f8813efb05ac627e94c9094902090b6addbdc5152d0d36a716e80c18"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/evaluation/transfer_study.py",
+    "group": "experiments/evaluation",
+    "description": "Frozen synthetic-to-real development evaluation; no final test or musical approvals.",
+    "sha256": "6913089d0944652ccc6cc8d9ee8976b5cc89c42eb93c99b4104e2ddbb71e6831"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/learning/__init__.py",
+    "group": "experiments/learning",
+    "description": "experiments/learning responsibilities.",
+    "sha256": "1224ee1149294fa3b3b3fb29a583c3f735750e72a26cad3152f23ff3802d2a81"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/learning/comparison_preparation.py",
+    "group": "experiments/learning",
+    "description": "Gate E input alignment and a locked exploratory comparison; never trains a model.",
+    "sha256": "cc50a1a231b9a13ac048ec376b14ef260cf0c764dfbae6d131ccdfa4cc80c190"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/learning/controlled_study.py",
+    "group": "experiments/learning",
+    "description": "Controlled proof of concept of the proposal's BPDR method on synthetic hummed phrases.",
+    "sha256": "11688b03c1888da84d8994b321e9231f078cea780dc23319175f453eb245ba09"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/learning/expanded_comparison.py",
+    "group": "experiments/learning",
+    "description": "Execute the separately prepared, fixed-budget expanded exploratory comparison.",
+    "sha256": "ceba861ae3e6a120c8ed0feb1523508479e24fc2a290ad60e4806a24cefa8caf"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/learning/expanded_experiment_preparation.py",
+    "group": "experiments/learning",
+    "description": "Exact-contract quarantine and a locked exploratory fit protocol; never fits a model.",
+    "sha256": "66582aaf3924d3908cee93b6a76bf42bd29bb598deabdc88d1472ef634b144da"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/learning/feature_weighting_control.py",
+    "group": "experiments/learning",
+    "description": "Fixed group-width scaling ablation against the authenticated saved Gate E control.",
+    "sha256": "d4a9b1b74e9e6839d8fbcceda1cc02387c4c14f111e9f7cd7bd3a249c9466704"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/learning/fine_pitch.py",
+    "group": "experiments/learning",
+    "description": "Gate E fine-pitch rebuild and training-only learning check (one declaration, two commands).",
+    "sha256": "fffef83ec3c1bc4248e87e978762db4a3bda3d1866e8e59b1f1ac86033818e4e"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/learning/fine_pitch_bpdr_check.py",
+    "group": "experiments/learning",
+    "description": "Gate E learning check: the proposal's full BPDR objective on fine, phrase-relative pitch.",
+    "sha256": "6236867da6a48c893da34405e194a29d27efee39ed70209c4532978a02d9d8b8"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/learning/fine_pitch_learning_curve.py",
+    "group": "experiments/learning",
+    "description": "Gate E learning-curve test with held-out singers inside the training partition.",
+    "sha256": "45ba7b66785945ffd2609e547f991e75eeae832d26dd979a42ba8dc79af22ecf"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/learning/fine_pitch_mse_check.py",
+    "group": "experiments/learning",
+    "description": "Gate E full-schedule learning check with a squared-error supervised anchor on the fine-pitch inputs.",
+    "sha256": "a9e2ef35e85458183eb24131d21402cdc255e92d167d5e82a0041a5cdf31634d"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/learning/fine_pitch_overfit.py",
+    "group": "experiments/learning",
+    "description": "Gate E learnability diagnostic on the fine-pitch inputs: can the proposal's transformer fit 8 fixed training records?",
+    "sha256": "4533a6b684a79689e79a3297b453a3a510702e0f4b54caff1a8cd518621f79d3"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/learning/fine_pitch_overfit_v2.py",
+    "group": "experiments/learning",
+    "description": "Gate E learnability diagnostic v2 on fine-pitch inputs: does the paired BPDR response term provide the learning signal?",
+    "sha256": "9a4715d9e1142ed43168f07e12d01a94f9c5988be76e80261538f7296ae843da"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/learning/fine_pitch_relative_check.py",
+    "group": "experiments/learning",
+    "description": "Gate E learning check: phrase-relative fine pitch, squared-error anchor, 300 updates, gated on paired response.",
+    "sha256": "5be3c5de7ad311cf2e696e63dcf82c9b33e612e12a4cbb0cdfae204afb2841b8"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/learning/frozen_development_evaluation.py",
+    "group": "experiments/learning",
+    "description": "Post-selection development diagnosis; frozen checkpoints, no fitting or adoption.",
+    "sha256": "fccf4caa8ff5abc0c341b7cccb6aec971ae93cc6f3815b2e791823eaa0590fd2"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/learning/humming_learning.py",
+    "group": "experiments/learning",
+    "description": "One bounded real-humming engineering adaptation, retaining synthetic controls.",
+    "sha256": "4ab1b3092fccd3785cc6b901b1f1e4dfc1277e1cfbe20d901d8e3d153d13848c"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/learning/input_response_diagnosis.py",
+    "group": "experiments/learning",
+    "description": "Post-hoc Gate E input/response diagnosis. Inference only; no corpus changes.",
+    "sha256": "ad4240965c830e080a04b3d3b67f129c7cda62ec80caa76bb8be7695bbbf1452"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/learning/learning_control.py",
+    "group": "experiments/learning",
+    "description": "Isolated Gate E learning controls; never a training corpus or deployable model.",
+    "sha256": "5956dc532ef24cc932951b964f425306ab6f7db51c9e4bc35bac936d530e0763"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/learning/matched_comparison.py",
+    "group": "experiments/learning",
+    "description": "Matched exploratory fits using existing model/loss code and frozen input catalogs.",
+    "sha256": "da9df8719495b1dd78380c089d24db9e530aa432cb712fe60dd83dee52a992a0"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/learning/multisource_control.py",
+    "group": "experiments/learning",
+    "description": "Declared training-only Gate E preservation diagnostic; no model adoption.",
+    "sha256": "3ffa80a2b87141a458c6b1b8475311759f3f78f94f909482b4c52781beefe0c8"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/learning/plateau_comparison.py",
+    "group": "experiments/learning",
+    "description": "Prepared objective-family comparison; historical runners remain unchanged.",
+    "sha256": "e20a7fa1cd28cae688473c80ff24b9a9f2a6f7e40bf3ac25fbf4032d967a6546"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/learning/plateau_objective.py",
+    "group": "experiments/learning",
+    "description": "A versioned support-balanced objective; the historical objective is unchanged.",
+    "sha256": "b84d1612807405d7ad498cdd00512b8bb3cc01abbebe091ec8dc8056994fa9e3"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/learning/real_input_diagnosis.py",
+    "group": "experiments/learning",
+    "description": "Read-only input diagnostics. Describes confounds; does not infer musical quality.",
+    "sha256": "6160cc761249d8f49688595504044897fbbd2dbba21957355760750d09d121b8"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/experiments/learning/real_learning_v2.py",
+    "group": "experiments/learning",
+    "description": "Versioned A4-safe real inputs and predeclared balanced/scaled learning checks.",
+    "sha256": "dbd04520289aa6cf723af437218537f1f949962c06ddb87d9d08b6ed5dde2c2c"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/modeling/__init__.py",
+    "group": "modeling",
+    "description": "modeling responsibilities.",
+    "sha256": "50604f7ac641bd38ee2d315839e504e18b95a3ddbf0906e8e35bc1a5bc802a46"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/modeling/examples.py",
+    "group": "modeling",
+    "description": "Phase 3 loader: four aligned views per audited pair, with research and engineering data kept apart.",
+    "sha256": "ff5b3f0c906422fb07c5b9aa297e267fbca84aae65018eafbc42cb000754478b"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/modeling/losses.py",
+    "group": "modeling",
+    "description": "Phase 3 objectives: supervised anchors, smoothness and the two BPDR response terms.",
+    "sha256": "a3ee3e6c1f47a858650f945e3d3a728f9bc92f1f3e1751245ae684d42300ad18"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/modeling/metrics.py",
+    "group": "modeling",
+    "description": "Phase 3 measurements on predicted correction curves; repair and preservation are reported together.",
+    "sha256": "770f423cf948db275ed97571eb65b1a7675a39d9399cf2934f732fa03994c5ae"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/modeling/model.py",
+    "group": "modeling",
+    "description": "Phase 3 compact correction encoder: one relative correction in cents per frame.",
+    "sha256": "2795245a69aa8b798e1c865f566e7fb9aeb9857208004bdab612e2bc3a29f8d0"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/modeling/training.py",
+    "group": "modeling",
+    "description": "Phase 3 training command: three conditions, one budget, every run recorded.",
+    "sha256": "c80fd71ffe9f39895fc4b5b5b464f3723a6a9a33f1a80d6b0b39cd4248c106be"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/packaging/__init__.py",
+    "group": "packaging",
+    "description": "packaging responsibilities.",
+    "sha256": "43fcd310213caffc11d0c5990ace61518da3691857727c4a7d2a639bdb1ba929"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/packaging/release_builder.py",
+    "group": "packaging",
+    "description": "Assemble a truthful presentation release from completed, immutable studies.",
+    "sha256": "31f09e6e94798582f9df186baa7427bfd2e98f98212a868d73f6cfe696ef4bd4"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/packaging/review_package.py",
+    "group": "packaging",
+    "description": "Seal a reviewable engineering handover; never claim research completion.",
+    "sha256": "4071bf549c044d24efdb9d1e3fa5477bb1e576c6774a8e2328d65f77808498bf"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/__init__.py",
+    "group": "preparation",
+    "description": "preparation responsibilities.",
+    "sha256": "758b16ac9a4ec47c818a9b7e440e3ca93564f62ba86f07dfa169c60af53cc6af"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/diagnostics/__init__.py",
+    "group": "preparation/diagnostics",
+    "description": "preparation/diagnostics responsibilities.",
+    "sha256": "819cca4f33223d9dd7d3e649de687cf4d728c974800076a8bb110a0b8828c30b"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/diagnostics/coverage.py",
+    "group": "preparation/diagnostics",
+    "description": "Training-only geometry and realized-shift probes; never changes the active audit policy.",
+    "sha256": "791fc87b20a15a5375631401081a28ffb6bd7d9524c1478d7b63c626cc7273f4"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/diagnostics/development_boundary_observability.py",
+    "group": "preparation/diagnostics",
+    "description": "Exact observability at the stored float32 boundary feature grid; no tolerance.",
+    "sha256": "94f2160fb4f7751ed6d7ae2fd45cbc65c66afc2c50d80c8a5c6736160e766966"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/diagnostics/review_bundle.py",
+    "group": "preparation/diagnostics",
+    "description": "Create separate pending reviewer sheets without changing original reviews or eligibility.",
+    "sha256": "065f5786f94aaf8ce6836538e64cce57e79c98f9ad1df11624c7f72bf4f7ed3c"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/diagnostics/shared_screen_diagnostics.py",
+    "group": "preparation/diagnostics",
+    "description": "Bounded training-only screen diagnosis and portable export request; no fitting.",
+    "sha256": "e8dc81aa646dedb78ee5be2365a428e70667d972368f19347728a41b16c54f3b"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/diagnostics/support_acoustic_pilot.py",
+    "group": "preparation/diagnostics",
+    "description": "Bounded, development-only audit of supports fixed by the geometry diagnostic.",
+    "sha256": "8f30d2b37de66dfaa3238a971632a80f4f8f3d625df581ad26049e85b0c3d395"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/diagnostics/support_development_audit.py",
+    "group": "preparation/diagnostics",
+    "description": "Frozen inventory for completion of development support audits; never trains.",
+    "sha256": "3d6084e072698346e9daaa66eb984066c9b2e9a9dd4f8b487f28b4874355ebda"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/diagnostics/support_fragmentation.py",
+    "group": "preparation/diagnostics",
+    "description": "Read-only diagnosis of frozen source masks; no estimator or renderer call.",
+    "sha256": "748618f7613de839ed9651e1ec6019eea08dfe5bc39d1d91a3051b3373a1c15e"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/diagnostics/support_geometry.py",
+    "group": "preparation/diagnostics",
+    "description": "Read-only candidate geometry; never renders audio or authorizes paired targets.",
+    "sha256": "21649573984be0448769a677128856e2a7262a363d0ec3271fc184581db74c5e"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/diagnostics/training_support_audit.py",
+    "group": "preparation/diagnostics",
+    "description": "Frozen training-only inventory for the predeclared support acoustic audit.",
+    "sha256": "4baef3b2a1abb6c9837347a819630928f4e29716353c7ed8fd5b6b4bdb3abc5a"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/pairs/__init__.py",
+    "group": "preparation/pairs",
+    "description": "preparation/pairs responsibilities.",
+    "sha256": "58f2d0c5bace12d7dc4279607894b1d7be6b8a0c5a8040ecce6209385aa176b2"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/pairs/development_preparation.py",
+    "group": "preparation/pairs",
+    "description": "Declared development-only controlled examples; no fitting or shared pipeline calls.",
+    "sha256": "737a42f687da19947f5ecbd1431fbaec430fa04b5b7120d065a26397673f2bac"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/pairs/laboratory.py",
+    "group": "preparation/pairs",
+    "description": "Phase 2 commands: immutable source/crop manifest, review gate and four-view pilot.",
+    "sha256": "57c812c53c477c4b41fa54c89ae6e22e73f7cc50fe4d19f830221f9fd89617e2"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/pairs/shared_pair_audit.py",
+    "group": "preparation/pairs",
+    "description": "Declared Gate C: frozen training candidates -> audited exploratory four-view pairs.",
+    "sha256": "c27b49cfd01edd67dfe20e8175bec58a9362fcce29764925867b56dbd58a96e4"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/pairs/support_development_packaging.py",
+    "group": "preparation/pairs",
+    "description": "Development-only adapter for previously audited multi-interior Vocadito cases.",
+    "sha256": "932dec480f4161773816a1222d27a01f58199b31364a99dd6bad38159c3fa5eb"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/pairs/training_reference_completion.py",
+    "group": "preparation/pairs",
+    "description": "Constrain original-only completion to previously unavailable training phrases.",
+    "sha256": "c3cda8e19a72635f61fd5579d8ecef924752634912e2a0c68b4e57ee93a77fa8"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/pairs/training_reference_completion_v2.py",
+    "group": "preparation/pairs",
+    "description": "Exact source-sample provenance for newly prepared original training audio.",
+    "sha256": "f67faee91296dcaa7c00379a3ce6196d385e3f5e0c9131fe80224d40d493597f"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/pairs/training_reference_preparation.py",
+    "group": "preparation/pairs",
+    "description": "Training-only accepted-cache authentication and frozen reference-mask replay.",
+    "sha256": "105b6dd4c13e1b9a7d54cf5e2ffb7aef17a2c4740750cbc5c69f4d9416f3134f"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/pairs/training_support_packaging.py",
+    "group": "preparation/pairs",
+    "description": "Candidate-only packaging of frozen passed training audits; no pool adoption.",
+    "sha256": "de4d02a2adb5d732781ed836935094a0a0dcae36c4593ff251c205270e3a04af"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/sources/__init__.py",
+    "group": "preparation/sources",
+    "description": "preparation/sources responsibilities.",
+    "sha256": "567f426c6a9194d70810f1b0ceb6a6702118cf5741de033262455a4b145238d7"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/sources/data_builder.py",
+    "group": "preparation/sources",
+    "description": "Prepare typed Vocadito/Jamendo crops and a pending review queue, never training pairs.",
+    "sha256": "fb7b8e245603281325c1765f2b88070f7b0a3ade0cdd8af82e88e31e7c7bcebe"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/sources/data_sources.py",
+    "group": "preparation/sources",
+    "description": "Typed source adapters and fixed training-only selection for preparation.",
+    "sha256": "6d035ce2c06e04fa5912197a5b0917503a7cb0ce554d08e5069905d30fcb1e7a"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/sources/dataset.py",
+    "group": "preparation/sources",
+    "description": "Source validation, singer partitions, crop provenance and pending review sheets.",
+    "sha256": "46e1e2da8679ecc5c229086f948f660a691215b226f174e1327db708496e130a"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/sources/inventory.py",
+    "group": "preparation/sources",
+    "description": "Read-only local vocadito inventory. This does not create repair targets.",
+    "sha256": "1b0ab33092bd92e8b0ba72cbd0823ba3ac0aaba9d919321400fa15f54a053a11"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/sources/jamendo_batch.py",
+    "group": "preparation/sources",
+    "description": "Declared five-artist extraction/preparation batch with persistent progress and receipts.",
+    "sha256": "fba9552d16f6ea409a1566fc7ea563c7b665893a2bddba355d3a20d8d304ba7d"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/sources/jamendo_yield.py",
+    "group": "preparation/sources",
+    "description": "Measure the frozen sample and v0.3 intervention support without changing eligibility.",
+    "sha256": "b504fd65143e0e4cf3bf086c29b916b5ee27e6cb908c17a61d6e2471e595b42f"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/sources/separation_adapter.py",
+    "group": "preparation/sources",
+    "description": "Select training-artist songs and run the existing pinned separator with a per-track receipt.",
+    "sha256": "eac3f8407aa966dd652bc53daebb44f3cc7733cfbb177d3189e663d40ab0f426"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/sources/shared_batch_intake.py",
+    "group": "preparation/sources",
+    "description": "Versioned intake of larger shared batches, including expected withheld records.",
+    "sha256": "a9316b1ae3cea4f6bc857116be67ec2ebd502c03b7da94bc575f108c6c1f2eb9"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/sources/shared_export_audit.py",
+    "group": "preparation/sources",
+    "description": "Import/audit shared outputs locally; no shared pipeline execution or training.",
+    "sha256": "da070d5d573998c1a8d0c2933e71669bd42d49f48d92ec169f640877fae71c3b"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/sources/shared_exports.py",
+    "group": "preparation/sources",
+    "description": "Component-owned intake for shared exports; never imports/runs shared code.",
+    "sha256": "0b74d863226cdbd4b078d546a1e4407dcd0550eb1addbfb7adf3553d920f8ccb"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/preparation/sources/verify_dataset.py",
+    "group": "preparation/sources",
+    "description": "Replay Phase 1 on every full recording; no cropping or accuracy claims.",
+    "sha256": "055151596dd7ac61dd160cefcd792cb9580e5b7db427f75bc414659664228b1f"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/repair/__init__.py",
+    "group": "repair",
+    "description": "repair responsibilities.",
+    "sha256": "a4b8312bd8ed891a6e9f58bdefdc562cb55942c822b2411fa61a144cae111782"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/repair/framewise_audit.py",
+    "group": "repair",
+    "description": "Candidate audit for changing curves; preserves v0.3 error/coverage limits.",
+    "sha256": "338018f5ae7460838c79891865f01d16b63cca306d76272265c02d17339f48cd"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/repair/framewise_renderer.py",
+    "group": "repair",
+    "description": "Experimental Praat pitch-tier renderer; never grants production edit permission.",
+    "sha256": "a5765e89abe0c8f36f9b94c1b60ac811cbe7dae2059d9537c496ed8c5e4200a2"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/repair/interventions.py",
+    "group": "repair",
+    "description": "Exploratory renderer and predeclared audits; targets never enter acoustic inference.",
+    "sha256": "ded38d7ff746817997e8c06a947d44ac4fadb23258a8a389d6168790a54e11dd"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/repair/model_runtime.py",
+    "group": "repair",
+    "description": "Local experimental inference on one WAV/FLAC, without annotations or targets.",
+    "sha256": "58e566a1300472a5464e2214b12b1e02d5000916f980879cfc6a871ba5121906"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/repair/noise_policy_v2.py",
+    "group": "repair",
+    "description": "Conservative colored-reference extension, awaiting independent-noise checks.",
+    "sha256": "627e17c371f7dfc84ad8015c7da30780568bf07a7fd411c1ad726d1d1d11d0a4"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/repair/noise_preview.py",
+    "group": "repair",
+    "description": "Optional, declared-noise-reference engineering preview (proposal p. 26).",
+    "sha256": "686a4ec0edca2ee4435c0b1942b7ce7aba48012e994cd4b7a39a3bd9aea3d7e5"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/repair/prediction_adapter.py",
+    "group": "repair",
+    "description": "Read-only prediction-to-permission preview; no production repair authorization.",
+    "sha256": "d0d90580938643ea14df87c7b647f60146fff6bd2b259db4aced84a91ed7225f"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/repair/repair_controller.py",
+    "group": "repair",
+    "description": "Engineering-only edit-permission and rollback fixtures, separate from delivery.",
+    "sha256": "5c49823e2fa38bbbb65a394bf1cbc7ceac770e1e2d794da208756d2e48c80a00"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/repair/rule_correction.py",
+    "group": "repair",
+    "description": "Conservative rule-based pitch-centre correction: the proposal's non-learning reference condition (Table 2).",
+    "sha256": "eec0793f049d3a3a55a7f01d33d60b1f3e924774f23eb9bcf701060f16c4f257"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/reporting/__init__.py",
+    "group": "reporting",
+    "description": "reporting responsibilities.",
+    "sha256": "250f7789ce22313d815988c278c2288ac3ad962996cfdec3dd44e1effc762ac0"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/reporting/bpdr_showcase.py",
+    "group": "reporting",
+    "description": "PP1 explainer page for the learned BPDR transformer on the controlled proof-of-concept data.",
+    "sha256": "85ddc82c5e294fe267f7891412902d57dc279c9a135ed0011cb7d0a1e3c225ce"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/reporting/notebook_evidence.py",
+    "group": "reporting",
+    "description": "Component-local, read-only evidence checks for the maintained panel notebooks.",
+    "sha256": "9affbc9c53e3e95e3ef42b30c2258972a2345e32c3be884bcacca2ead407742d"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/reporting/notebooks.py",
+    "group": "reporting",
+    "description": "Project-local Jupyter kernel and repeatable notebook execution/export.",
+    "sha256": "76c4817423b4cd73ff8186c749d539680cc1132f2d94d98b585622def70cf278"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/reporting/paired_statistics.py",
+    "group": "reporting",
+    "description": "Paired group-bootstrap uncertainty from frozen model outputs; no fitting.",
+    "sha256": "89217384dbc2901fae087a70e59f14a8d6dd87e3f5b1c647d821afb09ace6e07"
+  },
+  {
+    "path": "BPDR_Workspace/source/bpdr_input/reporting/preparation_report.py",
+    "group": "reporting",
+    "description": "Local listening/index page for a verified preparation run; cannot approve references.",
+    "sha256": "9de86ef0801c99256f277959a738feaec5669087c1203d5463f58af890f32ff1"
+  }
+]
