@@ -30,3 +30,8 @@ temp/
 *.ckpt
 *.safetensors
 *.onnx
+
+# Datasets and local audio recordings
+datasets/*
+!datasets/README.md
+!datasets/.gitkeep
