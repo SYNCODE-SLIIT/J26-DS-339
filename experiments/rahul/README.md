@@ -1,5 +1,68 @@
 # Chord refinement: feature and target construction
 
+## Final multi-track dataset
+
+The completed multi-track build is in `outputs/model_preprocessing/final_all_tracks_quality_v4_m4/`.
+Use its `train_sequences.npz`, `validation_sequences.npz`, and `test_sequences.npz`
+with the feature and target vocabularies from that same folder. See
+[FINAL_DATASET.md](FINAL_DATASET.md) for actual counts, loading instructions,
+source exclusions, compatibility fixes and reproducibility details.
+
+The batch runner discovers all extraction track folders and reuses the existing
+Phase 1 builder, encoders and PyTorch Dataset. Build a new immutable snapshot with:
+
+```powershell
+.\.venv\Scripts\python.exe -m experiments.rahul.src.build_final_dataset --run-name another_snapshot
+```
+
+Incomplete tracks are recorded, not silently substituted. The old Track 382
+development exports remain intact. A finished run has `FINAL_DATASET_READY.json`;
+`--resume` continues an interrupted, unfinished run and never replaces a completed one.
+
+## Phase 2: model-ready numerical preprocessing
+
+For a step-by-step all-track walkthrough using
+`outputs/model_preprocessing/final_all_tracks_quality_v4_m4/all_tracks_sequences_readable.csv`,
+with source-to-encoded examples, masks, tensor shapes and plots, open
+[02_dataset_preprocessing.ipynb](notebooks/02_dataset_preprocessing.ipynb).
+Select the project `.venv` kernel and use Restart Kernel and Run All. Additional
+notebook dependencies are listed in `notebooks/requirements.txt`. The notebook
+scans CSV metadata in chunks and retains full tensors only for selected sequences
+from each split. It reads existing data without rebuilding or fitting vocabularies.
+
+```powershell
+.\.venv\Scripts\python.exe -m experiments.rahul.src.preprocess_for_transformer --track-id 382 --development-only
+.\.venv\Scripts\python.exe -m unittest experiments.rahul.tests.test_model_preprocessing -v
+```
+
+This writes separate inputs, targets, masks, train-only vocabularies, chronological
+sequence tensors and reports under `outputs/model_preprocessing/`. It leaves
+Phase 1 unchanged and does not implement or train a Transformer. See
+[MODEL_PREPROCESSING.md](MODEL_PREPROCESSING.md) for the complete tensor contract,
+safe silence handling, saved-data loading and multi-track split commands.
+
+## Existing-extraction synthetic baseline
+
+To build the requested baseline from `combined.csv`, detailed chords, Roman
+events, and source beats (without re-extracting audio), run from repository root:
+
+```powershell
+python -m experiments.rahul.src.build_synthetic_dataset --track-id 382
+python -m unittest experiments.rahul.tests.test_build_synthetic_dataset -v
+```
+
+Repeat `--track-id` for multiple tracks. New outputs live exclusively under
+`outputs/synthetic_dataset/track_0000382/`: intermediate chord events, training
+events, validation report, full column schema and build summary. This is a
+**synthetic chord-refinement baseline**: basic chords are simplified reference
+pseudo-labels, so inputs are not independent of targets. It is distinct from
+the older independent harmony builder described below. Detailed target fields
+are excluded from the schema's explicit input list. See the generated summary
+for policies, actual counts, timing limitations and future sequence guidance.
+Optional `--member2-csv` replaces basic inputs with independently supplied
+`track_id,beat_index,basic_chord` predictions. It requires one basic triad per
+source beat. No production extraction or aligned dataset is overwritten.
+
 This isolated component currently performs one task only:
 
 ```text

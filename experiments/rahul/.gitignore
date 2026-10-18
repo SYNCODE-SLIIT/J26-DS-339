@@ -1,0 +1,8 @@
+# Data and Markdown files throughout this component, including nested outputs.
+*.csv
+*.json
+*.npz
+*.md
+
+# Generated synthetic datasets.
+/outputs/synthetic_dataset/
