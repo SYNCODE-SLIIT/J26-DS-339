@@ -5,6 +5,28 @@ build/
 dist/
 wheels/
 *.egg-info
+.env
+.env.*
+!.env.example
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.DS_Store
 
 # Virtual environments
 .venv
+.venv/
+venv/
+
+# Temporary files
+tmp/
+temp/
+*.log
+
+# Model checkpoints and trained weights
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
