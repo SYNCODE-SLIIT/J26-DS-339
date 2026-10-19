@@ -40,3 +40,6 @@ datasets/mtg-jamendo/phase3-prepared/
 /experiments/pasan/notebooks/phase4_dataset_*/
 /experiments/pasan/notebooks/phase4_runs_*/
 /experiments/pasan/notebooks/phase4_previews/
+experiments/pasan/checkpoints/flat84_compatibility_both60_standard_selected_songs.csv
+experiments/pasan/checkpoints/flat84_compatibility_both60_standard_history.csv
+.gitignore
