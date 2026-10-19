@@ -15,16 +15,17 @@ def main():
     st.markdown('''<style>
     .stApp {background:#f7f4ed;color:#182f32}
     h1,h2,h3 {font-family:Georgia,serif!important;letter-spacing:-.025em}
-    h1 {font-size:3.3rem!important} .block-container {max-width:1180px;padding-top:2.5rem}
+    h1 {font-size:2.6rem!important} .block-container {max-width:1180px;padding-top:1.5rem}
     [data-testid="stMetric"] {border-top:3px solid #b55732;padding-top:14px}
     .eyebrow {font-family:monospace;letter-spacing:.16em;color:#9b482b}
     </style>''', unsafe_allow_html=True)
     st.markdown('<div class="eyebrow">VOCAL INPUT / BOUNDARY-PITCH DISENTANGLED REPAIR</div>', unsafe_allow_html=True)
-    st.title('Keep the voice.\nRepair with restraint.')
-    st.write('Boundary-Pitch Disentangled Repair · Vocal processing prototype')
-    st.info('Validate a short recording, inspect measured features, and compare a bounded processing preview with the original.')
-    st.caption('Selected Transformer: synthetic pretraining plus Vocadito/Jamendo adaptation. Controlled pitch-repair results are available; reliable real-voice repair and a BPDR advantage remain unproven. Originals are retained.')
-    live, outputs, evidence, method = st.tabs(['Process audio', 'Input / output', 'Datasets & results', 'Method'])
+    st.title('BPDR vocal input demo')
+    st.caption('Experimental Transformer with synthetic pretraining and Vocadito/Jamendo adaptation. Real-voice pitch repair and a BPDR advantage remain unproven. Originals are retained.')
+    panel, live, outputs, evidence, method = st.tabs(['Panel demo', 'Process audio', 'Input / output', 'Datasets & results', 'Method'])
+    with panel:
+        from bpdr_input.application.panel_ui import render_panel
+        render_panel()
     with live:
         st.subheader('One voice. One short phrase.')
         st.write('Record 0.25–20 seconds of solo singing or humming, without accompaniment. Use a comfortable volume and leave natural pauses. WAV and FLAC uploads are supported.')

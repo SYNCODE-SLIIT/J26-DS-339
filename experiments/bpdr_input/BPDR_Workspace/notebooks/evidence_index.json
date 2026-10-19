@@ -1,9 +1,14 @@
 {
-  "updated": "2026-10-18",
-  "purpose": "Verified evidence selection for the two maintained research notebooks.",
+  "updated": "2026-10-19",
+  "purpose": "Verified historical studies, real VocalSet learned-model experimental preview, and provisional useful-input workflow.",
   "maintained_notebooks": [
     "01_input_validation_and_analysis.ipynb",
-    "02_data_review_and_paired_experiments.ipynb"
+    "02_data_review_and_paired_experiments.ipynb",
+    "03_transformer_training.ipynb",
+    "04_transformer_evaluation.ipynb",
+    "05_panel_demonstration.ipynb",
+    "06_real_voice_pilot_and_usefulness.ipynb",
+    "07_learned_stable_note_recovery.ipynb"
   ],
   "evidence": {
     "phase2": "runs/phase2/15fb678d1f44406ab4da3fddd7c2f809",
@@ -139,12 +144,25 @@
     "noise_policy_comparison": "runs/environmental_noise_study/paired_policy_comparison.json",
     "humming_noise_runtime": "runs/humming_noise_live_check.json",
     "completion_handoff": "runs/completion_handoff_check/8a9fb545567d4c14921631b392b73e78/evidence.json",
-    "completion_model_decision": "runs/completion_model_decision.json"
+    "completion_model_decision": "runs/completion_model_decision.json",
+    "panel_demo_manifest": "BPDR_Workspace/results/panel_demo/manifest.json",
+    "panel_demo_notebook_execution": "BPDR_Workspace/results/panel_demo/notebook_execution.json",
+    "panel_demo_rehearsal": "BPDR_Workspace/results/panel_demo/rehearsal/5c9cbfe28e9e45d68308f86022a29a47/summary.json",
+    "small_real_pilot": "BPDR_Workspace/results/small_real_pilot/1c94027926b5442e8f3e192afe530569/evidence.json",
+    "usefulness_notebook_execution": "BPDR_Workspace/results/usefulness_notebook_execution.json",
+    "usefulness_ui": "BPDR_Workspace/results/demo_sessions/ui_usefulness_check.json",
+    "accepted_extractor_fixture": "BPDR_Workspace/results/demo_sessions/integration_fixture_current.json",
+    "vocalset_manifest": "BPDR_Workspace/datasets/vocalset_pilot/manifest.json",
+    "learned_recovery": "BPDR_Workspace/results/model_recovery/b4c64c3b861a48c494c092458716b4fc/evidence.json",
+    "learned_rendered_verification": "BPDR_Workspace/results/model_recovery/b4c64c3b861a48c494c092458716b4fc/rendered_verification.json",
+    "learned_demo_card": "BPDR_Workspace/results/model_recovery/demo_model.json",
+    "recovery_notebook_execution": "BPDR_Workspace/results/recovery_notebook_execution.json",
+    "learned_ui": "BPDR_Workspace/results/demo_sessions/ui_recovery_check.json"
   },
   "current_gate": {
     "work": "Completed versioned A4 rebuild, bounded real/humming learning attempts, optional colored-noise preview, fixed GAME diagnostic and presentation packaging",
     "state": "open",
-    "next_action": "No larger automatic fit unlocked: real/humming learning gates failed. Keep the working presentation model. Further real-pitch research requires a new declared learning/data design; independent review and participant/listening validation remain deferred.",
+    "next_action": "Use the explicitly experimental ExtraTrees preview and its selected verified example. Broader real-voice criteria remain failed; no historical research-model adoption or larger automatic fit. Maintain independent validation and listening as outstanding work.",
     "pending_prerequisite": "Independent real-voice preservation-safe recovery and research validation; not an implementation approval request",
     "training_ready_examples": 0,
     "engineering_pair_examples": 995,
@@ -256,7 +274,9 @@
     "completion_humming_recordings": 24,
     "completion_humming_train_variants": 12,
     "completion_humming_development_variants": 6,
-    "completion_prepared_handoff_enabled": false
+    "completion_prepared_handoff_enabled": false,
+    "learned_experimental_preview_available": true,
+    "learned_experimental_research_gates_passed": false
   },
   "review_policy": {
     "status": "deferred_by_owner",
