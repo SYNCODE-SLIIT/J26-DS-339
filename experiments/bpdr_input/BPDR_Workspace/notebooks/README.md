@@ -8,7 +8,7 @@
 | 04 | [Transformer evaluation](04_transformer_evaluation.ipynb) | Recomputed prediction metrics, matched controls, real-source transfer, gates, playable input/output and next validation |
 | 05 | [Panel demonstration](05_panel_demonstration.ipynb) | Short executed walkthrough, selected-model inference, verified input/output, preservation, real-data failures and research limits |
 | 06 | [Real-voice pilot and usefulness](06_real_voice_pilot_and_usefulness.ipynb) | Small original-data training results, separate source groups, provisional vocal review and actual accepted-only extractor connection |
-| 07 | [Learned stable-note recovery](07_learned_stable_note_recovery.ipynb) | VocalSet source checks, trained ExtraTrees model, complete failed criteria and selected verified input/output audio |
+| 07 | [Complete model walkthrough](07_learned_stable_note_recovery.ipynb) | Goal and model-change history; data cleaning/splits/labels; all 31 features; actual fitting and candidate selection; defined metrics and failed criteria; fresh audible output; export and actual downstream MIDI/CSV |
 
 For a focused walkthrough use **01 → 03 → 04**; 02 provides the full detailed study record.
 
@@ -16,11 +16,17 @@ For the two-minute panel demo, start with **05** and the [offline comparison](..
 
 For the current learned-model workflow, start with **07** and `../Run-Demo.ps1`. The ExtraTrees model provides an explicitly experimental preview; broader validation criteria remain failed. Notebook 06 preserves the earlier small-data negative result. See [the current workflow](../documentation/Working_Demo_2026-10-19.md).
 
+Notebook 07 is a complete 20-section explanation, with 44 cells, ten executed plots and five audio players. Its [HTML reading view](07_learned_stable_note_recovery.html) includes all code, explanations and outputs. `results/recovery_walkthrough/current.json` identifies the latest complete executed `.ipynb`, its source and hashes. Section **12B** compares the historical Transformer, frozen MLP, histogram gradient boosting and ExtraTrees on the same audited calibration examples, reporting MAE, accuracy within 5/10 cents, original alteration and permitted coverage. Section 3 explains the model change through observed correction response and preservation, without attributing it to dataset size. The original calibration ranking is retained: ExtraTrees was selected as the highest-ranked diagnostic fallback after all candidates failed broader criteria. Different training histories and reuse of calibration examples prevent general architecture-superiority or final-test accuracy claims.
+
+The supplementary comparison receipt and frozen predictions are under `results/model_comparison/current.json`. `tools/compare_recovery_models.py` evaluates the saved checkpoints and reconstructs the previously unsaved HGB estimator from the exact original training arrays/settings, checking its recorded calibration metrics. That explicit tool performs one HGB fit; notebook Run All only verifies and rescores its saved predictions. Existing model selection, dataset sources and research-adoption flags are preserved.
+
 ## Version control and local assets
 
 Commit notebook sources without saved outputs. Executed HTML, embedded audio/plots, datasets, weights and run receipts stay local and are ignored by Git. Before committing an executed notebook, run `../.venv/Scripts/python.exe -B tools/prepare_notebooks_for_git.py` from `BPDR_Workspace`. The helper first preserves and hashes exact executed copies under `results/notebook_output_backups/`, then clears source outputs. Existing execution receipts still describe those exact preserved copies; their old hashes should not be interpreted as hashes of the newly cleared sources.
 
 The local executed HTML views remain available. A fresh checkout needs the separately retained datasets, pinned tools, weights and experiment receipts, or deliberate regeneration; committing the code does not distribute those assets. The official bounded VocalSet downloader is `bpdr_input.preparation.sources.vocalset_subset`.
+
+`tools/execute_recovery_notebook.py` now keeps the notebook 07 source untouched and writes its complete executed copy to an ignored, unique `results/recovery_walkthrough/` run folder. It exports the local HTML reading view and an execution receipt. Manual Jupyter saves can still add outputs to source; use the preservation helper before committing those saves. `tools/build_complete_recovery_notebook.py` maintains the full explanatory source, and `tools/update_recovery_notebook.py` delegates to that builder.
 
 ## Open and run
 

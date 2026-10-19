@@ -1,6 +1,6 @@
 {
   "updated": "2026-10-19",
-  "purpose": "Verified historical studies, real VocalSet learned-model experimental preview, and provisional useful-input workflow.",
+  "purpose": "Complete data-to-output notebook, verified model selection and all failed criteria, real VocalSet experimental preview and exact accepted-only downstream connection.",
   "maintained_notebooks": [
     "01_input_validation_and_analysis.ipynb",
     "02_data_review_and_paired_experiments.ipynb",
@@ -157,7 +157,10 @@
     "learned_rendered_verification": "BPDR_Workspace/results/model_recovery/b4c64c3b861a48c494c092458716b4fc/rendered_verification.json",
     "learned_demo_card": "BPDR_Workspace/results/model_recovery/demo_model.json",
     "recovery_notebook_execution": "BPDR_Workspace/results/recovery_notebook_execution.json",
-    "learned_ui": "BPDR_Workspace/results/demo_sessions/ui_recovery_check.json"
+    "learned_ui": "BPDR_Workspace/results/demo_sessions/ui_recovery_check.json",
+    "complete_model_walkthrough": "BPDR_Workspace/results/recovery_walkthrough/current.json",
+    "learned_accepted_extractor_fixture": "BPDR_Workspace/results/model_recovery/learned_extractor_fixture_current.json",
+    "same_example_model_comparison": "BPDR_Workspace/results/model_comparison/current.json"
   },
   "current_gate": {
     "work": "Completed versioned A4 rebuild, bounded real/humming learning attempts, optional colored-noise preview, fixed GAME diagnostic and presentation packaging",

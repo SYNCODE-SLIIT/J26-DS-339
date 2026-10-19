@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import sys
 import time
+import uuid
 
 import nbformat
 from nbclient import NotebookClient
@@ -47,6 +48,12 @@ def main():
         directory.mkdir(parents=True, exist_ok=True)
         os.environ[key] = str(directory)
     path = WORKSPACE / "notebooks/07_learned_stable_note_recovery.ipynb"
+    source_hash = checksum(path)
+    destination = WORKSPACE / 'results/recovery_walkthrough' / uuid.uuid4().hex
+    destination.mkdir(parents=True)
+    previous_receipt = WORKSPACE / 'results/recovery_notebook_execution.json'
+    if previous_receipt.is_file():
+        (destination / 'previous_execution_receipt.json').write_bytes(previous_receipt.read_bytes())
     notebook = nbformat.read(path, as_version=4)
     nbformat.validate(notebook)
     started = time.perf_counter()
@@ -55,10 +62,10 @@ def main():
     client.on_cell_start = lambda cell, cell_index: print("Executing cell", cell_index, flush=True)
     try:
         client.execute()
-        if checksum(evidence_path) != evidence_before:
+        if checksum(evidence_path) != evidence_before or checksum(path) != source_hash:
             raise RuntimeError("Recovery evidence changed while the notebook was running; execute again after it is finalized.")
     except Exception:
-        nbformat.write(notebook, WORKSPACE / "results/07_recovery_failed.ipynb")
+        nbformat.write(notebook, destination / 'failed.ipynb')
         raise
     outputs = [output for cell in notebook.cells for output in cell.get("outputs", [])]
     plots = sum("image/png" in output.get("data", {}) for output in outputs)
@@ -67,18 +74,25 @@ def main():
     required = notebook.metadata.get("bpdr_verification", {})
     if errors or plots < required.get("minimum_plots", 0) or audio < required.get("minimum_audio", 0):
         raise RuntimeError(f"Incomplete notebook outputs: errors={errors}, plots={plots}, audio={audio}")
-    nbformat.write(notebook, path)
+    executed_path = destination / path.name
+    nbformat.write(notebook, executed_path)
     html, _ = HTMLExporter().from_notebook_node(notebook)
     html_path = path.with_suffix(".html")
+    if html_path.is_file():
+        (destination / 'previous_reading_view.html').write_bytes(html_path.read_bytes())
     html_path.write_text(html, encoding="utf-8")
-    receipt = dict(notebook=str(path), notebook_sha256=checksum(path), html_export=str(html_path),
+    (destination / html_path.name).write_text(html, encoding='utf-8')
+    receipt = dict(notebook=str(executed_path), notebook_sha256=checksum(executed_path),
+                   source_notebook=str(path), source_sha256=source_hash, html_export=str(html_path),
                    html_sha256=checksum(html_path), recovery_evidence=str(evidence_path),
                    recovery_evidence_sha256=evidence_before,
                    code_cells=sum(cell.cell_type == "code" for cell in notebook.cells), errors=errors,
                    plot_outputs=plots, audio_players=audio,
                    elapsed_seconds=round(time.perf_counter() - started, 3),
                    scope="Fresh kernel; recorded source, model, proposal and waveform evidence verification; no training or intervention generation")
+    (destination / 'execution.json').write_text(json.dumps(receipt, indent=2), encoding='utf-8')
     (WORKSPACE / "results/recovery_notebook_execution.json").write_text(json.dumps(receipt, indent=2), encoding="utf-8")
+    (destination.parent / 'current.json').write_text(json.dumps(dict(path=str(destination), **receipt), indent=2), encoding='utf-8')
     print(json.dumps(receipt, indent=2), flush=True)
 
 
