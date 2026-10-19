@@ -35,3 +35,8 @@ experiments/pasan/dataset/*
 /experiments/pasan/notebooks/phase2_runs_v2/
 /experiments/pasan/notebooks/.ipynb_checkpoints/
 datasets/mtg-jamendo/phase3-prepared/
+
+# Versioned harmonic-function snapshots and experiment artifacts (rebuild locally)
+/experiments/pasan/notebooks/phase4_dataset_*/
+/experiments/pasan/notebooks/phase4_runs_*/
+/experiments/pasan/notebooks/phase4_previews/
