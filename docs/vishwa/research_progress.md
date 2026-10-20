@@ -17,10 +17,10 @@ prediction caches and checkpoints stay under ignored `datasets/humtrans/derived/
 |---|---|---|
 | A: exploration | Completed initial audit | Executed notebook 01; independent MIDI audit completed; original timing finding corrected |
 | B: preprocessing | Partial | Resampling, optional trim with offsets, Mel, pYIN; CFP pending |
-| C: baseline | Working smoke test | Quantitative evaluation pending |
+| C: baseline | Pilot completed | 20 TRAIN / 10 VALID recordings; low F1, no full benchmark |
 | D: CNN–Transformer | Pending | No training or performance claim |
 | E: harmony representation | Partial | Predicted duration-weighted pitch-class histogram only |
-| F: controlled comparisons | In progress | Audit → training pilot → frozen validation pilot |
+| F: controlled comparisons | Pilot completed; diagnosis in progress | Smoothing did not improve validation; preserve default baseline |
 
 ## Decision register
 
@@ -75,10 +75,39 @@ interpretation; decision; next experiment; related commit and report path.
 - **Next experiment:** R002 deterministic TRAIN pilot for note segmentation, then frozen VALID comparison; TEST remains reserved.
 - **Related report:** `experiments/vishwa/results/alignment_audit.json`; implementation commit recorded in the next entry.
 
-## R002 — controlled segmentation pilot (planned, not yet executed)
+## R002 — controlled segmentation pilot (completed; original preregistration follows)
 
 - **Date:** 2026-10-21.
 - **Question/hypothesis:** does short median smoothing within voiced runs reduce vibrato-induced note fragmentation without bridging rests?
 - **Configuration frozen before execution:** seed 339; two TRAIN examples per singer (20 total), one VALID example per singer (10 total), widths 1/3/5 frames, default 22,050 Hz/256 hop. Select by TRAIN macro onset+pitch note F1; tie favors smaller width. Compare baseline and selected width on VALID; no TEST inference.
 - **Metrics:** Mir_eval one-to-one note matching at 50 ms onset and 50 cents pitch; report with and without offsets. Frame agreement uses MIDI-held notes as a proxy, not continuous ground-truth vocal F0.
 - **Results:** pending. This small pilot cannot establish full-dataset or unseen-singer performance.
+
+### R002 execution and decision — 2026-10-21
+
+- **Command:** `.venv/bin/python scripts/run_baseline_pilot.py --output experiments/vishwa/results/pilot_001`.
+- **Related annotation commit:** `e399480`; initial log commit `e7674fc`.
+- **Actual TRAIN macro onset/pitch F1:** width 1 = 0.047592, width 3 = 0.047979, width 5 = 0.048927 (20 recordings, 586 reference notes).
+- **Frozen VALID comparison:** width 1 F1 = 0.028077, width 5 F1 = 0.027592 (10 recordings, 300 reference notes). Offset F1 also fell: 0.022020 → 0.021604.
+- **Frame agreement proxy:** 0.301738 TRAIN / 0.309404 VALID; MIDI voicing recall 0.926505 / 0.929407. These are MIDI-note-reference proxies, not continuous annotated F0 accuracy.
+- **Verification:** eight tests passed; notebook 02 executed and recomputed one score from cached features. Plots inspected: weaker case shows onset/pitch drift; several clips show octave discrepancies.
+- **Problem:** the training improvement was tiny and did not generalize in the pilot. Low F1 requires diagnosis before adding architecture complexity.
+- **Decision D008:** retain unsmoothed baseline as default; keep median smoothing as an experimental variant. Do not claim improved accuracy.
+- **Decision D009:** investigate octave and onset sensitivity using TRAIN only. Do not transpose labels from reference-driven guesses or singer identity.
+- **Next:** R003 diagnostic sensitivity analysis; no TEST predictions.
+
+## R003 — octave and onset sensitivity (planned before execution)
+
+- **Date:** 2026-10-21.
+- **Question:** how much does strict note scoring change when octave differences or onset tolerance are relaxed?
+- **Configuration:** reuse the same 20 TRAIN predictions, width 1; compare exact pitch vs pitch class and onset tolerances 50/100/200 ms. No retraining or label changes.
+- **Hypothesis:** octave and onset differences explain part of the low agreement; relaxed scoring is diagnostic and must not be presented as a model improvement.
+- **External evidence inspected:** [HumTrans official repository](https://github.com/shansongliu/HumTrans) describes use of official splits and reference MIDI evaluation. [Dynamic HumTrans](https://arxiv.org/html/2410.05455v1), sections 1.2 and 1.3, discusses onset/offset annotation concerns and separate octave-aware/invariant evaluation. These motivate investigation but do not prove the cause of our specific errors.
+- **Results:** pending.
+
+### R002 reproducibility and commit notes
+
+- **Execute report notebook:** use the NotebookClient example in `docs/vishwa/README.md` to ensure the project kernel and working directory.
+- **Artifacts:** `experiments/vishwa/configs/baseline_pilot.json`, `experiments/vishwa/results/pilot_001/`, notebook 02. Detailed cached frame arrays are ignored under `datasets/humtrans/derived/research/pilot_features/`.
+- **Rerun:** use a new output directory, e.g. `--output experiments/vishwa/results/pilot_001_rerun`; the script refuses to overwrite a previous experiment directory.
+- **Scope:** no model or label correction accepted from this pilot. The exact eight tests and both executed notebooks are recorded in this milestone's commit.
