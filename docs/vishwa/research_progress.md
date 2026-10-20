@@ -20,7 +20,7 @@ prediction caches and checkpoints stay under ignored `datasets/humtrans/derived/
 | C: baseline | Pilot completed | 20 TRAIN / 10 VALID recordings; low F1, no full benchmark |
 | D: CNN–Transformer | Pending | No training or performance claim |
 | E: harmony representation | Partial | Predicted duration-weighted pitch-class histogram only |
-| F: controlled comparisons | Pilot completed; diagnosis in progress | Smoothing did not improve validation; preserve default baseline |
+| F: controlled comparisons | Completed initial experiments | Smoothing and energy gates rejected; timing/octave cause remains open |
 
 ## Decision register
 
@@ -96,7 +96,7 @@ interpretation; decision; next experiment; related commit and report path.
 - **Decision D009:** investigate octave and onset sensitivity using TRAIN only. Do not transpose labels from reference-driven guesses or singer identity.
 - **Next:** R003 diagnostic sensitivity analysis; no TEST predictions.
 
-## R003 — octave and onset sensitivity (planned before execution)
+## R003 — octave and onset sensitivity (completed; original preregistration follows)
 
 - **Date:** 2026-10-21.
 - **Question:** how much does strict note scoring change when octave differences or onset tolerance are relaxed?
@@ -111,3 +111,87 @@ interpretation; decision; next experiment; related commit and report path.
 - **Artifacts:** `experiments/vishwa/configs/baseline_pilot.json`, `experiments/vishwa/results/pilot_001/`, notebook 02. Detailed cached frame arrays are ignored under `datasets/humtrans/derived/research/pilot_features/`.
 - **Rerun:** use a new output directory, e.g. `--output experiments/vishwa/results/pilot_001_rerun`; the script refuses to overwrite a previous experiment directory.
 - **Scope:** no model or label correction accepted from this pilot. The exact eight tests and both executed notebooks are recorded in this milestone's commit.
+
+### R003 actual outcome — 2026-10-21
+
+- **Command:** `.venv/bin/python scripts/diagnose_pitch_timing.py`.
+- **Actual results (20 TRAIN clips):** macro frame agreement exact 0.301738 versus octave-invariant/chroma 0.482577. Exact note F1 at 50/100/200 ms: 0.047592 / 0.116345 / 0.266216. Chroma note F1 at the same tolerances: 0.060211 / 0.175032 / 0.401247.
+- **Interpretation:** octave and onset differences materially affect scoring. These higher relaxed scores do not demonstrate a better model, and do not isolate label error from estimator error.
+- **Decision D010:** retain strict baseline metrics and raw annotations; report relaxed criteria separately. Do not select per-recording transpositions or time shifts from reference labels.
+- **Source clarification:** [HumTrans original paper, section 2.2.2](https://arxiv.org/html/2309.09623v1) describes `D` as a recording lowered by one octave, and `DD` by two. This does not establish whether the downloaded per-recording MIDI already incorporates the shift, so no automatic suffix-based correction is applied.
+- **Evidence:** `experiments/vishwa/results/pitch_timing_diagnostics.json`; baseline evaluation commit `39acfed`.
+- **Next:** R004 check low-frequency pYIN behavior on known synthetic pitches independently of corpus labels.
+
+## R004 — synthetic pitch sanity (completed; original preregistration follows)
+
+- **Date:** 2026-10-21.
+- **Question/hypothesis:** does the configured baseline systematically estimate low pitches an octave too low even when the true signal is known?
+- **Configuration:** 22,050 Hz; 3.6-second signal with 0.8-second tones at MIDI 45/57/69 (110/220/440 Hz), silent gaps, 10 ms edge ramps; clean and full-waveform 10 dB white-noise conditions; seed 339. Reuse unchanged production baseline.
+- **Decision:** this only diagnoses implementation/parameter behavior on simple signals; it cannot validate real humming labels or prove robustness to vocal noise.
+- **Results:** pending execution.
+
+### R004 actual outcome — 2026-10-21
+
+- **Command:** `.venv/bin/python scripts/synthetic_pitch_check.py`.
+- **Results:** three notes extracted in both clean/noisy cases. Voiced-frame pitch agreement 1.0000 clean / 0.99517 noisy; interior pitch errors 0 cents clean and at most 10 cents noisy. Strict onset note F1 was **0 in both conditions**.
+- **Interpretation:** no systematic octave failure on these known tones, but timing is inadequate even on simple signals. Long centered pYIN windows (4096/22050 ≈186 ms) can mark frames voiced before actual tone onset and after offset.
+- **Decision D011:** investigate short-window energy masking as an onset/offset refinement; do not replace the pitch estimates or relax the metric to claim improvement.
+- **Limitation:** synthetic success/failure does not prove the cause of real vocal octave discrepancies.
+
+## R005 — short-window energy-gating experiment (completed; original preregistration follows)
+
+- **Date:** 2026-10-21.
+- **Hypothesis:** 512-sample energy windows can remove long-window voicing spill around rests and improve strict onset matching.
+- **Configuration:** same cached TRAIN 20 / VALID 10 F0 tracks, width-1 segmentation, 512 RMS / 256 hop; compare no gate, -20 dB and -10 dB peak-relative RMS gates, and max(5% peak, 2×20th-percentile RMS). Choose by TRAIN macro note F1; baseline wins ties. Freeze before VALID scoring, then check the two known-tone conditions.
+- **Risk:** quiet vocal frames may be rejected; report frame/voicing metrics alongside note F1. VALID has already been inspected during R002, so it remains development evidence, not a final independent evaluation.
+- **Results:** pending execution.
+
+### R005 initial result and diagnostic extension
+
+All three energy gates reduced TRAIN note F1; the unchanged baseline won selection.
+VALID therefore rechecks only baseline. Extend the independent known-tone check to
+all four gating modes (instead of only selected baseline) to distinguish synthetic
+boundary benefits from real-corpus failure. This does not change model selection or
+use synthetic labels to tune the real-data validation result.
+
+### R005 outcome and decision — 2026-10-21
+
+- **Command:** `.venv/bin/python scripts/run_energy_pilot.py`.
+- **TRAIN macro note F1:** unchanged 0.047592; -20 dB gate 0.028002; -10 dB gate 0.012622; adaptive noise gate 0.028213. All gates also reduce MIDI voicing recall (baseline 0.926505 versus 0.740347 / 0.464356 / 0.705818).
+- **VALID:** baseline wins TRAIN selection; baseline score remains 0.028077. No rejected gate was selected using VALID.
+- **Synthetic check:** every gate raises clean-tone note F1 from 0 to 1.0. On 10 dB noise, -20 dB remains at 0, while -10 dB/adaptive reach 1.0. This confirms a synthetic boundary benefit but does not transfer to real-data scoring.
+- **Interpretation:** real-data boundary/label behavior differs from simple tones. Energy gating sacrifices voiced coverage; favorable synthetic results are insufficient for adoption.
+- **Decision D012:** retain baseline defaults. Preserve all failed alternatives and their code as experimental only. Prioritize acoustic/annotation review and explicit target definitions over training a model on unverified frame labels.
+- **Regression checks:** nine tests passed, including non-mutation and silence masking of the energy gate. Both notebooks executed; notebook 02 includes diagnostics and an octave-discrepancy example.
+- **Source/results:** `scripts/diagnose_pitch_timing.py`, `scripts/synthetic_pitch_check.py`, `scripts/run_energy_pilot.py`, `src/melody_understanding/energy.py`; associated JSON under `experiments/vishwa/results/`.
+- **Dependencies:** same versioned project/research environment and baseline feature configuration recorded in `pilot_001/summary.json` and `requirements-vishwa-research.txt`.
+- **Commit association:** this entry and R003–R005 evidence are included together in the diagnostic milestone; locate it with `git log --oneline -- scripts/run_energy_pilot.py`.
+
+## Current decision register additions
+
+| ID | Date | Decision | Evidence |
+|---|---|---|---|
+| D007 | 2026-10-21 | Replace notebook MIDI timing parser; retract 834 flags | Full-corpus reader agreement; explicit tick-zero tempo regression |
+| D008 | 2026-10-21 | Do not adopt median smoothing | Tiny TRAIN gain, lower frozen VALID note F1 |
+| D009 | 2026-10-21 | Diagnose octave/timing errors on TRAIN | Large discrepancies observed; avoid reference-driven correction |
+| D010 | 2026-10-21 | Keep strict metrics and relaxed diagnostics distinct | Relaxed onset/chroma scoring raises numbers without changing predictions |
+| D011 | 2026-10-21 | Test short-window energy gating | Known pitches correct, synthetic note onsets fail strict scoring |
+| D012 | 2026-10-21 | Reject energy gate as default | Better synthetic boundaries but lower real TRAIN F1/voicing recall |
+
+## Verified milestone commits
+
+- `d027a04`: inherited baseline and initial exploration notebook.
+- `e7674fc`: structured log and research dependency pins.
+- `e399480`: independent annotation audit and corrected notebook tempo interpretation.
+- `39acfed`: fixed-cohort baseline evaluation and smoothing comparison.
+- Diagnostic milestone: commit containing this R003–R005 outcome; hash shown in session handoff.
+
+## Highest-priority continuation
+
+1. Establish a small, explicitly reviewed TRAIN reference subset with waveform/spectrogram/pitch evidence and annotation provenance; determine whether octave discrepancies are estimator, label, or recording-convention effects. Do not infer corrections from filename suffixes alone.
+2. Compare an independently implemented F0 estimator on that subset. Define tolerances and whether the task predicts performed pitch or intended score pitch before model training.
+3. Build supervised feature/label tensors with recorded timing policy; then prototype the proposed CNN–Transformer and a matched simpler baseline. CFP and additional task labels still need implementation/verification.
+4. Expand validation only under a documented protocol; reserve TEST. Do not extrapolate the current 20/10 pilot to full-dataset accuracy.
+
+No raw recordings, frame caches or checkpoints were committed. No CNN–Transformer,
+CFP, beat/key/phrase model or learned harmony embedding has been trained or validated.

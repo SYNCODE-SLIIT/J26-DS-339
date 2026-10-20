@@ -18,6 +18,8 @@ uv pip install --python .venv/bin/python -r requirements-vishwa-research.txt
 .venv/bin/python scripts/audit_humtrans.py --manifest datasets/humtrans/derived/research/manifest.jsonl --report experiments/vishwa/results/alignment_audit.json
 .venv/bin/python scripts/run_baseline_pilot.py --output experiments/vishwa/results/pilot_001_rerun
 .venv/bin/python scripts/diagnose_pitch_timing.py
+.venv/bin/python scripts/synthetic_pitch_check.py
+.venv/bin/python scripts/run_energy_pilot.py
 ```
 
 The audit re-creates its derived manifest/report. Pilot output directories must be

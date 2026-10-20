@@ -1,0 +1,81 @@
+{
+  "recorded_date": "2026-10-21",
+  "seed": 339,
+  "sample_rate": 22050,
+  "reference_notes": [
+    [
+      0.3,
+      1.1,
+      45
+    ],
+    [
+      1.4,
+      2.2,
+      57
+    ],
+    [
+      2.5,
+      3.3,
+      69
+    ]
+  ],
+  "conditions": [
+    {
+      "condition": "clean",
+      "notes": 3,
+      "note_precision": 0.0,
+      "note_recall": 0.0,
+      "note_f1": 0.0,
+      "note_offset_f1": 0.0,
+      "midi_frame_pitch_agreement_50c": 1.0,
+      "midi_frame_overall_agreement_50c": 0.8585209003215434,
+      "midi_voicing_recall": 1.0,
+      "pitch_core": [
+        {
+          "reference_midi": 45,
+          "voiced_core_frames": 43,
+          "median_error_cents": 0.0
+        },
+        {
+          "reference_midi": 57,
+          "voiced_core_frames": 43,
+          "median_error_cents": 0.0
+        },
+        {
+          "reference_midi": 69,
+          "voiced_core_frames": 43,
+          "median_error_cents": 0.0
+        }
+      ]
+    },
+    {
+      "condition": "10db_noise",
+      "notes": 3,
+      "note_precision": 0.0,
+      "note_recall": 0.0,
+      "note_f1": 0.0,
+      "note_offset_f1": 0.0,
+      "midi_frame_pitch_agreement_50c": 0.9951690821256038,
+      "midi_frame_overall_agreement_50c": 0.8617363344051447,
+      "midi_voicing_recall": 1.0,
+      "pitch_core": [
+        {
+          "reference_midi": 45,
+          "voiced_core_frames": 43,
+          "median_error_cents": 10.000000000000142
+        },
+        {
+          "reference_midi": 57,
+          "voiced_core_frames": 43,
+          "median_error_cents": 0.0
+        },
+        {
+          "reference_midi": 69,
+          "voiced_core_frames": 43,
+          "median_error_cents": 0.0
+        }
+      ]
+    }
+  ],
+  "limitation": "Pure sine sanity check, not vocal robustness evidence or a generalization benchmark; noise SNR is over the full waveform including rests."
+}
