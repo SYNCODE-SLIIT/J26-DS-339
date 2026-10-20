@@ -15,7 +15,7 @@ prediction caches and checkpoints stay under ignored `datasets/humtrans/derived/
 
 | Stage | Status | Evidence / remaining work |
 |---|---|---|
-| A: exploration | Completed initial audit | Executed notebook 01; independent alignment verification in progress |
+| A: exploration | Completed initial audit | Executed notebook 01; independent MIDI audit completed; original timing finding corrected |
 | B: preprocessing | Partial | Resampling, optional trim with offsets, Mel, pYIN; CFP pending |
 | C: baseline | Working smoke test | Quantitative evaluation pending |
 | D: CNN–Transformer | Pending | No training or performance claim |
@@ -47,7 +47,7 @@ prediction caches and checkpoints stay under ignored `datasets/humtrans/derived/
 - **Next:** R001.
 - **Related commit:** `d027a04` (already present when this session began).
 
-## R001 — independent annotation audit (in progress)
+## R001 — independent annotation audit (completed)
 
 - **Actual date:** 2026-10-21.
 - **Question:** are the note counts and tail overruns reproducible with maintained MIDI readers?
@@ -62,3 +62,23 @@ prediction caches and checkpoints stay under ignored `datasets/humtrans/derived/
 Copy for each meaningful experiment: actual date; question; hypothesis; changes;
 dataset/split and configuration; exact commands; actual results; problems;
 interpretation; decision; next experiment; related commit and report path.
+
+### R001 outcome and correction — 2026-10-21
+
+- **Command:** `.venv/bin/python scripts/audit_humtrans.py --manifest datasets/humtrans/derived/research/manifest.jsonl --report experiments/vishwa/results/alignment_audit.json`.
+- **Actual results:** both readers agree within 1e-7 seconds on all 14,614 pairs and 391,595 notes. Zero read errors, unmatched events, overlapping notes, missing splits, or tails >50 ms. Maximum tail overrun 0.000022676 s (one 44.1 kHz sample).
+- **Root cause of earlier failed finding:** custom notebook `tempos.sort()` sorted equal-tick events by tempo value. Default `(0, 500000)` could override a faster explicit tempo at tick zero. Example F01_0019_0001_1: old note end 11.948958 s, corrected 11.029797 s, actual tempo 461538 μs/beat.
+- **Correction:** replaced notebook custom parser with PrettyMIDI, executed all cells, added duration/pitch histograms, added tempo regression tests. The old 834-file defect claim is retracted. Corrected maximum note onset is 28.125 s; minimum note duration 0.101 s.
+- **Reproducibility fix:** sort file paths before seeded sampling. The newly fixed sample has 21/100 near-full-scale peaks (formerly 14/100 with filesystem-order-dependent sampling). Neither count proves clipping or estimates the entire corpus without uncertainty analysis.
+- **Interpretation:** structural annotation timing is consistent; agreement is not proof of acoustic/perceptual alignment. PrettyMIDI uses Mido for binary parsing, so the independent check concerns note interpretation and tempo conversion rather than wholly independent file decoding.
+- **Decision D007:** use maintained MIDI readers; preserve this failed finding and its correction. Do not exclude 834 valid recordings based on the obsolete parser result.
+- **Next experiment:** R002 deterministic TRAIN pilot for note segmentation, then frozen VALID comparison; TEST remains reserved.
+- **Related report:** `experiments/vishwa/results/alignment_audit.json`; implementation commit recorded in the next entry.
+
+## R002 — controlled segmentation pilot (planned, not yet executed)
+
+- **Date:** 2026-10-21.
+- **Question/hypothesis:** does short median smoothing within voiced runs reduce vibrato-induced note fragmentation without bridging rests?
+- **Configuration frozen before execution:** seed 339; two TRAIN examples per singer (20 total), one VALID example per singer (10 total), widths 1/3/5 frames, default 22,050 Hz/256 hop. Select by TRAIN macro onset+pitch note F1; tie favors smaller width. Compare baseline and selected width on VALID; no TEST inference.
+- **Metrics:** Mir_eval one-to-one note matching at 50 ms onset and 50 cents pitch; report with and without offsets. Frame agreement uses MIDI-held notes as a proxy, not continuous ground-truth vocal F0.
+- **Results:** pending. This small pilot cannot establish full-dataset or unseen-singer performance.

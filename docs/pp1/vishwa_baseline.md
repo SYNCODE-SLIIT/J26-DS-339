@@ -37,9 +37,10 @@ Use another output name for repeated runs. No recording is modified.
 
 The proposal (pages 26, 30, 39–43) places vocal musical representation in this
 component; chord planning, refinement and accompaniment remain other components.
-The local dataset audit found MIDI tails beyond audio in 834 files. Confirm MIDI
-parsing with an independent implementation and inspect alignment before freezing
-training targets or reporting transcription accuracy. Preserve official splits;
+Correction (2026-10-21): the initial 834 MIDI-tail flags were caused by the
+notebook tempo parser. Independent Mido/PrettyMIDI timing agrees on all 14,614
+pairs, with zero tails beyond 50 ms. This validates decoding, not perceptual
+alignment. See docs/vishwa/research_progress.md for the preserved correction. Preserve official splits;
 use training data for development, validation for tuning and reserve test data.
 Next: reproducible pair manifest, annotation alignment checks, then baseline
 note/frame evaluation using supported labels. CFP and the supervised model follow
