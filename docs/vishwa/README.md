@@ -75,3 +75,18 @@ baseline pilot. Execute notebooks `03_annotation_review_and_targets.ipynb` and
 corresponding filename. Notebook 03 shows pitch/annotation evidence; notebook 04
 explains target masks, model comparisons and actual loss curves. No raw audio or
 model checkpoint belongs in Git.
+
+## R009: listening review
+
+See `listening_review.md` for the human review procedure and notebook 05 for
+executed diagnostics. Build the local playable page and validate the decision form:
+
+```sh
+.venv/bin/python scripts/build_listening_review.py
+open datasets/humtrans/derived/research/listening_review/index.html
+.venv/bin/python scripts/check_listening_review.py
+```
+
+The builder preserves existing review decisions. Generated audio/images stay
+ignored. All eight human reviews are initially pending; algorithm comparisons do
+not certify annotations.

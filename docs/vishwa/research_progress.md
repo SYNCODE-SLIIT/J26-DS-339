@@ -268,3 +268,27 @@ Completed: independent TRAIN pitch comparison; automatic annotation flags; expli
 Pending: human listening/reference verification; defensible performed-pitch labels; expanded repeated-seed experiments; CFP features; beat/key/phrase multi-task supervision; learned harmony representations. The earlier statement that no CNN–Transformer had been trained describes the pre-R008 state and is superseded by this limited pilot.
 
 Immediate next step: review the eight flagged TRAIN recordings with human listening, preserving original annotations and documenting reviewer evidence. A larger training run should follow a justified target decision, not merely seek a higher score on the reused validation pilot.
+
+## R009 — listening review packet (preregistered 2026-10-21)
+
+- Objective: make all eight shared-octave TRAIN cases reviewable by a human, with source audio, original MIDI tones, pitch plots and explicit decision provenance.
+- Configuration: preserve original audio/MIDI; synthesize sine reference tones at original MIDI and fixed ±12 semitone hypotheses. These are comparison aids, never corrected annotations. Verify original source hashes against R006.
+- Diagnostic: compare both cached estimators to all three fixed hypotheses on common voiced frames more than 100 ms inside a MIDI note. Report all candidates; do not select corrections automatically.
+- Human review: listen to original first, then references; record reviewer, date, confidence and timestamped evidence. Uncertain cases remain unresolved. No model expansion before reviewed target decisions.
+- Hypothesis: the packet makes discrepancy review reproducible; automatic pitch similarity is insufficient to establish performed pitch.
+- Results: pending execution. No claim that the assistant has listened to audio.
+
+### R009 diagnostic extension and implementation correction
+
+The initial fixed ±12 comparison had zero agreement for two cases. R006 median errors for M02_0302_0002_1 and M05_0263_0001_2 are −23.7 and −24.0 semitones. Add a −24-semitone hypothesis for all eight cases, retaining the original three comparisons. This is a post-result extension, not an annotation correction. Initial validator execution exposed a missing closing bracket; corrected before validation or commit.
+
+### R009 outcome and decision — 2026-10-21
+
+- Executed `scripts/build_listening_review.py`, `scripts/check_listening_review.py` and notebook `05_listening_review.ipynb`.
+- Generated eight local playback sections, eight waveform/pitch plots and 32 synthesized comparison references. Original audio/MIDI hashes match R006; derived media remain ignored by Git.
+- Six cases have their highest candidate agreement at −12 semitones, two at −24. pYIN candidate agreement ranges from 0.109375 to 0.978862 on common voiced interior frames. Original-score agreement is zero on those selected frames for both estimators. This conditional diagnostic is not corpus accuracy or verified ground truth.
+- A representative two-octave plot was visually inspected. Human listening was not performed by the assistant. Status: 0 reviewed, 8 pending; no annotation changes authorized.
+- All 17 tests pass, including duplicate membership, pending status, missing reviewer provenance and unresolved-decision safeguards. Notebook executed without cell errors (same local Jupyter transport warning as earlier).
+- Decision D016: retain original labels and the current baseline; do not apply blanket octave corrections or expand training from these diagnostics. Obtain timestamped human listening evidence using `docs/vishwa/listening_review.md` and `listening_review_decisions.json`.
+- No new dependencies, TEST evaluation or teammate changes. Review-form completeness does not certify musical correctness; a separate target-policy decision is required even after all forms are complete.
+- Commit association: `feat: add TRAIN listening review packet`; resolve with `git log --oneline -- scripts/build_listening_review.py`.

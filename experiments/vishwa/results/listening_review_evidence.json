@@ -1,0 +1,192 @@
+{
+  "recorded_date": "2026-10-21",
+  "scope": "8 flagged TRAIN recordings; no VALID or TEST",
+  "status": "automated_packet_complete_human_review_pending",
+  "boundary_exclusion_s": 0.1,
+  "candidate_shifts_semitones": [
+    -24,
+    -12,
+    0,
+    12
+  ],
+  "source_report_sha256": "8349ea675e54fa244f5aa708044fd7cb7c884c08096a009ba1cd3bc0f5db2677",
+  "implementation_sha256": "fdf92577f9ed9b0f4f6b734b2a71e037337ea70a6976ae9b1650a8b1aebb9ead",
+  "cases": [
+    {
+      "key": "M01_0311_0002_1",
+      "interior_common_frames": 885,
+      "candidate_agreement_50c": {
+        "-24": {
+          "pyin": 0.0,
+          "praat": 0.0327683615819209
+        },
+        "-12": {
+          "pyin": 0.5988700564971752,
+          "praat": 0.6146892655367232
+        },
+        "0": {
+          "pyin": 0.0,
+          "praat": 0.0
+        },
+        "12": {
+          "pyin": 0.0,
+          "praat": 0.0
+        }
+      }
+    },
+    {
+      "key": "M01_0048_0001_2",
+      "interior_common_frames": 821,
+      "candidate_agreement_50c": {
+        "-24": {
+          "pyin": 0.0,
+          "praat": 0.0
+        },
+        "-12": {
+          "pyin": 0.4993909866017052,
+          "praat": 0.5432399512789281
+        },
+        "0": {
+          "pyin": 0.0,
+          "praat": 0.0
+        },
+        "12": {
+          "pyin": 0.0,
+          "praat": 0.0
+        }
+      }
+    },
+    {
+      "key": "M02_0312_0001_2_D",
+      "interior_common_frames": 550,
+      "candidate_agreement_50c": {
+        "-24": {
+          "pyin": 0.0,
+          "praat": 0.0
+        },
+        "-12": {
+          "pyin": 0.14727272727272728,
+          "praat": 0.17454545454545456
+        },
+        "0": {
+          "pyin": 0.0,
+          "praat": 0.0
+        },
+        "12": {
+          "pyin": 0.0,
+          "praat": 0.0
+        }
+      }
+    },
+    {
+      "key": "M02_0302_0002_1",
+      "interior_common_frames": 384,
+      "candidate_agreement_50c": {
+        "-24": {
+          "pyin": 0.109375,
+          "praat": 0.140625
+        },
+        "-12": {
+          "pyin": 0.0,
+          "praat": 0.0
+        },
+        "0": {
+          "pyin": 0.0,
+          "praat": 0.0
+        },
+        "12": {
+          "pyin": 0.0,
+          "praat": 0.0
+        }
+      }
+    },
+    {
+      "key": "M04_0070_0001_1_D",
+      "interior_common_frames": 615,
+      "candidate_agreement_50c": {
+        "-24": {
+          "pyin": 0.0,
+          "praat": 0.0
+        },
+        "-12": {
+          "pyin": 0.9788617886178862,
+          "praat": 0.9333333333333333
+        },
+        "0": {
+          "pyin": 0.0,
+          "praat": 0.0
+        },
+        "12": {
+          "pyin": 0.0,
+          "praat": 0.0
+        }
+      }
+    },
+    {
+      "key": "M04_0370_0002_2_D",
+      "interior_common_frames": 604,
+      "candidate_agreement_50c": {
+        "-24": {
+          "pyin": 0.0,
+          "praat": 0.0
+        },
+        "-12": {
+          "pyin": 0.6490066225165563,
+          "praat": 0.6026490066225165
+        },
+        "0": {
+          "pyin": 0.0,
+          "praat": 0.0
+        },
+        "12": {
+          "pyin": 0.0,
+          "praat": 0.0
+        }
+      }
+    },
+    {
+      "key": "M05_0263_0001_2",
+      "interior_common_frames": 637,
+      "candidate_agreement_50c": {
+        "-24": {
+          "pyin": 0.673469387755102,
+          "praat": 0.6750392464678179
+        },
+        "-12": {
+          "pyin": 0.0,
+          "praat": 0.0
+        },
+        "0": {
+          "pyin": 0.0,
+          "praat": 0.0
+        },
+        "12": {
+          "pyin": 0.0,
+          "praat": 0.0
+        }
+      }
+    },
+    {
+      "key": "M05_0016_0002_1_D",
+      "interior_common_frames": 489,
+      "candidate_agreement_50c": {
+        "-24": {
+          "pyin": 0.0,
+          "praat": 0.0
+        },
+        "-12": {
+          "pyin": 0.7668711656441718,
+          "praat": 0.7402862985685071
+        },
+        "0": {
+          "pyin": 0.0,
+          "praat": 0.0
+        },
+        "12": {
+          "pyin": 0.0,
+          "praat": 0.0
+        }
+      }
+    }
+  ]
+}
