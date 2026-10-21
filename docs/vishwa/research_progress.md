@@ -195,3 +195,76 @@ use synthetic labels to tune the real-data validation result.
 
 No raw recordings, frame caches or checkpoints were committed. No CNN–Transformer,
 CFP, beat/key/phrase model or learned harmony embedding has been trained or validated.
+
+## R006 — independent pitch and annotation review (preregistered 2026-10-21)
+
+- **Question:** do octave disagreements persist across independent F0 implementations?
+- **Hypothesis:** some differences persist between audio estimators and intended-score MIDI; this must not be mistaken for proof of corrected labels.
+- **Configuration:** the same 20 TRAIN recordings in pilot_001; no VALID/TEST inference. Praat autocorrelation via praat-parselmouth 0.4.7, C1–C7 range, 256/22050 s step, silence threshold .03, voicing threshold .45. Map nearest native Praat frames within half a hop; never interpolate through unvoiced gaps.
+- **Review rule frozen before execution:** shared-octave flag requires >=80% agreement between estimators within 50 cents on common voiced MIDI-active frames, with both median deviations within .75 semitone of the same nonzero octave. Flag interpretation remains provisional.
+- **Planned evidence:** individual and aggregate comparisons, source audio/MIDI hashes, waveform/spectrogram/pitch plots, review status explicitly automated and pending human verification.
+- **Target decision to follow evidence:** distinguish acoustic performed pitch from intended-score MIDI. Preserve annotations; no per-file transposition or timing corrections based on predictions.
+- **Dependencies:** installed `praat-parselmouth==0.4.7` via uv into existing .venv; added reproducibility pin.
+- **Results:** pending execution.
+
+### R006 outcome — 2026-10-21
+
+- Executed `scripts/review_annotations.py` and notebook 03 on the 20 TRAIN examples.
+- Macro agreement between estimators on common voiced reference-active frames: 0.927279. Common-grid MIDI pitch agreement: pYIN 0.302030; Praat 0.276300.
+- Eight examples met the preregistered shared-octave flag; twelve require timing/pitch inspection. These flags do not establish annotation errors or justify automatic correction.
+- Decision D013: preserve performed F0 and original score MIDI as separate target meanings. Human listening/reference verification remains pending.
+- Eleven regression checks passed, including nearest-frame mapping and a known-tone independent-estimator check.
+
+## R007 — weak score feature preparation (preregistered 2026-10-21)
+
+- Prepare the fixed 20 TRAIN / 10 VALID pilot only; no TEST processing.
+- Target: rest=0 and original MIDI pitch modulo 12 plus 1. This is weak score supervision, not verified performed pitch.
+- Features: normalized untrimmed audio, 22050 Hz; 80 Mel bands, 4096 FFT, 256 hop; relative log power. Keep original timestamps.
+- Exclude supervision within 100 ms of note and recording boundaries. This fixed heuristic is not a proven timing correction and can remove short notes.
+- Fit per-band mean/std only on TRAIN frames. Record source/tensor hashes; keep tensors ignored by Git.
+- Hypothesis: this yields a reproducible feasibility dataset; no model quality improvement is claimed by preparation alone.
+- Results: pending execution.
+
+### R007 outcome — 2026-10-21
+
+Executed `scripts/build_score_dataset.py`. TRAIN: 26,157 frames, 15,120 supervised; VALID: 12,817 frames, 7,382 supervised. Source and derived hashes recorded in `weak_score_dataset.json`. Original files unchanged. Decision D014: retain this as a weak-score feasibility dataset; the boundary mask removes about 42% of frames and does not validate remaining labels.
+
+## R008 — small architecture feasibility pilot (preregistered 2026-10-21)
+
+- Question: can the proposed acoustic encoder learn the weak score-chroma target on the fixed pilot?
+- Compare majority TRAIN class, two-layer temporal CNN (80→32→32; kernel 5), and the same CNN plus one Transformer encoder (32 dimensions, four heads, feedforward 128, dropout .1, sinusoidal positions). Both use a 13-class head.
+- Fixed seed 339, CPU/two threads, five epochs, Adam .001, batch eight, 256-frame nonoverlapping padded windows. Mask padding and uncertain labels from loss. TRAIN normalization is reused; no VALID fitting.
+- Evaluate last epoch only: pooled and recording-macro accuracy, macro F1 over reference-present classes, confusion matrices. VALID is reused development evidence. No TEST access.
+- Hypothesis: neural models may exceed majority class; failure is retained. Different parameter counts, single seed, short budget and uncertain score supervision prohibit architecture superiority claims.
+- Results: pending execution.
+
+### R008 diagnostic extension
+
+Initial five-epoch recording-macro VALID accuracy: CNN .425281, hybrid .394514, majority .121011. Before drawing a model conclusion, add the existing cached pYIN pitch-class prediction under exactly the same weak-label boundary mask. This addition is post-result diagnostic, not preregistered model selection. Rerun the unchanged deterministic configurations and report all baselines. No parameters are tuned in response to VALID.
+
+### R008 outcome and decision — 2026-10-21
+
+Executed `scripts/train_score_pilot.py`, then repeated unchanged training while adding the matched pYIN diagnostic. Neural metrics reproduced exactly. Both explanatory notebooks 03 and 04 executed successfully; embedded plots were visually inspected and compacted below 1 MB per notebook.
+
+| Method | TRAIN recording-macro accuracy | VALID recording-macro accuracy |
+|---|---:|---:|
+| Majority TRAIN class | 0.160161 | 0.121011 |
+| Existing pYIN, pitch class | 0.585316 | 0.485526 |
+| CNN, 18,413 parameters | 0.584813 | 0.425281 |
+| CNN–Transformer, 31,117 parameters | 0.601113 | 0.394514 |
+
+- CNN TRAIN cross entropy fell from 2.409170 to 1.432791; hybrid from 2.398661 to 1.553604. Both learn this small training target but neither exceeds pYIN on development VALID.
+- Decision D015: preserve pYIN as the working baseline. Keep learned models as experimental weak-score prototypes, not a validated improvement or completed multi-task architecture.
+- All 13 regression checks passed. The independent pitch check, target semantics and masking checks are included. A local Jupyter TCP transport warning was emitted; notebook execution completed without cell errors.
+- Generated tensors/checkpoints remain ignored; original recordings/annotations were read only. No TEST feature generation or evaluation.
+- Single seed, short training, reused VALID, unequal parameter counts and unverified targets limit inference. No claim of architecture superiority or full-corpus accuracy.
+- Source/results: `review.py`, `targets.py`; scripts `review_annotations.py`, `build_score_dataset.py`, `train_score_pilot.py`; JSON manifests and results; executed notebooks 03/04; `target_policy.md`.
+- Commit association: this milestone is committed with message `feat: add weak-score research pilot`; use `git log --oneline -- scripts/train_score_pilot.py` to resolve its hash.
+
+## Current status after R008
+
+Completed: independent TRAIN pitch comparison; automatic annotation flags; explicit weak-score target policy; reproducible pilot features; executed CNN/hybrid feasibility comparison and matched pYIN/majority baselines.
+
+Pending: human listening/reference verification; defensible performed-pitch labels; expanded repeated-seed experiments; CFP features; beat/key/phrase multi-task supervision; learned harmony representations. The earlier statement that no CNN–Transformer had been trained describes the pre-R008 state and is superseded by this limited pilot.
+
+Immediate next step: review the eight flagged TRAIN recordings with human listening, preserving original annotations and documenting reviewer evidence. A larger training run should follow a justified target decision, not merely seek a higher score on the reused validation pilot.

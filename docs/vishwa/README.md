@@ -52,3 +52,26 @@ nbformat.write(notebook, path)
 - No trained CNN–Transformer, validated CFP, beat/key/phrase head, or learned
   harmony embedding is claimed. The next priority is understanding label/audio
   timing and octave disagreement before choosing supervised targets.
+
+## R006–R008: annotation review and weak-score pilot
+
+The pre-R008 status above is superseded by a small CNN/CNN–Transformer feasibility
+pilot. Neither model beats the matched pYIN baseline on development VALID. See
+`target_policy.md` and `research_progress.md` for target semantics and limitations.
+
+From the repository root, after installing the pinned research requirements into
+its existing uv environment:
+
+```sh
+.venv/bin/python scripts/review_annotations.py
+.venv/bin/python scripts/build_score_dataset.py
+.venv/bin/python scripts/train_score_pilot.py
+.venv/bin/python -m unittest discover -s tests -v
+```
+
+The review script requires the existing pilot feature cache produced by the earlier
+baseline pilot. Execute notebooks `03_annotation_review_and_targets.ipynb` and
+`04_weak_score_model_pilot.ipynb` using the NotebookClient recipe above with the
+corresponding filename. Notebook 03 shows pitch/annotation evidence; notebook 04
+explains target masks, model comparisons and actual loss curves. No raw audio or
+model checkpoint belongs in Git.
