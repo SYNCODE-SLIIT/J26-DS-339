@@ -10,6 +10,13 @@
 !/results/*.ps1
 !/results/build_views.py
 
+# Keep the active experimental ExtraTrees checkpoint; other run outputs stay local.
+!/results/model_recovery/
+/results/model_recovery/*
+!/results/model_recovery/b4c64c3b861a48c494c092458716b4fc/
+/results/model_recovery/b4c64c3b861a48c494c092458716b4fc/*
+!/results/model_recovery/b4c64c3b861a48c494c092458716b4fc/selected_model.joblib
+
 # Executed HTML and embedded notebook outputs are kept locally, not in Git.
 /notebooks/*.html
 **/.ipynb_checkpoints/
