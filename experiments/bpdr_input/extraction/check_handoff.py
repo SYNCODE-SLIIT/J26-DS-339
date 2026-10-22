@@ -18,7 +18,7 @@ import mir_eval
 import numpy as np
 import soundfile as sf
 
-COMPONENT = Path(__file__).resolve().parents[1]
+COMPONENT = next(p for p in Path(__file__).resolve().parents if p.name == 'bpdr_input' and (p/'pyproject.toml').is_file())
 ASSETS = Path(os.environ.get('MELODY_MODEL_ASSETS', COMPONENT/'checkpoints'/'melody-extraction'))
 PIPELINE = COMPONENT/'data'/'mtg-jamendo'/'melody-extraction-pipeline'
 EDGE = .5  # seconds; notes starting this close to a crop edge are also reported with them left out

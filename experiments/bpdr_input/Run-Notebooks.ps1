@@ -1,8 +1,4 @@
-param([string]$DatasetRoot)
-$ErrorActionPreference = 'Stop'
-if (-not $DatasetRoot) { $DatasetRoot = Join-Path $PSScriptRoot 'data\vocadito' }
-$uvCommand = Get-Command uv -ErrorAction SilentlyContinue
-$uvExecutable = if ($uvCommand) { $uvCommand.Source } else { Join-Path $PSScriptRoot '.tools\uv.exe' }
-if (-not (Test-Path -LiteralPath $uvExecutable)) { throw 'Install uv from https://docs.astral.sh/uv/getting-started/installation/' }
-& $uvExecutable run --project $PSScriptRoot --locked --group notebooks python -m bpdr_input.notebooks launch --dataset-root $DatasetRoot
+param([string]$DatasetRoot, [switch]$Execute, [switch]$Check, [switch]$NoBrowser, [int]$Port = 8888)
+$ErrorActionPreference='Stop'
+& (Join-Path $PSScriptRoot 'BPDR_Workspace/Run-Notebooks.ps1') -DatasetRoot $DatasetRoot -Execute:$Execute -Check:$Check -NoBrowser:$NoBrowser -Port $Port
 exit $LASTEXITCODE

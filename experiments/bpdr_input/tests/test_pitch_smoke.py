@@ -1,3 +1,4 @@
+from bpdr_input import COMPONENT_ROOT
 """Real frozen-model smoke check, independent of injected unit-test pitch."""
 import unittest
 from pathlib import Path
@@ -9,7 +10,7 @@ class FrozenPitchSmoke(unittest.TestCase):
     def test_frozen_model_hz_and_timestamp_units(self):
         sr = 22050
         audio = (.2*np.sin(2*np.pi*220*np.arange(sr)/sr)).astype('float32')
-        cache = str(Path(__file__).resolve().parents[1]/'checkpoints')
+        cache = str(COMPONENT_ROOT/'checkpoints')
         times, f0, confidence = pesto_pitch(audio, sr, cache)
         reliable = (times > .2) & (times < .8) & (confidence >= .8)
         self.assertTrue(reliable.any())

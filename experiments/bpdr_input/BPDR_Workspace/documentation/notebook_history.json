@@ -1,0 +1,12 @@
+{
+  "archive": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\notebook_cleanup\\693959a85e32480a9aa7de26d016830c",
+  "archived_original_notebook": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\notebook_cleanup\\693959a85e32480a9aa7de26d016830c\\originals\\notebooks\\07_learned_stable_note_recovery.ipynb",
+  "archived_original_sha256": "a672b23fc9a7bf9010cc1754bd0ac33f837b067476bd02061aa7ca76901f5b15",
+  "protected_experiment_hashes": {
+    "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc\\evidence.json": "dff50cb2558cccbd7177cd3704eaf71462fa21fca150e3a4229c50426a949e4a",
+    "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc\\selected_model.joblib": "5bd8eef04ab45cc04ff8daed22c36cd7e862931c06f549b4a867de834df60449",
+    "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc\\locked_selection.json": "a3b815fdf730972791060afb450197e1240e1fffcd06161ed8148a4126505e47",
+    "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\demo_model.json": "7267596c6b1fe2eb2ad8988c3a463a5ad8cf6454a1ab9db35ca4d1e3d60afe7f",
+    "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\selected_model\\bpdr.pt": "4d8543a78720b6b1f3e111ec20465d61fdf5d251132d264c588c72045ac9416a"
+  }
+}

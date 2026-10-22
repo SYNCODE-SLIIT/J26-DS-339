@@ -14,7 +14,7 @@ import uuid
 import mir_eval
 import numpy as np
 
-COMPONENT = Path(__file__).resolve().parents[1]
+COMPONENT = next(p for p in Path(__file__).resolve().parents if p.name == 'bpdr_input' and (p/'pyproject.toml').is_file())
 ASSETS = Path(os.environ.get('MELODY_MODEL_ASSETS', COMPONENT/'checkpoints'/'melody-extraction'))
 # Alternative decodings of one waveform, run on a subset because GAME is slow on CPU. A repeat of the default
 # shows run-to-run variation; the other two move the boundary threshold.

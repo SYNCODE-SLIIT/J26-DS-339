@@ -1,0 +1,1266 @@
+{
+  "version": "research-notebooks-1",
+  "notebooks": [
+    {
+      "number": "01",
+      "title": "Research foundations and music fundamentals",
+      "path": "01_research_foundations.ipynb",
+      "html": "01_research_foundations.html",
+      "cells": 4
+    },
+    {
+      "number": "02",
+      "title": "BPDR methodology, Transformer and objectives",
+      "path": "02_bpdr_methodology.ipynb",
+      "html": "02_bpdr_methodology.html",
+      "cells": 11
+    },
+    {
+      "number": "03",
+      "title": "Data preparation, features and interventions",
+      "path": "03_data_preparation.ipynb",
+      "html": "03_data_preparation.html",
+      "cells": 14
+    },
+    {
+      "number": "04",
+      "title": "Model training, comparison and evaluation",
+      "path": "04_model_training_and_evaluation.ipynb",
+      "html": "04_model_training_and_evaluation.html",
+      "cells": 38
+    },
+    {
+      "number": "05",
+      "title": "Audio processing, verification and handoff",
+      "path": "05_audio_processing_and_handoff.ipynb",
+      "html": "05_audio_processing_and_handoff.html",
+      "cells": 42
+    },
+    {
+      "number": "06",
+      "title": "Evidence verification, statistics and tests",
+      "path": "06_verification_and_statistics.ipynb",
+      "html": "06_verification_and_statistics.html",
+      "cells": 16
+    }
+  ],
+  "blocks": [
+    {
+      "id": "09-SETUP",
+      "title": "Setup: component environment and immutable evidence",
+      "notebook": "01_research_foundations.ipynb",
+      "cell": 2,
+      "html": "01_research_foundations.html#09-SETUP"
+    },
+    {
+      "id": "09-CONTEXT",
+      "title": "Load local split catalogs and common helper names",
+      "notebook": "01_research_foundations.ipynb",
+      "cell": 5,
+      "html": "01_research_foundations.html#09-CONTEXT"
+    },
+    {
+      "id": "MUSIC-SHIFT",
+      "title": "Runnable +20-cent and inverse frequency example",
+      "notebook": "01_research_foundations.ipynb",
+      "cell": 7,
+      "html": "01_research_foundations.html#MUSIC-SHIFT"
+    },
+    {
+      "id": "MUSIC-SHIFT-2",
+      "title": "Runnable +20-cent and inverse frequency example",
+      "notebook": "01_research_foundations.ipynb",
+      "cell": 9,
+      "html": "01_research_foundations.html#MUSIC-SHIFT-2"
+    },
+    {
+      "id": "SETUP",
+      "title": "`SETUP` \u00b7 Setup: component environment and immutable evidence",
+      "notebook": "01_research_foundations.ipynb",
+      "cell": 2,
+      "html": "01_research_foundations.html#SETUP"
+    },
+    {
+      "id": "CONTEXT",
+      "title": "`CONTEXT` \u00b7 Load local split catalogs and common helper names",
+      "notebook": "01_research_foundations.ipynb",
+      "cell": 4,
+      "html": "01_research_foundations.html#CONTEXT"
+    },
+    {
+      "id": "10-SETUP",
+      "title": "Setup: component environment and immutable evidence",
+      "notebook": "02_bpdr_methodology.ipynb",
+      "cell": 2,
+      "html": "02_bpdr_methodology.html#10-SETUP"
+    },
+    {
+      "id": "10-CONTEXT",
+      "title": "Load local split catalogs and common helper names",
+      "notebook": "02_bpdr_methodology.ipynb",
+      "cell": 4,
+      "html": "02_bpdr_methodology.html#10-CONTEXT"
+    },
+    {
+      "id": "BPDR-EQUATIONS",
+      "title": "Offline equation figure with plain-language units",
+      "notebook": "02_bpdr_methodology.ipynb",
+      "cell": 8,
+      "html": "02_bpdr_methodology.html#BPDR-EQUATIONS"
+    },
+    {
+      "id": "BPDR-EQUATIONS-2",
+      "title": "Offline equation figure with plain-language units",
+      "notebook": "02_bpdr_methodology.ipynb",
+      "cell": 10,
+      "html": "02_bpdr_methodology.html#BPDR-EQUATIONS-2"
+    },
+    {
+      "id": "BPDR-VIEWS",
+      "title": "Four aligned views and split/merge/jitter demonstration",
+      "notebook": "02_bpdr_methodology.ipynb",
+      "cell": 12,
+      "html": "02_bpdr_methodology.html#BPDR-VIEWS"
+    },
+    {
+      "id": "BPDR-VIEWS-2",
+      "title": "Four aligned views and split/merge/jitter demonstration",
+      "notebook": "02_bpdr_methodology.ipynb",
+      "cell": 14,
+      "html": "02_bpdr_methodology.html#BPDR-VIEWS-2"
+    },
+    {
+      "id": "BPDR-VIEWS-3",
+      "title": "Four aligned views and split/merge/jitter demonstration",
+      "notebook": "02_bpdr_methodology.ipynb",
+      "cell": 16,
+      "html": "02_bpdr_methodology.html#BPDR-VIEWS-3"
+    },
+    {
+      "id": "BPDR-LOSSES",
+      "title": "Actual loss functions with checked numerical examples",
+      "notebook": "02_bpdr_methodology.ipynb",
+      "cell": 19,
+      "html": "02_bpdr_methodology.html#BPDR-LOSSES"
+    },
+    {
+      "id": "TRANSFORMER-MODEL",
+      "title": "Load actual Transformer, shape/parameter checks and stored protocol",
+      "notebook": "02_bpdr_methodology.ipynb",
+      "cell": 22,
+      "html": "02_bpdr_methodology.html#TRANSFORMER-MODEL"
+    },
+    {
+      "id": "TRANSFORMER-MODEL-2",
+      "title": "Load actual Transformer, shape/parameter checks and stored protocol",
+      "notebook": "02_bpdr_methodology.ipynb",
+      "cell": 24,
+      "html": "02_bpdr_methodology.html#TRANSFORMER-MODEL-2"
+    },
+    {
+      "id": "BPDR-BASELINES",
+      "title": "Capacity and source-code verification of matched conditions",
+      "notebook": "02_bpdr_methodology.ipynb",
+      "cell": 27,
+      "html": "02_bpdr_methodology.html#BPDR-BASELINES"
+    },
+    {
+      "id": "11-SETUP",
+      "title": "Setup: component environment and immutable evidence",
+      "notebook": "03_data_preparation.ipynb",
+      "cell": 2,
+      "html": "03_data_preparation.html#11-SETUP"
+    },
+    {
+      "id": "11-CONTEXT",
+      "title": "Load local split catalogs and common helper names",
+      "notebook": "03_data_preparation.ipynb",
+      "cell": 5,
+      "html": "03_data_preparation.html#11-CONTEXT"
+    },
+    {
+      "id": "DATA-SOURCES",
+      "title": "Official sources, hashes and archive CRCs",
+      "notebook": "03_data_preparation.ipynb",
+      "cell": 7,
+      "html": "03_data_preparation.html#DATA-SOURCES"
+    },
+    {
+      "id": "DATA-CLEAN",
+      "title": "Cleaning, rates and working-copy verification",
+      "notebook": "03_data_preparation.ipynb",
+      "cell": 10,
+      "html": "03_data_preparation.html#DATA-CLEAN"
+    },
+    {
+      "id": "DATA-CLEAN-2",
+      "title": "Cleaning, rates and working-copy verification",
+      "notebook": "03_data_preparation.ipynb",
+      "cell": 12,
+      "html": "03_data_preparation.html#DATA-CLEAN-2"
+    },
+    {
+      "id": "DATA-CLEAN-3",
+      "title": "Cleaning, rates and working-copy verification",
+      "notebook": "03_data_preparation.ipynb",
+      "cell": 14,
+      "html": "03_data_preparation.html#DATA-CLEAN-3"
+    },
+    {
+      "id": "DATA-SPLITS",
+      "title": "Singer-separated splits and all exclusions",
+      "notebook": "03_data_preparation.ipynb",
+      "cell": 17,
+      "html": "03_data_preparation.html#DATA-SPLITS"
+    },
+    {
+      "id": "DATA-SPLITS-2",
+      "title": "Singer-separated splits and all exclusions",
+      "notebook": "03_data_preparation.ipynb",
+      "cell": 19,
+      "html": "03_data_preparation.html#DATA-SPLITS-2"
+    },
+    {
+      "id": "DATA-SPLITS-4",
+      "title": "Singer-separated splits and all exclusions",
+      "notebook": "03_data_preparation.ipynb",
+      "cell": 21,
+      "html": "03_data_preparation.html#DATA-SPLITS-4"
+    },
+    {
+      "id": "DATA-FEATURES",
+      "title": "Every ordered feature and actual feature function",
+      "notebook": "03_data_preparation.ipynb",
+      "cell": 24,
+      "html": "03_data_preparation.html#DATA-FEATURES"
+    },
+    {
+      "id": "DATA-FEATURES-2",
+      "title": "Every ordered feature and actual feature function",
+      "notebook": "03_data_preparation.ipynb",
+      "cell": 26,
+      "html": "03_data_preparation.html#DATA-FEATURES-2"
+    },
+    {
+      "id": "DATA-SPECTROGRAM",
+      "title": "Real measured waveform, spectrum, F0, confidence and boundaries",
+      "notebook": "03_data_preparation.ipynb",
+      "cell": 28,
+      "html": "03_data_preparation.html#DATA-SPECTROGRAM"
+    },
+    {
+      "id": "DATA-SPECTROGRAM-2",
+      "title": "Real measured waveform, spectrum, F0, confidence and boundaries",
+      "notebook": "03_data_preparation.ipynb",
+      "cell": 30,
+      "html": "03_data_preparation.html#DATA-SPECTROGRAM-2"
+    },
+    {
+      "id": "SETUP",
+      "title": "`SETUP` \u00b7 Setup: component environment and immutable evidence",
+      "notebook": "03_data_preparation.ipynb",
+      "cell": 2,
+      "html": "03_data_preparation.html#SETUP"
+    },
+    {
+      "id": "CONTEXT",
+      "title": "`CONTEXT` \u00b7 Load local split catalogs and common helper names",
+      "notebook": "03_data_preparation.ipynb",
+      "cell": 4,
+      "html": "03_data_preparation.html#CONTEXT"
+    },
+    {
+      "id": "12-SETUP",
+      "title": "Setup: component environment and immutable evidence",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 2,
+      "html": "04_model_training_and_evaluation.html#12-SETUP"
+    },
+    {
+      "id": "12-CONTEXT",
+      "title": "Load local split catalogs and common helper names",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 5,
+      "html": "04_model_training_and_evaluation.html#12-CONTEXT"
+    },
+    {
+      "id": "TRANSFORMER-HISTORY",
+      "title": "Historical Transformer and MLP evidence",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 9,
+      "html": "04_model_training_and_evaluation.html#TRANSFORMER-HISTORY"
+    },
+    {
+      "id": "TRANSFORMER-HISTORY-2",
+      "title": "Historical Transformer and MLP evidence",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 11,
+      "html": "04_model_training_and_evaluation.html#TRANSFORMER-HISTORY-2"
+    },
+    {
+      "id": "TRANSFORMER-HISTORY-3",
+      "title": "Historical Transformer and MLP evidence",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 13,
+      "html": "04_model_training_and_evaluation.html#TRANSFORMER-HISTORY-3"
+    },
+    {
+      "id": "TRANSFORMER-HISTORY-4",
+      "title": "Historical Transformer and MLP evidence",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 15,
+      "html": "04_model_training_and_evaluation.html#TRANSFORMER-HISTORY-4"
+    },
+    {
+      "id": "MODEL-LOAD",
+      "title": "ExtraTrees, gradient boosting and saved model parameters",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 17,
+      "html": "04_model_training_and_evaluation.html#MODEL-LOAD"
+    },
+    {
+      "id": "MODEL-LOAD-2",
+      "title": "ExtraTrees, gradient boosting and saved model parameters",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 19,
+      "html": "04_model_training_and_evaluation.html#MODEL-LOAD-2"
+    },
+    {
+      "id": "MODEL-LOAD-3",
+      "title": "ExtraTrees, gradient boosting and saved model parameters",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 21,
+      "html": "04_model_training_and_evaluation.html#MODEL-LOAD-3"
+    },
+    {
+      "id": "MODEL-TRAINING",
+      "title": "Actual fitting source, training rows and weights (no fit executed)",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 25,
+      "html": "04_model_training_and_evaluation.html#MODEL-TRAINING"
+    },
+    {
+      "id": "MODEL-TRAINING-2",
+      "title": "Actual fitting source, training rows and weights (no fit executed)",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 27,
+      "html": "04_model_training_and_evaluation.html#MODEL-TRAINING-2"
+    },
+    {
+      "id": "MODEL-TRAINING-3",
+      "title": "Actual fitting source, training rows and weights (no fit executed)",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 29,
+      "html": "04_model_training_and_evaluation.html#MODEL-TRAINING-3"
+    },
+    {
+      "id": "MODEL-TRAINING-4",
+      "title": "Actual fitting source, training rows and weights (no fit executed)",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 31,
+      "html": "04_model_training_and_evaluation.html#MODEL-TRAINING-4"
+    },
+    {
+      "id": "MODEL-METRICS",
+      "title": "Metric definitions and worked arithmetic",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 48,
+      "html": "04_model_training_and_evaluation.html#MODEL-METRICS"
+    },
+    {
+      "id": "MODEL-METRICS-2",
+      "title": "Metric definitions and worked arithmetic",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 50,
+      "html": "04_model_training_and_evaluation.html#MODEL-METRICS-2"
+    },
+    {
+      "id": "MODEL-SELECTION",
+      "title": "All 27 policies and exact locked fallback ranking",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 54,
+      "html": "04_model_training_and_evaluation.html#MODEL-SELECTION"
+    },
+    {
+      "id": "MODEL-SELECTION-2",
+      "title": "All 27 policies and exact locked fallback ranking",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 56,
+      "html": "04_model_training_and_evaluation.html#MODEL-SELECTION-2"
+    },
+    {
+      "id": "MODEL-SELECTION-3",
+      "title": "All 27 policies and exact locked fallback ranking",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 58,
+      "html": "04_model_training_and_evaluation.html#MODEL-SELECTION-3"
+    },
+    {
+      "id": "MODEL-SELECTION-4",
+      "title": "All 27 policies and exact locked fallback ranking",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 60,
+      "html": "04_model_training_and_evaluation.html#MODEL-SELECTION-4"
+    },
+    {
+      "id": "MODEL-ACCURACY",
+      "title": "Four checkpoints on common calibration examples",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 64,
+      "html": "04_model_training_and_evaluation.html#MODEL-ACCURACY"
+    },
+    {
+      "id": "MODEL-ACCURACY-2",
+      "title": "Four checkpoints on common calibration examples",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 66,
+      "html": "04_model_training_and_evaluation.html#MODEL-ACCURACY-2"
+    },
+    {
+      "id": "MODEL-ACCURACY-3",
+      "title": "Four checkpoints on common calibration examples",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 68,
+      "html": "04_model_training_and_evaluation.html#MODEL-ACCURACY-3"
+    },
+    {
+      "id": "MODEL-ACCURACY-4",
+      "title": "Four checkpoints on common calibration examples",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 70,
+      "html": "04_model_training_and_evaluation.html#MODEL-ACCURACY-4"
+    },
+    {
+      "id": "MODEL-ACCURACY-5",
+      "title": "Four checkpoints on common calibration examples",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 72,
+      "html": "04_model_training_and_evaluation.html#MODEL-ACCURACY-5"
+    },
+    {
+      "id": "MODEL-ACCURACY-6",
+      "title": "Four checkpoints on common calibration examples",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 74,
+      "html": "04_model_training_and_evaluation.html#MODEL-ACCURACY-6"
+    },
+    {
+      "id": "MODEL-ACCURACY-7",
+      "title": "Four checkpoints on common calibration examples",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 76,
+      "html": "04_model_training_and_evaluation.html#MODEL-ACCURACY-7"
+    },
+    {
+      "id": "MODEL-GATES",
+      "title": "Every singer criterion and failed acceptance decision",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 80,
+      "html": "04_model_training_and_evaluation.html#MODEL-GATES"
+    },
+    {
+      "id": "MODEL-GATES-2",
+      "title": "Every singer criterion and failed acceptance decision",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 82,
+      "html": "04_model_training_and_evaluation.html#MODEL-GATES-2"
+    },
+    {
+      "id": "TREE-IMPORTANCE",
+      "title": "Saved tree complexity, fitting cost and descriptive feature importance",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 85,
+      "html": "04_model_training_and_evaluation.html#TREE-IMPORTANCE"
+    },
+    {
+      "id": "TREE-IMPORTANCE-2",
+      "title": "Saved tree complexity, fitting cost and descriptive feature importance",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 87,
+      "html": "04_model_training_and_evaluation.html#TREE-IMPORTANCE-2"
+    },
+    {
+      "id": "TREE-IMPORTANCE-3",
+      "title": "Saved tree complexity, fitting cost and descriptive feature importance",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 89,
+      "html": "04_model_training_and_evaluation.html#TREE-IMPORTANCE-3"
+    },
+    {
+      "id": "TREE-IMPORTANCE-4",
+      "title": "Saved tree complexity, fitting cost and descriptive feature importance",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 91,
+      "html": "04_model_training_and_evaluation.html#TREE-IMPORTANCE-4"
+    },
+    {
+      "id": "SETUP",
+      "title": "`SETUP` \u00b7 Setup: component environment and immutable evidence",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 2,
+      "html": "04_model_training_and_evaluation.html#SETUP"
+    },
+    {
+      "id": "CONTEXT",
+      "title": "`CONTEXT` \u00b7 Load local split catalogs and common helper names",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 5,
+      "html": "04_model_training_and_evaluation.html#CONTEXT"
+    },
+    {
+      "id": "MODEL-FIT-NEW",
+      "title": "`MODEL-FIT-NEW` \u00b7 Train a new ExtraTrees model",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 34,
+      "html": "04_model_training_and_evaluation.html#MODEL-FIT-NEW"
+    },
+    {
+      "id": "MODEL-FIT-EXECUTE",
+      "title": "`MODEL-FIT-EXECUTE` \u00b7 Fit on training rows only",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 36,
+      "html": "04_model_training_and_evaluation.html#MODEL-FIT-EXECUTE"
+    },
+    {
+      "id": "MODEL-SAVE-CHECKPOINT",
+      "title": "`MODEL-SAVE-CHECKPOINT` \u00b7 Save the fitted model",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 38,
+      "html": "04_model_training_and_evaluation.html#MODEL-SAVE-CHECKPOINT"
+    },
+    {
+      "id": "MODEL-RELOAD-CHECKPOINT",
+      "title": "`MODEL-RELOAD-CHECKPOINT` \u00b7 Reload and check predictions",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 40,
+      "html": "04_model_training_and_evaluation.html#MODEL-RELOAD-CHECKPOINT"
+    },
+    {
+      "id": "MODEL-VERIFY-DEMO",
+      "title": "`MODEL-VERIFY-DEMO` \u00b7 Verify this checkpoint on delivered audio",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 42,
+      "html": "04_model_training_and_evaluation.html#MODEL-VERIFY-DEMO"
+    },
+    {
+      "id": "MODEL-ACTIVATE-DEMO",
+      "title": "`MODEL-ACTIVATE-DEMO` \u00b7 Use the reloaded model in the real demo",
+      "notebook": "04_model_training_and_evaluation.ipynb",
+      "cell": 44,
+      "html": "04_model_training_and_evaluation.html#MODEL-ACTIVATE-DEMO"
+    },
+    {
+      "id": "13-SETUP",
+      "title": "Setup: component environment and immutable evidence",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 2,
+      "html": "05_audio_processing_and_handoff.html#13-SETUP"
+    },
+    {
+      "id": "13-CONTEXT",
+      "title": "Load local split catalogs and common helper names",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 5,
+      "html": "05_audio_processing_and_handoff.html#13-CONTEXT"
+    },
+    {
+      "id": "MODEL-LOAD-DEMO",
+      "title": "Load the guarded saved diagnostic checkpoint",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 10,
+      "html": "05_audio_processing_and_handoff.html#MODEL-LOAD-DEMO"
+    },
+    {
+      "id": "MODEL-LOAD-DEMO-2",
+      "title": "Load the guarded saved diagnostic checkpoint",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 12,
+      "html": "05_audio_processing_and_handoff.html#MODEL-LOAD-DEMO-2"
+    },
+    {
+      "id": "MODEL-LOAD-DEMO-3",
+      "title": "Load the guarded saved diagnostic checkpoint",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 14,
+      "html": "05_audio_processing_and_handoff.html#MODEL-LOAD-DEMO-3"
+    },
+    {
+      "id": "PILOT-RESULTS",
+      "title": "Full delivered table including all attempted cases",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 18,
+      "html": "05_audio_processing_and_handoff.html#PILOT-RESULTS"
+    },
+    {
+      "id": "PILOT-RESULTS-2",
+      "title": "Full delivered table including all attempted cases",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 20,
+      "html": "05_audio_processing_and_handoff.html#PILOT-RESULTS-2"
+    },
+    {
+      "id": "PILOT-RESULTS-3",
+      "title": "Full delivered table including all attempted cases",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 22,
+      "html": "05_audio_processing_and_handoff.html#PILOT-RESULTS-3"
+    },
+    {
+      "id": "PILOT-RESULTS-4",
+      "title": "Full delivered table including all attempted cases",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 24,
+      "html": "05_audio_processing_and_handoff.html#PILOT-RESULTS-4"
+    },
+    {
+      "id": "PILOT-RESULTS-5",
+      "title": "Full delivered table including all attempted cases",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 26,
+      "html": "05_audio_processing_and_handoff.html#PILOT-RESULTS-5"
+    },
+    {
+      "id": "PILOT-RESULTS-6",
+      "title": "Full delivered table including all attempted cases",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 28,
+      "html": "05_audio_processing_and_handoff.html#PILOT-RESULTS-6"
+    },
+    {
+      "id": "PILOT-DETAILS",
+      "title": "Locations, predictions, permission and outcomes for all 16 attempts",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 31,
+      "html": "05_audio_processing_and_handoff.html#PILOT-DETAILS"
+    },
+    {
+      "id": "PILOT-DETAILS-2",
+      "title": "Locations, predictions, permission and outcomes for all 16 attempts",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 33,
+      "html": "05_audio_processing_and_handoff.html#PILOT-DETAILS-2"
+    },
+    {
+      "id": "DEMO-RUN",
+      "title": "Live saved-weight audio-only inference (bounded local work)",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 37,
+      "html": "05_audio_processing_and_handoff.html#DEMO-RUN"
+    },
+    {
+      "id": "DEMO-RUN-2",
+      "title": "Live saved-weight audio-only inference (bounded local work)",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 39,
+      "html": "05_audio_processing_and_handoff.html#DEMO-RUN-2"
+    },
+    {
+      "id": "DEMO-RUN-3",
+      "title": "Live saved-weight audio-only inference (bounded local work)",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 41,
+      "html": "05_audio_processing_and_handoff.html#DEMO-RUN-3"
+    },
+    {
+      "id": "TREE-PREDICTION",
+      "title": "Actual tree path and mean of 96 predictions",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 45,
+      "html": "05_audio_processing_and_handoff.html#TREE-PREDICTION"
+    },
+    {
+      "id": "TREE-PREDICTION-2",
+      "title": "Actual tree path and mean of 96 predictions",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 47,
+      "html": "05_audio_processing_and_handoff.html#TREE-PREDICTION-2"
+    },
+    {
+      "id": "TREE-PREDICTION-3",
+      "title": "Actual tree path and mean of 96 predictions",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 49,
+      "html": "05_audio_processing_and_handoff.html#TREE-PREDICTION-3"
+    },
+    {
+      "id": "TREE-PREDICTION-4",
+      "title": "Actual tree path and mean of 96 predictions",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 51,
+      "html": "05_audio_processing_and_handoff.html#TREE-PREDICTION-4"
+    },
+    {
+      "id": "RENDER-AUDIT",
+      "title": "Exact encoded-WAV audit and three audio players",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 55,
+      "html": "05_audio_processing_and_handoff.html#RENDER-AUDIT"
+    },
+    {
+      "id": "RENDER-AUDIT-2",
+      "title": "Exact encoded-WAV audit and three audio players",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 57,
+      "html": "05_audio_processing_and_handoff.html#RENDER-AUDIT-2"
+    },
+    {
+      "id": "RENDER-AUDIT-3",
+      "title": "Exact encoded-WAV audit and three audio players",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 59,
+      "html": "05_audio_processing_and_handoff.html#RENDER-AUDIT-3"
+    },
+    {
+      "id": "RENDER-AUDIT-4",
+      "title": "Exact encoded-WAV audit and three audio players",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 61,
+      "html": "05_audio_processing_and_handoff.html#RENDER-AUDIT-4"
+    },
+    {
+      "id": "CONTROLLER-FIXTURES",
+      "title": "Permitted, withheld and rollback examples using actual controller code",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 64,
+      "html": "05_audio_processing_and_handoff.html#CONTROLLER-FIXTURES"
+    },
+    {
+      "id": "CONTROLLER-FIXTURES-2",
+      "title": "Permitted, withheld and rollback examples using actual controller code",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 66,
+      "html": "05_audio_processing_and_handoff.html#CONTROLLER-FIXTURES-2"
+    },
+    {
+      "id": "CONTROLLER-FIXTURES-3",
+      "title": "Permitted, withheld and rollback examples using actual controller code",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 68,
+      "html": "05_audio_processing_and_handoff.html#CONTROLLER-FIXTURES-3"
+    },
+    {
+      "id": "AUDIO-FAILURES",
+      "title": "Non-beneficial preview and withheld real-voice case",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 71,
+      "html": "05_audio_processing_and_handoff.html#AUDIO-FAILURES"
+    },
+    {
+      "id": "AUDIO-FAILURES-2",
+      "title": "Non-beneficial preview and withheld real-voice case",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 73,
+      "html": "05_audio_processing_and_handoff.html#AUDIO-FAILURES-2"
+    },
+    {
+      "id": "AUDIO-FAILURES-3",
+      "title": "Non-beneficial preview and withheld real-voice case",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 75,
+      "html": "05_audio_processing_and_handoff.html#AUDIO-FAILURES-3"
+    },
+    {
+      "id": "AUDIO-FAILURES-4",
+      "title": "Non-beneficial preview and withheld real-voice case",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 77,
+      "html": "05_audio_processing_and_handoff.html#AUDIO-FAILURES-4"
+    },
+    {
+      "id": "HANDOFF-REJECTION",
+      "title": "Rejected packages cannot contain or expose accepted audio",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 81,
+      "html": "05_audio_processing_and_handoff.html#HANDOFF-REJECTION"
+    },
+    {
+      "id": "HANDOFF-REVIEW",
+      "title": "Provisional review and explicitly automated export fixture",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 85,
+      "html": "05_audio_processing_and_handoff.html#HANDOFF-REVIEW"
+    },
+    {
+      "id": "HANDOFF-REVIEW-2",
+      "title": "Provisional review and explicitly automated export fixture",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 87,
+      "html": "05_audio_processing_and_handoff.html#HANDOFF-REVIEW-2"
+    },
+    {
+      "id": "HANDOFF-REVIEW-3",
+      "title": "Provisional review and explicitly automated export fixture",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 89,
+      "html": "05_audio_processing_and_handoff.html#HANDOFF-REVIEW-3"
+    },
+    {
+      "id": "HANDOFF-REVIEW-4",
+      "title": "Provisional review and explicitly automated export fixture",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 91,
+      "html": "05_audio_processing_and_handoff.html#HANDOFF-REVIEW-4"
+    },
+    {
+      "id": "HANDOFF-EXTRACTOR",
+      "title": "Verify exact accepted WAV and saved GAME CSV/MIDI",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 94,
+      "html": "05_audio_processing_and_handoff.html#HANDOFF-EXTRACTOR"
+    },
+    {
+      "id": "HANDOFF-EXTRACTOR-2",
+      "title": "Verify exact accepted WAV and saved GAME CSV/MIDI",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 96,
+      "html": "05_audio_processing_and_handoff.html#HANDOFF-EXTRACTOR-2"
+    },
+    {
+      "id": "HANDOFF-EXTRACTOR-3",
+      "title": "Verify exact accepted WAV and saved GAME CSV/MIDI",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 98,
+      "html": "05_audio_processing_and_handoff.html#HANDOFF-EXTRACTOR-3"
+    },
+    {
+      "id": "HANDOFF-MIDI",
+      "title": "Parse MIDI and check serialized note timing against its CSV",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 101,
+      "html": "05_audio_processing_and_handoff.html#HANDOFF-MIDI"
+    },
+    {
+      "id": "HANDOFF-MIDI-2",
+      "title": "Parse MIDI and check serialized note timing against its CSV",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 103,
+      "html": "05_audio_processing_and_handoff.html#HANDOFF-MIDI-2"
+    },
+    {
+      "id": "HANDOFF-MIDI-3",
+      "title": "Parse MIDI and check serialized note timing against its CSV",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 105,
+      "html": "05_audio_processing_and_handoff.html#HANDOFF-MIDI-3"
+    },
+    {
+      "id": "HANDOFF-CONTRACT",
+      "title": "Accepted-only output contract",
+      "notebook": "05_audio_processing_and_handoff.ipynb",
+      "cell": 80,
+      "html": "05_audio_processing_and_handoff.html#HANDOFF-CONTRACT"
+    },
+    {
+      "id": "14-SETUP",
+      "title": "Setup: component environment and immutable evidence",
+      "notebook": "06_verification_and_statistics.ipynb",
+      "cell": 2,
+      "html": "06_verification_and_statistics.html#14-SETUP"
+    },
+    {
+      "id": "14-CONTEXT",
+      "title": "Load local split catalogs and common helper names",
+      "notebook": "06_verification_and_statistics.ipynb",
+      "cell": 7,
+      "html": "06_verification_and_statistics.html#14-CONTEXT"
+    },
+    {
+      "id": "VERIFY-AUDIT",
+      "title": "Re-run the read-only integrity and numerical evidence audit",
+      "notebook": "06_verification_and_statistics.ipynb",
+      "cell": 10,
+      "html": "06_verification_and_statistics.html#VERIFY-AUDIT"
+    },
+    {
+      "id": "VERIFY-AUDIT-2",
+      "title": "Re-run the read-only integrity and numerical evidence audit",
+      "notebook": "06_verification_and_statistics.ipynb",
+      "cell": 12,
+      "html": "06_verification_and_statistics.html#VERIFY-AUDIT-2"
+    },
+    {
+      "id": "VERIFY-AUDIT-3",
+      "title": "Re-run the read-only integrity and numerical evidence audit",
+      "notebook": "06_verification_and_statistics.ipynb",
+      "cell": 14,
+      "html": "06_verification_and_statistics.html#VERIFY-AUDIT-3"
+    },
+    {
+      "id": "VERIFY-AUDIT-4",
+      "title": "Re-run the read-only integrity and numerical evidence audit",
+      "notebook": "06_verification_and_statistics.ipynb",
+      "cell": 16,
+      "html": "06_verification_and_statistics.html#VERIFY-AUDIT-4"
+    },
+    {
+      "id": "VERIFY-METRICS",
+      "title": "Independent metric arithmetic and tests of empty/missing masks",
+      "notebook": "06_verification_and_statistics.ipynb",
+      "cell": 19,
+      "html": "06_verification_and_statistics.html#VERIFY-METRICS"
+    },
+    {
+      "id": "PILOT-DIRECTION",
+      "title": "Separate positive and negative delivered outcomes",
+      "notebook": "06_verification_and_statistics.ipynb",
+      "cell": 22,
+      "html": "06_verification_and_statistics.html#PILOT-DIRECTION"
+    },
+    {
+      "id": "PILOT-DIRECTION-2",
+      "title": "Separate positive and negative delivered outcomes",
+      "notebook": "06_verification_and_statistics.ipynb",
+      "cell": 24,
+      "html": "06_verification_and_statistics.html#PILOT-DIRECTION-2"
+    },
+    {
+      "id": "PILOT-DIRECTION-3",
+      "title": "Separate positive and negative delivered outcomes",
+      "notebook": "06_verification_and_statistics.ipynb",
+      "cell": 26,
+      "html": "06_verification_and_statistics.html#PILOT-DIRECTION-3"
+    },
+    {
+      "id": "PILOT-DIRECTION-4",
+      "title": "Separate positive and negative delivered outcomes",
+      "notebook": "06_verification_and_statistics.ipynb",
+      "cell": 28,
+      "html": "06_verification_and_statistics.html#PILOT-DIRECTION-4"
+    },
+    {
+      "id": "PILOT-STATISTICS",
+      "title": "Independent units, failures, latency and uncertainty",
+      "notebook": "06_verification_and_statistics.ipynb",
+      "cell": 31,
+      "html": "06_verification_and_statistics.html#PILOT-STATISTICS"
+    },
+    {
+      "id": "PILOT-STATISTICS-2",
+      "title": "Independent units, failures, latency and uncertainty",
+      "notebook": "06_verification_and_statistics.ipynb",
+      "cell": 33,
+      "html": "06_verification_and_statistics.html#PILOT-STATISTICS-2"
+    },
+    {
+      "id": "PILOT-STATISTICS-3",
+      "title": "Independent units, failures, latency and uncertainty",
+      "notebook": "06_verification_and_statistics.ipynb",
+      "cell": 35,
+      "html": "06_verification_and_statistics.html#PILOT-STATISTICS-3"
+    },
+    {
+      "id": "VERIFY-TESTS",
+      "title": "Run relevant existing tests and new metric/sign guards",
+      "notebook": "06_verification_and_statistics.ipynb",
+      "cell": 38,
+      "html": "06_verification_and_statistics.html#VERIFY-TESTS"
+    },
+    {
+      "id": "VERIFY-ENVIRONMENT",
+      "title": "Verification environment",
+      "notebook": "06_verification_and_statistics.ipynb",
+      "cell": 5,
+      "html": "06_verification_and_statistics.html#VERIFY-ENVIRONMENT"
+    },
+    {
+      "id": "DATA-EXAMPLE",
+      "title": "Load an audited training example",
+      "notebook": "03_data_preparation.ipynb",
+      "cell": 24,
+      "html": "03_data_preparation.html#DATA-EXAMPLE"
+    }
+  ],
+  "sources": [
+    {
+      "id": "SRC-INPUT",
+      "title": "Decode, resample and preserve original",
+      "path": "source/bpdr_input/audio/pipeline.py",
+      "function": "process",
+      "line": 67,
+      "end_line": 168,
+      "sha256": "1644ddc61af2518ef9d785c5798bc756ea778f12b004029ab003eb3d17f400b7",
+      "code": "def process(source, output_root, cache_dir, policy=Policy(), pitch_provider=None):\n    source = Path(source).resolve()\n    directory = Path(output_root).resolve()/uuid.uuid4().hex\n    directory.mkdir(parents=True, exist_ok=False)\n    diagnostics = dict(schema_version='0.2', policy=asdict(policy), operations=[], edit_intervals_seconds=[],\n                       limitations=['Technical acceptance only; musical usability is unvalidated',\n                                    'No denoising, trimming, pitch correction or BPDR inference'])\n    accepted_path = directory/'accepted.wav'\n    source_id = source.name\n\n    def finish(status, reasons=(), message='', accepted=None):\n        result = ProcessingResult(directory.name, source_id, status, accepted,\n                                  tuple(reasons), message, policy.version)\n        diagnostics['result'] = result.to_dict()\n        (directory/'diagnostics.json').write_text(json.dumps(diagnostics, indent=2), encoding='utf-8')\n        if accepted is None and accepted_path.exists():\n            accepted_path.unlink()\n        return result, directory\n\n    try:\n        if source.suffix.lower() not in {'.wav', '.flac'}:\n            return finish(Status.TECHNICAL_FAILURE, ['UNSUPPORTED_FORMAT'], 'Upload a WAV or FLAC recording.')\n        # Preserve exactly the bytes subsequently decoded; source is never modified.\n        preserved = directory/('original'+source.suffix.lower())\n        shutil.copyfile(source, preserved)\n        diagnostics['source'] = dict(path=str(source), preserved_path=str(preserved),\n                                     sha256=checksum(preserved))\n        info = sf.info(preserved)\n        diagnostics['input'] = dict(sample_rate_hz=info.samplerate, sample_count=info.frames,\n                                    channels=info.channels, duration_seconds=info.duration)\n        if info.frames == 0:\n            return finish(Status.RERECORD_REQUIRED, ['EMPTY_AUDIO'], 'Record a short solo singing or humming phrase.')\n        if info.duration > policy.max_seconds or info.duration < policy.min_seconds:\n            return finish(Status.RERECORD_REQUIRED, ['DURATION_OUT_OF_SCOPE'], 'Provide a complete phrase between 0.25 and 20 seconds; no audio was cropped.')\n        if info.channels not in (1, 2):\n            return finish(Status.RERECORD_REQUIRED, ['CHANNELS_OUT_OF_SCOPE'], 'Provide a mono or stereo solo recording.')\n        x, sr = sf.read(preserved, dtype='float32', always_2d=True)\n        if len(x) != info.frames:\n            raise ValueError('Decoded sample count does not match the file header')\n        if not np.isfinite(x).all():\n            return finish(Status.TECHNICAL_FAILURE, ['NONFINITE_SAMPLES'], 'The audio contains invalid sample values. Export it again.')\n        rms = np.sqrt(np.mean(x.astype(np.float64)**2, axis=0))\n        clipped = np.mean(abs(x) >= .999, axis=0)\n        diagnostics['observations'] = dict(channel_rms=rms.tolist(), channel_clipped_fraction=clipped.tolist())\n        if x.shape[1] == 1:\n            mono = x[:, 0]\n        else:\n            # Choose the strongest channel instead of unsafe phase cancellation.\n            selected = int(np.argmax(rms))\n            mono = x[:, selected]\n            diagnostics['operations'].append(dict(operation='select_channel', channel_index=selected,\n                                                  reason='highest RMS; avoid stereo cancellation'))\n        selected_clipped = float(np.mean(abs(mono) >= .999))\n        if float(np.sqrt(np.mean(mono.astype(np.float64)**2))) < policy.silence_rms:\n            return finish(Status.RERECORD_REQUIRED, ['SILENT_RECORDING'], 'No audible signal was detected. Record again closer to the microphone.')\n        if selected_clipped > policy.max_clipped_fraction or abs(mono).max() > 1:\n            return finish(Status.RERECORD_REQUIRED, ['EXCESSIVE_CLIPPING'], 'The selected channel is overloaded. Record again with lower input volume.')\n        target = policy.sample_rate_hz\n        divisor = gcd(sr, target)\n        working = resample_poly(mono, target//divisor, sr//divisor) if sr != target else mono.copy()\n        expected = round(len(mono)*target/sr)\n        working = working[:expected]\n        if len(working) < expected:\n            working = np.pad(working, (0, expected-len(working)))\n        diagnostics['operations'].append(dict(operation='working_copy', input_rate_hz=sr,\n                                              output_rate_hz=target, sample_count=expected,\n                                              timeline_origin_seconds=0, trimmed=False,\n                                              duration_error_seconds=expected/target-len(mono)/sr))\n        peak = float(abs(working).max())\n        if peak > 1:\n            gain = .999/peak\n            working *= gain\n            diagnostics['operations'].append(dict(operation='peak_protection_gain', gain=gain,\n                                                  reason='resampling overshoot; no pitch/timing change'))\n        options = {} if pitch_provider is None else {'pitch_provider': pitch_provider}\n        features, analysis_metadata = extract(working, target, cache_dir, **options)\n        diagnostics['analysis'] = analysis_metadata\n        diagnostics['analysis']['voiced_fraction'] = float(features['voiced_mask'].mean())\n        np.savez_compressed(directory/'features.npz', **features)\n        _plot(directory, working, target, features)\n        sf.write(accepted_path, working, target, subtype='PCM_24')\n        diagnostics['operations'].append(dict(operation='encode_working_copy', format='WAV PCM_24'))\n        accepted = AcceptedAudio(str(accepted_path), checksum(accepted_path), target, expected)\n        result = ProcessingResult(directory.name, source_id, Status.ACCEPT_UNCHANGED, accepted,\n                                  policy_version=policy.version)\n        validate_package(result)\n        # Recheck original preservation after all analysis/output operations.\n        if checksum(preserved) != diagnostics['source']['sha256']:\n            raise ValueError('Preserved original changed')\n        (directory/'report.html').write_text('''<!doctype html><meta charset=\"utf-8\"><title>BPDR Phase 1</title>\n<style>body{font:18px system-ui;max-width:1100px;margin:40px auto}img{width:100%}</style>\n<h1>Phase 1: original retained, pitch unchanged</h1>\n<p>Technical acceptance only. Measured F0 is performed pitch, not intended notes.\nBoundary scores are provisional. No BPDR repair model is running.</p>\n<h2>Original recording</h2><audio controls src=\"'''+preserved.name+'''\"></audio>\n<h2>Accepted working copy</h2><audio controls src=\"accepted.wav\"></audio>\n<img src=\"analysis.png\" alt=\"Aligned amplitude, performed F0 and provisional boundary score\">\n<p><a href=\"diagnostics.json\">Diagnostics and operation trace</a></p>''', encoding='utf-8')\n        return finish(Status.ACCEPT_UNCHANGED, message='Recording passed the provisional technical checks. Pitch and timing were preserved.', accepted=accepted)\n    except Exception as exc:\n        diagnostics['technical_error'] = dict(type=type(exc).__name__, detail=str(exc))\n        return finish(Status.TECHNICAL_FAILURE, ['PROCESSING_FAILED'], 'Processing failed. See diagnostics before retrying.')",
+      "target": "DEMO-RUN"
+    },
+    {
+      "id": "SRC-CONTRACT",
+      "title": "Accepted/rejected downstream contract",
+      "path": "source/bpdr_input/audio/contracts.py",
+      "function": "require_accepted_audio",
+      "line": 70,
+      "end_line": 74,
+      "sha256": "3f9c707d01c52d0b326b6aeb9bd3a3ecacfc052f60d76c32e86941b412f9b5f9",
+      "code": "def require_accepted_audio(result: ProcessingResult) -> AcceptedAudio:\n    \"\"\"Stop a consumer from falling back to rejected original input.\"\"\"\n    if result.accepted_audio is None:\n        raise ValueError(f\"Downstream processing blocked: {result.status.value}\")\n    return result.accepted_audio",
+      "target": "HANDOFF-CONTRACT"
+    },
+    {
+      "id": "SRC-ACOUSTICS",
+      "title": "PESTO, log-mel, confidence, energy and onset",
+      "path": "source/bpdr_input/audio/analysis.py",
+      "function": "extract",
+      "line": 35,
+      "end_line": 96,
+      "sha256": "44e28c9a505fdedbc36385b3bfd0e33dffd9179006b8660e56a7b9f52845e42e",
+      "code": "def extract(audio, sr, cache_dir, pitch_provider=pesto_pitch):\n    import librosa\n    hop = round(sr * .020)\n    spectrum = np.abs(librosa.stft(audio, n_fft=1024, hop_length=hop)) ** 2\n    mel = librosa.feature.melspectrogram(S=spectrum, sr=sr, n_mels=64)\n    logmel = librosa.power_to_db(mel, ref=1., top_db=80).T\n    times = np.arange(len(logmel), dtype=np.float64) * hop / sr\n    native_t, native_f, native_c = pitch_provider(audio, sr, cache_dir)\n    if not (len(native_t) == len(native_f) == len(native_c)) or len(native_t) == 0:\n        raise ValueError('Pitch analyzer returned inconsistent arrays')\n    if not all(np.isfinite(a).all() for a in (native_t, native_f, native_c)):\n        raise ValueError('Pitch analyzer returned non-finite data')\n    if np.any(np.diff(native_t) <= 0) or native_t[0] != 0 or np.any(native_f < 0) or np.any((native_c < 0) | (native_c > 1)):\n        raise ValueError('Pitch analyzer returned invalid units, timestamps or confidence')\n    # Nearest native frame avoids interpolating across unvoiced gaps.\n    idx = np.searchsorted(native_t, times)\n    idx = np.clip(idx, 0, len(native_t)-1)\n    previous = np.maximum(idx-1, 0)\n    idx = np.where(abs(native_t[previous]-times) < abs(native_t[idx]-times), previous, idx)\n    confidence = native_c[idx]\n    voiced = (confidence >= .8) & (native_f[idx] > 0)\n    f0 = np.where(voiced, native_f[idx], np.nan)\n    cents = np.full(len(times), np.nan)\n    cents[voiced] = 1200 * np.log2(f0[voiced] / 440.)\n    delta = np.zeros(len(times))\n    valid_delta = np.r_[False, voiced[1:] & voiced[:-1]]\n    delta[valid_delta] = np.diff(cents)[valid_delta[1:]]\n    rms = librosa.feature.rms(S=np.sqrt(spectrum), frame_length=1024)[0]\n    logenergy = 20 * np.log10(np.maximum(rms, 1e-8))\n    flux = np.r_[0., np.maximum(np.diff(logmel, axis=0), 0).mean(axis=1)]\n    onset = flux / max(float(flux.max()), 1e-8)\n    transition = np.r_[0., voiced[1:] != voiced[:-1]].astype(float)\n    boundary = np.maximum.reduce([onset, np.minimum(abs(delta)/100, 1), transition])\n    # 70 frame-only features; boundary makes 71. Unvoiced pitch uses masked zeros.\n    frame = np.column_stack([logmel, np.nan_to_num(cents), confidence, voiced,\n                             delta, logenergy, onset]).astype(np.float32)\n    features = dict(times_seconds=times, f0_hz=f0, confidence=confidence,\n                    voiced_mask=voiced, pitch_change_cents=delta,\n                    pitch_change_valid=valid_delta, log_energy_db=logenergy,\n                    onset_score=onset, provisional_boundary_score=boundary,\n                    log_mel_db=logmel, frame_features_70=frame,\n                    boundary_features_71=np.column_stack([frame, boundary]).astype(np.float32),\n                    native_pitch_times_seconds=native_t, native_pitch_hz=native_f,\n                    native_pitch_confidence=native_c)\n    if frame.shape != (len(times), 70) or not np.isfinite(frame).all():\n        raise ValueError('Invalid aligned feature matrix')\n    weight_path = Path(find_spec('pesto').origin).parent/'weights'/'mir-1k_g7.ckpt'\n    with weight_path.open('rb') as stream:\n        weight_hash = hashlib.file_digest(stream, 'sha256').hexdigest()\n    return features, dict(analyzer='PESTO mir-1k_g7', pesto_version=version('pesto-pitch'),\n                         pitch_provider='frozen PESTO' if pitch_provider is pesto_pitch else 'injected test provider; not PESTO results',\n                         checkpoint_sha256=weight_hash, checkpoint_path=str(weight_path),\n                         librosa_version=version('librosa'), frozen=True,\n                         sample_rate_hz=sr, hop_samples=hop, window_samples=1024,\n                         time_origin_seconds=0, window_centered=True,\n                         pitch_alignment='nearest native frame; no interpolation',\n                         voiced_confidence_threshold=.8, pitch_units='Hz / cents relative to A4=440 Hz',\n                         unvoiced_f0='NaN; zero only in masked model feature',\n                         boundary_status='provisional heuristic; not note labels',\n                         feature_order=['64 log-mel dB', 'pitch cents', 'confidence', 'voiced',\n                                        'pitch change cents', 'log energy dB', 'onset score',\n                                        'provisional boundary (71st only)'])",
+      "target": "DATA-SPECTROGRAM"
+    },
+    {
+      "id": "SRC-BOUNDARIES",
+      "title": "Runtime fine-pitch and boundary alternatives",
+      "path": "source/bpdr_input/repair/model_runtime.py",
+      "function": "runtime_views",
+      "line": 40,
+      "end_line": 73,
+      "sha256": "58e566a1300472a5464e2214b12b1e02d5000916f980879cfc6a871ba5121906",
+      "code": "def runtime_views(features, fine):\n    \"\"\"Three timing-only boundary views, obtained solely from this input audio.\"\"\"\n    from scipy.signal import find_peaks\n    from bpdr_input.preparation.pairs.shared_pair_audit import game_boundary_track\n    times = features['times_seconds']\n    # Availability comes from voicing, never pitch != 0: A4 is a valid 0 cents.\n    # Historical training archives remain frozen with their legacy adapter.\n    raw = np.asarray(features['boundary_features_71'],dtype=np.float32).copy()\n    original_voiced=raw[:,66]>.5\n    agree=original_voiced & np.isfinite(fine) & (np.abs(fine-raw[:,64])<=50.)\n    dropped=int((original_voiced & ~agree).sum())\n    raw[:,64]=np.where(agree,fine,0.)\n    raw[:,66]=np.where(agree,raw[:,66],0.)\n    raw[:,67]=0.\n    raw[1:,67]=np.where(agree[1:] & agree[:-1],np.diff(fine),0.)\n    peaks, _ = find_peaks(features['provisional_boundary_score'], height=.5, distance=5)\n    edges = times[peaks]\n    # Fixed, documented perturbations; not calibrated uncertainty estimates.\n    alternatives = (edges, np.clip(edges+.04, 0, times[-1]), edges[::2])\n    views = []\n    for e in alternatives:\n        x = raw.copy(); x[:, 70] = game_boundary_track(times, e)\n        if agree.any():x[:,64]=np.where(agree,x[:,64]-np.median(x[agree,64]),0.)\n        views.append(x)\n    protected = np.zeros(len(times), bool)\n    for edge in edges:\n        protected |= np.abs(times-edge) <= .10\n    return views, raw[:, 66] > .5, protected, dict(\n        boundary_source='Input-audio heuristic peaks >= .5, minimum 100 ms apart; Gaussian timing track',\n        alternate_boundaries='Nominal, +40-ms jitter, every second edge removed',\n        uncertainty='Maximum prediction disagreement, not calibrated probability',\n        pitch_adapter='runtime-fine-v2: explicit voicing, including valid A4=0 cents; historical study adapters remain frozen',\n        fine_pitch_guard_dropped_frames=dropped, nominal_edges_seconds=edges.tolist(),\n        protected_transition_seconds=.10)",
+      "target": "BPDR-VIEWS"
+    },
+    {
+      "id": "SRC-FEATURES",
+      "title": "Ordered 31-column local-context interface",
+      "path": "source/bpdr_input/modeling/local_context_pilot.py",
+      "function": "context_features",
+      "line": 20,
+      "end_line": 80,
+      "sha256": "aa1702b0b918430e262bc082bf5db4a23f88c9084df15ce467aba0d039c547d4",
+      "code": "def context_features(raw, include_boundary=True):\n    \"\"\"Return fixed-scale context features from one runtime-like 71-column view.\n\n    The chromatic residual uses all 12 pitch classes and this performance's own\n    circular tuning estimate; it is not a named key/scale or an intended melody.\n    Gaps are interpolated solely for local statistics; explicit voiced/coverage\n    features expose missing observations, and unvoiced outputs are masked later.\n    \"\"\"\n    raw = np.asarray(raw, dtype=np.float32)\n    if raw.ndim != 2 or raw.shape[1] != 71 or not np.isfinite(raw).all():\n        raise ValueError(\"Expected finite frames x 71 runtime features\")\n    n = len(raw)\n    if not n:\n        raise ValueError(\"Cannot infer on an empty feature sequence\")\n    voiced = raw[:, 66] > .5  # A4=0 cents remains a valid voiced observation\n    pitch = np.where(voiced, raw[:, 64], 0.).astype(np.float64)\n    if voiced.any():\n        indices = np.arange(n)\n        interp = np.interp(indices, indices[voiced], pitch[voiced])\n        offset = np.angle(np.mean(np.exp(2j*np.pi*pitch[voiced]/100.)))*100./(2*np.pi)\n        residual = (interp-offset+50.) % 100.-50.\n        relative = interp-np.median(pitch[voiced])\n    else:\n        interp = residual = relative = np.zeros(n)\n        offset = 0.\n    delta = np.r_[0., np.diff(interp)]\n    energy = raw[:, 68].astype(np.float64)\n    energy -= np.median(energy[voiced]) if voiced.any() else np.median(energy)\n    features = [np.clip(relative/1200., -3, 3), residual/30.,\n                np.sin(2*np.pi*residual/100.), np.cos(2*np.pi*residual/100.),\n                raw[:, 65], voiced.astype(float), np.clip(delta/30., -4, 4),\n                np.clip(energy/20., -4, 4), raw[:, 69]]\n    for width in WINDOW_FRAMES:\n        median_pitch = median_filter(interp, size=width, mode=\"nearest\")\n        median_residual = median_filter(residual, size=width, mode=\"nearest\")\n        mean_residual = uniform_filter1d(residual, size=width, mode=\"nearest\")\n        spread = np.sqrt(np.maximum(uniform_filter1d(residual**2, size=width, mode=\"nearest\")-mean_residual**2, 0.))\n        features.extend([np.clip((interp-median_pitch)/30., -4, 4),\n                         ((residual-median_residual+50.) % 100.-50.)/30.,\n                         mean_residual/30., spread/30.,\n                         uniform_filter1d(voiced.astype(float), size=width, mode=\"nearest\")])\n    # A same-pitch-class segment is estimated from THIS audio only. The original\n    # and detuned versions can produce different segments; no paired mask is used.\n    note_bin = np.rint((interp-offset)/100.).astype(int)\n    end_residual = np.zeros(n)\n    groups = np.split(np.arange(n), np.flatnonzero((np.diff(note_bin) != 0) | (~voiced[1:]) | (~voiced[:-1]))+1)\n    for group in groups:\n        usable = group[voiced[group]]\n        if len(usable) < 10:\n            continue\n        count = min(5, len(usable)//3)\n        start_level, end_level = np.median(interp[usable[:count]]), np.median(interp[usable[-count:]])\n        expected = np.interp(usable, [usable[0], usable[-1]], [start_level, end_level])\n        end_residual[usable] = np.clip((interp[usable]-expected)/30., -4, 4)\n    features.extend([end_residual, np.clip(np.abs(delta)/100., 0, 3)])\n    result = np.column_stack(features).astype(np.float32)\n    if result.shape != (n, FRAME_FEATURES):\n        raise ValueError(f\"Unexpected local feature shape {result.shape}\")\n    if include_boundary:\n        result = np.column_stack([result, raw[:, 70]]).astype(np.float32)\n    return result",
+      "target": "DATA-FEATURES"
+    },
+    {
+      "id": "SRC-ROWS",
+      "title": "Singer-equal training rows and frame weights",
+      "path": "source/bpdr_input/experiments/learning/model_recovery.py",
+      "function": "training_arrays",
+      "line": 179,
+      "end_line": 201,
+      "sha256": "e0eb543ffdd1e3f85a292bd715bc095cfcbb169859031cf882a8291b3c640d6d",
+      "code": "def training_arrays(pairs):\n    xx, yy, ww = [], [], []\n    group_counts = defaultdict(int)\n    for p in pairs:\n        if \"excluded\" not in p:\n            group_counts[p[\"group\"]] += 1\n    for p in pairs:\n        if \"excluded\" in p:\n            continue\n        m, target = p[\"mask\"], p[\"target\"]\n        plateau, outside = m & (target != 0), m & (target == 0)\n        weight = 1./len(group_counts)/group_counts[p[\"group\"]]\n        for view, wanted, region, share in ((\"A\", np.zeros(len(m)), m, .5),\n                                            (\"C\", target, plateau, .35),\n                                            (\"C\", target, outside, .15)):\n            if not region.any():\n                continue\n            xx.append(context_features(p[view][\"views\"][0], include_boundary=False)[region])\n            yy.append(wanted[region])\n            ww.append(np.full(int(region.sum()), weight*share/region.sum()))\n    if not xx:\n        raise ValueError(\"No audited original-source training pairs\")\n    return np.concatenate(xx), np.concatenate(yy), np.concatenate(ww)",
+      "target": "MODEL-TRAINING"
+    },
+    {
+      "id": "SRC-FIT",
+      "title": "Actual training and calibration selection code (read only)",
+      "path": "source/bpdr_input/experiments/learning/model_recovery.py",
+      "function": "run",
+      "line": 266,
+      "end_line": 384,
+      "sha256": "e0eb543ffdd1e3f85a292bd715bc095cfcbb169859031cf882a8291b3c640d6d",
+      "code": "def run(resume_from=None):\n    import torch\n    torch.set_num_threads(2)\n    manifest_path = DATASET/\"manifest.json\"\n    manifest = read(manifest_path)\n    rows = source_records(manifest)\n    out = Path(resume_from).resolve() if resume_from else ROOT/uuid.uuid4().hex\n    if not out.resolve().is_relative_to(ROOT.resolve()):\n        raise ValueError(\"Recovery output must stay within its workspace folder\")\n    if not resume_from:\n        out.mkdir(parents=True)\n    files = [Path(__file__), WORKSPACE/\"source/bpdr_input/modeling/recovery_model.py\",\n             WORKSPACE/\"source/bpdr_input/modeling/local_context_pilot.py\", manifest_path]\n    declaration = dict(version=\"vocalset-longtone-recovery-2\", created_at=datetime.now(ZoneInfo(\"Asia/Colombo\")).isoformat(),\n        dataset=\"VocalSet official preselected straight long tones, vowels a/e, CC-BY4.0\",\n        groups=\"Singer IDs1..4fit(8people),5calibration(2people),6pilot_evaluation(2people)\",\n        feature_interface=\"31 single-input local fine-pitch context features, runtime-equivalent voicing/confidence; no references,target masks,support intervals or absolute time\",\n        preprocessing=\"Retain full originals (all<20s); strongest channel; resample22050; reject<5s or clipped without rescue\",\n        interventions=\"Known +/-20,+/-30c local shifts: choose longest OWN-ORIGINAL reliable stable run>=1.36s,spread<=20c; hash-varied.96\u20131.12s support with>=.20s measuredflanks; no arbitrarysilentgapplacement; librosarenderer;YIN+PESTOaudit; allfailures/exclusionsretained\",\n        models={\"extra_trees\": dict(n_estimators=96,max_depth=8,min_samples_leaf=12,random_state=SEED,n_jobs=2),\n                \"hist_gradient_boosting\": dict(max_iter=120,max_leaf_nodes=15,max_depth=5,learning_rate=.08,l2_regularization=1.,min_samples_leaf=30,early_stopping=False,random_state=SEED)},\n        comparator=\"Frozen previous local-context BPDR-loss MLP checkpoint; diagnostic only, not relabelled as successful\",\n        training_weights=\"Group-equal; original .50,detuned plateau .35,detuned outside .15; no calibration/evaluation fitting\",\n        operating_points=POLICIES, scope=\"Own-audio voiced runs>=1.10s,detrended spread<=20c; existing3c-or-stricter deadband/largestspan and unchanged .86s/25%/30c/5c controller\",\n        selection=\"Fit2fixed treefamilies only; score all9operatingpoints plus frozenMLP on calibration2singers; choose highest group-equal permitted gain among practical-gate passers, otherwise best gain diagnosticonly; lock before evaluation source preparation\",\n        practical_gates=\"BOTH2cal/eval singers must be represented;eachsinger:positive permitted errorgain,response>=.1,raw originalmean<=3c,permitted originalmean<=1c,original editedframes<=5%,ALL-ATTEMPTdetuned permittedcoverage>=25%; then actualrender improvement for EACH singer and unchanged originalanchors\",\n        caps=\"2fixed treefits;120HGB iterations or96trees; max120s perfit; no hyperparameter retries or outertuning\",\n        old_research_gate_preserved=True, final_reserved_data_access=False, natural_intended_pitch_labels=False,\n        supersedes_preparation_only=\"14a10a583e40497ea2514fd3570a7f79 retained unchanged: randomwholecrop interventions hit silence; longvoiced TRAIN/CAL context diagnosis motivated this protocol correction\",\n        reused_development_pilot=True,\n        source_hashes={str(p):checksum(p) for p in files}, manifest_sha256=checksum(manifest_path),\n        limitations=[\"Task-specific controlled detuning on sustained human vowels, not natural errors or free melody correctness\",\n                     \"Two unseen-in-fit singers reused from prior preparation-failed pilot; development validation, not untouched finaltest,population estimates orBPDR superiority\",\n                     \"Known original and injected support are used only for supervision/audits/scoring, never inference\"])\n    if resume_from:\n        prospective=read(out/\"declaration.json\")\n        if prospective[\"manifest_sha256\"] != checksum(manifest_path) or (out/\"locked_selection.json\").exists():\n            raise ValueError(\"Technical resume requires unchanged inputs and no prior locked selection\")\n        write(out/\"technical_resume.json\",dict(reason=\"Correct duplicate attempted/audited summary keys; prior two fits completed but calibration summary raised TypeError before any endpoint selection or outer preparation\",\n            original_declaration_sha256=checksum(out/\"declaration.json\"),new_source_sha256=checksum(__file__),\n            protocol_unchanged=True,hyperparameters_unchanged=True,heavy_extraction_repeated=False,\n            model_fits_repeated=\"Same two deterministic fits, because failed process closed before serializing them\"))\n        declaration=prospective\n        (out/\"technical_resume_model_recovery.py\").write_bytes(Path(__file__).read_bytes())\n    else:\n        write(out/\"declaration.json\", declaration)\n    print(\"RECOVERY_DECLARED\", out, flush=True)\n    split_rows = defaultdict(list)\n    for row in rows:\n        split_rows[row[\"split\"]].append(row)\n    print(\"SPLITS\", {k:len(v) for k,v in split_rows.items()}, flush=True)\n    pairs = {}\n    source_summaries = {}\n    # Evaluation source acoustics are deliberately not opened until lock below.\n    for split in (\"train\", \"calibration\"):\n        if resume_from:\n            pairs[split]=cached_pairs(read(out/(split+\"_pairs.json\")))\n            source_summaries[split]=read(out/(split+\"_sources.json\"))\n            print(\"RESUMED_PREPARED\",split,len(pairs[split]),flush=True)\n            continue\n        pairs[split], source_summaries[split] = [], []\n        for i, row in enumerate(sorted(split_rows[split], key=lambda r: (r[\"singer_id\"],r[\"vowel\"]))):\n            source, generated = prepare_source(row, out/split, i)\n            source_summaries[split].append(source)\n            pairs[split].extend(generated)\n            print(\"PREPARED\", split, i+1, \"audited\", sum(\"excluded\" not in p for p in generated), flush=True)\n        write(out/(split+\"_sources.json\"), source_summaries[split])\n        write(out/(split+\"_pairs.json\"), [serialise_pair(p) for p in pairs[split]])\n    x,y,w = training_arrays(pairs[\"train\"])\n    models = {}\n    fit_receipts = {}\n    with threadpool_limits(limits=2):\n        for name, params in declaration[\"models\"].items():\n            estimator = ExtraTreesRegressor(**params) if name == \"extra_trees\" else HistGradientBoostingRegressor(**params)\n            started = time.monotonic()\n            estimator.fit(x,y,sample_weight=w)\n            elapsed = time.monotonic()-started\n            models[name] = dict(kind=name,estimator=estimator)\n            fit_receipts[name] = dict(seconds=elapsed,training_rows=len(y),completed_within_cap=elapsed<=120.)\n            print(\"FIT\",name,round(elapsed,2),len(y),flush=True)\n    previous = Path(read(WORKSPACE/\"results/small_real_pilot/current.json\")[\"path\"])/\"bpdr.pt\"\n    old, _ = load_checkpoint(previous)\n    models[\"old_mlp\"] = dict(kind=\"old_mlp\",estimator=old)\n    calibration = []\n    for name, model in models.items():\n        for policy in POLICIES:\n            summary, scored = score(model, policy, pairs[\"calibration\"])\n            calibration.append(dict(model=name,operating_policy=policy,summary=summary))\n        print(\"CALIBRATED\",name,flush=True)\n    write(out/\"calibration_all.json\",calibration)\n    passing = [r for r in calibration if r[\"summary\"][\"passes\"] and fit_receipts.get(r[\"model\"],{}).get(\"completed_within_cap\",True)]\n    options = passing or calibration\n    chosen = max(options,key=lambda r:(r[\"summary\"].get(\"permitted_correction_gain\",-1),-r[\"summary\"].get(\"raw_original_abs_mean\",100),r[\"model\"]))\n    selection = dict(**chosen,calibration_gate_passes=bool(passing),locked_before_outer_preparation=True)\n    write(out/\"locked_selection.json\",selection)\n    print(\"LOCKED\",json.dumps(selection),flush=True)\n    checkpoint = out/\"selected_model.joblib\"\n    selected = models[chosen[\"model\"]]\n    save_candidate(checkpoint,selected[\"estimator\"],selected[\"kind\"],chosen[\"operating_policy\"],\n        dict(declaration_sha256=checksum(out/\"declaration.json\"),scope=\"VocalSet straight sustained-vowel controlled-detuning demonstration\",\n             requires_user_review=True,model_type=chosen[\"model\"],selection_sha256=checksum(out/\"locked_selection.json\")))\n    split = \"pilot_evaluation\"\n    pairs[split],source_summaries[split] = [],[]\n    for i,row in enumerate(sorted(split_rows[split],key=lambda r:(r[\"singer_id\"],r[\"vowel\"]))):\n        source,generated = prepare_source(row,out/split,i)\n        source_summaries[split].append(source);pairs[split].extend(generated)\n        print(\"PREPARED\",split,i+1,\"audited\",sum(\"excluded\" not in p for p in generated),flush=True)\n    write(out/(split+\"_sources.json\"),source_summaries[split])\n    write(out/(split+\"_pairs.json\"),[serialise_pair(p) for p in pairs[split]])\n    outer, outer_rows = score(selected,chosen[\"operating_policy\"],pairs[split])\n    write(out/\"outer_rows.json\",outer_rows)\n    write(out/\"evidence.json\",dict(declaration_sha256=checksum(out/\"declaration.json\"),selection=selection,\n        fit_receipts=fit_receipts,outer=outer,outer_proposal_gate_passes=bool(passing) and outer[\"passes\"],\n        rendered_demo_gate_passes=False,checkpoint_sha256=checksum(checkpoint),checkpoint=str(checkpoint),\n        actual_render_verification=\"Pending independent singer outputs via unchanged renderer/audit; no delivered-success claim\",\n        model_adopted=False,old_research_gate_preserved=True))\n    write(ROOT/\"current.json\",dict(path=str(out)))\n    print(\"RECOVERY_COMPLETE\",out,json.dumps(outer),flush=True)\n    return out",
+      "target": "MODEL-SELECTION"
+    },
+    {
+      "id": "SRC-ENCODER",
+      "title": "Actual Transformer architecture",
+      "path": "source/bpdr_input/modeling/model.py",
+      "function": "CorrectionEncoder",
+      "line": 19,
+      "end_line": 48,
+      "sha256": "2795245a69aa8b798e1c865f566e7fb9aeb9857208004bdab612e2bc3a29f8d0",
+      "code": "class CorrectionEncoder(nn.Module):\n    def __init__(self, config=ModelConfig()):\n        super().__init__()\n        self.config = config\n        self.project = nn.Linear(config.features, config.hidden)\n        layer = nn.TransformerEncoderLayer(config.hidden, config.heads, config.feed_forward, config.dropout, batch_first=True)\n        # The nested-tensor fast path can shorten padded outputs; every frame must keep its time position.\n        self.encoder = nn.TransformerEncoder(layer, config.layers, enable_nested_tensor=False)\n        self.head = nn.Linear(config.hidden, 1)\n\n    def positions(self, length, device):\n        position = torch.arange(length, device=device).unsqueeze(1)\n        rate = torch.exp(torch.arange(0, self.config.hidden, 2, device=device)*(-math.log(10000.)/self.config.hidden))\n        table = torch.zeros(length, self.config.hidden, device=device)\n        table[:, 0::2], table[:, 1::2] = torch.sin(position*rate), torch.cos(position*rate)\n        return table\n\n    def forward(self, features, padding=None):\n        \"\"\"features: batch x frames x inputs; padding: True where a frame is padding. No causal mask: bidirectional.\"\"\"\n        if features.shape[-1] != self.config.features:\n            raise ValueError(f'Expected {self.config.features} input features, got {features.shape[-1]}')\n        hidden = self.project(features)+self.positions(features.shape[1], features.device)\n        cents = self.head(self.encoder(hidden, src_key_padding_mask=padding)).squeeze(-1)\n        return cents if padding is None else cents.masked_fill(padding, 0.)\n\n    def parameter_count(self):\n        return sum(parameter.numel() for parameter in self.parameters())\n\n    def describe(self):\n        return dict(asdict(self.config), parameters=self.parameter_count())",
+      "target": "TRANSFORMER-MODEL"
+    },
+    {
+      "id": "SRC-LOSS",
+      "title": "Full base BPDR objective",
+      "path": "source/bpdr_input/modeling/losses.py",
+      "function": "objective",
+      "line": 49,
+      "end_line": 66,
+      "sha256": "a3ee3e6c1f47a858650f945e3d3a728f9bc92f1f3e1751245ae684d42300ad18",
+      "code": "def objective(r, batch, condition, weights=LossWeights(), response=True):\n    \"\"\"Total loss for one condition. `response=False` is the supervised warm-up shared by all three.\"\"\"\n    if condition not in CONDITIONS:\n        raise ValueError(f'Unknown condition: {condition}')\n    mask, detuning = batch['mask'], batch['detuning']\n    zero = torch.zeros_like(detuning)\n    parts, skipped = {}, {}\n    # L_A: zero for accepted originals, the compensating target for verified detuned views.\n    anchors = [masked_mean_abs(r[view], zero if view in 'AB' else -detuning, mask) for view in 'ABCD']\n    parts['anchor'], skipped['anchor'] = sum(a[0] for a in anchors)/4, sum(a[1] for a in anchors)\n    smooth = [smoothness(r[view], batch['voiced']['A' if view in 'AB' else 'C']) for view in 'ABCD']\n    parts['smoothness'], skipped['smoothness'] = sum(s[0] for s in smooth)/4, sum(s[1] for s in smooth)\n    total = parts['anchor']+weights.smoothness*parts['smoothness']\n    if condition == 'bpdr' and response:\n        parts['boundary'], skipped['boundary'] = boundary_invariance(r, mask)\n        parts['detuning'], skipped['detuning'] = counter_detuning(r, detuning, mask)\n        total = total+weights.boundary*parts['boundary']+weights.detuning*parts['detuning']\n    return total, parts, skipped",
+      "target": "BPDR-LOSSES"
+    },
+    {
+      "id": "SRC-BOUNDARY-LOSS",
+      "title": "Boundary invariance loss",
+      "path": "source/bpdr_input/modeling/losses.py",
+      "function": "boundary_invariance",
+      "line": 35,
+      "end_line": 39,
+      "sha256": "a3ee3e6c1f47a858650f945e3d3a728f9bc92f1f3e1751245ae684d42300ad18",
+      "code": "def boundary_invariance(r, mask):\n    \"\"\"L_B: the same audio under changed boundary metadata should get the same repair.\"\"\"\n    ab, skipped_ab = masked_mean_abs(r['A'], r['B'], mask)\n    cd, skipped_cd = masked_mean_abs(r['C'], r['D'], mask)\n    return .5*(ab+cd), skipped_ab+skipped_cd",
+      "target": "BPDR-LOSSES"
+    },
+    {
+      "id": "SRC-RESPONSE-LOSS",
+      "title": "Counter-detuning response loss",
+      "path": "source/bpdr_input/modeling/losses.py",
+      "function": "counter_detuning",
+      "line": 42,
+      "end_line": 46,
+      "sha256": "a3ee3e6c1f47a858650f945e3d3a728f9bc92f1f3e1751245ae684d42300ad18",
+      "code": "def counter_detuning(r, detuning, mask):\n    \"\"\"L_D: adding local detuning e should change the repair by -e, and by nothing outside its support.\"\"\"\n    ca, skipped_ca = masked_mean_abs(r['C']-r['A'], -detuning, mask)\n    db, skipped_db = masked_mean_abs(r['D']-r['B'], -detuning, mask)\n    return .5*(ca+db), skipped_ca+skipped_db",
+      "target": "BPDR-LOSSES"
+    },
+    {
+      "id": "SRC-SQUARED-ANCHOR",
+      "title": "Recorded squared-anchor variant",
+      "path": "source/bpdr_input/experiments/learning/fine_pitch_mse_check.py",
+      "function": "squared_objective",
+      "line": 33,
+      "end_line": 48,
+      "sha256": "a9e2ef35e85458183eb24131d21402cdc255e92d167d5e82a0041a5cdf31634d",
+      "code": "def squared_objective(r, batch, condition, weights, response):\n    \"\"\"Proposal objective with L_A as masked mean squared error; L_S, L_B, L_D unchanged (mean absolute).\"\"\"\n    import torch\n    from bpdr_input.modeling.losses import smoothness, boundary_invariance, counter_detuning\n    mask, det = batch['mask'], batch['detuning']\n    m = mask.to(det.dtype); frames = m.sum(1); used = frames > 0\n    parts = {}\n    def mse(pred, target):\n        return ((((pred-target)**2)*m).sum(1)[used]/frames[used]).mean()\n    parts['anchor'] = sum(mse(r[v], torch.zeros_like(det) if v in 'AB' else -det) for v in 'ABCD')/4\n    parts['smoothness'] = sum(smoothness(r[v], batch['voiced']['A' if v in 'AB' else 'C'])[0] for v in 'ABCD')/4\n    total = parts['anchor']+weights.smoothness*parts['smoothness']\n    if condition == 'bpdr' and response:\n        parts['boundary'] = boundary_invariance(r, mask)[0]; parts['detuning'] = counter_detuning(r, det, mask)[0]\n        total = total+weights.boundary*parts['boundary']+weights.detuning*parts['detuning']\n    return total, parts",
+      "target": "BPDR-LOSSES"
+    },
+    {
+      "id": "SRC-TRANSFER",
+      "title": "Historical matched real-source adaptation code (read only)",
+      "path": "source/bpdr_input/experiments/evaluation/transfer_study.py",
+      "function": "adapt",
+      "line": 177,
+      "end_line": 288,
+      "sha256": "6913089d0944652ccc6cc8d9ee8976b5cc89c42eb93c99b4104e2ddbb71e6831",
+      "code": "def adapt():\n    \"\"\"One bounded matched transfer-learning experiment, retaining frozen controls.\n\n    This is engineering training on real recordings with injected errors, not\n    human-approved musical ground truth. All conditions receive the same 300\n    updates, seed and schedule: four real and four synthetic records per update.\n    No development case is used for fitting, normalization or early stopping.\n    \"\"\"\n    import torch\n    from bpdr_input.reporting.bpdr_showcase import load_model\n    from bpdr_input.experiments.learning.controlled_study import load_pair\n    from bpdr_input.modeling.examples import read_pair, collate\n    from bpdr_input.experiments.learning.expanded_comparison import to_device\n    from bpdr_input.experiments.learning.fine_pitch_mse_check import squared_objective\n    from bpdr_input.experiments.learning.fine_pitch_relative_check import relative_pair\n    from bpdr_input.modeling.losses import LossWeights\n    if not torch.xpu.is_available():\n        raise RuntimeError('Declared XPU unavailable')\n    torch.set_num_threads(2)\n    seed = 339; updates = 300\n    base = dict(frozen_runs())[seed]\n    data = Path(read(COMPONENT/'runs/controlled_study/current.json')['path'])\n    real_records = read(FINE/'training_catalog.json')['records']\n    development = read(FINE/'development_catalog.json')['records']\n    synthetic = [r for r in read(data/'catalog.json')['records'] if r['split'] == 'train' and r['plateau_frames'] >= 10]\n    if len(real_records) != 995 or len(synthetic) != 384 or any(r['split'] != 'train' for r in real_records):\n        raise ValueError('Training inventory changed')\n    ds = lambda r: r.get('dataset', 'vocadito' if r['phrase_id'].startswith('vocadito') else 'jamendo')\n    train_groups = {(ds(r), r['singer_id']) for r in real_records}\n    dev_groups = {(ds(r), r['singer_id']) for r in development}\n    if train_groups & dev_groups:\n        raise ValueError('Singer/artist overlap')\n    groups = defaultdict(list)\n    for i, r in enumerate(real_records):\n        groups[(ds(r), r['singer_id'], r['phrase_id'])].append(i)\n    by_ds = {d: [g for g in groups if g[0] == d] for d in ('vocadito', 'jamendo')}\n    rng = np.random.default_rng(seed)\n    schedule = []\n    for step in range(updates):\n        chosen = []\n        for d in ('vocadito', 'jamendo'):\n            for _ in range(2):\n                g = by_ds[d][int(rng.integers(len(by_ds[d])))]\n                chosen.append(int(rng.choice(groups[g])))\n        schedule.append(dict(real=chosen, synthetic=rng.choice(len(synthetic), 4, replace=False).tolist()))\n    out = ROOT/uuid.uuid4().hex; out.mkdir(parents=True)\n    (out/'executed_presentation_study.py').write_bytes(Path(__file__).read_bytes())\n    np.save(out/'schedule.npy', np.array([[*s['real'], *s['synthetic']] for s in schedule]))\n    frozen = {str(p): sha(p) for p in [FINE/'training_catalog.json', FINE/'development_catalog.json', data/'catalog.json']}\n    for c in CONDITIONS:\n        p = base/(c+'.pt'); frozen[str(p)] = sha(p)\n    declaration = dict(version='presentation-mixed-adaptation-1', declared_utc=datetime.now(timezone.utc).isoformat(),\n        seed=seed, source_sha256=sha(__file__), updates_per_condition=updates, effective_batch=8,\n        learning_rate=1e-4, optimizer='AdamW, weight_decay .01, gradient clip 1',\n        initialization='Frozen synthetic seed 339, same corresponding condition; original checkpoints never overwritten',\n        real_records=len(real_records), synthetic_records=len(synthetic),\n        sampling='Two Vocadito, two Jamendo (equal phrase groups within dataset), four synthetic train variants per update',\n        normalizer='Keep each original synthetic training normalizer frozen; no development normalization',\n        objective='squared L_A + .1 L_S, BPDR L_B/L_D after 100-update warm-up; unchanged 71/70 features',\n        schedule_sha256=sha(out/'schedule.npy'), frozen=frozen,\n        evaluation='Final update only, every condition on all 304 development variants; no tuning/early stopping on development',\n        gate='Both datasets: median paired response >= .25, original mean alteration <= 1 cent, correction gain > 0',\n        limitation='Engineering real+synthetic adaptation; no musical approvals or final test; only one matched adaptation seed')\n    write(out/'declaration.json', declaration)\n    print('ADAPT_RUN', out, flush=True)\n    real_cache = {}; synth_cache = {}; results = {}\n    for c in CONDITIONS:\n        torch.manual_seed(seed)\n        model, norm, width = load_model(base/(c+'.pt')); model.to('xpu').train()\n        optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4, weight_decay=.01)\n        history = []; start = time.monotonic()\n        for step, item in enumerate(schedule, 1):\n            optimizer.zero_grad(); total = 0.\n            selected = []\n            for i in item['real']:\n                if i not in real_cache:\n                    real_cache[i] = relative_pair(read_pair(real_records[i], 'engineering'))\n                selected.append(real_cache[i])\n            for i in item['synthetic']:\n                if i not in synth_cache:\n                    synth_cache[i] = relative_pair(load_pair(synthetic[i]))\n                selected.append(synth_cache[i])\n            for pair in selected:\n                b = to_device(collate([pair], norm, width), 'xpu')\n                r = {v: model(x, b['padding']) for v, x in b['inputs'].items()}\n                loss, _ = squared_objective(r, b, c, LossWeights(), step > 100)\n                (loss/8).backward(); total += float(loss.detach())/8\n            grad = float(torch.nn.utils.clip_grad_norm_(model.parameters(), 1.))\n            optimizer.step()\n            history.append(dict(update=step, loss=total, gradient_norm=grad))\n            if step % 25 == 0:\n                print(c, step, 'loss', round(total, 3), 'seconds', round(time.monotonic()-start), flush=True)\n        saved = torch.load(base/(c+'.pt'), weights_only=False, map_location='cpu')\n        saved.update(state={k: v.detach().cpu() for k, v in model.state_dict().items()},\n                     data_status='exploratory_real_plus_synthetic', adaptation_declaration_sha256=sha(out/'declaration.json'))\n        torch.save(saved, out/(c+'.pt'))\n        write(out/(c+'_history.json'), history)\n        del model, optimizer\n        folder = out/c; folder.mkdir()\n        result = evaluate_records(out/(c+'.pt'), development, folder, 'xpu')\n        result['engineering_gate_passes'] = all(s['median_response_gain'] >= .25 and s['unshifted_alteration'] <= 1.\n                                               and s['correction_gain'] > 0 for s in result['by_dataset'].values())\n        results[c] = result\n        print('ADAPT_RESULT', c, json.dumps(result['by_dataset']), flush=True)\n    for p, digest in frozen.items():\n        if sha(p) != digest:\n            raise ValueError('Frozen evidence changed')\n    write(out/'evidence.json', dict(declaration_sha256=sha(out/'declaration.json'), results=results,\n                                  optimizer_updates=updates*len(CONDITIONS), final_test_accessed=False,\n                                  note='Failed candidates are retained; do not replace the working synthetic demo automatically'))\n    write(ROOT/'adapt_current.json', dict(path=str(out)))\n    return out",
+      "target": "TRANSFORMER-HISTORY"
+    },
+    {
+      "id": "SRC-PREDICT",
+      "title": "Saved ExtraTrees prediction in physical cents",
+      "path": "source/bpdr_input/modeling/recovery_model.py",
+      "function": "predict_raw",
+      "line": 42,
+      "end_line": 51,
+      "sha256": "56ad93cd22a831b9f6ebb90041b38a3e9eda8ab50e82ea59138e5325d588e049",
+      "code": "def predict_raw(model, raw71):\n    \"\"\"Uncalibrated physical cents; no reference, target or intervention interval.\"\"\"\n    features = context_features(raw71, include_boundary=False)\n    if model[\"kind\"] == \"old_mlp\":\n        from bpdr_input.modeling.local_context_pilot import predict_raw as old_predict\n        return old_predict(model[\"estimator\"], raw71)\n    output = np.asarray(model[\"estimator\"].predict(features), dtype=np.float64)\n    if output.shape != (len(raw71),) or not np.isfinite(output).all():\n        raise ValueError(\"Invalid learned recovery prediction\")\n    return output",
+      "target": "TREE-PREDICTION"
+    },
+    {
+      "id": "SRC-PROPOSAL",
+      "title": "Own-audio scope, gain and deadband",
+      "path": "source/bpdr_input/modeling/recovery_model.py",
+      "function": "propose",
+      "line": 54,
+      "end_line": 73,
+      "sha256": "56ad93cd22a831b9f6ebb90041b38a3e9eda8ab50e82ea59138e5325d588e049",
+      "code": "def propose(raw_views, model, payload):\n    \"\"\"Exactly the same calibrated proposal used for calibration and live input.\n\n    This creates a request only. Existing permission/render/rollback still apply.\n    Disagreement is numerical sensitivity, not a probability of being correct.\n    \"\"\"\n    views = list(raw_views)\n    if len(views) != 3 or len({len(x) for x in views}) != 1:\n        raise ValueError(\"Expected three aligned single-input runtime boundary views\")\n    predictions = np.stack([predict_raw(model, raw) for raw in views])\n    allowed, scope = scope_mask(views[0])\n    voiced = views[0][:, 66] > .5\n    operating = predictions*float(payload[\"operating_policy\"][\"gain\"])\n    operating[:, ~allowed] = 0.\n    disagreement = np.max(np.abs(operating[1:]-operating[0]), axis=0)\n    curve = correction_from_prediction(operating[0], operating[1], voiced,\n        threshold=float(payload[\"operating_policy\"][\"deadband_cents\"]))\n    return dict(requested_curve=curve, operating_predictions=operating,\n                raw_predictions=predictions, disagreement=disagreement,\n                reliable=voiced, scope_metadata=scope)",
+      "target": "DEMO-RUN"
+    },
+    {
+      "id": "SRC-LOAD",
+      "title": "Integrity checked diagnostic checkpoint loader",
+      "path": "source/bpdr_input/modeling/recovery_model.py",
+      "function": "load_locked_diagnostic",
+      "line": 112,
+      "end_line": 129,
+      "sha256": "56ad93cd22a831b9f6ebb90041b38a3e9eda8ab50e82ea59138e5325d588e049",
+      "code": "def load_locked_diagnostic(path):\n    \"\"\"Integrity-checked failed candidate for explicitly labelled experiments.\n\n    This never asserts that calibration, coverage or research gates passed.\n    It is used by the all-case rendered diagnostic, and by a separately hashed\n    exploratory preview card only after actual listening artifacts are verified.\n    \"\"\"\n    path = Path(path)\n    evidence = json.loads((path.parent/'evidence.json').read_text(encoding='utf-8'))\n    if checksum(path) != evidence['checkpoint_sha256']:\n        raise ValueError('Diagnostic checkpoint changed')\n    stored = joblib.load(path)\n    payload = stored['payload']\n    if (payload['feature_version'] != FEATURE_VERSION or\n            checksum(path.parent/'declaration.json') != payload['declaration_sha256'] or\n            checksum(path.parent/'locked_selection.json') != payload['selection_sha256']):\n        raise ValueError('Diagnostic model declaration, selection or feature version changed')\n    return stored['model'], payload",
+      "target": "MODEL-LOAD"
+    },
+    {
+      "id": "SRC-RUNTIME",
+      "title": "Actual learned-model single-audio inference",
+      "path": "source/bpdr_input/repair/learned_runtime.py",
+      "function": "run_candidate",
+      "line": 94,
+      "end_line": 165,
+      "sha256": "fcf0047379088adf796db092b28ce8455e6a095b9abf94735643eea16f6f8685",
+      "code": "def run_candidate(source, model, payload, card, output_root=None):\n    \"\"\"Internal evaluation path using the exact live operating/render algorithm.\n\n    A bounded evaluator may supply a locked candidate before rendered adoption.\n    The public UI calls ``run`` and therefore always uses the guarded loader.\n    This function neither adopts a model nor creates an eligibility card.\n    \"\"\"\n    import torch\n    torch.set_num_threads(2)\n    from bpdr_input.audio.analysis import extract\n    from bpdr_input.modeling.recovery_model import propose\n    from bpdr_input.repair.model_runtime import runtime_views\n    from bpdr_input.repair.rule_correction import fine_pitch, fine_hz\n    from bpdr_input.repair.repair_controller import plan_fixture, transact_fixture\n    from bpdr_input.repair.framewise_renderer import render_candidate\n    from bpdr_input.repair.framewise_audit import audit_curve\n\n    result, directory = process(Path(source), output_root or WORKSPACE / 'results/demo_sessions', COMPONENT_ROOT / 'checkpoints')\n    report = dict(version='learned-stable-note-runtime-1', source=str(source), method=METHOD_NAME,\n                  handoff=result.to_dict(), prepared_handoff_enabled=False,\n                  model_sha256=card['checkpoint_sha256'], model_path=card['checkpoint'],\n                  model_scope=card.get('scope'), model_metrics=card.get('metrics', {}),\n                  model_validation_status=card.get('validation_status', 'validated_scoped_demo'),\n                  research_gates_passed=card.get('research_gates_passed', True),\n                  outcome='NOT_RUN_TECHNICAL_STOP')\n    if result.accepted_audio:\n        try:\n            audio, sr = sf.read(result.accepted_audio.path, dtype='float32')\n            with np.load(directory / 'features.npz') as archive:\n                before = {key: archive[key] for key in archive.files}\n            times = before['times_seconds']\n            views, reliable, protected, metadata = runtime_views(before, fine_pitch(audio, sr, times))\n            proposal = propose(views, model, payload)\n            curve = np.asarray(proposal['requested_curve'], dtype=np.float64)\n            predictions = np.asarray(proposal['operating_predictions'], dtype=np.float64)\n            reliable = reliable & np.asarray(proposal['reliable'], dtype=bool)\n            if curve.shape != times.shape or predictions.shape != (3, len(times)) or not np.isfinite(curve).all():\n                raise ValueError('Learned model returned invalid aligned proposals.')\n            if np.any(curve[~reliable] != 0):\n                raise ValueError('Learned proposal requests an edit outside reliable scope.')\n            disagreement = np.asarray(proposal['disagreement'], dtype=np.float64)\n            plan = plan_fixture(audio, sr, times, curve, predictions[1], disagreement, reliable, protected)\n            def renderer(candidate_audio, rate, intervals):\n                return render_candidate(candidate_audio, rate, times, curve, intervals)[0]\n            def auditor(original, candidate, rate, intervals):\n                after = extract(candidate, rate, COMPONENT_ROOT / 'checkpoints')[0]\n                return audit_curve(before, after, fine_hz(original, rate, times), fine_hz(candidate, rate, times), reliable, intervals, curve)\n            output, transaction = transact_fixture(audio, sr, plan, renderer, auditor)\n            report.update(outcome=transaction['outcome'], permission=plan, transaction=transaction,\n                          proposed_intervals_seconds=plan['intervals_seconds'], input_metadata=metadata,\n                          scope_metadata=proposal.get('scope_metadata', {}))\n            if transaction['outcome'] == 'VERIFIED_FIXTURE_CANDIDATE':\n                candidate = directory / 'experimental_learned_candidate.wav'\n                sf.write(candidate, output, sr, subtype='PCM_24')\n                transaction['pre_encoding_audit'] = transaction['post_render_audit']\n                try:\n                    delivered = audit_delivered_wav(candidate, audio, sr, plan['intervals_seconds'], auditor)\n                except Exception as exc:\n                    transaction.update(outcome='ROLLED_BACK', rollback=True,\n                                       delivered_wav_audit=dict(passed=False, reason=str(exc)))\n                    raise\n                transaction['post_render_audit'] = delivered['acoustic_audit']\n                transaction['delivered_wav_audit'] = delivered\n                report['candidate'] = dict(path=str(candidate), sha256=delivered['sha256'])\n            np.savez_compressed(directory / 'model_predictions.npz', times=times, predictions=predictions,\n                                proposed_correction=curve, reliable=reliable, protected=protected)\n            validate_package(result)\n        except Exception as exc:\n            report.pop('candidate', None)\n            report.update(outcome='LEARNED_PREVIEW_FAILED_UNCHANGED', error_type=type(exc).__name__, reason=str(exc))\n    (directory / 'model_report.json').write_text(json.dumps(report, indent=2, allow_nan=False), encoding='utf-8')\n    return directory, report",
+      "target": "DEMO-RUN"
+    },
+    {
+      "id": "SRC-CONTROLLER",
+      "title": "Edit permission thresholds and withholding",
+      "path": "source/bpdr_input/repair/repair_controller.py",
+      "function": "plan_fixture",
+      "line": 45,
+      "end_line": 106,
+      "sha256": "5c49823e2fa38bbbb65a394bf1cbc7ceac770e1e2d794da208756d2e48c80a00",
+      "code": "def plan_fixture(audio, sr, times, corrections, alternate, uncertainty, reliable, protected,\n                 policy=FixturePolicy()):\n    \"\"\"Withhold the entire proposed edit on any failed gate; never clip its values.\n\n    Corrections are supplied test inputs, not inferred intended pitch. Alternate\n    predictions/uncertainties in the demonstration are fixtures, not calibrated\n    model uncertainty. Runtime feature/proposal production is not implemented.\n    \"\"\"\n    check_source(audio, sr)\n    times, corrections = np.asarray(times), np.asarray(corrections)\n    reliable, protected = np.asarray(reliable), np.asarray(protected)\n    expected = np.arange(len(audio)//441+1)*.02\n    if (times.shape != expected.shape or not np.allclose(times, expected, rtol=0, atol=1e-12)\n            or corrections.shape != times.shape or reliable.shape != times.shape or protected.shape != times.shape\n            or reliable.dtype != bool or protected.dtype != bool or not np.isfinite(corrections).all()):\n        raise ValueError('Invalid frame grid, masks or corrections')\n    changed = corrections != 0\n    result = dict(scope='engineering_fixture_only', policy=asdict(policy), source_sha256=waveform_hash(audio),\n                  sample_count=len(audio), sample_rate_hz=sr, permitted=False, identity=not bool(changed.any()),\n                  reasons=[], intervals_seconds=[], affected_fraction=0., proposal_sha256=waveform_hash(corrections),\n                  requested_max_abs_cents=float(np.max(abs(corrections))), production_eligible=False)\n    if not changed.any():\n        result['permitted'] = True\n        result['decision_sha256'] = decision_hash(result)\n        return result\n    if alternate is None or uncertainty is None:\n        result['reasons'].append('MISSING_AGREEMENT_OR_UNCERTAINTY')\n        result['decision_sha256'] = decision_hash(result)\n        return result\n    alternate, uncertainty = np.asarray(alternate), np.asarray(uncertainty)\n    if (alternate.shape != times.shape or uncertainty.shape != times.shape\n            or not np.isfinite(alternate).all() or not np.isfinite(uncertainty).all() or np.any(uncertainty < 0)):\n        raise ValueError('Invalid alternate/uncertainty arrays')\n    if np.any(abs(corrections[changed]) > policy.max_correction_cents):\n        result['reasons'].append('CORRECTION_LIMIT')\n    if np.any(abs(corrections[changed]-alternate[changed]) > policy.max_disagreement_cents):\n        result['reasons'].append('BOUNDARY_DISAGREEMENT')\n    if np.any(uncertainty[changed] > policy.max_uncertainty_cents):\n        result['reasons'].append('UNCERTAINTY_LIMIT')\n    if np.any(~reliable[changed]):\n        result['reasons'].append('UNRELIABLE_VOICING')\n    if np.any(protected[changed]):\n        result['reasons'].append('PROTECTED_REGION')\n    indices = np.flatnonzero(changed)\n    spans = np.split(indices, np.flatnonzero(np.diff(indices)>1)+1)\n    intervals = [(float(times[group[0]]), min(float(times[group[-1]]+.02), len(audio)/sr)) for group in spans]\n    if any(end-start < policy.min_support_seconds-1e-12 for start,end in intervals):\n        result['reasons'].append('INSUFFICIENT_SUPPORT')\n    sample_mask = np.zeros(len(audio), dtype=bool)\n    sample_times = np.arange(len(audio))/sr\n    for start,end in intervals:\n        sample_mask |= (sample_times >= start) & (sample_times < end)\n    fraction = float(sample_mask.mean())\n    result['affected_fraction'] = fraction\n    if fraction > policy.max_affected_fraction:\n        result['reasons'].append('AFFECTED_FRACTION_LIMIT')\n    result['permitted'] = not result['reasons']\n    # Failed proposals carry no usable permission intervals.\n    if result['permitted']:\n        result['intervals_seconds'] = intervals\n    result['decision_sha256'] = decision_hash(result)\n    return result",
+      "target": "CONTROLLER-FIXTURES"
+    },
+    {
+      "id": "SRC-ROLLBACK",
+      "title": "Render transaction and rollback",
+      "path": "source/bpdr_input/repair/repair_controller.py",
+      "function": "transact_fixture",
+      "line": 109,
+      "end_line": 151,
+      "sha256": "5c49823e2fa38bbbb65a394bf1cbc7ceac770e1e2d794da208756d2e48c80a00",
+      "code": "def transact_fixture(audio, sr, plan, renderer, auditor):\n    \"\"\"Render in a working copy and rollback failures; never publishes accepted audio.\n\n    Renderer receives a disposable copy and the permitted intervals. Auditor\n    receives separate copies of source/candidate. The preserved input cannot be\n    modified by either callback. Failed candidate samples are not returned.\n    \"\"\"\n    check_source(audio, sr)\n    preserved = audio.copy()\n    if (plan['scope'] != 'engineering_fixture_only' or plan['production_eligible']\n            or plan.get('decision_sha256') != decision_hash(plan)\n            or plan['source_sha256'] != waveform_hash(preserved) or plan['sample_rate_hz'] != sr\n            or plan['sample_count'] != len(preserved)):\n        raise ValueError('Plan/source mismatch or non-fixture scope')\n    diagnostics = dict(scope='engineering_fixture_only', production_eligible=False, accepted_audio=None,\n                       plan=copy.deepcopy(plan), outcome='WITHHELD', reasons=list(plan['reasons']), rollback=False)\n    if not plan['permitted']:\n        return preserved, diagnostics\n    if plan['identity']:\n        diagnostics['outcome'] = 'IDENTITY'\n        return preserved, diagnostics\n    try:\n        candidate = renderer(preserved.copy(), sr, tuple(plan['intervals_seconds']))\n        if not isinstance(candidate, np.ndarray) or candidate.dtype != np.float32 or candidate.shape != preserved.shape:\n            raise ValueError('CANDIDATE_SAMPLE_FORMAT_OR_COUNT')\n        if not np.isfinite(candidate).all() or np.max(abs(candidate)) >= 1:\n            raise ValueError('CANDIDATE_NONFINITE_OR_CLIPPED')\n        inside = np.zeros(len(preserved), dtype=bool)\n        times = np.arange(len(preserved))/sr\n        for start,end in plan['intervals_seconds']:\n            inside |= (times >= start) & (times < end)\n        if not np.array_equal(candidate[~inside], preserved[~inside]):\n            raise ValueError('OUTSIDE_SUPPORT_CHANGED')\n        measured = auditor(preserved.copy(), candidate.copy(), sr, tuple(plan['intervals_seconds']))\n        diagnostics['post_render_audit'] = measured\n        if not isinstance(measured, dict) or measured.get('passed') is not True:\n            raise ValueError('POST_RENDER_AUDIT_FAILED')\n        diagnostics.update(outcome='VERIFIED_FIXTURE_CANDIDATE', candidate_sha256=waveform_hash(candidate))\n        return candidate.copy(), diagnostics\n    except Exception as exc:\n        diagnostics.update(outcome='ROLLED_BACK', rollback=True,\n                           reasons=[str(exc)], error_type=type(exc).__name__)\n        return preserved, diagnostics",
+      "target": "CONTROLLER-FIXTURES"
+    },
+    {
+      "id": "SRC-RENDER",
+      "title": "Praat relative pitch-tier rendering",
+      "path": "source/bpdr_input/repair/framewise_renderer.py",
+      "function": "render_candidate",
+      "line": 27,
+      "end_line": 90,
+      "sha256": "a5765e89abe0c8f36f9b94c1b60ac811cbe7dae2059d9537c496ed8c5e4200a2",
+      "code": "def render_candidate(audio,sr,times,correction_cents,intervals,policy=RendererPolicy()):\n    \"\"\"Relative correction scales Praat's measured pitch; no target MIDI/scale snapping.\n\n    Piecewise-linear correction interpolation is a rendering hypothesis, not a\n    promise of an exact waveform/pitch ramp. Empty duration tier remains intact.\n    Full resynthesis is private; samples outside the local envelope are copied.\n    \"\"\"\n    check_source(audio,sr)\n    times=np.asarray(times);correction=np.asarray(correction_cents)\n    expected=np.arange(len(audio)//441+1)*.02\n    if (times.shape!=expected.shape or not np.allclose(times,expected,rtol=0,atol=1e-12)\n            or correction.shape!=times.shape or not np.isfinite(correction).all()\n            or np.max(abs(correction))>policy.max_cents):\n        raise ValueError('Invalid correction grid or over-limit curve; no clipping')\n    intervals=tuple((float(a),float(b)) for a,b in intervals)\n    previous=0.\n    covered=np.zeros(len(times),dtype=bool)\n    blend=np.zeros(len(audio))\n    sample_times=np.arange(len(audio))/sr\n    for start,end in intervals:\n        if (not np.isfinite(start+end) or start<previous or not 0<=start<end<=len(audio)/sr\n                or end-start<policy.min_support_seconds-1e-12):\n            raise ValueError('Invalid, overlapping, unordered or too-short supports')\n        previous=end;covered|=(times>=start)&(times<end)\n        blend=np.maximum(blend,envelope(sample_times,(start,end),policy.ramp_seconds))\n    if np.any((correction!=0)&~covered): raise ValueError('Correction outside permitted support')\n    diagnostic=dict(scope='experimental_renderer_only',policy=asdict(policy),production_eligible=False,\n                    accepted_audio=None,identity=not bool(np.any(correction)),duration_tier_modified=False,\n                    same_sample_count=True,outside_samples_exact=True)\n    if not np.any(correction): return audio.copy(),diagnostic\n    import parselmouth\n    from parselmouth.praat import call\n    if parselmouth.__version__!=policy.parselmouth_version: raise ValueError('Unpinned Parselmouth version')\n    sound=parselmouth.Sound(audio.astype(np.float64),sampling_frequency=sr,start_time=0.)\n    manipulation=call(sound,'To Manipulation',policy.time_step_seconds,policy.pitch_floor_hz,policy.pitch_ceiling_hz)\n    original_tier=call(manipulation,'Extract pitch tier')\n    count=int(call(original_tier,'Get number of points'))\n    if count==0: raise ValueError('No measured pitch points; no resynthesis permitted')\n    tier=call('Create PitchTier','bpdr_candidate',sound.xmin,sound.xmax)\n    points=[]\n    for index in range(1,count+1):\n        point_time=float(call(original_tier,'Get time from index',index))\n        frequency=float(call(original_tier,'Get value at index',index))\n        cents=float(np.interp(point_time,times,correction,left=0.,right=0.))\n        shifted=frequency*2**(cents/1200.)\n        if not np.isfinite(shifted) or not 0<shifted: raise ValueError('Invalid scaled pitch tier')\n        call(tier,'Add point',point_time,shifted);points.append(point_time)\n    if any(not any(start<=t<end for t in points) for start,end in intervals):\n        raise ValueError('Support lacks measured pitch points')\n    call([tier,manipulation],'Replace pitch tier')\n    rendered=call(manipulation,'Get resynthesis (overlap-add)')\n    if (rendered.values.shape!=(1,len(audio)) or rendered.sampling_frequency!=sr\n            or rendered.xmin!=sound.xmin or rendered.xmax!=sound.xmax or rendered.x1!=sound.x1):\n        raise ValueError('Resynthesis changed sample count/rate/time origin; no padding or trimming')\n    full=rendered.values[0]\n    candidate=(audio*(1-blend)+full*blend).astype(np.float32)\n    if not np.isfinite(candidate).all() or np.max(abs(candidate))>=1:\n        raise ValueError('Nonfinite/clipped candidate; no automatic normalization')\n    if not np.array_equal(candidate[blend==0],audio[blend==0]): raise ValueError('Outside samples changed')\n    diagnostic.update(parselmouth_version=parselmouth.__version__,praat_version=parselmouth.PRAAT_VERSION,\n        native_pitch_tier_points=count,source_time_origin_seconds=sound.xmin,\n        source_first_sample_seconds=sound.x1,output_time_origin_seconds=rendered.xmin,\n        correction_definition='Measured Praat tier frequency multiplied by 2**(interpolated correction cents/1200)')\n    return candidate,diagnostic",
+      "target": "RENDER-AUDIT"
+    },
+    {
+      "id": "SRC-REAUDIT",
+      "title": "Movement, coverage and outside-drift checks",
+      "path": "source/bpdr_input/repair/framewise_audit.py",
+      "function": "audit_curve",
+      "line": 7,
+      "end_line": 51,
+      "sha256": "338018f5ae7460838c79891865f01d16b63cca306d76272265c02d17339f48cd",
+      "code": "def audit_curve(before,after,yin_before,yin_after,reliable,intervals,requested,policy=AuditPolicy()):\n    times=before['times_seconds'];requested=np.asarray(requested)\n    if (not np.array_equal(times,after['times_seconds']) or requested.shape!=times.shape\n            or not np.isfinite(requested).all() or len(yin_before)!=len(times) or len(yin_after)!=len(times)):\n        raise ValueError('Framewise audit grid/curve mismatch')\n    plateau=np.zeros(len(times),dtype=bool);outside=reliable.copy()\n    for start,end in intervals:\n        plateau|=(times>=start+policy.ramp_seconds+policy.analysis_guard_seconds)&(times<=end-policy.ramp_seconds-policy.analysis_guard_seconds)\n        outside&=(times<start-policy.analysis_guard_seconds)|(times>end+policy.analysis_guard_seconds)\n    plateau&=reliable\n    pesto,pvalid=cents_difference(after['f0_hz'],before['f0_hz'],before['voiced_mask']&after['voiced_mask'])\n    yin,yvalid=cents_difference(yin_after,yin_before,reliable)\n    common=plateau&pvalid&yvalid;outside_valid=outside&pvalid&yvalid\n    direction=common&(abs(requested)>=10.)\n    def metrics(delta):\n        errors=abs(delta[common]-requested[common])\n        return dict(frames=int(common.sum()),median_error_cents=float(np.median(errors)),p90_error_cents=float(np.quantile(errors,.9))) if common.any() else None\n    fine,coarse=metrics(yin),metrics(pesto)\n    pc=float(common.sum()/plateau.sum()) if plateau.any() else 0.\n    oc=float(outside_valid.sum()/outside.sum()) if outside.any() else 0.\n    median=max(float(np.median(abs(delta[outside_valid]))) for delta in (pesto,yin)) if outside_valid.any() else None\n    p90=max(float(np.quantile(abs(delta[outside_valid]),.9)) for delta in (pesto,yin)) if outside_valid.any() else None\n    fine_wrong=int(np.count_nonzero(yin[direction]*requested[direction]<=0))\n    coarse_wrong=int(np.count_nonzero(pesto[direction]*requested[direction]<0))\n    reasons=[]\n    for name,ok in [('PLATEAU_FRAME_COUNT',common.sum()>=policy.min_audit_frames),\n                    ('PLATEAU_COVERAGE',pc>=policy.min_plateau_coverage_fraction),\n                    ('OUTSIDE_FRAME_COUNT',outside_valid.sum()>=policy.min_outside_audit_frames),\n                    ('OUTSIDE_COVERAGE',oc>=policy.min_outside_coverage_fraction),\n                    ('FINE_MEDIAN_ERROR',fine is not None and fine['median_error_cents']<=policy.median_error_tolerance_cents),\n                    ('FINE_P90_ERROR',fine is not None and fine['p90_error_cents']<=policy.p90_error_tolerance_cents),\n                    ('COARSE_MEDIAN_ERROR',coarse is not None and coarse['median_error_cents']<=policy.pesto_median_coarse_tolerance_cents),\n                    ('COARSE_P90_ERROR',coarse is not None and coarse['p90_error_cents']<=policy.pesto_p90_coarse_tolerance_cents),\n                    ('FINE_DIRECTION',fine_wrong==0),('COARSE_DIRECTION',coarse_wrong==0),\n                    ('OUTSIDE_MEDIAN_DRIFT',median is not None and median<=policy.outside_pitch_drift_tolerance_cents),\n                    ('OUTSIDE_P90_DRIFT',p90 is not None and p90<=policy.outside_p90_pitch_drift_tolerance_cents)]:\n        if not ok: reasons.append(name)\n    return dict(version='framewise-render-audit-0.1',base_limits=asdict(policy),passed=not reasons,reasons=reasons,\n        eligible_plateau_frames=int(plateau.sum()),common_frames=int(common.sum()),plateau_coverage_fraction=pc,\n        outside_frames=int(outside_valid.sum()),outside_coverage_fraction=oc,fine=fine,coarse=coarse,\n        outside_median_drift_cents=median,outside_p90_drift_cents=p90,\n        fine_wrong_direction_frames=fine_wrong,coarse_wrong_direction_frames=coarse_wrong,\n        direction_checked_frames=int(direction.sum()),\n        direction_rule='Every common frame with abs(requested)>=10 cents must have correct fine direction and nonopposing coarse direction; stricter than constant median-direction check',\n        meaning='Changing requested curves compared per frame; ramps/guards excluded. Not musical approval.')",
+      "target": "RENDER-AUDIT"
+    },
+    {
+      "id": "SRC-ENCODE-AUDIT",
+      "title": "Audit exact encoded delivered WAV",
+      "path": "source/bpdr_input/repair/learned_runtime.py",
+      "function": "audit_delivered_wav",
+      "line": 59,
+      "end_line": 91,
+      "sha256": "fcf0047379088adf796db092b28ce8455e6a095b9abf94735643eea16f6f8685",
+      "code": "def audit_delivered_wav(path, original, sr, intervals, auditor):\n    \"\"\"Verify the exact PCM24 bytes that playback and export will consume.\n\n    The in-memory render audit remains separate. These checks repeat its sample\n    integrity and outside-support rules on the decoded delivery file, followed\n    by the same acoustic auditor. File hashes bind the result to those bytes.\n    \"\"\"\n    from bpdr_input.repair.repair_controller import check_source, waveform_hash\n    path = Path(path)\n    encoded = path.read_bytes()\n    info = sf.info(io.BytesIO(encoded))\n    candidate, candidate_sr = sf.read(io.BytesIO(encoded), dtype='float32')\n    if info.format != 'WAV' or info.subtype != 'PCM_24':\n        raise ValueError('ENCODED_CANDIDATE_FORMAT')\n    if candidate_sr != sr or candidate.shape != original.shape:\n        raise ValueError('ENCODED_CANDIDATE_SAMPLE_GRID')\n    check_source(candidate, candidate_sr)\n    inside = np.zeros(len(original), dtype=bool)\n    sample_times = np.arange(len(original)) / sr\n    for start, end in intervals:\n        inside |= (sample_times >= start) & (sample_times < end)\n    if not np.array_equal(candidate[~inside], original[~inside]):\n        raise ValueError('ENCODED_CANDIDATE_OUTSIDE_SUPPORT_CHANGED')\n    measured = auditor(original.copy(), candidate.copy(), sr, tuple(intervals))\n    if not isinstance(measured, dict) or measured.get('passed') is not True:\n        raise ValueError('ENCODED_CANDIDATE_ACOUSTIC_AUDIT_FAILED')\n    digest = hashlib.sha256(encoded).hexdigest()\n    if checksum(path) != digest:\n        raise ValueError('ENCODED_CANDIDATE_CHANGED_DURING_AUDIT')\n    return dict(passed=True, sha256=digest, decoded_waveform_sha256=waveform_hash(candidate),\n                format=info.format, subtype=info.subtype, sample_rate_hz=candidate_sr,\n                sample_count=len(candidate), channels=info.channels,\n                outside_support_unchanged=True, acoustic_audit=measured)",
+      "target": "RENDER-AUDIT"
+    },
+    {
+      "id": "SRC-USABILITY",
+      "title": "Provisional melodic evidence and rerecord guidance",
+      "path": "source/bpdr_input/audio/usability.py",
+      "function": "assess",
+      "line": 123,
+      "end_line": 224,
+      "sha256": "b681c5959217ec8f0e5b5eb3036a56f47929058ec3fec11b0b8a82f7bbca8f31",
+      "code": "def assess(features, technical_status, intent=\"unsure\", independent_f0_hz=None,\n           policy=UsabilityPolicy(), *, duration_seconds=None):\n    \"\"\"Return JSON-safe observations and a provisional decision without mutation.\n\n    ``features`` uses ``audio.analysis.extract`` field names. Supply an already\n    aligned independent tracker (normally YIN); this function never loads a\n    model or analyzes a waveform. ``duration_seconds`` should come from decoded\n    samples when available so out-of-range timestamps can be rejected. Missing\n    or malformed measurements abstain instead of implying singing is wrong.\n    \"\"\"\n    technical = str(getattr(technical_status, \"value\", technical_status))\n    declared = str(getattr(intent, \"value\", intent))\n    if declared not in {item.value for item in DeclaredIntent}:\n        declared = DeclaredIntent.UNSURE.value\n    result = dict(schema_version=\"provisional-melodic-evidence-1\", provisional=True,\n                  technical_status=technical, declared_intent=declared,\n                  policy=asdict(policy), observations={}, limitations=LIMITATIONS.copy(),\n                  musical_correctness_assessed=False, intended_note_identified=False,\n                  handoff_approval=False)\n\n    def finish(decision, reasons, feedback, next_step):\n        result.update(decision=decision.value, reason_codes=list(reasons),\n                      feedback=feedback, next_step=next_step)\n        return result\n\n    if technical not in {\"ACCEPT_UNCHANGED\", \"ACCEPT_PREPARED\"}:\n        return finish(EvidenceDecision.NOT_ASSESSED, [\"TECHNICAL_INPUT_NOT_ACCEPTED\"],\n                      \"Technical checks did not accept this recording. Resolve the reported recording or file issue before assessing melodic evidence.\",\n                      \"FOLLOW_TECHNICAL_FEEDBACK\")\n    if declared == DeclaredIntent.READING_SPOKEN_TEXT:\n        return finish(EvidenceDecision.NEED_CLEARER_INPUT, [\"NO_INTENDED_TUNE_DECLARED\"],\n                      \"You identified this as reading or spoken text without an intended tune. Please sing or hum the melody you want the next component to use; a repeated note or chant is also allowed.\",\n                      \"RECORD_INTENDED_TUNE\")\n    if features is None:\n        return finish(EvidenceDecision.NOT_ASSESSED, [\"ANALYSIS_UNAVAILABLE\"],\n                      \"Melodic evidence was not measured. This is not a judgment of your singing.\",\n                      \"RETRY_ANALYSIS\")\n    try:\n        times, pitch, confidence, voiced, secondary, weights, duration, duration_basis = _arrays(\n            features, independent_f0_hz, duration_seconds)\n    except (ValueError, TypeError, OverflowError) as exc:\n        result[\"observations\"][\"analysis_issue\"] = str(exc)\n        return finish(EvidenceDecision.NOT_ASSESSED, [\"ANALYSIS_INVALID\"],\n                      \"The acoustic measurements are incomplete or inconsistent. Retry analysis before deciding whether another take is needed.\",\n                      \"RETRY_ANALYSIS\")\n    primary = voiced & (confidence >= policy.minimum_confidence) & np.isfinite(pitch) & (pitch > 0)\n    obs = result[\"observations\"]\n    obs.update(frame_count=len(times), duration_seconds=duration, duration_basis=duration_basis,\n               primary_voiced_frame_count=int(primary.sum()),\n               primary_voiced_seconds=float(weights[primary].sum()),\n               primary_voiced_fraction_of_all_frames=float(primary.mean()),\n               independent_tracker_available=secondary is not None)\n    if not primary.any():\n        return finish(EvidenceDecision.NEED_CLEARER_INPUT, [\"NO_RELIABLE_VOICED_EVIDENCE\"],\n                      \"The analyzer could not recover reliable pitched voice in this take. Try a short solo hum or sung phrase closer to the microphone in a quieter place.\",\n                      \"RECORD_CLEARER_TUNE\")\n    if secondary is None:\n        return finish(EvidenceDecision.NOT_ASSESSED, [\"INDEPENDENT_TRACKER_UNAVAILABLE\"],\n                      \"One tracker found pitched voice, but an independent pitch measurement is unavailable. Retry analysis; a single pitch track cannot establish usable melody or intent.\",\n                      \"RETRY_ANALYSIS\")\n    common = primary & np.isfinite(secondary) & (secondary > 0)\n    disagreement = np.full(len(times), np.nan)\n    disagreement[common] = abs(1200*np.log2(secondary[common]/pitch[common]))\n    reliable = common & (disagreement <= policy.maximum_tracker_disagreement_cents)\n    reliable_seconds = float(weights[reliable].sum())\n    fraction = float(reliable.sum()/primary.sum())\n    reliable_runs = _runs(reliable)\n    # Only internal unvoiced gaps are pauses; leading/trailing silence is not a musical error.\n    first, last = np.flatnonzero(primary)[[0, -1]]\n    internal = np.zeros(len(times), dtype=bool)\n    internal[first:last+1] = ~primary[first:last+1]\n    obs.update(tracker_comparable_frame_count=int(common.sum()),\n               tracker_agreeing_frame_count=int(reliable.sum()),\n               agreeing_fraction_of_primary_voiced=fraction,\n               reliable_fraction_of_all_frames=float(reliable.mean()),\n               reliable_seconds=reliable_seconds,\n               longest_contiguous_reliable_seconds=_longest(reliable, weights),\n               contiguous_reliable_region_count=len(reliable_runs),\n               internal_unvoiced_gap_count=len(_runs(internal)),\n               longest_internal_unvoiced_gap_seconds=_longest(internal, weights),\n               median_tracker_disagreement_cents=float(np.median(disagreement[common])) if common.any() else None)\n    if reliable.any():\n        cents = 1200*np.log2(pitch[reliable]/440.)\n        obs[\"reliable_pitch_p90_minus_p10_cents\"] = float(np.percentile(cents, 90)-np.percentile(cents, 10))\n    reasons = []\n    if reliable_seconds + 1e-9 < policy.minimum_reliable_seconds:\n        reasons.append(\"TOO_LITTLE_AGREEING_PITCH_SUPPORT\")\n    if obs[\"longest_contiguous_reliable_seconds\"] + 1e-9 < policy.minimum_contiguous_reliable_seconds:\n        reasons.append(\"PITCH_SUPPORT_TOO_FRAGMENTED\")\n    if fraction + 1e-9 < policy.minimum_agreeing_fraction_of_primary_voiced:\n        reasons.append(\"TRACKERS_DISAGREE_ON_MUCH_OF_VOICED_INPUT\")\n    if reasons:\n        return finish(EvidenceDecision.NEED_CLEARER_INPUT, reasons,\n                      \"The two pitch measurements do not provide enough shared continuous evidence for this demo. Try a clearer solo take with a short audible hum or sung phrase; pauses, repeated notes and slides are allowed.\",\n                      \"RECORD_CLEARER_TUNE\")\n    if declared == DeclaredIntent.UNSURE:\n        return finish(EvidenceDecision.NEED_INTENT_CONFIRMATION, [\"INTENDED_TUNE_NOT_CONFIRMED\"],\n                      \"There is measurable pitched voice, but pitch alone cannot tell whether you intended a tune or ordinary speech. Confirm whether this is the sung, hummed or chanted idea you want to preserve.\",\n                      \"CONFIRM_INTENDED_TUNE\")\n    return finish(EvidenceDecision.PASS_EVIDENCE, [\"PROVISIONAL_ACOUSTIC_SUPPORT_PRESENT\"],\n                  \"Your declared vocal idea has enough agreeing pitch evidence for a demo review. Preserve it unchanged as the baseline and compare any optional preview. This does not certify musical correctness or identify your intended notes.\",\n                  \"REVIEW_UNCHANGED_BASELINE_AND_OPTIONAL_PREVIEW\")",
+      "target": "HANDOFF-REVIEW"
+    },
+    {
+      "id": "SRC-EXPORT",
+      "title": "Only reviewed versions enter a separate demo export",
+      "path": "source/bpdr_input/repair/demo_review.py",
+      "function": "export_reviewed",
+      "line": 62,
+      "end_line": 124,
+      "sha256": "a443daf28958f10373f334ce700b18889a185984d260e3ad5d13cef3017ad56d",
+      "code": "def export_reviewed(directory, report, assessment, *, use_preview=False, confirmed=False, confirmation_kind='user'):\n    \"\"\"Export only an explicitly confirmed waveform with sufficient demo evidence.\"\"\"\n    if not confirmed:\n        raise ValueError('Confirm that the selected audio preserves your intended musical idea before exporting.')\n    if confirmation_kind not in ('user', 'automated_test_fixture'):\n        raise ValueError('Unknown confirmation kind.')\n    if not report['handoff'].get('accepted_audio'):\n        raise ValueError('No technically accepted audio is available.')\n    role = 'preview' if use_preview else 'original'\n    if assessment.get(role, {}).get('decision') != 'PASS_EVIDENCE':\n        raise ValueError('This version lacks sufficient confirmed acoustic evidence for demo handoff.')\n    item = (report.get('noise_candidate') or report.get('candidate')) if use_preview else report['handoff']['accepted_audio']\n    if not item:\n        raise ValueError('No verified prepared preview is available.')\n    if use_preview and report['outcome'] not in ('VERIFIED_FIXTURE_CANDIDATE', 'NOISE_PREVIEW_PASSED'):\n        raise ValueError('The processing outcome does not authorize this preview.')\n    if use_preview:\n        if report.get('noise_candidate'):\n            passed = report.get('noise', {}).get('audit', {}).get('passes') is True\n        else:\n            transaction = report.get('transaction') or report.get('rule', {}).get('transaction', {})\n            passed = transaction.get('post_render_audit', {}).get('passed') is True\n        if not passed:\n            raise ValueError('The candidate has no passed waveform audit.')\n    expected = item.get('sha256') or item.get('checksum')\n    if checksum(item['path']) != expected:\n        raise ValueError('Selected waveform checksum mismatch.')\n    if assessment[role].get('waveform_sha256') != expected:\n        raise ValueError('Acoustic review does not belong to the selected waveform.')\n    destination = Path(directory).resolve() / 'reviewed_handoffs' / uuid.uuid4().hex\n    destination.mkdir(parents=True)\n    path = destination / 'accepted.wav'\n    shutil.copyfile(item['path'], path)\n    if checksum(path) != expected:\n        raise ValueError('Copied waveform no longer matches the reviewed source.')\n    info = sf.info(path)\n    accepted = AcceptedAudio(str(path), expected, info.samplerate, info.frames, info.channels)\n    status = Status.ACCEPT_PREPARED if use_preview else Status.ACCEPT_UNCHANGED\n    message = 'User-reviewed demo waveform; acoustic policy is provisional.' if confirmation_kind == 'user' else 'Automated integration fixture; no human musical review was performed.'\n    handoff = ProcessingResult(destination.name, report['handoff']['source_id'], status, accepted,\n                              user_message=message,\n                              policy_version='demo-user-reviewed-0.1')\n    validate_package(handoff)\n    diagnostics = dict(scope='User-reviewed demonstration export, not validated autonomous musical acceptance' if confirmation_kind == 'user' else 'Automated integration fixture, not human musical approval',\n                       user_confirmed=confirmation_kind == 'user', confirmation_kind=confirmation_kind,\n                       shared_handoff_changed=False, research_approval=False,\n                       melodic_usability='provisional_unvalidated', intended_note_inference=False,\n                       selection=role, processing_outcome=report['outcome'], usability=assessment[role],\n                       original_processing_handoff=report['handoff'],\n                       changed_intervals_seconds=(report.get('proposed_intervals_seconds') or report.get('rule', {}).get('plan', {}).get('intervals_seconds', [])) if use_preview else [],\n                       noise_operation=report.get('noise') if use_preview else None,\n                       model_sha256=report.get('model_sha256'), method=report.get('method', report.get('version')))\n    (destination / 'handoff.json').write_text(json.dumps(handoff.to_dict(), indent=2), encoding='utf-8')\n    (destination / 'diagnostics.json').write_text(json.dumps(diagnostics, indent=2, allow_nan=False), encoding='utf-8')\n    portable = handoff.to_dict()\n    portable['accepted_audio']['path'] = 'accepted.wav'\n    stream = io.BytesIO()\n    with zipfile.ZipFile(stream, 'w', zipfile.ZIP_DEFLATED) as archive:\n        archive.write(path, 'accepted.wav')\n        archive.writestr('handoff.json', json.dumps(portable, indent=2))\n        archive.write(destination / 'diagnostics.json', 'diagnostics.json')\n    (destination / 'accepted_package.zip').write_bytes(stream.getvalue())\n    return destination, handoff.to_dict()",
+      "target": "HANDOFF-REVIEW"
+    },
+    {
+      "id": "SRC-EXTRACTOR",
+      "title": "Exact accepted WAV to pinned GAME MIDI/CSV",
+      "path": "source/bpdr_input/repair/demo_extraction.py",
+      "function": "run",
+      "line": 15,
+      "end_line": 63,
+      "sha256": "64574343e575331cc8b681c566c3e69d4582a94fa4813b2ab80fee90887884a3",
+      "code": "def run(handoff_directory, timeout_seconds=120):\n    directory = Path(handoff_directory).resolve()\n    workspace = (COMPONENT_ROOT / 'BPDR_Workspace').resolve()\n    if not directory.is_relative_to(workspace):\n        raise ValueError('Demo handoff must remain inside BPDR_Workspace.')\n    data = json.loads((directory / 'handoff.json').read_text())\n    accepted = data.get('accepted_audio')\n    if not accepted or data['status'] not in ('ACCEPT_UNCHANGED', 'ACCEPT_PREPARED'):\n        raise ValueError('Only an accepted package can reach the extractor.')\n    audio = AcceptedAudio(accepted['path'], accepted['checksum'], accepted['sample_rate_hz'], accepted['sample_count'], accepted['channels'])\n    package = ProcessingResult(data['request_id'], data['source_id'], Status(data['status']), audio)\n    validate_package(package)\n    if not Path(audio.path).resolve().is_relative_to(directory):\n        raise ValueError('Selected audio leaves its reviewed package.')\n    assets = COMPONENT_ROOT / 'checkpoints/melody-extraction'\n    python = assets / '.venv-game/Scripts/python.exe'\n    model = assets / 'models/GAME-1.0-medium/model.pt'\n    runner = assets / 'tools/GAME'\n    if not python.exists() or not model.exists():\n        raise FileNotFoundError('The pinned local GAME runtime or model is unavailable.')\n    attempt = directory / 'extraction_attempts' / uuid.uuid4().hex\n    inputs = attempt / 'extractor_input'\n    inputs.mkdir(parents=True)\n    target = inputs / 'accepted.wav'\n    shutil.copyfile(audio.path, target)\n    if checksum(target) != audio.checksum:\n        raise ValueError('Extractor input differs from the reviewed accepted waveform.')\n    output = attempt / 'game_notes'\n    seed = \"import sys,random,numpy as np,torch,runpy;torch.set_num_threads(2);torch.manual_seed(339);np.random.seed(339);random.seed(339);sys.argv=sys.argv[1:];runpy.run_path('infer.py',run_name='__main__')\"\n    command = [str(python), '-B', '-c', seed, 'infer.py', 'extract', str(inputs), '-m', str(model), '--glob', '*.wav',\n               '--output-formats', 'mid,csv', '--pitch-format', 'number', '--output-dir', str(output)]\n    environment = dict(os.environ, OMP_NUM_THREADS='2', MKL_NUM_THREADS='2', PYTHONDONTWRITEBYTECODE='1')\n    started = time.perf_counter()\n    receipt = dict(scope='One accepted demo waveform consumed by pinned GAME, not a musical-accuracy benchmark',\n                   accepted_sha256=audio.checksum, model_sha256=checksum(model), seed=339, success=False,\n                   attempt_directory=str(attempt))\n    try:\n        process = subprocess.run(command, cwd=runner, env=environment, timeout=timeout_seconds, capture_output=True, text=True, encoding='utf-8', errors='replace')\n        (attempt / 'extractor_stdout.txt').write_text(process.stdout, encoding='utf-8')\n        (attempt / 'extractor_stderr.txt').write_text(process.stderr, encoding='utf-8')\n        files = list(output.rglob('*.csv')) + list(output.rglob('*.mid')) if output.exists() else []\n        receipt.update(returncode=process.returncode, success=process.returncode == 0 and bool(files),\n                       artifacts=[dict(path=str(path), sha256=checksum(path)) for path in files])\n    except subprocess.TimeoutExpired:\n        receipt.update(reason='EXTRACTOR_TIMEOUT', timeout_seconds=timeout_seconds)\n    receipt['elapsed_seconds'] = round(time.perf_counter() - started, 3)\n    (attempt / 'extractor_result.json').write_text(json.dumps(receipt, indent=2), encoding='utf-8')\n    (directory / 'extractor_result.json').write_text(json.dumps(receipt, indent=2), encoding='utf-8')\n    return receipt",
+      "target": "HANDOFF-EXTRACTOR"
+    },
+    {
+      "id": "SRC-METRICS",
+      "title": "Fixed denominator accuracy and MAE",
+      "path": "source/bpdr_input/reporting/research_support.py",
+      "function": "fixed_metrics",
+      "line": 45,
+      "end_line": 60,
+      "sha256": "1d6717eb6a7c8cf84bebcbd0a60b4ff87734373d5d4fa55ec245287b6d20bc7a",
+      "code": "def fixed_metrics(prediction, target, mask, tolerance=10.):\n    \"\"\"Per-case correction error on an unchanged scoring denominator.\n\n    Empty masks or missing predictions are errors, never silently removed.\n    Singer aggregation belongs to the caller; frames are not independent people.\n    \"\"\"\n    prediction, target, mask = np.asarray(prediction), np.asarray(target), np.asarray(mask)\n    if prediction.ndim != 1 or prediction.shape != target.shape or mask.shape != target.shape or mask.dtype != bool:\n        raise ValueError(\"Metric arrays must be aligned 1D arrays and an explicit boolean mask\")\n    if not mask.any() or not np.isfinite(tolerance) or tolerance <= 0:\n        raise ValueError(\"A nonempty fixed mask and positive finite tolerance are required\")\n    if not np.isfinite(prediction[mask]).all() or not np.isfinite(target[mask]).all():\n        raise ValueError(\"Missing scored pitch must be reported, not dropped from the denominator\")\n    error = np.abs(prediction[mask]-target[mask])\n    return dict(frames=int(mask.sum()), mae_cents=float(error.mean()),\n                within_tolerance_percent=100*float(np.mean(error <= tolerance)))",
+      "target": "VERIFY-METRICS"
+    }
+  ],
+  "text_anchors": [
+    "LITERATURE",
+    "HANDOFF-CONTRACT"
+  ],
+  "history": "documentation/notebook_history.json"
+}
