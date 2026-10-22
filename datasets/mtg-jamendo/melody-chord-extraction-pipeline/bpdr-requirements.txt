@@ -1,0 +1,4 @@
+# Isolated BPDR analysis environment. Versions match origin/bpdr-experiment.
+pesto-pitch==2.0.1
+librosa==1.0.0
+soundfile==0.14.0

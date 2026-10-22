@@ -16,6 +16,7 @@ wheels/
 
 # Virtual environments
 .venv
+.venv-*
 .venv/
 venv/
 
@@ -35,3 +36,34 @@ temp/
 datasets/*
 !datasets/README.md
 !datasets/.gitkeep
+/datasets/mtg-jamendo/vocal-tagged-audio/
+
+experiments/pasan/dataset/Hooktheory.json
+experiments/pasan/dataset/*
+
+# Generated reference-chord outputs
+/experiments/rahul/outputs/chords/*
+!/experiments/rahul/outputs/chords/.gitkeep
+/experiments/rahul/outputs/melody/
+/experiments/rahul/outputs/beats/
+/experiments/rahul/outputs/metadata/
+/experiments/rahul/outputs/basic_chords/
+/experiments/rahul/outputs/aligned/
+/experiments/rahul/outputs/experiments/
+
+# Phase 2 generated dataset copies
+/experiments/pasan/notebooks/phase2_dataset_v1/
+
+# Reproducible Phase 2 artifacts (kept locally; notebooks and code are tracked)
+/experiments/pasan/notebooks/phase2_dataset_v2/
+/experiments/pasan/notebooks/phase2_runs_v2/
+/experiments/pasan/notebooks/.ipynb_checkpoints/
+datasets/mtg-jamendo/phase3-prepared/
+
+# Versioned harmonic-function snapshots and experiment artifacts (rebuild locally)
+/experiments/pasan/notebooks/phase4_dataset_*/
+/experiments/pasan/notebooks/phase4_runs_*/
+/experiments/pasan/notebooks/phase4_previews/
+experiments/pasan/checkpoints/flat84_compatibility_both60_standard_selected_songs.csv
+experiments/pasan/checkpoints/flat84_compatibility_both60_standard_history.csv
+experiments/pasan/checkpoints
