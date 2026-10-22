@@ -81,13 +81,14 @@ class TrackFiles:
         return load_events(self.root/name/f'{name}_training_events.csv')[0]
 
 
-def export_split(split, ids, tracks, encoder, length, output, reports):
+def export_split(split, ids, tracks, encoder, length, output, reports, sequence_unit='beats'):
     import numpy as np
     import torch
     from experiments.rahul.src.transformer_dataset import (
         ChordSequenceDataset, SavedSequenceDataset, export_npz, make_dataloader)
     from experiments.rahul.src.encode_features import supported_target, IGNORE_INDEX
-    count=sum(math.ceil(reports[t]['statistics']['final_events']/length) for t in ids)
+    count=sum(reports[t]['statistics']['bar_sequences'] if sequence_unit=='bars' else
+              math.ceil(reports[t]['statistics']['final_events']/length) for t in ids)
     manifest=[]
     statistics=dict(tracks=len(ids),sequences=count,beats=0,source_valid_targets=0,loss_eligible_targets=0,
                     invalid_source_targets=0,masked_real_targets=0,padded_positions=0,silent_beats=0,
@@ -115,7 +116,8 @@ def export_split(split, ids, tracks, encoder, length, output, reports):
             for field in ('unseen_targets','unseen_genres'):
                 for label,n in stats[field].items():
                     statistics[field][label]=statistics[field].get(label,0)+n
-            dataset=ChordSequenceDataset({track:rows},encoder,sequence_length=length,stride=length)
+            dataset=ChordSequenceDataset({track:rows},encoder,sequence_length=length,
+                stride=None if sequence_unit=='bars' else length,sequence_unit=sequence_unit)
             shard_path=scratch/'track.npz'
             export_npz(shard_path,dataset)
             saved=SavedSequenceDataset(shard_path)
@@ -164,6 +166,12 @@ def export_split(split, ids, tracks, encoder, length, output, reports):
                     first_beat_index=int(real_ids[0]),last_beat_index=int(real_ids[-1]),
                     real_beats=int(beat[i].sum()),padded_beats=int((~beat[i]).sum()),
                     valid_targets=int(loss[i].sum())))
+                if sequence_unit=='bars':
+                    window=dataset.windows[i]
+                    manifest[-1]['bar_number']=window['bar_number']
+                    manifest[-1]['beat_positions']=json.dumps([r['beat_position'] for r in rows[window['start_row']:window['stop_row']]])
+                    if len(set(arrays['inputs__bar_number'][i][beat[i]].tolist())) != 1:
+                        raise ValueError('Sequence crosses a source bar boundary')
             statistics['padded_positions']+=int((~beat).sum())
             statistics['masked_real_targets']+=int((beat & ~loss).sum())
             offset+=len(dataset)

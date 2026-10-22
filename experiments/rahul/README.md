@@ -1,8 +1,38 @@
 # Chord refinement: feature and target construction
 
+The from-scratch PyTorch architecture is implemented in `src/model/`.
+See [TRANSFORMER_ARCHITECTURE.md](TRANSFORMER_ARCHITECTURE.md) and the executed
+[05_transformer_architecture.ipynb](notebooks/05_transformer_architecture.ipynb).
+Full training is implemented in
+[06_train_transformer.ipynb](notebooks/06_train_transformer.ipynb), using the
+explicitly selected 17 input tensors, validation-based early stopping and a saved
+best checkpoint. Notebook 05 remains the architecture-only walkthrough.
+
+## Current four-bar variable-length dataset
+
+The active build is `outputs/model_preprocessing/final_all_tracks_quality_v6_multibar/`.
+Load `train_sequences.json`, `validation_sequences.json` or `test_sequences.json`
+with `SavedSequenceDataset`; the indices reference numerical NPZ shards.
+Each beat remains an individual prediction token, grouped into four source bars
+by default. DataLoader padding is batch-local and all melody notes are retained.
+
+```powershell
+.\.venv\Scripts\python.exe -m experiments.rahul.src.rebuild_multi_bar_dataset
+```
+
+The command reuses the verified v5 data/vocabularies and writes a new immutable
+snapshot, including a verified readable CSV. `--bars-per-sequence` changes grouping.
+See [FINAL_DATASET.md](FINAL_DATASET.md) for actual counts and regeneration details,
+[MODEL_PREPROCESSING.md](MODEL_PREPROCESSING.md) for schemas, and
+[04_multibar_dataset_inspection.ipynb](notebooks/04_multibar_dataset_inspection.ipynb)
+for executable inspection. Earlier notebooks and builds below remain historical.
+
+## Historical one-bar and pilot workflows
+
+
 ## Final multi-track dataset
 
-The completed multi-track build is in `outputs/model_preprocessing/final_all_tracks_quality_v4_m4/`.
+The completed multi-track build is in `outputs/model_preprocessing/final_all_tracks_quality_v5_bars_full_melody/`.
 Use its `train_sequences.npz`, `validation_sequences.npz`, and `test_sequences.npz`
 with the feature and target vocabularies from that same folder. See
 [FINAL_DATASET.md](FINAL_DATASET.md) for actual counts, loading instructions,
@@ -22,7 +52,7 @@ development exports remain intact. A finished run has `FINAL_DATASET_READY.json`
 ## Phase 2: model-ready numerical preprocessing
 
 For a step-by-step all-track walkthrough using
-`outputs/model_preprocessing/final_all_tracks_quality_v4_m4/all_tracks_sequences_readable.csv`,
+`outputs/model_preprocessing/final_all_tracks_quality_v5_bars_full_melody/all_tracks_sequences_readable.csv`,
 with source-to-encoded examples, masks, tensor shapes and plots, open
 [02_dataset_preprocessing.ipynb](notebooks/02_dataset_preprocessing.ipynb).
 Select the project `.venv` kernel and use Restart Kernel and Run All. Additional
@@ -203,3 +233,43 @@ and per-track aligned JSON files. Only the root spelling is normalized; quality
 and inversion/bass-degree suffix text is preserved exactly. `N` stays `N` and
 has a null root pitch class.
 
+
+The active v6 dataset groups up to four consecutive source bars per variable-length
+sequence and retains full melody arrays without four-note truncation. Beats are
+padded only within a batch. Notebook `10_complete_preprocessing_walkthrough.ipynb`
+explains preprocessing; notebook `11_comprehensive_model_evaluation.ipynb`
+compares the three saved model experiments.
+
+## Committed trained model
+
+The selected multi-task inference checkpoint is included in Git at:
+
+`outputs/multitask_transformer/multitask_20261020_164527_051309/best_multitask.pt`
+
+Its `chord_quality_mapping.json` is included alongside it. The matching
+`feature_vocabularies.json` and `target_vocabulary.json` are included under
+`outputs/model_preprocessing/final_all_tracks_quality_v6_multibar/`.
+Keep these mappings with the checkpoint; category IDs from other snapshots are
+not interchangeable.
+
+From the repository root:
+
+```python
+from pathlib import Path
+from experiments.rahul.src.model.multitask_transformer import load_multitask_checkpoint
+
+base = Path("experiments/rahul/outputs")
+model = load_multitask_checkpoint(
+    base / "multitask_transformer/multitask_20261020_164527_051309/best_multitask.pt",
+    base / "model_preprocessing/final_all_tracks_quality_v6_multibar",
+    device="cpu",
+)
+```
+
+The matching model/loader implementation and dependencies in
+`requirements-transformer.txt` are committed too. Install notebook tools from
+`notebooks/requirements.txt` when running notebooks.
+The dataset shards, extraction files, logs and review archives remain local;
+copy or rebuild them before running data-dependent notebooks. The baseline and
+weighted checkpoints are not part of this selected model upload, so notebooks
+that compare all three models also require those separate checkpoints.

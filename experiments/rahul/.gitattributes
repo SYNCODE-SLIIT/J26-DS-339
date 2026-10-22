@@ -1,0 +1,5 @@
+# Checkpoint vocabulary hashes require byte-identical files on every platform.
+outputs/model_preprocessing/final_all_tracks_quality_v6_multibar/feature_vocabularies.json -text whitespace=cr-at-eol
+outputs/model_preprocessing/final_all_tracks_quality_v6_multibar/target_vocabulary.json -text whitespace=cr-at-eol
+outputs/multitask_transformer/multitask_20261020_164527_051309/chord_quality_mapping.json -text whitespace=cr-at-eol
+*.pt binary
