@@ -1,4 +1,6 @@
+# Application Entry Point
 def main():
+    # Display the starter message when this placeholder is run.
     print("Hello from vocal-harmonization!")
 
 

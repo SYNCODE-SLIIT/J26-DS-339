@@ -1,0 +1,302 @@
+{
+  "recorded_date": "2026-10-21",
+  "scope": "TRAIN pilot only; baseline width 1",
+  "n": 20,
+  "per_recording": [
+    {
+      "key": "F01_0101_0001_1_D",
+      "median_pitch_error_semitones": 0.0,
+      "exact_frame_agreement": 0.3893333333333333,
+      "chroma_frame_agreement": 0.3893333333333333,
+      "onset_sensitivity": {
+        "exact_0.05s": 0.0,
+        "chroma_0.05s": 0.0,
+        "exact_0.10s": 0.041666666666666664,
+        "chroma_0.10s": 0.041666666666666664,
+        "exact_0.20s": 0.4583333333333333,
+        "chroma_0.20s": 0.4583333333333333
+      }
+    },
+    {
+      "key": "F01_0487_0001_1_D",
+      "median_pitch_error_semitones": 0.10000000000000142,
+      "exact_frame_agreement": 0.5180288461538461,
+      "chroma_frame_agreement": 0.5240384615384616,
+      "onset_sensitivity": {
+        "exact_0.05s": 0.0909090909090909,
+        "chroma_0.05s": 0.0909090909090909,
+        "exact_0.10s": 0.0909090909090909,
+        "chroma_0.10s": 0.0909090909090909,
+        "exact_0.20s": 0.3636363636363636,
+        "chroma_0.20s": 0.3636363636363636
+      }
+    },
+    {
+      "key": "F02_0409_0002_2",
+      "median_pitch_error_semitones": 1.7999999999999972,
+      "exact_frame_agreement": 0.1906318082788671,
+      "chroma_frame_agreement": 0.1906318082788671,
+      "onset_sensitivity": {
+        "exact_0.05s": 0.07017543859649124,
+        "chroma_0.05s": 0.07017543859649124,
+        "exact_0.10s": 0.07017543859649124,
+        "chroma_0.10s": 0.07017543859649124,
+        "exact_0.20s": 0.07017543859649124,
+        "chroma_0.20s": 0.07017543859649124
+      }
+    },
+    {
+      "key": "F02_0091_0003_1_D",
+      "median_pitch_error_semitones": 0.29999999999999716,
+      "exact_frame_agreement": 0.2045977011494253,
+      "chroma_frame_agreement": 0.20689655172413793,
+      "onset_sensitivity": {
+        "exact_0.05s": 0.02702702702702703,
+        "chroma_0.05s": 0.05405405405405406,
+        "exact_0.10s": 0.08108108108108107,
+        "chroma_0.10s": 0.10810810810810811,
+        "exact_0.20s": 0.13513513513513511,
+        "chroma_0.20s": 0.16216216216216214
+      }
+    },
+    {
+      "key": "F03_0444_0002_1_D",
+      "median_pitch_error_semitones": 0.0,
+      "exact_frame_agreement": 0.6735241502683363,
+      "chroma_frame_agreement": 0.6735241502683363,
+      "onset_sensitivity": {
+        "exact_0.05s": 0.0,
+        "chroma_0.05s": 0.0,
+        "exact_0.10s": 0.03389830508474576,
+        "chroma_0.10s": 0.03389830508474576,
+        "exact_0.20s": 0.847457627118644,
+        "chroma_0.20s": 0.847457627118644
+      }
+    },
+    {
+      "key": "F03_0040_0002_1_D",
+      "median_pitch_error_semitones": 0.0,
+      "exact_frame_agreement": 0.7122252747252747,
+      "chroma_frame_agreement": 0.7122252747252747,
+      "onset_sensitivity": {
+        "exact_0.05s": 0.0,
+        "chroma_0.05s": 0.0,
+        "exact_0.10s": 0.03333333333333333,
+        "chroma_0.10s": 0.03333333333333333,
+        "exact_0.20s": 0.6000000000000001,
+        "chroma_0.20s": 0.6000000000000001
+      }
+    },
+    {
+      "key": "F04_0410_0002_2",
+      "median_pitch_error_semitones": -0.09999999999999432,
+      "exact_frame_agreement": 0.7866400797607178,
+      "chroma_frame_agreement": 0.7866400797607178,
+      "onset_sensitivity": {
+        "exact_0.05s": 0.3380281690140845,
+        "chroma_0.05s": 0.3380281690140845,
+        "exact_0.10s": 0.7042253521126761,
+        "chroma_0.10s": 0.7042253521126761,
+        "exact_0.20s": 0.732394366197183,
+        "chroma_0.20s": 0.732394366197183
+      }
+    },
+    {
+      "key": "F04_0077_0002_2_D",
+      "median_pitch_error_semitones": -0.10000000000000142,
+      "exact_frame_agreement": 0.7183872938301772,
+      "chroma_frame_agreement": 0.7183872938301772,
+      "onset_sensitivity": {
+        "exact_0.05s": 0.10256410256410257,
+        "chroma_0.05s": 0.10256410256410257,
+        "exact_0.10s": 0.17948717948717952,
+        "chroma_0.10s": 0.17948717948717952,
+        "exact_0.20s": 0.6666666666666667,
+        "chroma_0.20s": 0.6666666666666667
+      }
+    },
+    {
+      "key": "F05_0442_0002_1_D",
+      "median_pitch_error_semitones": 0.09999999999999432,
+      "exact_frame_agreement": 0.7424557752341311,
+      "chroma_frame_agreement": 0.7424557752341311,
+      "onset_sensitivity": {
+        "exact_0.05s": 0.1098901098901099,
+        "chroma_0.05s": 0.1098901098901099,
+        "exact_0.10s": 0.4175824175824176,
+        "chroma_0.10s": 0.4175824175824176,
+        "exact_0.20s": 0.5054945054945055,
+        "chroma_0.20s": 0.5054945054945055
+      }
+    },
+    {
+      "key": "F05_0321_0002_1_D",
+      "median_pitch_error_semitones": 0.10000000000000142,
+      "exact_frame_agreement": 0.6051546391752577,
+      "chroma_frame_agreement": 0.6051546391752577,
+      "onset_sensitivity": {
+        "exact_0.05s": 0.16129032258064518,
+        "chroma_0.05s": 0.16129032258064518,
+        "exact_0.10s": 0.3870967741935484,
+        "chroma_0.10s": 0.3870967741935484,
+        "exact_0.20s": 0.5806451612903226,
+        "chroma_0.20s": 0.5806451612903226
+      }
+    },
+    {
+      "key": "M01_0311_0002_1",
+      "median_pitch_error_semitones": -12.0,
+      "exact_frame_agreement": 0.0,
+      "chroma_frame_agreement": 0.46404833836858006,
+      "onset_sensitivity": {
+        "exact_0.05s": 0.0,
+        "chroma_0.05s": 0.0,
+        "exact_0.10s": 0.0,
+        "chroma_0.10s": 0.0,
+        "exact_0.20s": 0.0,
+        "chroma_0.20s": 0.0975609756097561
+      }
+    },
+    {
+      "key": "M01_0048_0001_2",
+      "median_pitch_error_semitones": -12.299999999999997,
+      "exact_frame_agreement": 0.0,
+      "chroma_frame_agreement": 0.36773428232502964,
+      "onset_sensitivity": {
+        "exact_0.05s": 0.0,
+        "chroma_0.05s": 0.0,
+        "exact_0.10s": 0.0,
+        "chroma_0.10s": 0.018867924528301883,
+        "exact_0.20s": 0.0,
+        "chroma_0.20s": 0.1320754716981132
+      }
+    },
+    {
+      "key": "M02_0312_0001_2_D",
+      "median_pitch_error_semitones": -12.399999999999999,
+      "exact_frame_agreement": 0.0,
+      "chroma_frame_agreement": 0.11547911547911548,
+      "onset_sensitivity": {
+        "exact_0.05s": 0.0,
+        "chroma_0.05s": 0.029411764705882353,
+        "exact_0.10s": 0.0,
+        "chroma_0.10s": 0.029411764705882353,
+        "exact_0.20s": 0.0,
+        "chroma_0.20s": 0.058823529411764705
+      }
+    },
+    {
+      "key": "M02_0302_0002_1",
+      "median_pitch_error_semitones": -23.700000000000003,
+      "exact_frame_agreement": 0.0,
+      "chroma_frame_agreement": 0.10196078431372549,
+      "onset_sensitivity": {
+        "exact_0.05s": 0.0,
+        "chroma_0.05s": 0.028985507246376812,
+        "exact_0.10s": 0.0,
+        "chroma_0.10s": 0.11594202898550725,
+        "exact_0.20s": 0.0,
+        "chroma_0.20s": 0.1739130434782609
+      }
+    },
+    {
+      "key": "M03_0435_0001_1_DD",
+      "median_pitch_error_semitones": 1.1999999999999957,
+      "exact_frame_agreement": 0.14654282765737875,
+      "chroma_frame_agreement": 0.19298245614035087,
+      "onset_sensitivity": {
+        "exact_0.05s": 0.02564102564102564,
+        "chroma_0.05s": 0.02564102564102564,
+        "exact_0.10s": 0.07692307692307693,
+        "chroma_0.10s": 0.07692307692307693,
+        "exact_0.20s": 0.15384615384615385,
+        "chroma_0.20s": 0.20512820512820512
+      }
+    },
+    {
+      "key": "M03_0416_0001_2_DD",
+      "median_pitch_error_semitones": -0.3999999999999986,
+      "exact_frame_agreement": 0.3472340425531915,
+      "chroma_frame_agreement": 0.3472340425531915,
+      "onset_sensitivity": {
+        "exact_0.05s": 0.02631578947368421,
+        "chroma_0.05s": 0.02631578947368421,
+        "exact_0.10s": 0.21052631578947367,
+        "chroma_0.10s": 0.21052631578947367,
+        "exact_0.20s": 0.21052631578947367,
+        "chroma_0.20s": 0.21052631578947367
+      }
+    },
+    {
+      "key": "M04_0070_0001_1_D",
+      "median_pitch_error_semitones": -12.100000000000001,
+      "exact_frame_agreement": 0.0,
+      "chroma_frame_agreement": 0.8665893271461717,
+      "onset_sensitivity": {
+        "exact_0.05s": 0.0,
+        "chroma_0.05s": 0.14285714285714288,
+        "exact_0.10s": 0.0,
+        "chroma_0.10s": 0.7142857142857142,
+        "exact_0.20s": 0.0,
+        "chroma_0.20s": 0.8571428571428571
+      }
+    },
+    {
+      "key": "M04_0370_0002_2_D",
+      "median_pitch_error_semitones": -12.299999999999997,
+      "exact_frame_agreement": 0.0,
+      "chroma_frame_agreement": 0.5103391232423491,
+      "onset_sensitivity": {
+        "exact_0.05s": 0.0,
+        "chroma_0.05s": 0.024096385542168672,
+        "exact_0.10s": 0.0,
+        "chroma_0.10s": 0.12048192771084337,
+        "exact_0.20s": 0.0,
+        "chroma_0.20s": 0.3132530120481928
+      }
+    },
+    {
+      "key": "M05_0263_0001_2",
+      "median_pitch_error_semitones": -24.0,
+      "exact_frame_agreement": 0.0,
+      "chroma_frame_agreement": 0.553014553014553,
+      "onset_sensitivity": {
+        "exact_0.05s": 0.0,
+        "chroma_0.05s": 0.0,
+        "exact_0.10s": 0.0,
+        "chroma_0.10s": 0.08888888888888888,
+        "exact_0.20s": 0.0,
+        "chroma_0.20s": 0.5777777777777778
+      }
+    },
+    {
+      "key": "M05_0016_0002_1_D",
+      "median_pitch_error_semitones": -12.0,
+      "exact_frame_agreement": 0.0,
+      "chroma_frame_agreement": 0.5828698553948832,
+      "onset_sensitivity": {
+        "exact_0.05s": 0.0,
+        "chroma_0.05s": 0.0,
+        "exact_0.10s": 0.0,
+        "chroma_0.10s": 0.058823529411764705,
+        "exact_0.20s": 0.0,
+        "chroma_0.20s": 0.411764705882353
+      }
+    }
+  ],
+  "macro_exact_frame_agreement": 0.3017377886059968,
+  "macro_chroma_frame_agreement": 0.4825769622923322,
+  "macro_note_f1_sensitivity": {
+    "exact_0.05s": 0.04759205378481306,
+    "chroma_0.05s": 0.060210945153742944,
+    "exact_0.10s": 0.11634525158798907,
+    "chroma_0.10s": 0.17503169186518558,
+    "exact_0.20s": 0.26621555335521363,
+    "chroma_0.20s": 0.4012465759231213
+  },
+  "limitations": [
+    "Relaxed pitch/onset criteria are diagnostics, not model improvements",
+    "Octave discrepancy does not establish whether estimator or labels are wrong",
+    "No reference-driven correction applied to predictions or dataset"
+  ]
+}

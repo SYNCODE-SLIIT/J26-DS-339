@@ -1,0 +1,101 @@
+{
+  "protocol": "R009-v1",
+  "cases": [
+    {
+      "key": "M01_0311_0002_1",
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "listened_original": false,
+      "listened_references": false,
+      "outcome": null,
+      "confidence": null,
+      "evidence": null,
+      "suggested_shift_semitones": null
+    },
+    {
+      "key": "M01_0048_0001_2",
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "listened_original": false,
+      "listened_references": false,
+      "outcome": null,
+      "confidence": null,
+      "evidence": null,
+      "suggested_shift_semitones": null
+    },
+    {
+      "key": "M02_0312_0001_2_D",
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "listened_original": false,
+      "listened_references": false,
+      "outcome": null,
+      "confidence": null,
+      "evidence": null,
+      "suggested_shift_semitones": null
+    },
+    {
+      "key": "M02_0302_0002_1",
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "listened_original": false,
+      "listened_references": false,
+      "outcome": null,
+      "confidence": null,
+      "evidence": null,
+      "suggested_shift_semitones": null
+    },
+    {
+      "key": "M04_0070_0001_1_D",
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "listened_original": false,
+      "listened_references": false,
+      "outcome": null,
+      "confidence": null,
+      "evidence": null,
+      "suggested_shift_semitones": null
+    },
+    {
+      "key": "M04_0370_0002_2_D",
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "listened_original": false,
+      "listened_references": false,
+      "outcome": null,
+      "confidence": null,
+      "evidence": null,
+      "suggested_shift_semitones": null
+    },
+    {
+      "key": "M05_0263_0001_2",
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "listened_original": false,
+      "listened_references": false,
+      "outcome": null,
+      "confidence": null,
+      "evidence": null,
+      "suggested_shift_semitones": null
+    },
+    {
+      "key": "M05_0016_0002_1_D",
+      "status": "pending",
+      "reviewer": null,
+      "reviewed_at": null,
+      "listened_original": false,
+      "listened_references": false,
+      "outcome": null,
+      "confidence": null,
+      "evidence": null,
+      "suggested_shift_semitones": null
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "config": {
+    "protocol": "vishwa-pyin-pilot-v1",
+    "seed": 339,
+    "train_per_singer": 2,
+    "valid_per_singer": 1,
+    "smoothing_widths": [
+      1,
+      3,
+      5
+    ],
+    "selection_metric": "train_macro_note_f1",
+    "selection_tiebreak": "smallest_width",
+    "screening": "no manifest flags",
+    "preprocessing": "baseline defaults, no trimming",
+    "note_min_duration_s": 0.06,
+    "onset_tolerance_s": 0.05,
+    "pitch_tolerance_cents": 50,
+    "offset_ratio": 0.2,
+    "offset_min_tolerance_s": 0.05,
+    "test_policy": "no predictions or metrics on TEST",
+    "scope": "small deterministic pilot, not full-split benchmark"
+  },
+  "ids": {
+    "TRAIN": [
+      "F01_0101_0001_1_D",
+      "F01_0487_0001_1_D",
+      "F02_0409_0002_2",
+      "F02_0091_0003_1_D",
+      "F03_0444_0002_1_D",
+      "F03_0040_0002_1_D",
+      "F04_0410_0002_2",
+      "F04_0077_0002_2_D",
+      "F05_0442_0002_1_D",
+      "F05_0321_0002_1_D",
+      "M01_0311_0002_1",
+      "M01_0048_0001_2",
+      "M02_0312_0001_2_D",
+      "M02_0302_0002_1",
+      "M03_0435_0001_1_DD",
+      "M03_0416_0001_2_DD",
+      "M04_0070_0001_1_D",
+      "M04_0370_0002_2_D",
+      "M05_0263_0001_2",
+      "M05_0016_0002_1_D"
+    ],
+    "VALID": [
+      "F01_0162_0002_1_D",
+      "F02_0034_0002_1_D",
+      "F03_0326_0001_1_D",
+      "F04_0256_0001_1_D",
+      "F05_0034_0002_1_D",
+      "M01_0320_0001_2",
+      "M02_0269_0002_1_D",
+      "M03_0485_0002_1_DD",
+      "M04_0306_0002_2",
+      "M05_0089_0002_2_D"
+    ]
+  }
+}
