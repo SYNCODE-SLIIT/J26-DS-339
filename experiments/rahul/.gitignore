@@ -1,0 +1,20 @@
+# Data and Markdown files throughout this component, including nested outputs.
+*.csv
+*.json
+*.npz
+*.md
+
+# Generated outputs stay local, except the selected inference checkpoint/mappings.
+/outputs/*
+!/outputs/multitask_transformer/
+/outputs/multitask_transformer/*
+!/outputs/multitask_transformer/multitask_20261020_164527_051309/
+/outputs/multitask_transformer/multitask_20261020_164527_051309/*
+!/outputs/multitask_transformer/multitask_20261020_164527_051309/best_multitask.pt
+!/outputs/multitask_transformer/multitask_20261020_164527_051309/chord_quality_mapping.json
+!/outputs/model_preprocessing/
+/outputs/model_preprocessing/*
+!/outputs/model_preprocessing/final_all_tracks_quality_v6_multibar/
+/outputs/model_preprocessing/final_all_tracks_quality_v6_multibar/*
+!/outputs/model_preprocessing/final_all_tracks_quality_v6_multibar/feature_vocabularies.json
+!/outputs/model_preprocessing/final_all_tracks_quality_v6_multibar/target_vocabulary.json

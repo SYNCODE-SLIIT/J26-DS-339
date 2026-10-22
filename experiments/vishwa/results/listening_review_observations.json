@@ -1,0 +1,82 @@
+{
+  "purpose": "Preserve timing estimates without asserting completed full annotation verification",
+  "positive_delay_meaning": "Move MIDI later relative to original audio",
+  "annotation_changes_applied": false,
+  "cases": [
+    {
+      "key": "M01_0311_0002_1",
+      "midi_delay_ms": 220,
+      "status": "preliminary_user_listening_observation",
+      "source": "user reports in research chat",
+      "recorded_date": "2026-10-22",
+      "pitch_shift_verified": false,
+      "timing_measured_acoustically": false,
+      "notes": "User favored MIDI 0 in pitch; quieter reference. Compared 200/220/250 ms; 220 ms best beginning/checkpoints/ending, with residual uncertainty. Automatic octave discrepancy unresolved."
+    },
+    {
+      "key": "M01_0048_0001_2",
+      "midi_delay_ms": 240,
+      "status": "preliminary_user_listening_observation",
+      "source": "user reports in research chat",
+      "recorded_date": "2026-10-22",
+      "pitch_shift_verified": false,
+      "timing_measured_acoustically": false,
+      "notes": "User clarified MIDI starts earlier; positive 240 ms aligns it. Earlier estimate 220\u2013240 ms."
+    },
+    {
+      "key": "M02_0312_0001_2_D",
+      "midi_delay_ms": 740,
+      "status": "preliminary_user_listening_observation",
+      "source": "user reports in research chat",
+      "recorded_date": "2026-10-22",
+      "pitch_shift_verified": false,
+      "timing_measured_acoustically": false
+    },
+    {
+      "key": "M02_0302_0002_1",
+      "midi_delay_ms": 800,
+      "status": "preliminary_user_listening_observation",
+      "source": "user reports in research chat",
+      "recorded_date": "2026-10-22",
+      "pitch_shift_verified": false,
+      "timing_measured_acoustically": false
+    },
+    {
+      "key": "M04_0070_0001_1_D",
+      "midi_delay_ms": 170,
+      "status": "preliminary_user_listening_observation",
+      "source": "user reports in research chat",
+      "recorded_date": "2026-10-22",
+      "pitch_shift_verified": false,
+      "timing_measured_acoustically": false,
+      "notes": "User described 170 ms as almost perfect."
+    },
+    {
+      "key": "M04_0370_0002_2_D",
+      "midi_delay_ms": 160,
+      "status": "preliminary_user_listening_observation",
+      "source": "user reports in research chat",
+      "recorded_date": "2026-10-22",
+      "pitch_shift_verified": false,
+      "timing_measured_acoustically": false
+    },
+    {
+      "key": "M05_0263_0001_2",
+      "midi_delay_ms": 220,
+      "status": "preliminary_user_listening_observation",
+      "source": "user reports in research chat",
+      "recorded_date": "2026-10-22",
+      "pitch_shift_verified": false,
+      "timing_measured_acoustically": false
+    },
+    {
+      "key": "M05_0016_0002_1_D",
+      "midi_delay_ms": 130,
+      "status": "preliminary_user_listening_observation",
+      "source": "user reports in research chat",
+      "recorded_date": "2026-10-22",
+      "pitch_shift_verified": false,
+      "timing_measured_acoustically": false
+    }
+  ]
+}
