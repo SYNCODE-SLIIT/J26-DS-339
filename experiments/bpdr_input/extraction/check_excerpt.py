@@ -18,7 +18,7 @@ import mir_eval
 import numpy as np
 import soundfile as sf
 
-COMPONENT = Path(__file__).resolve().parents[1]
+COMPONENT = next(p for p in Path(__file__).resolve().parents if p.name == 'bpdr_input' and (p/'pyproject.toml').is_file())
 ASSETS = Path(os.environ.get('MELODY_MODEL_ASSETS', COMPONENT/'checkpoints'/'melody-extraction'))
 DATASET = COMPONENT/'data'/'mtg-jamendo'
 MODEL = 'model_bs_roformer_ep_317_sdr_12.9755.ckpt'

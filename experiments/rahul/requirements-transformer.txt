@@ -1,0 +1,9 @@
+# Architecture, saved numerical loader and evaluation notebooks.
+# No audio extraction dependencies needed.
+# Verified in the existing Windows environment with torch 2.14.1+cpu.
+torch>=2.6,<3
+numpy>=1.26,<3
+pandas
+scikit-learn
+psutil
+# Notebook tools are listed separately in notebooks/requirements.txt.

@@ -1,0 +1,17 @@
+# Local recordings, downloaded tools and learned weights.
+/datasets/
+/models_and_tools/
+/selected_model/
+
+# Generated runs, rendered audio, charts, reports and notebook runtimes.
+# Keep the scripts and instructions needed to rebuild the reading views.
+/results/*
+!/results/README.md
+!/results/*.ps1
+!/results/build_views.py
+
+# Executed HTML and embedded notebook outputs are kept locally, not in Git.
+/notebooks/*.html
+**/.ipynb_checkpoints/
+__pycache__/
+*.py[cod]

@@ -1,12 +1,17 @@
-# Reference review — actual human decisions
+# Reference review - actual human decisions
 
-The dataset has note annotations from A1/A2, but our proposed relative correction experiment also requires an acceptable baseline performance. Existing annotation agreement does not establish intended pitch or musical acceptability. Two musically experienced reviewers must assess each candidate independently; do not fill approvals from the automatic masks.
+Independent musical review is deferred by the owner. Engineering work may continue, but automatic masks, a model prediction or an AI-generated opinion cannot create a research approval. Existing note annotations describe the performance and do not by themselves establish an acceptable intended-pitch reference.
 
-1. Open notebook 02 with the component-local kernel. Use the phrase playback, original offset, F0/A1/A2 overlay and partial-note flags. To inspect another phrase, set `REVIEW_PHRASE_ID` in section 5 to its ID from `reviews.csv`, then rerun that reference/playback cell. Start with training material; do not use evaluation or final holdout to choose renderer settings.
-2. Listen for acceptable tuning and expression within candidate intervals, including vibrato, slides and rests that should be preserved. Check reference timing and disagreement. Uncertain intent, ornaments, transitions, overlaps and crop edges should remain excluded rather than treated as correctable faults.
-3. Open the current data run's `reviews.csv` (the notebook prints its location). There are two pending rows per phrase. Each reviewer completes their own row; preserve the `phrase_id` and `crop_sha256` exactly.
-4. Enter a distinct `reviewer_id`, concise `musical_experience`, `decision` (`approve`, `reject`, `uncertain`), `approved_intervals_json` in **crop-local seconds**, reason and UTC review timestamp. A timestamp format is `2026-09-27T12:00:00Z`. An interval format is `[[1.2, 2.4], [3.0, 3.8]]`; this is an example of syntax, not an instruction to approve those times.
-5. Re-run the review-status cell. Two complete approvals for the same unchanged crop are required. Only their interval intersection is eligible, and the automatic ambiguity masks still apply. Rejection, uncertainty, duplicated reviewer IDs, stale crop hashes or missing fields block eligibility. Never change a reviewer decision simply to obtain more examples.
-6. Generate the reviewed collection with `bpdr-lab interventions --data-run <printed data run> --limit 2`, **without `--exploratory`**. A pending collection produces zero training-ready examples. Even approved material must pass identity and realized-detuning audits; approvals alone do not bypass the renderer checks.
+The current notebook 02 is a completed-evidence walkthrough. It has no `REVIEW_PHRASE_ID` editing cell or review-status update cell. Do not follow historical notebook-cell instructions.
 
-The review CSV contains actual research records and remains in ignored `runs/` beside the versioned manifest. Preserve a backup under your research data management procedure. Generated crops/annotations must not be edited after signing; build a new data run and obtain fresh reviews if their content changes.
+## Existing separate review bundle
+
+Open `runs/review_bundles/5d35fe91ab1846ee8ab56e16289879ed/listen.html` and its `instructions.md`. Two different musically experienced reviewers must complete `reviewer_1.csv` and `reviewer_2.csv` independently. These remain pending templates; no reviews were created in the completion pass.
+
+Listen to each unchanged full crop. Consider tuning stability, expression, vibrato, slides, rests, leakage, backing voices, transitions and crop edges. Do not infer an intended tune or snap expressive singing to a scale. Enter only actual reviewer identities/experience, decisions, reasons, UTC timestamps and appropriate crop-relative stable intervals. Preserve crop IDs and audio hashes. Uncertain or unsuitable material must not be approved to obtain more examples.
+
+Return the separate sheets through the owner's research workflow. The bundle has **no automatic approval/import/training path**, and the completion app does not write review decisions. Do not overwrite historical preparation reviews or manifests. Two complete independent approvals and the intersection of valid intervals are prerequisites, followed by integrity, ambiguity, support and realized-shift checks in a newly versioned research preparation. Approved source audio does not convert estimated notes into human annotations.
+
+The laboratory's reviewed-data route is a separate existing workflow using its own versioned `reviews.csv`. Do not copy bundle sheets or new HumTrans engineering records into that route without a declared, checked mapping and revalidation. The new humming pairs remain exploratory and unapproved. Research-ready examples remain zero.
+
+Participant collection and blinded listening require the project's actual ethics, consent and evaluation arrangements. Preserve all submitted human records; never generate answers, identities, experience or approvals on reviewers' behalf.
