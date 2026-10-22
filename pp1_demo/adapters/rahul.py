@@ -37,21 +37,25 @@ def predict(notes,chords,settings):
              'melody_durations':[n['duration_s'] for n in selected],
              'melody_relative_start':[n['onset_s']-a for n in selected],
              'melody_overlap_durations':[min(b,n['onset_s']+n['duration_s'])-max(a,n['onset_s']) for n in selected],
-             'melody_sources':['pyin_vocal']*len(selected)}
-        # New pYIN source correctly maps to UNK; do not mislabel it as training's GAME source.
+             'melody_sources':[n.get('source','saved_extraction') for n in selected]}
         for field,vocab in encoder.vocabs.items():
             values=row['melody_sources'] if field=='melody_sources' else [encoder.category(row,field)]
             for v in values:
                 if v not in vocab.token_to_id: unknown[field+':'+str(v)]=unknown.get(field+':'+str(v),0)+1
         encoded.append(encoder.encode_inputs(row))
     output=[]
-    for left in range(0,len(encoded),4*settings.meter):
-        rows=encoded[left:left+4*settings.meter]
+    windows=[]
+    for first_bar in range(chords[0]['bar_number'],chords[-1]['bar_number']+1,4):
+        indices=[i for i,c in enumerate(chords) if first_bar<=c['bar_number']<first_bar+4]
+        if not indices: continue
+        left=indices[0]
+        rows=[encoded[i] for i in indices]
         inputs={k:torch.from_numpy(np.stack([r[k] for r in rows])[None]) for k in rows[0]}
         inputs['genre_features']=torch.from_numpy(rows[0]['genre_features'][None])
         inputs['beat_attention_mask']=torch.ones((1,len(rows)),dtype=torch.bool)
         inputs['relative_bar_number']=torch.tensor([[chords[left+i]['bar_number']-chords[left]['bar_number'] for i in range(len(rows))]],dtype=torch.float32)
         predictions=model.predict_topk(inputs,k=3)[0]
+        windows.append({'bars':len({chords[i]['bar_number'] for i in indices}),'beats':len(rows)})
         for i,candidates in enumerate(predictions):
             if not all(np.isfinite(c['probability']) for c in candidates): raise ValueError('Nonfinite Rahul predictions')
             c=chords[left+i]
@@ -59,4 +63,7 @@ def predict(notes,chords,settings):
                            'probability':candidates[0]['probability'],'top3':candidates,'source':'rahul_model'})
     return {'chords':output,'checkpoint':str(RAHUL),'checkpoint_sha256':sha(RAHUL),
             'mode':'major','mode_source':'demo_constant','unknown_inputs':unknown,
+            'input_summary':{'beats':len(chords),'genre':settings.genre,'genre_dimensions':len(encoder.genres),
+                             'mode':'major','windows':windows,'full_chord_classes':model.spec.num_target_classes,
+                             'quality_classes':len(model.quality_mapping.labels)},
             'scores':'Raw full-chord probabilities; reserved predictions retained, never replaced silently.'}

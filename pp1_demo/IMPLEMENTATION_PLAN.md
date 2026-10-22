@@ -1,5 +1,15 @@
 # PP1 visual demonstration — implementation plan
 
+> **Implemented direction — 23 October 2026:** The latest user request supersedes the
+> earlier Streamlit/Vishwa-first plan below. The running website uses a local Python
+> HTTP server and plain HTML/CSS/JavaScript inside `pp1_demo/`. Its pipeline is
+> Praveen’s complete exported notebook model → saved dataset melody/beat/key bridge
+> (Vishwa deferred) → Pasan **latest** Temporal checkpoint with sixteen-bar context
+> → Rahul’s multi-task checkpoint with mode **major** and original dataset genre.
+> All generated data and the private BPDR runtime snapshot stay inside this folder.
+> See `README.md` for startup and the implemented behavior. Historical planning notes
+> below are retained for context; they do not describe the current UI/runtime.
+
 Prepared 22 October 2026 for the requested 23 October demonstration. This is a plan, not a claim that the application is implemented.
 
 ## Goal and boundaries
