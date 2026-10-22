@@ -55,7 +55,7 @@ If PowerShell says `uv` is not found, close and reopen PowerShell, or follow the
 From the project root directory:
 
 ```sh
-cd /vocal-harmonization
+cd /J26-DS-339
 uv sync
 ```
 

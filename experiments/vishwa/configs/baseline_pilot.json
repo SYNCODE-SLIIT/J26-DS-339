@@ -1,0 +1,18 @@
+{
+  "protocol": "vishwa-pyin-pilot-v1",
+  "seed": 339,
+  "train_per_singer": 2,
+  "valid_per_singer": 1,
+  "smoothing_widths": [1, 3, 5],
+  "selection_metric": "train_macro_note_f1",
+  "selection_tiebreak": "smallest_width",
+  "screening": "no manifest flags",
+  "preprocessing": "baseline defaults, no trimming",
+  "note_min_duration_s": 0.06,
+  "onset_tolerance_s": 0.05,
+  "pitch_tolerance_cents": 50,
+  "offset_ratio": 0.2,
+  "offset_min_tolerance_s": 0.05,
+  "test_policy": "no predictions or metrics on TEST",
+  "scope": "small deterministic pilot, not full-split benchmark"
+}

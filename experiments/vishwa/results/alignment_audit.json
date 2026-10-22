@@ -1,0 +1,38 @@
+{
+  "recorded_date": "2026-10-21",
+  "protocol": "mido-vs-pretty-midi-v1",
+  "scope": "all split metadata; no TEST predictions or metric evaluation",
+  "wav_count": 14614,
+  "midi_count": 14614,
+  "split_counts": {
+    "TRAIN": 13080,
+    "VALID": 765,
+    "TEST": 769
+  },
+  "duplicate_split_assignments": 0,
+  "split_keys_without_pair": 0,
+  "paired_keys_without_split": 0,
+  "note_count": 391595,
+  "flag_counts": {},
+  "unflagged_pairs": 14614,
+  "flags_by_split": {
+    "TRAIN": {},
+    "VALID": {},
+    "TEST": {}
+  },
+  "max_tail_overrun_s": 2.2675736971677907e-05,
+  "manifest_sha256": "a16d81c054c2c009308a8cefa56eb0288c02df9b76fa886119863658eeab3def",
+  "split_sha256": "dc3b3733fd5aeba16b935230036b9356c774d0ccb3fe12aa04ab91aa19855ab5",
+  "versions": {
+    "mido": "1.3.3",
+    "pretty_midi": "0.2.11.post0",
+    "numpy": "2.5.4",
+    "soundfile": "0.14.0"
+  },
+  "implementation_sha256": {
+    "scripts/audit_humtrans.py": "e9709f2fb368fc811379ebf7c1029a9235638131dacb117876618d287b31d71e",
+    "src/melody_understanding/annotations.py": "2b733168980123d4fb56c0ca4c76cb7da9bd389d9b5ff9c66b60fd658cac9b2b"
+  },
+  "base_commit": "e7674fce1a30ad4327ff9bf351b8e75e95edffa4",
+  "limitation": "Agreement of readers verifies decoding, not perceptual alignment; PrettyMIDI also uses Mido for low-level parsing."
+}

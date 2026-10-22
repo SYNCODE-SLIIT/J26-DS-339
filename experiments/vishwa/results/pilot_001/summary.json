@@ -1,0 +1,122 @@
+{
+  "recorded_date": "2026-10-21",
+  "selected_width": 5,
+  "aggregation": "macro mean across recordings",
+  "config": {
+    "protocol": "vishwa-pyin-pilot-v1",
+    "seed": 339,
+    "train_per_singer": 2,
+    "valid_per_singer": 1,
+    "smoothing_widths": [
+      1,
+      3,
+      5
+    ],
+    "selection_metric": "train_macro_note_f1",
+    "selection_tiebreak": "smallest_width",
+    "screening": "no manifest flags",
+    "preprocessing": "baseline defaults, no trimming",
+    "note_min_duration_s": 0.06,
+    "onset_tolerance_s": 0.05,
+    "pitch_tolerance_cents": 50,
+    "offset_ratio": 0.2,
+    "offset_min_tolerance_s": 0.05,
+    "test_policy": "no predictions or metrics on TEST",
+    "scope": "small deterministic pilot, not full-split benchmark"
+  },
+  "aggregate": [
+    {
+      "split": "TRAIN",
+      "width": 1,
+      "n": 20,
+      "note_precision": 0.04567634042916309,
+      "note_recall": 0.050616617259795674,
+      "note_f1": 0.04759205378481306,
+      "note_offset_f1": 0.021234058392407468,
+      "midi_frame_pitch_agreement_50c": 0.3017377886059968,
+      "midi_frame_overall_agreement_50c": 0.3103315614995872,
+      "midi_voicing_recall": 0.9265049375638801,
+      "reference_notes": 586,
+      "predicted_notes": 772
+    },
+    {
+      "split": "TRAIN",
+      "width": 3,
+      "n": 20,
+      "note_precision": 0.04636776821758566,
+      "note_recall": 0.050616617259795674,
+      "note_f1": 0.047979084188803964,
+      "note_offset_f1": 0.023034792642775536,
+      "midi_frame_pitch_agreement_50c": 0.3017377886059968,
+      "midi_frame_overall_agreement_50c": 0.3103315614995872,
+      "midi_voicing_recall": 0.9265049375638801,
+      "reference_notes": 586,
+      "predicted_notes": 765
+    },
+    {
+      "split": "TRAIN",
+      "width": 5,
+      "n": 20,
+      "note_precision": 0.04720568094262207,
+      "note_recall": 0.05172772837090678,
+      "note_f1": 0.04892698890529814,
+      "note_offset_f1": 0.022985229823939503,
+      "midi_frame_pitch_agreement_50c": 0.3017377886059968,
+      "midi_frame_overall_agreement_50c": 0.3103315614995872,
+      "midi_voicing_recall": 0.9265049375638801,
+      "reference_notes": 586,
+      "predicted_notes": 767
+    },
+    {
+      "split": "VALID",
+      "width": 1,
+      "n": 10,
+      "note_precision": 0.02451125152903539,
+      "note_recall": 0.033323275862068964,
+      "note_f1": 0.02807656406477335,
+      "note_offset_f1": 0.022020066889632102,
+      "midi_frame_pitch_agreement_50c": 0.3094035226185807,
+      "midi_frame_overall_agreement_50c": 0.3102090911726797,
+      "midi_voicing_recall": 0.929406669424848,
+      "reference_notes": 300,
+      "predicted_notes": 407
+    },
+    {
+      "split": "VALID",
+      "width": 5,
+      "n": 10,
+      "note_precision": 0.02378773731714908,
+      "note_recall": 0.033323275862068964,
+      "note_f1": 0.027591715579924868,
+      "note_offset_f1": 0.02160448247404769,
+      "midi_frame_pitch_agreement_50c": 0.3094035226185807,
+      "midi_frame_overall_agreement_50c": 0.3102090911726797,
+      "midi_voicing_recall": 0.929406669424848,
+      "reference_notes": 300,
+      "predicted_notes": 411
+    }
+  ],
+  "versions": {
+    "librosa": "1.0.0",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "mir_eval": "0.8.2"
+  },
+  "manifest_sha256": "a16d81c054c2c009308a8cefa56eb0288c02df9b76fa886119863658eeab3def",
+  "implementation_sha256": {
+    "src/melody_understanding/__init__.py": "81d1f7d9ae61702a6faac8e6ec1a32a5eefd3fea57196c35e84c4e55e81be98f",
+    "src/melody_understanding/annotations.py": "2b733168980123d4fb56c0ca4c76cb7da9bd389d9b5ff9c66b60fd658cac9b2b",
+    "src/melody_understanding/audio.py": "d1ff9102eb313e47b4432e8d74a612affa22ae7ec0b523de8c617a80dbd725ab",
+    "src/melody_understanding/evaluation.py": "4b4e4c4111d8868ebc8a448be25d0ef16103718e3003d257dafaac7f0e689cb2",
+    "src/melody_understanding/features.py": "48ab31227b59114f6457842f7ef43b41baa3421325bbf0615f3c6a0ec51b58d3",
+    "src/melody_understanding/pipeline.py": "c2139c785793d90fa34dc20d9b5aa89043c4ea7bf7528674b17bc0d29588f1c4",
+    "scripts/run_baseline_pilot.py": "3d9670e732ca3e880d059c115ebdbc03e6f25387683a9776e195f2370b1079de"
+  },
+  "base_commit": "e3994803967e5828750e709505a84581b0a732d3",
+  "limitations": [
+    "Small pilot; not full-corpus or final TEST performance",
+    "MIDI-held note pitches are not continuous vocal F0 labels",
+    "Singer identities overlap official splits",
+    "Note segmentation cannot separate all repeated same-pitch notes"
+  ]
+}

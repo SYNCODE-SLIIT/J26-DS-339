@@ -5,13 +5,37 @@ build/
 dist/
 wheels/
 *.egg-info
+.env
+.env.*
+!.env.example
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.DS_Store
 
 # Virtual environments
 .venv
 .venv-*
-.DS_Store
+.venv/
+venv/
 
-# Datasets
+# Temporary files
+tmp/
+temp/
+*.log
+
+# Model checkpoints and trained weights
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+
+# Datasets and local audio recordings
+datasets/*
+!datasets/README.md
+!datasets/.gitkeep
 /datasets/mtg-jamendo/vocal-tagged-audio/
 
 experiments/pasan/dataset/Hooktheory.json
