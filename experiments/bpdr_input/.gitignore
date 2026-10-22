@@ -1,0 +1,20 @@
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+data/
+runs/
+checkpoints/
+.pytest_cache/
+.tools/
+.jupyter/
+.ipynb_checkpoints/
+
+# Local-only material: datasets live in data/ (ignored above); personal PDFs and plans live in private/
+/private/
+# macOS archive leftovers shipped inside the datasets
+.DS_Store
+._*
+__MACOSX/

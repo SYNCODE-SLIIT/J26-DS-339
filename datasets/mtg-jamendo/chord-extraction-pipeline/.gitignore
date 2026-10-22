@@ -1,0 +1,6 @@
+/outputs/
+/manifest*.csv
+/catalog*.json
+/history.log
+/__pycache__/
+/code/__pycache__/
