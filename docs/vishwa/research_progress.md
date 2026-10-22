@@ -292,3 +292,12 @@ The initial fixed ±12 comparison had zero agreement for two cases. R006 median 
 - Decision D016: retain original labels and the current baseline; do not apply blanket octave corrections or expand training from these diagnostics. Obtain timestamped human listening evidence using `docs/vishwa/listening_review.md` and `listening_review_decisions.json`.
 - No new dependencies, TEST evaluation or teammate changes. Review-form completeness does not certify musical correctness; a separate target-policy decision is required even after all forms are complete.
 - Commit association: `feat: add TRAIN listening review packet`; resolve with `git log --oneline -- scripts/build_listening_review.py`.
+
+## R010 — simultaneous listening playback — 2026-10-22
+
+- User requested one-click original/MIDI-0 playback to compare timing.
+- Added a separate comparison player and play/stop buttons to all eight cases. Render one stereo WAV per case: original left, synthesized unchanged MIDI right, sharing source sample rate, start and sample count. Preserve relative levels with shared attenuation only if needed. The common file avoids drift between independently started players.
+- Headphones permit separate listening to each side; seeking the comparison player moves both together. Starting any player pauses the others. Original individual players remain available.
+- Regenerated the ignored HTML/media through `scripts/build_listening_review.py`. Verified eight comparison files have two channels and exactly match source sample rate/frame count; verified eight paired-play controls and clean diff formatting. Browser interaction and subjective listening have not been verified by the assistant.
+- Existing decision records are preserved. No pitch/annotation correction or training expansion. Automatic evidence values are unchanged; generator provenance hash updated.
+- Local milestone: `feat: add synchronized listening comparison`.

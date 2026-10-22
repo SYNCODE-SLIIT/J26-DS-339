@@ -72,13 +72,45 @@ def main():
         # Add original playback and synthesized references to the local HTML page.
         source=html.escape(os.path.relpath(wav,folder),quote=True)
         section=f'<section><h2>{key}</h2><p>Listen to the original first. Record your impression before comparing reference tones.</p><audio controls preload="none" src="{source}"></audio><img src="{key}.png" alt="Waveform and pitch evidence">'
+        # A single stereo file keeps both comparison tracks on one sample clock.
+        reference_zero=synthesize_notes(notes,duration,0,sr=sr)
+        original_mono=samples.mean(axis=1) if samples.ndim==2 else samples
+        reference_zero=reference_zero[:len(original_mono)]
+        comparison=np.column_stack((original_mono,reference_zero)).astype(np.float32)
+        # Shared attenuation preserves their relative levels and avoids clipping.
+        comparison*=min(1.,.95/max(float(np.max(np.abs(comparison))),1e-12))
+        comparison_name=f'{key}_original_and_midi_0.wav'
+        sf.write(folder/comparison_name,comparison,sr,subtype='PCM_16')
+        section+=f'''<div class="comparison"><h3>Play original + MIDI 0 together</h3>
+<p>Use headphones: original in the left ear, MIDI 0 in the right. Both start at the same timeline position. Volume differences are preserved.</p>
+<audio id="compare-{key}" controls preload="none" src="{comparison_name}"></audio>
+<button type="button" onclick="playComparison('compare-{key}')">▶ Play both from start</button>
+<button type="button" onclick="stopComparison('compare-{key}')">■ Stop both</button>
+<p class="playback-status" role="status"></p></div>'''
         for shift in [0,-12,-24,12]:
             filename=f'{key}_reference_{shift:+d}.wav';sf.write(folder/filename,synthesize_notes(notes,duration,shift),22050)
             section+=f'<p>Reference tones: MIDI {shift:+d} semitones (hypothesis, not corrected truth)</p><audio controls preload="none" src="{filename}"></audio>'
         section+='<details><summary>Automated interior-frame diagnostics (inspect after listening)</summary><pre>'+html.escape(json.dumps(evidence,indent=2))+'</pre></details></section>'
         sections.append(section)
     # Save the playback page and automatic evidence for later human review.
-    page='''<!doctype html><html lang="en"><meta charset="utf-8"><title>Eight TRAIN listening cases</title><style>body{font:17px system-ui;max-width:1000px;margin:40px auto;padding:20px;background:#fafafa;color:#202020}section{border-top:2px solid #ccc;padding:24px 0}img{width:100%;display:block}audio{width:100%}pre{white-space:pre-wrap}</style><h1>TRAIN annotation listening review</h1><p>R009 · All decisions remain pending human review. Original recordings are unchanged. Sine references preserve MIDI timing but do not reproduce vocal timbre. Algorithm agreement and octave-shift similarity do not establish correct annotations.</p><p>Record decisions in experiments/vishwa/results/listening_review_decisions.json using the protocol in docs/vishwa/listening_review.md. This page does not save responses.</p>'''+''.join(sections)+'</html>'
+    page='''<!doctype html><html lang="en"><meta charset="utf-8"><title>Eight TRAIN listening cases</title><style>body{font:17px system-ui;max-width:1000px;margin:40px auto;padding:20px;background:#fafafa;color:#202020}section{border-top:2px solid #ccc;padding:24px 0}img{width:100%;display:block}audio{width:100%}pre{white-space:pre-wrap}</style><h1>TRAIN annotation listening review</h1><p>R009 · All decisions remain pending human review. Original recordings are unchanged. Sine references preserve MIDI timing but do not reproduce vocal timbre. Algorithm agreement and octave-shift similarity do not establish correct annotations.</p><p>Record decisions in experiments/vishwa/results/listening_review_decisions.json using the protocol in docs/vishwa/listening_review.md. This page does not save responses.</p>'''+''.join(sections)+'''<script>
+function stopAllAudio(){document.querySelectorAll('audio').forEach(a=>a.pause());}
+async function playComparison(id){
+  stopAllAudio();
+  const audio=document.getElementById(id);
+  const status=audio.parentElement.querySelector('.playback-status');
+  audio.currentTime=0;
+  try{await audio.play();status.textContent='Playing original and MIDI 0 together.';}
+  catch(error){status.textContent='Playback could not start. Try the audio player above.';}
+}
+function stopComparison(id){
+  const audio=document.getElementById(id);audio.pause();audio.currentTime=0;
+  audio.parentElement.querySelector('.playback-status').textContent='Stopped.';
+}
+document.querySelectorAll('audio').forEach(audio=>audio.addEventListener('play',()=>{
+  document.querySelectorAll('audio').forEach(other=>{if(other!==audio)other.pause();});
+}));
+</script></html>'''
     (folder/'index.html').write_text(page)
     result={'recorded_date':'2026-10-21','scope':'8 flagged TRAIN recordings; no VALID or TEST','status':'automated_packet_complete_human_review_pending','boundary_exclusion_s':.1,'candidate_shifts_semitones':[-24,-12,0,12],'source_report_sha256':hashlib.sha256((ROOT/'experiments/vishwa/results/annotation_review.json').read_bytes()).hexdigest(),'implementation_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'cases':output}
     (ROOT/'experiments/vishwa/results/listening_review_evidence.json').write_text(json.dumps(result,indent=2)+'\n')
