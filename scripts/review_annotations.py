@@ -14,8 +14,10 @@ from melody_understanding.evaluation import score_frames
 from melody_understanding.review import praat_pitch,compare_pitches
 
 
+# Preparing Independent TRAIN Annotation Review Evidence
 def main():
     """Compare maintained pitch implementations without changing annotations."""
+    # Load the fixed cohort and verify that every case belongs to official TRAIN.
     data=ROOT/'datasets/humtrans/downloads'
     cohort=json.loads((ROOT/'experiments/vishwa/results/pilot_001/cohort.json').read_text())['ids']['TRAIN']
     official=json.loads((data/'train_valid_test_keys.json').read_text())
@@ -23,6 +25,7 @@ def main():
     derived=ROOT/'datasets/humtrans/derived/research/annotation_review'
     derived.mkdir(parents=True,exist_ok=True)
     rows=[]
+    # Compare cached pYIN against a fresh Praat track on the same source timeline.
     for key in cohort:
         with np.load(ROOT/'datasets/humtrans/derived/research/pilot_features'/f'{key}.npz') as f:
             first={k:f[k] for k in f.files}
@@ -34,6 +37,7 @@ def main():
         # Report metrics on the same supported grid for both estimators.
         common_first={k:v[supported] for k,v in first.items()}
         common_second={k:v[supported] for k,v in second.items()}
+        # Save review flags, common-grid metrics and source hashes without relabeling.
         row={'key':key,'split':'TRAIN','review_status':'automated_evidence_only_human_review_pending',
              **compare_pitches(reference,first,second,supported),
              'pyin_common_grid':score_frames(reference,common_first),
@@ -44,6 +48,7 @@ def main():
         rows.append(row)
         np.savez_compressed(derived/f'{key}.npz',**second,supported=supported)
         print(key,row['review_flag'],flush=True)
+    # Summarize flags and estimator agreement with configuration and implementation hashes.
     report={'recorded_date':'2026-10-21','n':len(rows),'split':'TRAIN',
         'config':{'method':'Praat autocorrelation','time_step_s':256/22050,'pitch_floor_hz':32.70319566257483,
             'pitch_ceiling_hz':2093.004522404789,'silence_threshold':.03,'voicing_threshold':.45,

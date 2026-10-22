@@ -7,7 +7,9 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'src'))
 from melody_understanding.audio import PreparedAudio
 from melody_understanding.energy import gate_voicing
 
+# Grouping Related Contract Checks
 class EnergyGateTests(unittest.TestCase):
+    # Use silence followed by a tone to verify gating removes voicing without altering pitches.
     def test_mask_only_and_silence(self):
         sr=22050
         samples=np.r_[np.zeros(sr),.2*np.sin(2*np.pi*220*np.arange(sr)/sr)]

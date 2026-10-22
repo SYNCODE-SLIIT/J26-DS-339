@@ -10,13 +10,16 @@ from melody_understanding.annotations import read_midi_notes
 from melody_understanding.targets import make_score_features
 
 
+# Preparing Weak Score Features for the Fixed Pilot Cohort
 def main():
     """Build source-derived tensors and normalization from TRAIN frames only."""
+    # Load the preserved cohort and official split assignments.
     cohort=json.loads((ROOT/'experiments/vishwa/results/pilot_001/cohort.json').read_text())['ids']
     splits=json.loads((ROOT/'datasets/humtrans/downloads/train_valid_test_keys.json').read_text())
     folder=ROOT/'datasets/humtrans/derived/research/weak_score_features'
     folder.mkdir(parents=True,exist_ok=True)
     rows=[];sums=np.zeros(80);squares=np.zeros(80);count=0
+    # Enforce TRAIN/VALID membership before building each recording’s feature tensor.
     for split,keys in cohort.items():
         if split not in ['TRAIN','VALID'] or not set(keys)<=set(splits[split]):raise ValueError('Split membership violation')
         for key in keys:
@@ -25,17 +28,21 @@ def main():
             audio=prepare_audio(wav);notes,_=read_midi_notes(midi)
             features=make_score_features(audio,notes,.1)
             path=folder/f'{key}.npz';np.savez_compressed(path,**features)
+            # Accumulate normalization statistics from TRAIN frames only.
             if split=='TRAIN':
                 values=features['mel_db'].astype(np.float64)
                 sums+=values.sum(axis=1);squares+=(values**2).sum(axis=1);count+=values.shape[1]
+            # Record supervision counts and hashes linking tensors to their sources.
             rows.append({'key':key,'split':split,'frames':len(features['times_s']),
                 'supervised_frames':int(features['supervision_mask'].sum()),
                 'path':str(path.relative_to(ROOT)),
                 'wav_sha256':hashlib.sha256(wav.read_bytes()).hexdigest(),
                 'midi_sha256':hashlib.sha256(midi.read_bytes()).hexdigest(),
                 'tensor_sha256':hashlib.sha256(path.read_bytes()).hexdigest()})
+    # Compute per-band mean and standard deviation with a small variance floor.
     mean=sums/count;std=np.sqrt(np.maximum(squares/count-mean**2,1e-8))
     np.savez(folder/'train_normalization.npz',mean=mean.astype(np.float32),std=std.astype(np.float32))
+    # Save the target policy, processing settings and dataset provenance.
     report={'recorded_date':'2026-10-21','target_policy':'weak-score-chroma-v1',
         'target_meaning':'original MIDI intended-score pitch class, not verified performed F0',
         'classes':{'0':'rest','1..12':'MIDI pitch modulo 12 plus 1'},

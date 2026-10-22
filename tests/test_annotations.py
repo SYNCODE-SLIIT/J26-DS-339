@@ -7,7 +7,9 @@ import mido
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
 from melody_understanding.annotations import read_midi_notes, overlap_count
 
+# Grouping Related Contract Checks
 class AnnotationTests(unittest.TestCase):
+    # Check merged tempo changes and MIDI’s zero-velocity note-off convention.
     def test_tempo_change_and_zero_velocity_note_off(self):
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / 'tempo.mid'
@@ -21,6 +23,7 @@ class AnnotationTests(unittest.TestCase):
             self.assertEqual(notes, [(0.0, 1.5, 69)])
             self.assertFalse(any(anomalies.values()))
 
+    # Distinguish adjacent notes from overlaps and reject independent MIDI timelines.
     def test_overlap_and_independent_tracks(self):
         self.assertEqual(overlap_count([(0, 1, 60), (1, 2, 62)]), 0)
         self.assertEqual(overlap_count([(0, 1, 60), (.5, 2, 62)]), 1)
@@ -31,6 +34,7 @@ class AnnotationTests(unittest.TestCase):
             midi.save(path)
             with self.assertRaises(ValueError): read_midi_notes(path)
 
+    # Guard against the former bug where a default tempo overrode an explicit fast tempo.
     def test_explicit_fast_tempo_at_tick_zero(self):
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / 'fast.mid'

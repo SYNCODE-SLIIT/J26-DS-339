@@ -15,13 +15,16 @@ sys.path.insert(0, str(ROOT / "src"))
 from melody_understanding.annotations import read_midi_notes, overlap_count
 
 
+# Auditing Corpus Pairing, Split Membership and MIDI Timing
 def main():
     """Audit file pairing, official split coverage and two MIDI readers."""
+    # Read dataset and output paths from the command line.
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--data", type=Path, default=ROOT / "datasets/humtrans/downloads")
     p.add_argument("--manifest", type=Path, required=True)
     p.add_argument("--report", type=Path, required=True)
     args = p.parse_args()
+    # Index official split assignments and pair files by their exact filename stems.
     split_path = args.data / "train_valid_test_keys.json"
     splits = json.loads(split_path.read_text())
     assignments = [(key, name) for name, keys in splits.items() for key in keys]
@@ -29,14 +32,17 @@ def main():
     wavs = {p.stem: p for p in (args.data / "wav_data_sync_with_midi").glob("*.wav")}
     midis = {p.stem: p for p in (args.data / "midi_data").glob("*.mid")}
     rows, counts = [], Counter()
+    # Inspect every available stem, retaining missing pairs and read failures as flags.
     for i, key in enumerate(sorted(wavs.keys() | midis.keys())):
         row = {"key": key, "split": membership.get(key), "singer": key.split("_")[0],
                "composition": key.split("_")[1], "flags": []}
         try:
             info = sf.info(wavs[key])
             notes, anomalies = read_midi_notes(midis[key])
+            # Cross-check decoded note times and pitches with a second MIDI reader.
             other = sorted((n.start, n.end, n.pitch) for inst in pretty_midi.PrettyMIDI(str(midis[key])).instruments for n in inst.notes)
             agree = len(notes) == len(other) and np.allclose(notes, other, atol=1e-7, rtol=0)
+            # Check note tails, overlaps and source metadata for structural problems.
             tail = max((n[1] for n in notes), default=0) - info.duration
             overlaps = overlap_count(notes)
             row.update(duration_s=info.duration, sample_rate=info.samplerate,
@@ -59,6 +65,7 @@ def main():
     # Keep detailed recording identifiers local; commit only aggregate evidence.
     args.manifest.parent.mkdir(parents=True, exist_ok=True)
     args.manifest.write_text("".join(json.dumps(r) + "\n" for r in rows))
+    # Summarize coverage and anomalies, with hashes and versions for reproducibility.
     report = {"recorded_date": "2026-10-21", "protocol": "mido-vs-pretty-midi-v1",
         "scope": "all split metadata; no TEST predictions or metric evaluation",
         "wav_count": len(wavs), "midi_count": len(midis),

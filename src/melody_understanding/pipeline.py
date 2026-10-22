@@ -6,17 +6,21 @@ import numpy as np
 from .audio import prepare_audio
 from .features import extract_features, segment_notes
 
+# Running the Complete Vocal Analysis Baseline
 def analyze_vocal(path, trim=False):
+    # Prepare the waveform, extract features and segment notes in source time.
     started = time.perf_counter()
     audio = prepare_audio(path, trim=trim)
     features = extract_features(audio)
     end = min(audio.source_duration_s, audio.offset_s + len(audio.samples) / audio.sample_rate)
     notes = segment_notes(features, end)
+    # Summarize note durations by pitch class, then normalize to a distribution.
     pitch_class = np.zeros(12)
     for note in notes:
         pitch_class[note["pitch_midi"] % 12] += note["duration_s"]
     if pitch_class.sum():
         pitch_class /= pitch_class.sum()
+    # Package predictions, processing details and method limitations as JSON-ready data.
     result = {
         "schema_version": "0.1.0", "component": "melody_understanding",
         "method": "pyin_baseline", "source_name": Path(path).name,
@@ -42,6 +46,7 @@ def analyze_vocal(path, trim=False):
         "versions": {p: version(p) for p in ["numpy", "librosa", "soundfile"]},
         "inference_seconds": time.perf_counter() - started,
     }
+    # Flag recordings where no note survives the minimum-duration requirement.
     if not notes:
         result["warnings"].append("No note events survived baseline segmentation")
     return result, features

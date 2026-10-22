@@ -16,8 +16,10 @@ from melody_understanding.annotations import read_midi_notes
 from melody_understanding.evaluation import notes_with_smoothing, score_notes, score_frames
 
 
+# Running the Reproducible Segmentation Pilot
 def main():
     """Freeze IDs/configuration, evaluate, and persist per-recording evidence."""
+    # Load the requested configuration, audited manifest and new result directory.
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--config', type=Path, default=ROOT/'experiments/vishwa/configs/baseline_pilot.json')
     p.add_argument('--manifest', type=Path, default=ROOT/'datasets/humtrans/derived/research/manifest.jsonl')
@@ -29,6 +31,7 @@ def main():
                 'pitch_tolerance_cents': 50, 'offset_ratio': .2, 'offset_min_tolerance_s': .05}
     if any(config.get(k) != v for k, v in expected.items()):
         raise ValueError('Metric settings must match protocol v1; version changes explicitly')
+    # Sample unflagged TRAIN/VALID cases by singer using the configured seed.
     rows = [json.loads(line) for line in args.manifest.read_text().splitlines()]
     rng = random.Random(config['seed'])
     groups = defaultdict(list)
@@ -51,6 +54,7 @@ def main():
     cache.mkdir(parents=True, exist_ok=True)
     data = ROOT/'datasets/humtrans/downloads'
     records, selected = [], None
+    # Test all smoothing widths on TRAIN, then only baseline and frozen selection on VALID.
     for split, keys in cohorts.items():
         widths = config['smoothing_widths'] if split == 'TRAIN' else sorted({1, selected})
         for index, key in enumerate(keys):
@@ -70,11 +74,13 @@ def main():
                     **frame_metrics, **score_notes(reference, predicted)})
             print(f'{split} {index+1}/{len(keys)} {key}', flush=True)
             (args.output/'per_recording.json').write_text(json.dumps(records,indent=2)+'\n')
+        # Select the best TRAIN macro note F1, preferring the narrower window on ties.
         if split == 'TRAIN':
             means = {w: np.mean([r['note_f1'] for r in records if r['split']=='TRAIN' and r['smoothing_width']==w]) for w in widths}
             selected = max(widths, key=lambda w:(means[w], -w))
             (args.output/'frozen_selection.json').write_text(json.dumps({'selected_width':selected,'train_macro_note_f1':means},indent=2)+'\n')
             print('Frozen width before VALID:',selected,flush=True)
+    # Compute macro averages across recordings for each split and smoothing width.
     metrics = ['note_precision','note_recall','note_f1','note_offset_f1',
         'midi_frame_pitch_agreement_50c','midi_frame_overall_agreement_50c','midi_voicing_recall']
     aggregate = []
@@ -85,6 +91,7 @@ def main():
                 **{m:float(np.mean([r[m] for r in sample])) for m in metrics},
                 'reference_notes':sum(r['reference_notes'] for r in sample),
                 'predicted_notes':sum(r['predicted_notes'] for r in sample)})
+    # Save the final metrics with dependency versions, configuration and source hashes.
     source_paths = sorted((ROOT/'src/melody_understanding').glob('*.py'))+[Path(__file__)]
     report={'recorded_date':'2026-10-21','selected_width':selected,'aggregation':'macro mean across recordings',
         'config':config,'aggregate':aggregate,'versions':{p:version(p) for p in ['librosa','numpy','scipy','mir_eval']},

@@ -9,7 +9,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
 from melody_understanding.audio import prepare_audio
 from melody_understanding.features import segment_notes
 
+# Grouping Related Contract Checks
 class MelodyContractTests(unittest.TestCase):
+    # Verify resampling changes the working rate while preserving duration and source bytes.
     def test_resampling_preserves_duration_and_source(self):
         with tempfile.TemporaryDirectory() as folder:
             p = Path(folder) / 'tone.wav'
@@ -22,6 +24,7 @@ class MelodyContractTests(unittest.TestCase):
             self.assertAlmostEqual(len(audio.samples) / audio.sample_rate, 1.0, places=4)
             self.assertEqual(audio.offset_s, 0.0)
 
+    # Reject a silent waveform before attempting pitch extraction.
     def test_silence_rejected(self):
         with tempfile.TemporaryDirectory() as folder:
             p = Path(folder) / 'silence.wav'
@@ -29,6 +32,7 @@ class MelodyContractTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'silent'):
                 prepare_audio(p)
 
+    # Keep same-pitch notes separate across a rest and preserve their source-time offset.
     def test_segmentation_keeps_rest_and_original_offset(self):
         features = {'f0_hz': np.array([440, 440, np.nan, 440, 440]),
             'voiced': np.array([True, True, False, True, True]),

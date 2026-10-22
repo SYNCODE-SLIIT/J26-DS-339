@@ -2,15 +2,19 @@
 import numpy as np
 import librosa
 
+# Extracting Spectral Features and Frame-Level Pitch
 def extract_features(audio, hop_length=256, frame_length=4096):
     sr = audio.sample_rate
+    # Convert the waveform into an 80-band Mel spectrogram in relative decibels.
     mel = librosa.feature.melspectrogram(y=audio.samples, sr=sr,
         n_fft=frame_length, hop_length=hop_length, n_mels=80, power=2.0)
     mel_db = librosa.power_to_db(mel, ref=np.max)
+    # Estimate fundamental frequency and voicing over the same analysis grid.
     f0, voiced, probability = librosa.pyin(audio.samples,
         fmin=librosa.note_to_hz("C1"), fmax=min(librosa.note_to_hz("C7"), sr / 2 - 1),
         sr=sr, frame_length=frame_length, hop_length=hop_length,
         fill_na=np.nan)
+    # Add any trimming offset to express frames on the original recording timeline.
     times = audio.offset_s + np.arange(len(f0)) * hop_length / sr
     # Centered analysis can yield a frame exactly at the waveform end.
     keep = times < min(audio.source_duration_s,
@@ -20,19 +24,24 @@ def extract_features(audio, hop_length=256, frame_length=4096):
         "times_s": times[keep], "hop_length": hop_length,
         "frame_length": frame_length}
 
+# Grouping Pitch Frames into Note Events
 def segment_notes(features, end_s, minimum_duration_s=.06):
     """Group contiguous voiced frames by nearest MIDI pitch; preserve rests."""
+    # Round valid voiced pitches to MIDI semitones and mark rests with -1.
     f0 = features["f0_hz"]
     valid = features["voiced"] & np.isfinite(f0) & (f0 > 0)
     pitches = np.full(len(f0), -1, dtype=int)
     pitches[valid] = np.rint(librosa.hz_to_midi(f0[valid])).astype(int)
+    # Add any trimming offset to express frames on the original recording timeline.
     times = features["times_s"]
     notes = []
     start = 0
+    # Find consecutive frames with the same pitch, including separate rest runs.
     while start < len(pitches):
         stop = start + 1
         while stop < len(pitches) and pitches[stop] == pitches[start]:
             stop += 1
+        # Clip the final interval to the recording end and discard short note runs.
         end = min(float(times[stop]) if stop < len(times) else end_s, end_s)
         onset = float(times[start])
         if 0 <= pitches[start] <= 127 and end - onset >= minimum_duration_s:

@@ -6,7 +6,9 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
 from melody_understanding.evaluation import score_notes, score_frames, notes_with_smoothing
 
+# Grouping Related Contract Checks
 class EvaluationTests(unittest.TestCase):
+    # Confirm exact matches score perfectly while octave errors and empty predictions do not.
     def test_perfect_notes_and_octave_error(self):
         ref=[(0., .5, 69)]
         pred=[{'onset_s':0.,'duration_s':.5,'pitch_midi':69}]
@@ -16,6 +18,7 @@ class EvaluationTests(unittest.TestCase):
         self.assertEqual(score_notes(ref,pred)['note_f1'],0.)
         self.assertEqual(score_notes(ref,[])['note_f1'],0.)
 
+    # Keep a rest between identical pitches and reject an even smoothing window.
     def test_rest_masking_and_frame_agreement(self):
         f={'times_s':np.array([0.,.1,.2,.3,.4]),
            'f0_hz':np.array([440.,440.,np.nan,440.,440.]),

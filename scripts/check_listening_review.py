@@ -5,17 +5,22 @@ from datetime import datetime
 ROOT=Path(__file__).resolve().parents[1]
 
 
+# Checking Review Membership, Listening Confirmation and Provenance
 def validate_reviews(document,expected):
     """Reject incomplete completed records and return honest review counts."""
+    # Require one decision record for each expected case, with no duplicates.
     rows=document['cases'];keys=[r['key'] for r in rows]
     if len(keys)!=len(set(keys)) or set(keys)!=set(expected):raise ValueError('Review case membership mismatch')
     completed=0;unresolved=0
+    # Leave pending cases incomplete and validate every claimed human review.
     for row in rows:
         if row['status']=='pending':continue
         if row['status']!='reviewed':raise ValueError('Unknown review status')
+        # Require reviewer identity, an ISO timestamp and written listening evidence.
         for field in ['reviewer','reviewed_at','evidence']:
             if not isinstance(row.get(field),str) or not row[field].strip():raise ValueError(f'Missing {field}')
         datetime.fromisoformat(row['reviewed_at'])
+        # Check listening confirmations and the permitted review outcomes and hypotheses.
         if row.get('listened_original') is not True or row.get('listened_references') is not True:raise ValueError('Listening confirmation missing')
         if row.get('confidence') not in ['low','medium','high']:raise ValueError('Invalid confidence')
         if row.get('outcome') not in ['consistent_with_original','possible_score_performance_octave_difference','possible_estimator_error','timing_or_mixed_issue','unresolved']:raise ValueError('Invalid outcome')
@@ -24,6 +29,7 @@ def validate_reviews(document,expected):
     return {'total':len(rows),'reviewed':completed,'pending':len(rows)-completed,'reviewed_but_unresolved':unresolved,'annotation_changes_authorized':False}
 
 
+# Reporting Human Review Progress from Saved Evidence
 def main():
     """Print review status; completion never automatically authorizes relabeling."""
     folder=ROOT/'experiments/vishwa/results'
