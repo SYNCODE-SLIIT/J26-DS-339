@@ -18,3 +18,17 @@ checkpoints/
 .DS_Store
 ._*
 __MACOSX/
+
+# Physical workspace assets retain the same local-only policy after migration.
+/BPDR_Workspace/datasets/
+/BPDR_Workspace/models_and_tools/
+/BPDR_Workspace/selected_model/
+/research_archive/
+
+# Old directory names are compatibility junctions, not second source trees.
+/src/
+/docs/
+/notebooks/
+/tests/
+/extraction/
+/final/

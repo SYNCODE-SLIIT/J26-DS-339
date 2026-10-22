@@ -1,0 +1,329 @@
+Please extend the existing melody/chord extraction pipeline with an OPTIONAL BPDR data-preparation/export capability.
+
+Existing pipeline:
+datasets/mtg-jamendo/melody-chord-extraction-pipeline
+
+BPDR component:
+experiments/bpdr_input
+
+The supplied sample.zip shows the existing output format: per-track melody, beat, chord, key and Roman-label results. Keep those outputs and their consumers working exactly as before.
+
+1. Purpose and scope
+
+BPDR means Boundary-Pitch Disentangled Repair. It is the vocal-input component owned by IT23141506.
+
+Its intended product input is a short, unaccompanied singing/humming phrase, currently 0.25–20 seconds. It aims to preserve acceptable singing and make only small justified pitch repairs while preserving timing, rests and expression.
+
+The BPDR Transformer predicts a relative correction in cents for each audio frame. It does NOT predict chords, genre, key or an intended MIDI melody.
+
+Its research question is whether correction-response training can:
+- Resist incorrect note-boundary splits/merges.
+- Respond correctly to known small local pitch changes.
+- Preserve acceptable reference singing.
+
+Your task is to export the data required for this work. Do not implement or train the Transformer, production repair controller, accompaniment model or production renderer.
+
+2. Preserve the existing pipeline
+
+Implement this additively through a separate exporter/companion module and an explicit opt-in flag or command.
+
+When BPDR export is disabled:
+- Existing processing, model settings, schemas, filenames, caches and viewer behavior remain unchanged.
+- Do not rename, overwrite or invalidate existing results.
+- Do not change the published +12-semitone GAME convention used by other components.
+
+When BPDR export is enabled:
+- Write to a separate configurable BPDR output root.
+- Reuse verified existing assets and outputs where appropriate.
+- Never silently overwrite previous BPDR runs or reviews.
+- Use immutable/versioned runs and atomic writes.
+
+The current vocal extractor deletes its temporary stem after GAME extraction. Prefer exporting BPDR crops/features while that stem exists, before normal cleanup. Avoid separating the same song a second time.
+
+If integration needs a small hook, make it opt-in and preserve the default behavior. Keep substantial BPDR logic separate from the existing melody/chord algorithms.
+
+3. Support both datasets
+
+Vocadito:
+- Already contains solo vocal recordings.
+- Do not run vocal separation unnecessarily.
+- Preserve its human F0 and both note-annotation streams.
+- These annotations describe performed singing; they are not intended-note correction commands.
+- Preserve the existing BPDR singer partitions.
+
+MTG-Jamendo:
+- Original MP3s contain accompaniment and possibly backing/multiple voices.
+- Use the existing pinned separator to obtain vocal audio.
+- Retain the distinction between human references and model estimates.
+- GAME predictions are pseudo-labels, not human ground truth.
+
+For both:
+- Split by source/singer or artist BEFORE cropping or augmentation.
+- Keep all descendants of one recording in the same partition.
+- Artist identity is only a singer proxy; record unknown singer identity.
+- Check duplicates and record source lineage.
+- Filter applicable licenses; exclude unknown/NoDerivatives tracks from transformation experiments.
+- Default to a small declared training-source sample, not the entire corpus.
+- Do not inspect held-out audio while designing crop selection, intervention geometry or thresholds.
+
+4. Select useful vocal phrases
+
+Export suitable phrases of at most 20 seconds, allowing shorter complete phrases.
+
+Prefer:
+- Natural pauses or phrase boundaries.
+- Enough singing and stable pitch support.
+- Preserved rests and sufficient neighboring context.
+- Single-voice material suitable for review.
+
+Avoid blindly cutting every song into consecutive 20-second blocks. A cut can split a note, word or phrase and remove useful context.
+
+For every crop record:
+- Dataset/source/track identity.
+- Singer identity or artist proxy.
+- Original start/end sample indexes and sample rate.
+- Original offset in seconds.
+- Exact crop duration.
+- Source and exported-audio hashes.
+- Any partial-note/edge/context warnings.
+
+Do not time-stretch, reorder sections, remove internal rests or concatenate unrelated excerpts.
+
+Protect uncertain crop-edge regions from correction supervision. Keep crop-selection rules deterministic and versioned. Validate crop-vs-full-recording effects on a declared sample; do not claim context is harmless without evidence.
+
+5. Export technically checked vocal audio
+
+Reuse BPDR's technical preparation behavior where practical:
+- Preserve original source files.
+- Validate decoding, finite samples, supported channels, duration, silence and clipping.
+- Prepare mono 22,050 Hz PCM24 WAV.
+- Preserve time origin, rests and duration within the documented rounding tolerance.
+- Record channel selection, resampling and other operations.
+- Disable denoising and musical correction in this initial exporter.
+
+Technical preparation may return ACCEPT_UNCHANGED, RERECORD_REQUIRED or TECHNICAL_FAILURE.
+
+Do not emit ACCEPT_PREPARED: that status requires the later verified repair path.
+
+Technical acceptance does not establish single-voice identity, musical acceptability or training eligibility.
+
+6. Export the exact acoustic inputs BPDR needs
+
+Use the existing feature implementation as the specification:
+experiments/bpdr_input/src/bpdr_input/analysis.py
+
+Prefer reusing this implementation or a shared dependency rather than creating a subtly different feature extractor.
+
+Current configuration:
+- Frozen PESTO mir-1k_g7, evaluation/inference mode.
+- Mono audio at 22,050 Hz.
+- 441-sample / 20 ms aligned frame hop.
+- Centered 1,024-sample spectral windows.
+- 64 log-mel bands.
+- Pitch confidence threshold 0.8.
+- Nearest native-pitch timestamp alignment; no interpolation through unvoiced gaps.
+- Record checkpoint hashes, package versions and exact preprocessing settings.
+
+The 71-column feature order is:
+
+Columns 0–63: 64 log-mel energy values in dB.
+Column 64: performed pitch in cents relative to A4 = 440 Hz.
+Column 65: pitch-estimator confidence.
+Column 66: voiced flag.
+Column 67: adjacent voiced-frame pitch change in cents.
+Column 68: log RMS energy in dB.
+Column 69: normalized positive spectral-change/onset score.
+Column 70: boundary feature for the explicitly labelled boundary condition.
+
+The frame-only control uses columns 0–69.
+
+Export a compressed NPZ with:
+- boundary_features_71: float32, shape [T, 71].
+- times_seconds: aligned timestamps.
+- f0_hz: measured pitch, with NaN for unvoiced frames.
+- pitch_change_valid: boolean validity mask.
+
+Other small audit/screening arrays may be stored when required. Do not duplicate the full 70-column matrix because it is already obtainable by slicing the 71-column matrix.
+
+Unvoiced pitch is zero only in masked MODEL INPUTS; retain voicing/confidence. Do not represent unvoiced frames as real zero-Hz notes.
+
+Do not normalize using the whole dataset. Export raw defined features; training normalization must be fitted on training sources only.
+
+Centered-window padding must not be mistaken for additional recording duration.
+
+7. Keep boundary sources distinct
+
+The operating BPDR boundary score is provisional and audio-derived.
+
+There are separate experimental boundary conditions:
+- Audio-derived heuristic.
+- GAME-estimated boundaries.
+- Human-annotation timing for controlled Vocadito experiments.
+
+Label which condition produced column 70. Do not silently substitute one for another.
+
+For GAME:
+- Use vocal-only predictions.
+- Read model_midi_pitch, not the published octave-shifted midi_pitch.
+- Keep fractional pitch and seconds-based timing.
+- Full-song notes may guide crop selection.
+- Decode the accepted crop for its own boundary representation until crop/full equivalence is sufficiently validated.
+- Save the actual decode used; GAME does not expose a reproducible extraction seed.
+- Make repeated decoding configurable for validation/uncertainty experiments.
+
+Do not use combined melody: it fills vocal gaps with instrumental notes and changes vocal-rest evidence.
+
+Do not export instrumental melody, chord labels, key, genre, beats, Roman labels or embeddings as new BPDR inputs. Existing pipeline outputs remain untouched.
+
+8. Screening and independent review
+
+Screen for:
+- Insufficient singing/voicing.
+- Unreliable pitch agreement/support.
+- Empty or overlapping note predictions.
+- Too little stable support for the declared intervention audit.
+- Technical failures and suspicious crop boundaries.
+
+Automatic screening is provisional. Record reasons and denominators; it must not approve musical suitability.
+
+Create two pending review rows per candidate for distinct reviewers with relevant musical experience. Required review information includes:
+- Reviewer identity and musical experience.
+- Crop/accepted-audio hash.
+- Decision and reason.
+- Approved stable intervals.
+- Review timestamp.
+- Unclear transitions, multiple voices or accompaniment leakage.
+
+Actual independent decisions must be supplied by humans. Never manufacture approvals, and never treat two model decodes as two reviewers.
+
+Reference types remain human_annotation or model_estimate even after a recording is judged acceptable.
+
+9. Training-pair requirements — separate, gated stage
+
+Feature export alone is NOT a complete training dataset.
+
+Provide a separate opt-in stage, or a documented handoff to BPDR's existing intervention code, for generating reviewed and audited examples.
+
+An approved acceptable reference has a zero-correction target. Apply a known small local detuning only inside an approved reliable interval:
+
+A: original waveform, nominal boundary representation.
+B: exactly the same waveform as A, changed boundary representation.
+C: locally detuned waveform, nominal boundaries.
+D: exactly the same waveform as C, changed boundaries.
+
+A/B and C/D must have identical acoustic features except for the boundary input. Altering boundary metadata must not alter audio.
+
+For an injected +20-cent change, the supervised correction is -20 cents on the audited plateau. Protected outside regions have zero correction. Ramps/ambiguous/unreliable regions remain excluded from targets.
+
+This supports:
+- Boundary invariance: corrections for A/B and C/D should agree.
+- Counter-detuning: the correction difference between C/A and D/B should compensate for the known injected change.
+- Preservation: approved unchanged references should receive zero adjustment.
+
+Do not obtain correction targets by snapping GAME/Vocadito notes to a scale. Their note pitches do not establish intended melody.
+
+Reuse:
+experiments/bpdr_input/src/bpdr_input/interventions.py
+experiments/bpdr_input/src/bpdr_input/laboratory.py
+
+Current v0.3 uses ±10/20/30 cents. Its audit includes:
+- YIN median/p90 shift-error limits: 5/10 cents.
+- PESTO coarse median/p90 limits: 20/40 cents.
+- At least 10 common plateau frames and 75% plateau coverage.
+- At least 10 outside frames and 75% outside coverage.
+- Outside median/p90 drift limits: 5/20 cents.
+- Identity, unchanged sample count and exact outside-support samples.
+
+Do not relax these settings or shorten support merely to produce more examples. Existing experiments show that many crops fail coverage or shift audits. Any new policy needs its own version and justified calibration.
+
+An example becomes research eligible ONLY after actual approvals, interval checks, integrity checks and realized-shift audits pass.
+
+Engineering-only exports must be clearly labelled exploratory_not_research.
+
+10. Minimal output and storage policy
+
+Keep the BPDR output separate, for example:
+
+bpdr_export/<run_id>/
+  manifest.json
+  reviews.csv
+  crops/<crop_id>/
+    vocal.wav
+    features.npz
+    boundaries.json
+    masks.npz
+    references/        only selected Vocadito reference material
+  pairs/               generated only when explicitly requested and eligible
+
+Manifest entries must include source/group/split, crop mapping, reference type, licenses, feature/policy/model versions, relative paths, hashes, review status, exclusions and training eligibility.
+
+Storage rules:
+- Save selected accepted vocal crops by default, not every full-song stem.
+- Offer full-stem retention only as an explicit option.
+- Do not duplicate original MP3s, model checkpoints, existing melody/chord outputs or identical A/B and C/D WAVs.
+- Reuse original and detuned waveforms through manifest references.
+- Do not generate every pitch/boundary combination for every song automatically.
+- Use compressed float32 feature arrays and boolean masks.
+- Do not export duplicate NPZ/NPY/CSV versions of the same features.
+- No per-crop MIDI copies, native-pitch-array dumps, spectrogram PNGs, dashboards, caches or debug tensor dumps by default.
+- Keep compact failure/provenance records; detailed debug exports should be optional.
+
+For finalized selected pairs, preserve compatibility with BPDR's loader:
+- A_input.npz, B_input.npz, C_input.npz, D_input.npz contain boundary_features_71.
+- The separate target archive contains common_reliable_mask and correction_target_cents, plus necessary region masks.
+- Target/reference arrays must never enter model feature archives.
+- Include the hashes, reviews, audit and waveform identity records expected by validation.
+
+Inspect examples.py and require_training_example before claiming direct compatibility. The current gate expects the laboratory manifest/review schema; a generic preparation manifest is not automatically accepted. If Jamendo needs an adapter, document that integration explicitly and preserve the same approval/audit guarantees. Do not invent human annotations or bypass validation to satisfy the loader.
+
+11. Mac and Windows support
+
+Support the BPDR export path on both operating systems through explicit platform/backend adapters.
+
+- Apple Silicon: reuse the native MLX separation route and pinned checkpoint where supported.
+- Windows: reuse the validated PyTorch separation route with the same checkpoint; GPU support is conditional on the installed backend, with a documented CPU fallback.
+- Detect capabilities; do not hard-code Intel XPU, Metal, or CUDA for every machine.
+- Resolve environment executables correctly: bin/python versus Scripts/python.exe.
+- Use pathlib, configurable dataset/assets/output roots and portable relative export paths.
+- Replace unconditional POSIX fcntl requirements with a cross-platform lock abstraction.
+- Keep sleep-prevention behavior platform-specific and restore it on exit.
+- Supply separate clear Mac and Windows setup/run instructions.
+- Isolate dependencies; do not break the existing model environments.
+- Process large models sequentially and release memory between stages.
+- Record backend, device, precision and separation settings.
+
+Existing pipeline code currently contains POSIX paths/locking and Metal assumptions. BPDR-only preparation must not unnecessarily require unrelated chord/SheetSage assets. Preserve the existing Mac pipeline's default behavior while adding the portable route.
+
+Do not promise a speed increase or identical numerical output merely because the device is a Mac. Benchmark the target hardware and compare outputs against the saved baseline.
+
+12. Resume, portability and acceptance checks
+
+- Validate source and model hashes, not only filenames or modification times.
+- Mark a BPDR stage complete only after all required artifacts pass validation.
+- An empty note set or missing WAV is not a usable example.
+- Resume completed work without repeating separation or overwriting reviews.
+- Changing source/model/configuration invalidates the appropriate derived stage.
+- Keep original evidence intact; create a new run when required.
+- Handle missing dependencies, interruption, corrupted files and out-of-memory failures explicitly.
+- If historical outputs have notes but their vocal stem was deleted, additional acoustic features cannot be reconstructed from MIDI; selectively re-separate or obtain the original retained stem.
+
+Required validation:
+- Existing pipeline results and consumers remain compatible with BPDR export disabled/enabled.
+- Feature shapes, ordering, units and finite model inputs match analysis.py.
+- Crop mapping, duration and rests are preserved.
+- No held-out source or descendant enters training selection.
+- References/targets cannot leak into inputs.
+- Pending/rejected reviews and failed audits cannot become eligible.
+- Resuming or exporting across platforms cannot silently change source identity.
+- Compare a declared Vocadito/Jamendo sample on Mac and Windows for technical integrity, feature differences, extraction repeat variation and audit outcomes.
+- Report environments actually tested. Do not label an untested platform verified.
+
+Deliver:
+- The optional exporter/integration hook and platform adapters.
+- Exact output schema and loader-compatibility explanation.
+- Mac/Windows setup and run instructions.
+- A small verified sample package.
+- Regression/compatibility results and remaining limitations.
+- A brief storage estimate based on measured exported files.
+
+Keep this focused on BPDR data preparation. No new harmony outputs, extra unrelated models, automatic human approvals, Transformer training or claims of proven BPDR accuracy.
