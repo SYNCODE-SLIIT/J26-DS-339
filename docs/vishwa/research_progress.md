@@ -318,3 +318,9 @@ The initial fixed ±12 comparison had zero agreement for two cases. R006 median 
 - First case: user favored unchanged MIDI pitch despite automatic octave flag; 220 ms improved beginning/checkpoints/end after comparing 200 and 250 ms. That disagreement remains unresolved.
 - Decision: no blanket delay or octave correction. Next compare unshifted versus user-delayed TRAIN annotations with targeted acoustic evidence, including whether note boundaries improve throughout and whether octave discrepancy persists. Keep original labels and TEST untouched.
 - Checked observation membership against the eight evidence cases and delay range against player controls. No model training performed.
+
+## R013 — merged project integration review — 2026-10-22
+
+Inspected merge 67c84e0 against 37f5d54, component READMEs, core input/output code, saved Pasan notebook results and root installed-package metadata. Recorded findings in `merged_project_review.md`. Vishwa paths unchanged by the merge; root dependency requirements changed. Several teammate packages and expected generated/raw-data paths are absent locally. No sync, downloads, model inference or teammate tests executed. Historical metrics are attributed to saved outputs, not fresh runs.
+
+Decision: do not assume an integrated application from merged files. Resolve architecture discrepancy (proposed final validator versus implemented BPDR input component), select a downstream predictor/checkpoint, and map note fields while establishing required key and complete-bar beat metadata. Continue HumTrans timing/label work without automatic transposition. User's existing environment preserved. Local milestone: `docs: map merged components and integration gaps`.
