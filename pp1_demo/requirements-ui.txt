@@ -1,0 +1,3 @@
+# Additional UI dependencies; existing project scientific dependencies are reused.
+streamlit>=1.40,<2
+plotly>=5.24,<7
