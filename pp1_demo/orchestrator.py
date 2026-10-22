@@ -1,76 +1,129 @@
-"""Run manifest always distinguishes real inference, assumptions and failures."""
+"""An inspectable, sequential pipeline using real models and saved feature context."""
 import json
+import shutil
 import time
 import uuid
-from datetime import datetime,timezone
+from datetime import datetime, timezone
 from pathlib import Path
+
 import numpy as np
 import soundfile as sf
-from pp1_demo.config import ROOT,RUNTIME,PASAN,RAHUL,VOCAB
-from pp1_demo.contracts import sha,beat_grid,validate_notes
-from pp1_demo.adapters import vishwa,pasan,rahul
+
+from pp1_demo.config import RUNTIME, PASAN, RAHUL, VOCAB
+from pp1_demo.contracts import Settings, sha
+from pp1_demo.dataset import context, crop_rows, verify_audio
+from pp1_demo.adapters import bpdr, pasan, rahul
 from pp1_demo import rendering
 
-
-def save(run,folder):
-    (folder/'manifest.json').write_text(json.dumps(run,indent=2,allow_nan=False))
+STAGES = ['praveen', 'context', 'pasan', 'rahul', 'render']
 
 
-def run_pipeline(path,settings,progress=lambda stage,message:None):
-    settings.validate()
-    path=Path(path)
-    info=sf.info(path)
-    if not .25<=info.duration<=20: raise ValueError('Use a 0.25–20 second solo vocal clip for this demonstration; no silent cropping is applied.')
-    folder=RUNTIME/'runs'/uuid.uuid4().hex[:12];folder.mkdir(parents=True)
-    source=folder/('input'+path.suffix.lower());source.write_bytes(path.read_bytes())
-    run={'id':folder.name,'created_utc':datetime.now(timezone.utc).isoformat(),'source_name':path.name,
-         'audio_sha256':sha(source),'input_file':source.name,'duration_s':info.duration,
-         'settings':settings.validate(),'provenance':{'key':'user_supplied_major_reference','beat_grid':'user_configured','genre':'user_supplied','rahul_mode':'demo_constant'},
-         'stages':{},'artifacts':{},'warnings':[], 'adapter_hashes':{str(p.relative_to(ROOT)):sha(p) for p in sorted((ROOT/'pp1_demo').rglob('*.py')) if 'runtime' not in p.parts},
-         'vocabulary_hashes':{p.name:sha(p) for p in [VOCAB/'feature_vocabularies.json',VOCAB/'target_vocabulary.json']}}
-    save(run,folder)
-    def stage(name,fn):
-        progress(name,'Running');t=time.perf_counter()
+def save(run, folder):
+    temporary = folder / 'manifest.tmp'
+    temporary.write_text(json.dumps(run, indent=2, allow_nan=False))
+    temporary.replace(folder / 'manifest.json')
+
+
+def new_run(track_id, genre=None):
+    c = context(track_id)
+    folder = RUNTIME / 'runs' / ('r' + uuid.uuid4().hex[:12])
+    folder.mkdir(parents=True)
+    run = {'id':folder.name, 'track_id':track_id, 'created_utc':datetime.now(timezone.utc).isoformat(),
+           'status':'queued', 'active_stage':None, 'duration_s':c['duration_s'], 'progress':0,
+           'stages':{k:{'status':'pending'} for k in STAGES}, 'events':[], 'artifacts':{},
+           'warnings':[], 'settings':{'genre':genre or c['genre'], 'rahul_mode':'major',
+                                     'mode_source':'demo_constant','reference_key':c['reference_key']},
+           'provenance':{'vishwa':'deferred; saved dataset features used', 'genre':c['genre_source'] if not genre or genre==c['genre'] else 'demo_selection',
+                         'melody':'saved_extraction','beats':'saved_extraction','key':'saved_melody_key',
+                         'bpdr':'live_model','pasan':'live_model','rahul':'live_model'},
+           'models':{'pasan':PASAN.name,'rahul':RAHUL.name}, 'audio_sha256':c['audio_sha256']}
+    save(run, folder)
+    return folder, run
+
+
+def execute(folder, run, progress=lambda run:None, handoff_pause_s=0):
+    folder=Path(folder)
+    started=time.perf_counter()
+    c=context(run['track_id'])
+    def stage(name, title, fn):
+        run['active_stage']=name
+        run['stages'][name]={'status':'running','started_at':time.time(),'title':title}
+        run['events'].append({'stage':name,'text':title,'state':'running','elapsed_s':round(time.perf_counter()-started,2)})
+        save(run, folder);progress(run)
+        tick=time.perf_counter()
         try:
-            result=fn();run['stages'][name]={'status':'Complete','seconds':round(time.perf_counter()-t,3)}
-            save(run,folder);progress(name,'Complete');return result
+            value=fn()
+            run[name]=value
+            run['stages'][name].update(status='complete',seconds=round(time.perf_counter()-tick,3))
+            run['progress']=round(100*sum(x['status']=='complete' for x in run['stages'].values())/len(STAGES))
+            run['events'].append({'stage':name,'text':title,'state':'complete','elapsed_s':round(time.perf_counter()-started,2)})
+            save(run, folder);progress(run)
+            # Briefly present completed handoffs in the website. Model timings
+            # above exclude this display hold; no simulated computation/results.
+            if handoff_pause_s and name not in ('praveen','render'):
+                time.sleep(handoff_pause_s)
+            return value
         except Exception as exc:
-            run['stages'][name]={'status':'Failed','error':f'{type(exc).__name__}: {exc}','seconds':round(time.perf_counter()-t,3)}
-            save(run,folder);progress(name,'Failed');raise
-    run['stages']['Praveen']={'status':'Bypassed','reason':'Required model, VocalSet manifest and audited training assets are absent; original audio used unchanged.'}
-    progress('Praveen','Bypassed')
-    if not settings.bpdr_bypass:
-        run['stages']['Praveen']['status']='Unavailable';save(run,folder)
-        raise ValueError('BPDR requires the complete owner-exported local assets; enable explicit bypass to demonstrate other stages.')
+            run['stages'][name].update(status='failed',error=f'{type(exc).__name__}: {exc}')
+            raise
+    run['status']='running'
     try:
-        result,features,audio=stage('Vishwa',lambda:vishwa.analyze(source))
-        run['vishwa']=result
-        sf.write(folder/'prepared.wav',audio.samples,audio.sample_rate)
-        np.savez_compressed(folder/'features.npz',**features)
-        run['artifacts'].update(prepared='prepared.wav',features='features.npz')
-        try: run['pilot_models']=vishwa.pilot_predictions(features)
-        except Exception as exc: run['warnings'].append('Pilot comparison unavailable: '+str(exc))
-        validate_notes(result['notes'],info.duration)
-        melody,midi=rendering.melody(result['notes'],info.duration)
-        sf.write(folder/'melody.wav',melody,rendering.SR);midi.write(str(folder/'melody.mid'))
-        run['artifacts'].update(melody='melody.wav',melody_midi='melody.mid')
-        beats=beat_grid(info.duration,settings);run['beats']=beats
-        run['warnings'].append(f"User-configured grid covers {beats[0]['start_s']:.3f}–{beats[-1]['end_s']:.3f}s; uncovered edges have no chord predictions.")
-        run['pasan']=stage('Pasan',lambda:pasan.predict(result['notes'],beats,settings))
-        run['rahul']=stage('Rahul',lambda:rahul.predict(result['notes'],run['pasan']['chords'],settings))
-        for name,key in [('basic','pasan'),('refined','rahul')]:
-            rendered,midi,unsupported=rendering.chords(run[key]['chords'],info.duration)
-            sf.write(folder/(name+'.wav'),rendered,rendering.SR);midi.write(str(folder/(name+'.mid')))
-            run['artifacts'][name]=name+'.wav';run['artifacts'][name+'_midi']=name+'.mid'
-            if unsupported: run['warnings'].append(f'{name}: unrenderable chord labels kept in predictions but silent in audio: {unsupported}')
-            if name=='refined':
-                sf.write(folder/'combined.wav',rendering.mix(audio.samples,rendered),rendering.SR)
-                run['artifacts']['combined']='combined.wav'
+        verify_audio(c)
+        shutil.copy2(c['audio_path'],folder/'input.wav')
+        run['artifacts']['input']='input.wav'
+        def assess():
+            result=bpdr.predict(folder/'input.wav',folder)
+            shutil.copy2(result['accepted_audio'],folder/'accepted.wav')
+            run['artifacts']['accepted']='accepted.wav'
+            if result.get('preview'):
+                shutil.copy2(result['preview'],folder/'repair_preview.wav')
+                run['artifacts']['repair_preview']='repair_preview.wav'
+            return result
+        result=stage('praveen','Praveen · analyse the vocal and run learned repair',assess)
+        if result.get('reason'):
+            run['warnings'].append('BPDR kept the accepted original; optional repair preview: '+result['reason'])
+        def feature_bridge():
+            hashes={name:sha(path) for name,path in c['files'].items()}
+            return {'source':'Saved extraction · Vishwa stage deferred',
+                    'notes':c['display_notes'],'beats':c['display_beats'],'key':c['key'],
+                    'reference_key':c['reference_key'],'genre':run['settings']['genre'],
+                    'genre_source':run['provenance']['genre'],'rahul_mode':'major',
+                    'crop_offset_s':c['crop_offset_s'],'context_start_s':c['context_start_s'],
+                    'context_end_s':c['context_end_s'],'context_notes':len(c['notes']),
+                    'context_beats':len(c['beats']),'context_bars':16,'source_hashes':hashes,
+                    'note':'Full sixteen-bar saved context is used for inference. Timelines and playback show only this vocal excerpt.'}
+        stage('context','Dataset bridge · align saved notes, key and beats',feature_bridge)
+        settings=Settings(tonic_pc=c['reference_pc'],genre=run['settings']['genre'],bpdr_bypass=False)
+        def align(result):
+            result['context_chords']=result['chords']
+            result['chords']=crop_rows(result['context_chords'],c['visible_start_s'],c['duration_s'])
+            return result
+        full_pasan=stage('pasan','Pasan · Temporal Transformer harmonic planning',lambda:align(pasan.predict(c['notes'],c['beats'],settings)))
+        full_rahul=stage('rahul','Rahul · multi-task chord refinement',lambda:align(rahul.predict(c['notes'],full_pasan['context_chords'],settings)))
+        def render():
+            audio,sr=sf.read(folder/'accepted.wav',dtype='float32')
+            if sr!=rendering.SR:raise ValueError('Unexpected accepted audio sample rate')
+            melody,midi=rendering.melody(c['display_notes'],c['duration_s'])
+            sf.write(folder/'melody.wav',melody,rendering.SR);midi.write(str(folder/'melody.mid'))
+            run['artifacts'].update(melody='melody.wav',melody_midi='melody.mid')
+            unsupported={}
+            for name,owner in [('basic','pasan'),('refined','rahul')]:
+                y,midi,labels=rendering.chords(run[owner]['chords'],c['duration_s'])
+                sf.write(folder/(name+'.wav'),y,rendering.SR);midi.write(str(folder/(name+'.mid')))
+                run['artifacts'][name]=name+'.wav';run['artifacts'][name+'_midi']=name+'.mid'
+                unsupported[name]=labels
+                if labels:run['warnings'].append('Unrendered '+name+' labels remain visible: '+', '.join(labels))
+                if name=='refined':
+                    sf.write(folder/'combined.wav',rendering.mix(audio,y),rendering.SR)
+                    run['artifacts']['combined']='combined.wav'
+            return {'source':'Synthesized instrument playback, mixed with accepted voice',
+                    'unsupported_labels':unsupported,'melody_notes':len(c['display_notes']),
+                    'basic_chords':len(run['pasan']['chords']),'refined_chords':len(run['rahul']['chords'])}
+        stage('render','Render · build listening previews and MIDI',render)
+        run['status']='complete';run['active_stage']=None
+        run['artifact_hashes']={name:sha(folder/path) for name,path in run['artifacts'].items()}
     except Exception as exc:
-        run['error']=f'{type(exc).__name__}: {exc}'
-    run['status']='Complete with BPDR bypass' if 'combined' in run['artifacts'] else 'Partial / blocked'
-    for artifact in run['artifacts'].values():
-        if not (folder/artifact).is_file():raise ValueError('Missing generated artifact '+artifact)
-    run['artifact_hashes']={name:sha(folder/name) for name in run['artifacts'].values()}
-    save(run,folder)
-    return folder,run
+        run['status']='failed';run['error']=f'{type(exc).__name__}: {exc}'
+    run['seconds']=round(time.perf_counter()-started,3)
+    save(run, folder);progress(run)
+    return run

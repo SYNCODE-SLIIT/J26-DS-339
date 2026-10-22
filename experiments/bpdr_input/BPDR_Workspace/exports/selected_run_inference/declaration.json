@@ -1,0 +1,40 @@
+{
+  "version": "notebook-extra-trees-reproduction-1",
+  "declared_utc": "2026-10-22T15:14:48.212573+00:00",
+  "source_run": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc",
+  "source_checkpoint_sha256": "5bd8eef04ab45cc04ff8daed22c36cd7e862931c06f549b4a867de834df60449",
+  "manifest_sha256": "06dee7188f449b0790ba42cfa6538bbfc3d3cbb06afd3f4b1e356ae1cca76341",
+  "model_parameters": {
+    "n_estimators": 96,
+    "max_depth": 8,
+    "min_samples_leaf": 12,
+    "criterion": "squared_error",
+    "bootstrap": false,
+    "max_features": 1.0,
+    "random_state": 339,
+    "n_jobs": 2
+  },
+  "operating_policy": {
+    "gain": 1.0,
+    "deadband_cents": 3.0
+  },
+  "feature_version": "recovery-single-input-context-1",
+  "fit_split": "train",
+  "feature_count": 31,
+  "training_weights": "Original .50, shifted plateau .35, shifted outside .15; singer balanced",
+  "selection": "Reproduce fixed ExtraTrees and reuse previously locked policy; no new model/policy search",
+  "evaluation": "Reuse development calibration/pilot; NOT an untouched final test",
+  "research_gates_passed": false,
+  "requires_user_review": true,
+  "package_versions": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "scikit-learn": "1.9.1",
+    "joblib": "1.6.0"
+  },
+  "source_hashes": {
+    "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\source\\bpdr_input\\experiments\\learning\\notebook_training.py": "1db65dfa85de5747a44e8b23a179f8e1dc9f48375fad8f8c522f14a76598ea04",
+    "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\source\\bpdr_input\\modeling\\local_context_pilot.py": "aa1702b0b918430e262bc082bf5db4a23f88c9084df15ce467aba0d039c547d4",
+    "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\source\\bpdr_input\\experiments\\learning\\model_recovery.py": "e0eb543ffdd1e3f85a292bd715bc095cfcbb169859031cf882a8291b3c640d6d"
+  }
+}
