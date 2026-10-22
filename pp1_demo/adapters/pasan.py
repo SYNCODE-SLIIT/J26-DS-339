@@ -30,11 +30,14 @@ def load(checkpoint_hash, notebook_hash):
         module=ast.Module(body=[definitions[name]],type_ignores=[])
         exec(compile(ast.fix_missing_locations(module),str(PASAN_NOTEBOOK),'exec'),ns)
     saved=torch.load(PASAN,map_location='cpu',weights_only=True)
-    if saved.get('architecture')!='temporal_transformer' or saved.get('genre_conditioning'):
+    if saved.get('architecture', 'temporal_transformer')!='temporal_transformer' or saved.get('genre_conditioning',False):
         raise ValueError('Unexpected Pasan checkpoint architecture')
     model=ns['HarmonyTemporalTransformer'](sigma_beats=saved['temporal_sigma'],temporal_strength=saved['temporal_strength'])
     model.load_state_dict(saved['model_state_dict'],strict=True)
-    return model.eval(), {k:saved[k] for k in ('epoch','experiment','validation_metrics','temporal_sigma','temporal_strength')}
+    metadata={k:saved[k] for k in ('epoch','experiment','validation_metrics','temporal_sigma','temporal_strength') if k in saved}
+    metadata['experiment']=metadata.get('experiment','phase3_temporal_transformer_weighted')
+    metadata['architecture']='HarmonyTemporalTransformer'
+    return model.eval(), metadata
 
 @torch.inference_mode()
 def predict(notes, beats, settings):
@@ -42,9 +45,9 @@ def predict(notes, beats, settings):
     torch.set_num_threads(2)
     shift=((-settings.tonic_pc+6)%12)-6
     output=[]
-    # Four-bar windows stay inside the model's 16-bar embedding capacity.
-    for left in range(0,len(beats),4*settings.meter):
-        window=beats[left:left+4*settings.meter]
+    if sorted({b['bar_number'] for b in beats}) != list(range(16)):
+        raise ValueError('Pasan inference requires the saved sixteen-bar context.')
+    for window in [beats]:
         start,end=window[0]['start_s'],window[-1]['end_s']
         duration=end-start
         selected=[n for n in notes if n['onset_s']<end and n['onset_s']+n['duration_s']>start]
@@ -58,7 +61,7 @@ def predict(notes, beats, settings):
                'beat_time':torch.tensor([[[b['start_s']-start,b['end_s']-b['start_s']] for b in window]],dtype=torch.float32)/duration,
                'bar_index':torch.tensor([[b['bar_number']-window[0]['bar_number'] for b in window]]),
                'beat_position':torch.tensor([[b['beat_position'] for b in window]]),
-               'meter':torch.full((1,len(window)),settings.meter,dtype=torch.long),
+               'meter':torch.tensor([[b['meter'] for b in window]],dtype=torch.long),
                'beat_padding_mask':torch.zeros((1,len(window)),dtype=torch.bool)}
         roots,families=model(batch)
         rp,fp=roots.softmax(-1)[0],families.softmax(-1)[0]
@@ -70,6 +73,10 @@ def predict(notes, beats, settings):
                 label=f'{PC_NAMES[absolute]}:{QUALITIES[family]}',
                 root_probability=float(rp[i,root]),family_probability=float(fp[i,family]),source='pasan_model'))
     return {'chords':output,'checkpoint':str(PASAN),'checkpoint_sha256':sha(PASAN),'metadata':metadata,
-            'normalization_shift_semitones':shift,'window_bars':4,
+            'normalization_shift_semitones':shift,'window_bars':16,
+            'input_summary':{'notes':len(notes),'beats':len(beats),'bars':16,
+                             'melody_pitch':[1,len(notes)],'melody_time':[1,len(notes),2],
+                             'beat_time':[1,len(beats),2],'root_output':[1,len(beats),12],
+                             'family_output':[1,len(beats),7]},
             'bridge':'Family representatives: DOM→7, HDIM→hdim7, SUS→sus4; family does not specify every extension.',
-            'grid_source':'user_configured','genre_conditioning':False}
+            'grid_source':'saved_dataset','genre_conditioning':False}

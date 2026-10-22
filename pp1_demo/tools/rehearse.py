@@ -1,14 +1,27 @@
-"""Run real audio through the demo; results stay ignored and local."""
-import sys,json
+"""Rehearse a selected local vocal or the complete library without the website."""
+import sys
+sys.dont_write_bytecode=True
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[2];sys.path.insert(0,str(ROOT))
-from pp1_demo.orchestrator import run_pipeline
-from pp1_demo.contracts import Settings
-path=Path(sys.argv[1]) if len(sys.argv)>1 else ROOT/'datasets/humtrans/downloads/wav_data_sync_with_midi/F01_0001_0001_1_D.wav'
-folder,run=run_pipeline(path,Settings(),lambda name,status:print(name,status,flush=True))
-print(json.dumps({'folder':str(folder),'status':run['status'],'stages':run['stages'],
-    'notes':len(run.get('vishwa',{}).get('notes',[])),
-    'basic_chords':len(run.get('pasan',{}).get('chords',[])),
-    'refined_chords':len(run.get('rahul',{}).get('chords',[])),
-    'warnings':run['warnings'],'error':run.get('error')},indent=2))
-if run['status']=='Partial / blocked':raise SystemExit(1)
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]))
+from pp1_demo.config import configure_runtime
+configure_runtime()
+import argparse
+import json
+from pp1_demo.dataset import catalogue
+from pp1_demo.orchestrator import new_run,execute
+
+parser=argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--track',default='track_0000382')
+parser.add_argument('--all',action='store_true')
+args=parser.parse_args()
+tracks=[x['id'] for x in catalogue()] if args.all else [args.track]
+failed=False
+for track in tracks:
+    folder,run=new_run(track)
+    execute(folder,run,lambda r:print(r['active_stage'],r['status'],r['progress'],flush=True))
+    print(json.dumps({'folder':str(folder),'status':run['status'],'seconds':run['seconds'],
+                      'bpdr':run.get('praveen',{}).get('outcome'),
+                      'chords':len(run.get('rahul',{}).get('chords',[])),
+                      'error':run.get('error')},indent=2))
+    failed |= run['status']!='complete'
+raise SystemExit(1 if failed else 0)
