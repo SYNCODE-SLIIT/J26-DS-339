@@ -1,14 +1,13 @@
 {
   "updated": "2026-10-19",
-  "purpose": "Complete data-to-output notebook, verified model selection and all failed criteria, real VocalSet experimental preview and exact accepted-only downstream connection.",
+  "purpose": "Six canonical executable research topics with saved-model evaluation and audio handoff verification.",
   "maintained_notebooks": [
-    "01_input_validation_and_analysis.ipynb",
-    "02_data_review_and_paired_experiments.ipynb",
-    "03_transformer_training.ipynb",
-    "04_transformer_evaluation.ipynb",
-    "05_panel_demonstration.ipynb",
-    "06_real_voice_pilot_and_usefulness.ipynb",
-    "07_learned_stable_note_recovery.ipynb"
+    "01_research_foundations.ipynb",
+    "02_bpdr_methodology.ipynb",
+    "03_data_preparation.ipynb",
+    "04_model_training_and_evaluation.ipynb",
+    "05_audio_processing_and_handoff.ipynb",
+    "06_verification_and_statistics.ipynb"
   ],
   "evidence": {
     "phase2": "runs/phase2/15fb678d1f44406ab4da3fddd7c2f809",
@@ -287,5 +286,15 @@
     "engineering_continues": true,
     "automatic_checks_are_musical_approvals": false,
     "future_review_required_for_proposed_research_anchors": true
+  },
+  "notebook_training_demo": {
+    "active_pointer": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\notebook_training\\current.json",
+    "training_run": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\notebook_training\\2759404560ab4b559a633659d316bec0",
+    "checkpoint_sha256": "682f8e4839b80fa032a52769d6186ca349937e638ef4ddfd8bdf85278a3ec9b3",
+    "fit_receipt_sha256": "94f397aaa8228794ed25fceaeffe9021e09ad40150424d23a764a61002259ac8",
+    "verification_sha256": "23d5b06a01d7b1ae1ce4e05de32ddf8018b1789c875561c79bf1e0aeb390ef4b",
+    "fit_split": "train",
+    "research_gates_passed": false,
+    "scope": "Fixed ExtraTrees reproduction on existing development data; historical evidence unchanged"
   }
 }

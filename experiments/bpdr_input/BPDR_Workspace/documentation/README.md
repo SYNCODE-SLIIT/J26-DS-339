@@ -4,6 +4,11 @@ Start with the current handover. Dated experiment reports are retained history; 
 
 ## Current handover, plans and decisions
 
+- [Notebook guide](NOTEBOOK_GUIDE.md) — six research topics, searchable code blocks and reproducible execution.
+- [Experiment verification report](EXPERIMENT_VERIFICATION_REPORT.md) — recomputed measurements, denominators and retained failed/blocked research criteria.
+- [Research status](RESEARCH_STATUS.md) — proposed BPDR, implemented methods and remaining validation.
+- [Notebook history and archive](notebook_history.json) and [current environment pins](requirements-notebooks.txt).
+
 - [Presentation_Readiness_2026-10-17.md](Presentation_Readiness_2026-10-17.md)
 - [PP1_Master_Plan.md](PP1_Master_Plan.md)
 - [PP1_Phase_Execution_Plan.md](PP1_Phase_Execution_Plan.md)

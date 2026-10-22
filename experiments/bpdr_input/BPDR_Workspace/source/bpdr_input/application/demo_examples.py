@@ -22,9 +22,9 @@ def examples():
         dict(id='silence', label='Silence: rerecording check', input=None, reference=None,
              source_kind='Constructed silence used only to check failure handling.', method='Conservative stable-note baseline'),
     ]
-    from bpdr_input.repair.learned_runtime import CARD, METHOD_NAME, available
+    from bpdr_input.repair.learned_runtime import METHOD_NAME, available, load_model
     if available():
-        card = json.loads(CARD.read_text(encoding='utf-8'))
+        _, _, card = load_model()
         recovered = []
         for item in card.get('demo_cases', []):
             source = Path(item['input']).resolve()

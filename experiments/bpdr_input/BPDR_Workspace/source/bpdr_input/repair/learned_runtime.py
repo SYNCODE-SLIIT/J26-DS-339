@@ -12,17 +12,45 @@ from bpdr_input.audio.pipeline import checksum, process, validate_package
 
 WORKSPACE = COMPONENT_ROOT / 'BPDR_Workspace'
 CARD = WORKSPACE / 'results/model_recovery/demo_model.json'
+ACTIVE_DEMO = WORKSPACE / 'results/notebook_training/current.json'
 METHOD_NAME = 'Learned pitch repair (experimental)'
 
 
-def load_model():
+def active_card_path():
+    """Use a verified notebook-trained card when explicitly activated."""
+    if not ACTIVE_DEMO.exists():
+        return CARD
+    pointer = json.loads(ACTIVE_DEMO.read_text(encoding='utf-8'))
+    path = Path(pointer['card']).resolve()
+    root = (WORKSPACE / 'results/model_recovery/notebook_training').resolve()
+    if not path.is_relative_to(root) or path.name != 'demo_model.json':
+        raise ValueError('Active notebook demo card leaves its training-run directory.')
+    if checksum(path) != pointer['card_sha256']:
+        raise ValueError('Active notebook demo card changed.')
+    card = json.loads(path.read_text(encoding='utf-8'))
+    if (Path(card['checkpoint']).resolve().parent != path.parent or
+            card['checkpoint_sha256'] != pointer['checkpoint_sha256'] or not card.get('notebook_training')):
+        raise ValueError('Active notebook demo pointer and checkpoint disagree.')
+    return path
+
+
+def load_model(card_path=None):
     from bpdr_input.modeling.recovery_model import load_candidate, load_locked_diagnostic
-    card = json.loads(CARD.read_text(encoding='utf-8'))
+    card_file = Path(card_path) if card_path is not None else active_card_path()
+    card = json.loads(card_file.read_text(encoding='utf-8'))
     path = Path(card['checkpoint']).resolve()
     if not path.is_relative_to(WORKSPACE.resolve()):
         raise ValueError('Demo model must remain in BPDR_Workspace.')
     if not card.get('eligible_for_demo') or checksum(path) != card['checkpoint_sha256']:
         raise ValueError('Demo model is not eligible or its checkpoint changed.')
+    if card.get('notebook_training'):
+        receipt_path = path.parent / 'fit_receipt.json'
+        if checksum(receipt_path) != card['fit_receipt_sha256']:
+            raise ValueError('Notebook model fit receipt changed.')
+        receipt = json.loads(receipt_path.read_text(encoding='utf-8'))
+        if (not receipt.get('fit_completed') or receipt.get('calibration_or_pilot_used_for_fit') is not False
+                or receipt['declaration_sha256'] != checksum(path.parent / 'declaration.json')):
+            raise ValueError('Notebook model lacks a verified train-only fit receipt.')
     if card.get('validation_status') == 'exploratory_preview_failed_generalization_gate':
         model, payload = load_locked_diagnostic(path)
         verification = path.parent / 'rendered_verification.json'
@@ -41,8 +69,6 @@ def load_model():
 
 
 def available():
-    if not CARD.exists():
-        return False
     try:
         load_model()
     except (OSError, ValueError, KeyError, ImportError):

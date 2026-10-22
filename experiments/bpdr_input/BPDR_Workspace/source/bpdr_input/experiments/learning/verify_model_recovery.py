@@ -59,7 +59,9 @@ def run(folder, diagnostic=False):
     if len(expected_singers) != 2 or len(sources) != 4 or any(sum(s['source']['singer_id'] == singer for s in sources) != 2 for singer in expected_singers):
         raise ValueError('The complete locked two-singer outer pilot is required')
     meta = dict(checkpoint=str(checkpoint), checkpoint_sha256=checksum(checkpoint),
-                scope=payload['scope'], metrics={})
+                scope=payload['scope'], metrics={},
+                research_gates_passed=False if diagnostic else bool(evidence['outer_proposal_gate_passes']),
+                validation_status='diagnostic_development_replay' if diagnostic else 'pending_rendered_verification')
     started = time.perf_counter()
     original_rows, shifted_rows = [], []
     for source in sources:
@@ -70,6 +72,8 @@ def run(folder, diagnostic=False):
         if checksum(path) != source['working_sha256']:
             raise ValueError('Outer original working waveform changed')
         directory, report = run_candidate(path, model, payload, meta, output_root=folder / 'rendered')
+        if diagnostic and report.get('research_gates_passed') is not False:
+            raise ValueError('A diagnostic replay cannot claim research approval')
         output, label = selected_output(report)
         a, ar = sf.read(path, dtype='float32')
         b, br = sf.read(output, dtype='float32') if output else (np.empty(0), 0)
@@ -85,6 +89,8 @@ def run(folder, diagnostic=False):
             continue
         # Only input waveform and fitted model enter the processing adapter.
         directory, report = run_candidate(pair['path_C'], model, payload, meta, output_root=folder / 'rendered')
+        if diagnostic and report.get('research_gates_passed') is not False:
+            raise ValueError('A diagnostic replay cannot claim research approval')
         output, label = selected_output(report)
         reference, sr = sf.read(pair['path_A'], dtype='float32')
         before, before_sr = sf.read(pair['path_C'], dtype='float32')
@@ -131,6 +137,7 @@ def run(folder, diagnostic=False):
         and all(not r.get('missing_output_scored_frames') for r in shifted_rows)
         and all(g['verified_improvements'] >= 1 and g['error_reduction_fraction'] > 0 for g in by_singer.values()))
     verification = dict(version='delivered-vocalset-recovery-pilot-1', checkpoint_sha256=checksum(checkpoint),
+        verifier_source_sha256=checksum(Path(__file__)),
         declaration_sha256=checksum(folder / 'declaration.json'),
         originals=original_rows, shifts=shifted_rows, by_singer=by_singer,
         rendered_demo_gate_passes=rendered_passes,
