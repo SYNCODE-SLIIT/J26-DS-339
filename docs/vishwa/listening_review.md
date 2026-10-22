@@ -46,3 +46,18 @@ a transposed reference agrees better with two algorithms.
 
 The assistant prepared automatic evidence and visual checks; human listening
 remains pending. The page is a playback aid and does not save form entries.
+
+## Simultaneous comparison
+
+Each case includes “Play original + MIDI 0 together” with a play-from-start button,
+a stop button and a seekable player. Use headphones: original audio is on the
+left and unchanged MIDI tones on the right. One stereo file keeps their timelines
+synchronized. Volume differences are preserved; pitch judgments should still be
+checked with the individual players. Playback does not save review decisions.
+
+The MIDI-delay slider moves only the MIDI reference later, from 0 to 1000 ms in
+10 ms increments. Adjust it, then press Play both from start; the shared player
+also permits seeking. Try 300 ms, compare several note transitions, then adjust
+and compare against Reset delay to 0 ms. The comparison extends to retain delayed
+reference endings. Settings are temporary and are not saved as annotation edits
+or completed review decisions.
