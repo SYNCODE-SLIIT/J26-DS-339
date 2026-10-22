@@ -1,0 +1,11 @@
+{
+  "model": "extra_trees",
+  "operating_policy": {
+    "gain": 1.0,
+    "deadband_cents": 3.0
+  },
+  "calibration_gate_passes": false,
+  "research_gates_passed": false,
+  "reused_settings_from": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc",
+  "interpretation": "Fixed settings copied before this fit; historical pilot was already inspected."
+}

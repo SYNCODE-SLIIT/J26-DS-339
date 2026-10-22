@@ -1,0 +1,119 @@
+{
+  "checkpoint": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\notebook_training\\2759404560ab4b559a633659d316bec0\\selected_model.joblib",
+  "checkpoint_sha256": "682f8e4839b80fa032a52769d6186ca349937e638ef4ddfd8bdf85278a3ec9b3",
+  "declaration_sha256": "9a12015bbb60ff6b9aec51356d629689a5e9f44f087c6521b56169a803c8e56d",
+  "selection": {
+    "model": "extra_trees",
+    "operating_policy": {
+      "gain": 1.0,
+      "deadband_cents": 3.0
+    },
+    "calibration_gate_passes": false,
+    "research_gates_passed": false,
+    "reused_settings_from": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc",
+    "interpretation": "Fixed settings copied before this fit; historical pilot was already inspected."
+  },
+  "fit_receipts": {
+    "extra_trees": {
+      "seconds": 0.9335726000135764,
+      "training_rows": 16842,
+      "completed_within_cap": true
+    }
+  },
+  "fit_receipt_sha256": "94f397aaa8228794ed25fceaeffe9021e09ad40150424d23a764a61002259ac8",
+  "outer_proposal_gate_passes": false,
+  "rendered_demo_gate_passes": false,
+  "model_adopted": false,
+  "old_research_gate_preserved": true,
+  "calibration_replay": {
+    "zero_mae": 25.833333333333336,
+    "permitted_correction_mae": 22.351312408091317,
+    "permitted_response_gain": 0.11606736417473393,
+    "raw_correction_mae": 10.03074028506052,
+    "raw_original_abs_mean": 3.821328378539513,
+    "permitted_original_abs_mean": 0.0,
+    "original_edit_frame_fraction": 0.0,
+    "permitted_outside_abs_mean": 1.2126458647048917,
+    "permitted_detuned_nonidentity": 0.375,
+    "all_attempt_permitted_coverage": 0.1875,
+    "permitted_correction_gain": 0.13928083700968075,
+    "passes": false,
+    "attempted": 16,
+    "audited": 10,
+    "intervention_audit_exclusions": 6,
+    "groups": 2,
+    "by_group": {
+      "female5": {
+        "zero_mae": 25.0,
+        "permitted_correction_mae": 18.035958149515963,
+        "permitted_response_gain": 0.23213472834946786,
+        "raw_correction_mae": 5.578869939654494,
+        "raw_original_abs_mean": 4.83649469746662,
+        "permitted_original_abs_mean": 0.0,
+        "original_edit_frame_fraction": 0.0,
+        "permitted_outside_abs_mean": 2.4252917294097833,
+        "permitted_detuned_nonidentity": 0.75,
+        "all_attempt_permitted_coverage": 0.375,
+        "attempted": 8,
+        "audited": 4,
+        "permitted_correction_gain": 0.2785616740193615
+      },
+      "male5": {
+        "zero_mae": 26.666666666666668,
+        "permitted_correction_mae": 26.666666666666668,
+        "permitted_response_gain": 0.0,
+        "raw_correction_mae": 14.482610630466546,
+        "raw_original_abs_mean": 2.8061620596124057,
+        "permitted_original_abs_mean": 0.0,
+        "original_edit_frame_fraction": 0.0,
+        "permitted_outside_abs_mean": 0.0,
+        "permitted_detuned_nonidentity": 0.0,
+        "all_attempt_permitted_coverage": 0.0,
+        "attempted": 8,
+        "audited": 6,
+        "permitted_correction_gain": 0.0
+      }
+    },
+    "interpretation": "Permitted curves before rendering; not delivered waveform verification"
+  },
+  "outer": {
+    "zero_mae": 27.5,
+    "permitted_correction_mae": 14.664326684392387,
+    "permitted_response_gain": 0.42785577718692047,
+    "raw_correction_mae": 6.027024892254296,
+    "raw_original_abs_mean": 1.7834457048532328,
+    "permitted_original_abs_mean": 0.0,
+    "original_edit_frame_fraction": 0.0,
+    "permitted_outside_abs_mean": 0.4209192650509486,
+    "permitted_detuned_nonidentity": 0.75,
+    "all_attempt_permitted_coverage": 0.375,
+    "permitted_correction_gain": 0.46675175693118587,
+    "passes": false,
+    "attempted": 16,
+    "audited": 4,
+    "intervention_audit_exclusions": 12,
+    "groups": 1,
+    "by_group": {
+      "male6": {
+        "zero_mae": 27.5,
+        "permitted_correction_mae": 14.664326684392387,
+        "permitted_response_gain": 0.42785577718692047,
+        "raw_correction_mae": 6.027024892254296,
+        "raw_original_abs_mean": 1.7834457048532328,
+        "permitted_original_abs_mean": 0.0,
+        "original_edit_frame_fraction": 0.0,
+        "permitted_outside_abs_mean": 0.4209192650509486,
+        "permitted_detuned_nonidentity": 0.75,
+        "all_attempt_permitted_coverage": 0.375,
+        "attempted": 8,
+        "audited": 4,
+        "permitted_correction_gain": 0.46675175693118587
+      }
+    },
+    "interpretation": "Permitted curves before rendering; not delivered waveform verification"
+  },
+  "rendered_verification": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\notebook_training\\2759404560ab4b559a633659d316bec0\\rendered_verification.json",
+  "rendered_verification_sha256": "23d5b06a01d7b1ae1ce4e05de32ddf8018b1789c875561c79bf1e0aeb390ef4b",
+  "actual_render_verification": "Audited interventions only have valid labels; every withheld/rolled-back audited input is scored unchanged. Declared scored frames are fixed; missing delivered pitch receives no gain and fails adoption. Exclusions and all four original anchors are reported. Two heldout singers; no natural-error accuracy estimate.",
+  "adoption_scope": "Separate scoped demo only; historical research model and handoff policy preserved"
+}
