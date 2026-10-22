@@ -310,3 +310,11 @@ The initial fixed ±12 comparison had zero agreement for two cases. R006 median 
 - Executed generator and verified all eight sliders. Executed the extracted JavaScript renderer with an actual comparison WAV at zero/500 ms: original samples unchanged, reference shifted by the exact sample count, leading silence and full ending preserved. Browser interaction is not yet independently verified.
 - Decision: slider values are temporary listening hypotheses, not measured corrections. Compare several note transitions before documenting an offset estimate.
 - Local milestone: `feat: add MIDI delay listening slider`.
+
+## R012 — preliminary user listening observations — 2026-10-22
+
+- User reported best positive MIDI delays for all eight flagged TRAIN cases: M01_0311_0002_1 220 ms; M01_0048_0001_2 240 ms; M02_0312_0001_2_D 740 ms; M02_0302_0002_1 800 ms; M04_0070_0001_1_D 170 ms; M04_0370_0002_2_D 160 ms; M05_0263_0001_2 220 ms; M05_0016_0002_1_D 130 ms.
+- Preserved in `listening_review_observations.json`, separate from the full review decision form. These are user-reported alignment impressions, not algorithmically measured offsets or verified label corrections. No confidence, octave judgment or complete-reference-listening confirmation is inferred for the remaining cases.
+- First case: user favored unchanged MIDI pitch despite automatic octave flag; 220 ms improved beginning/checkpoints/end after comparing 200 and 250 ms. That disagreement remains unresolved.
+- Decision: no blanket delay or octave correction. Next compare unshifted versus user-delayed TRAIN annotations with targeted acoustic evidence, including whether note boundaries improve throughout and whether octave discrepancy persists. Keep original labels and TEST untouched.
+- Checked observation membership against the eight evidence cases and delay range against player controls. No model training performed.
