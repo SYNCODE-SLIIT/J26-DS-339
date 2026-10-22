@@ -301,3 +301,12 @@ The initial fixed ±12 comparison had zero agreement for two cases. R006 median 
 - Regenerated the ignored HTML/media through `scripts/build_listening_review.py`. Verified eight comparison files have two channels and exactly match source sample rate/frame count; verified eight paired-play controls and clean diff formatting. Browser interaction and subjective listening have not been verified by the assistant.
 - Existing decision records are preserved. No pitch/annotation correction or training expansion. Automatic evidence values are unchanged; generator provenance hash updated.
 - Local milestone: `feat: add synchronized listening comparison`.
+
+## R011 — adjustable MIDI listening delay — 2026-10-22
+
+- User reported MIDI 0 sounding closest but quieter, with a possible overall lead of half a second or less on M01_0311_0002_1. These are subjective observations; exact offset and pitch remain unverified and no completed review is inferred.
+- Added per-case 0–1000 ms MIDI-delay sliders in 10 ms steps and reset buttons. Positive values move the right-channel reference later while left-channel source timing remains fixed. Changing delay stops playback; use Play both to restart or seek in the rebuilt comparison.
+- Render shifted PCM16 stereo in browser memory from embedded comparison data, permitting direct local HTML use without a web server. Extend the comparison tail instead of truncating delayed notes. No source, label or review-file modifications.
+- Executed generator and verified all eight sliders. Executed the extracted JavaScript renderer with an actual comparison WAV at zero/500 ms: original samples unchanged, reference shifted by the exact sample count, leading silence and full ending preserved. Browser interaction is not yet independently verified.
+- Decision: slider values are temporary listening hypotheses, not measured corrections. Compare several note transitions before documenting an offset estimate.
+- Local milestone: `feat: add MIDI delay listening slider`.

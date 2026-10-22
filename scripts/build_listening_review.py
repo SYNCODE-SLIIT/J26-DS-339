@@ -1,6 +1,6 @@
 """Build a local listening packet without changing or certifying annotations."""
 from pathlib import Path
-import sys,json,hashlib,html,os
+import sys,json,hashlib,html,os,base64
 import numpy as np
 import soundfile as sf
 import matplotlib
@@ -81,9 +81,14 @@ def main():
         comparison*=min(1.,.95/max(float(np.max(np.abs(comparison))),1e-12))
         comparison_name=f'{key}_original_and_midi_0.wav'
         sf.write(folder/comparison_name,comparison,sr,subtype='PCM_16')
+        comparison_b64=base64.b64encode((folder/comparison_name).read_bytes()).decode("ascii")
         section+=f'''<div class="comparison"><h3>Play original + MIDI 0 together</h3>
-<p>Use headphones: original in the left ear, MIDI 0 in the right. Both start at the same timeline position. Volume differences are preserved.</p>
-<audio id="compare-{key}" controls preload="none" src="{comparison_name}"></audio>
+<p>Use headphones: original in the left ear, MIDI 0 in the right. At 0 ms, both use their original timeline. Increase MIDI delay if the reference starts too early. Volume differences are preserved.</p>
+<audio id="compare-{key}" controls preload="none" src="{comparison_name}" data-original="{comparison_b64}"></audio>
+<label for="delay-{key}">MIDI delay: <output id="delay-value-{key}">0 ms</output></label>
+<input id="delay-{key}" type="range" min="0" max="1000" step="10" value="0" aria-label="MIDI delay in milliseconds" oninput="document.getElementById('delay-value-{key}').textContent=this.value+' ms'" onchange="setMidiDelay('compare-{key}',this.value)">
+<button type="button" onclick="resetMidiDelay('compare-{key}','delay-{key}','delay-value-{key}')">Reset delay to 0 ms</button>
+<p>Positive delay moves MIDI later. Adjust, then press Play both. Compare several note changes; this setting is not saved as an annotation correction.</p>
 <button type="button" onclick="playComparison('compare-{key}')">▶ Play both from start</button>
 <button type="button" onclick="stopComparison('compare-{key}')">■ Stop both</button>
 <p class="playback-status" role="status"></p></div>'''
@@ -94,6 +99,49 @@ def main():
         sections.append(section)
     # Save the playback page and automatic evidence for later human review.
     page='''<!doctype html><html lang="en"><meta charset="utf-8"><title>Eight TRAIN listening cases</title><style>body{font:17px system-ui;max-width:1000px;margin:40px auto;padding:20px;background:#fafafa;color:#202020}section{border-top:2px solid #ccc;padding:24px 0}img{width:100%;display:block}audio{width:100%}pre{white-space:pre-wrap}</style><h1>TRAIN annotation listening review</h1><p>R009 · All decisions remain pending human review. Original recordings are unchanged. Sine references preserve MIDI timing but do not reproduce vocal timbre. Algorithm agreement and octave-shift similarity do not establish correct annotations.</p><p>Record decisions in experiments/vishwa/results/listening_review_decisions.json using the protocol in docs/vishwa/listening_review.md. This page does not save responses.</p>'''+''.join(sections)+'''<script>
+// Re-render PCM samples in memory so both tracks retain one playback clock.
+function delayedStereoWav(bytes, milliseconds){
+  const view=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);
+  let position=12, dataStart=0, dataSize=0, rate=0;
+  while(position+8<=bytes.length){
+    const name=String.fromCharCode(...bytes.subarray(position,position+4));
+    const size=view.getUint32(position+4,true);
+    if(name==='fmt '){
+      if(view.getUint16(position+8,true)!==1 || view.getUint16(position+10,true)!==2 || view.getUint16(position+22,true)!==16)throw Error('Expected stereo PCM16');
+      rate=view.getUint32(position+12,true);
+    }
+    if(name==='data'){dataStart=position+8;dataSize=size;}
+    position+=8+size+(size%2);
+  }
+  if(!rate || !dataStart || dataSize%4 || dataStart+dataSize>bytes.length)throw Error('Invalid WAV');
+  const delay=Math.round(Number(milliseconds)*rate/1000),frames=dataSize/4;
+  if(!Number.isFinite(delay)||delay<0||delay>rate)throw Error('Invalid delay');
+  const output=new ArrayBuffer(44+(frames+delay)*4),out=new DataView(output);
+  function text(offset,value){for(let i=0;i<value.length;i++)out.setUint8(offset+i,value.charCodeAt(i));}
+  text(0,'RIFF');out.setUint32(4,output.byteLength-8,true);text(8,'WAVE');text(12,'fmt ');
+  out.setUint32(16,16,true);out.setUint16(20,1,true);out.setUint16(22,2,true);
+  out.setUint32(24,rate,true);out.setUint32(28,rate*4,true);out.setUint16(32,4,true);out.setUint16(34,16,true);
+  text(36,'data');out.setUint32(40,(frames+delay)*4,true);
+  for(let i=0;i<frames;i++){
+    out.setInt16(44+i*4,view.getInt16(dataStart+i*4,true),true);
+    out.setInt16(44+(i+delay)*4+2,view.getInt16(dataStart+i*4+2,true),true);
+  }
+  return output;
+}
+function setMidiDelay(id,milliseconds){
+  stopAllAudio();const audio=document.getElementById(id),status=audio.parentElement.querySelector('.playback-status');
+  try{
+    if(!audio.originalBytes)audio.originalBytes=Uint8Array.from(atob(audio.dataset.original),c=>c.charCodeAt(0));
+    const wav=delayedStereoWav(audio.originalBytes,milliseconds);
+    if(audio.delayUrl)URL.revokeObjectURL(audio.delayUrl);
+    audio.delayUrl=URL.createObjectURL(new Blob([wav],{type:'audio/wav'}));
+    audio.src=audio.delayUrl;audio.load();
+    status.textContent='MIDI delayed by '+milliseconds+' ms. Press Play both from start.';
+  }catch(error){status.textContent='Could not apply delay: '+error.message;}
+}
+function resetMidiDelay(audioId,sliderId,labelId){
+  document.getElementById(sliderId).value=0;document.getElementById(labelId).textContent='0 ms';setMidiDelay(audioId,0);
+}
 function stopAllAudio(){document.querySelectorAll('audio').forEach(a=>a.pause());}
 async function playComparison(id){
   stopAllAudio();
