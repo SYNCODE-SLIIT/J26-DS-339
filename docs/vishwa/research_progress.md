@@ -324,3 +324,55 @@ The initial fixed ±12 comparison had zero agreement for two cases. R006 median 
 Inspected merge 67c84e0 against 37f5d54, component READMEs, core input/output code, saved Pasan notebook results and root installed-package metadata. Recorded findings in `merged_project_review.md`. Vishwa paths unchanged by the merge; root dependency requirements changed. Several teammate packages and expected generated/raw-data paths are absent locally. No sync, downloads, model inference or teammate tests executed. Historical metrics are attributed to saved outputs, not fresh runs.
 
 Decision: do not assume an integrated application from merged files. Resolve architecture discrepancy (proposed final validator versus implemented BPDR input component), select a downstream predictor/checkpoint, and map note fields while establishing required key and complete-bar beat metadata. Continue HumTrans timing/label work without automatic transposition. User's existing environment preserved. Local milestone: `docs: map merged components and integration gaps`.
+
+## 2026-10-23 — R014: portable checkpoints and live PP1 integration
+
+**Objective:** restore Vishwa's skipped stage in the merged team demonstration and
+make the existing learned prototypes available on teammates' machines.
+
+**Repository:** fetched and fast-forwarded the clean feature branch from `80fb89b`
+to `4f60115`. Inspected the team's standard-library HTTP/HTML app, live BPDR export,
+sixteen-bar Pasan input contract and Rahul's fixed-major mode. Kept their model
+source and selected checkpoints unchanged.
+
+**Checkpoint export:** copied the existing CNN (18,413 parameters) and hybrid
+(31,117 parameters), plus TRAIN normalization, to
+`experiments/vishwa/checkpoints/weak_score_pilot/`. Both checkpoint digests match
+the original `score_model_pilot.json` report. The bundle is approximately 211 KB.
+No new training or accuracy evaluation occurred. Historical VALID recording-macro
+score-class accuracies remain 42.53% / 39.45% on the fixed 20 TRAIN / 10 VALID pilot.
+Added a standalone model definition, hash manifest and reproducible setup.
+
+**Decision:** run pYIN on BPDR's accepted waveform to supply octave-aware note
+intervals; run both trained score-class models on the same live Mel features for
+visible experimental predictions. Do not fabricate octave or note boundaries
+from pitch-class outputs. Replace every saved note inside the audible crop,
+including rests; preserve clipped saved notes only outside it to satisfy the
+existing sixteen-bar context. Saved beats/key and fixed-major mode remain labelled.
+
+**Execution:** `uv run --no-sync python -B -m unittest discover -s pp1_demo/tests -v`
+passed 12 tests. `uv run --no-sync python -B pp1_demo/tools/rehearse.py --track
+track_0000382` completed all four components on a real 19.790-second clip: 57 live
+notes, both learned checkpoints executed, 42 excerpt-aligned basic and refined
+chords, and generated melody/chord/audio artifacts. Cold BPDR initialization made
+that first run 107.574 seconds; this is not representative warm latency.
+
+**Browser/API verification:** the browser run completed in 16.745 seconds including
+presentation holds; Vishwa took 1.042 seconds. HTTP integration check completed in
+16.024 seconds, confirmed accepted-audio hash equality, live notes in the downstream
+context, both classifiers, all four stages, artifact downloads and path boundaries.
+Verified the visible melody piano roll, F0, Mel spectrogram, checkpoint probability
+maps and research disclosures. These are functional checks, not musical accuracy.
+
+**Portability:** uv setup and standalone audio-check commands added; an app-local
+BPDR runtime was needed because the legacy interpreter was absent on this Mac.
+No raw recordings, dataset shards, generated media or environments are committed.
+The existing library still requires local Jamendo extraction assets. macOS was
+executed; Windows setup paths were implemented but not tested on Windows hardware.
+
+**Next research work:** finish performed-pitch/timing annotation review, then improve
+and evaluate the learned model. This integration does not close those research gaps.
+
+Second real-recording check: `track_0000383` completed in 11.986 s without display holds, with 41 live notes and 41 excerpt chord predictions. Both learned checkpoints ran; the minor source key remained saved metadata and Rahul mode remained the explicit major constant.
+
+Checkpoint export commit: `56d2eb5` (`feat: export portable Vishwa melody checkpoints`).

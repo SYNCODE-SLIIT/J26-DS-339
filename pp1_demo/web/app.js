@@ -11,11 +11,12 @@ const chordFamilies = ['MAJ','MIN','DOM','DIM','HDIM','AUG','SUS'];
 const romanChord = c => c && Number.isInteger(c.relative_root) && romanRoots[c.relative_root] && chordFamilies.includes(c.family) ? `${romanRoots[c.relative_root]} · ${c.family}` : '—';
 const stageInfo = [
   {id:'praveen', number:'01', title:'Vocal assessment', owner:'ExtraTrees', glyph:'∿', input:'Vocal waveform', output:'Accepted audio + repair proposal'},
-  {id:'context', number:'02', title:'Saved music features', owner:'Saved feature bridge', glyph:'♬', input:'Aligned extraction files', output:'Melody + beats + reference key'},
+  {id:'vishwa', number:'02', title:'Melody understanding', owner:'pYIN + CNN / Transformer', glyph:'♬', input:'BPDR accepted waveform', output:'Live notes + learned pitch classes'},
   {id:'pasan', number:'03', title:'Harmonic planning', owner:'Temporal Transformer', glyph:'▥', input:'16-bar melody & beat context', output:'Roman root + chord family'},
   {id:'rahul', number:'04', title:'Chord refinement', owner:'Multi-task Transformer', glyph:'✧', input:'Basic chords + musical context', output:'Refined chords + top candidates'}
 ];
-let tracks=[], genres=[], selected=null, run=null, activeStage='context', poll=null, timer=null, lastFingerprint='', listenFingerprint='', inspectPinned=false, busy=false, startedAt=0, selectionRequest=0;
+let researchPanels={};
+let tracks=[], genres=[], selected=null, run=null, activeStage='vishwa', poll=null, timer=null, lastFingerprint='', listenFingerprint='', inspectPinned=false, busy=false, startedAt=0, selectionRequest=0;
 async function request(url, options) {
   const response = await fetch(url,options);
   const data = await response.json();
@@ -45,7 +46,7 @@ function pianoRoll(notes,beats,duration){
   for(let p=Math.ceil(low/12)*12;p<high;p+=12){body+=`<line class="axis" x1="${L}" x2="${W-R}" y1="${y(p)}" y2="${y(p)}"/><text x="29" y="${y(p)+3}" text-anchor="end">C${Math.floor(p/12)-1}</text>`;}
   for(const b of beats){const start=Math.max(0,b.start_s);body+=`<line x1="${x(start)}" x2="${x(start)}" y1="${T}" y2="${H-B}" stroke="${b.beat_position===1?'#688965':'#37503e'}" opacity="${b.beat_position===1?.6:.35}" stroke-dasharray="${b.beat_position===1?'3 3':'1 4'}"/>`;}
   for(const n of notes){body+=`<rect x="${x(n.onset_s)}" y="${y(n.pitch_midi)-3}" width="${Math.max(2,x(n.onset_s+n.duration_s)-x(n.onset_s))}" height="6" rx="2" fill="#b0ecb5" opacity=".85"><title>MIDI ${n.pitch_midi} · ${fmt(n.onset_s)}–${fmt(n.onset_s+n.duration_s)}s · ${escapeHtml(n.source||'saved extraction')}</title></rect>`;}
-  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Saved melody piano roll with beat positions">${body}</svg>`;
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Melody piano roll with beat positions">${body}</svg>`;
 }
 function lineChart(series,duration,label,color='#b0ecb5'){
   const W=920,H=175,L=42,R=16,T=14,B=26;
@@ -73,7 +74,7 @@ function romanTimeline(rows,duration,label='Predicted Roman roots and chord fami
 function melodyInput(){
   if(!selected)return '';
   const notes=run?.context?.notes||selected.notes,beats=run?.context?.beats||selected.beats;
-  return `<div class="chart-box input-melody"><div class="chart-title"><span>Input melody · piano roll</span><small>From saved music features · dashed lines mark beats</small></div>${pianoRoll(notes,beats,selected.duration_s)}<p class="small muted">The audible excerpt is shown here. Inference uses ${selected.context_notes} notes and ${selected.context_beats} beat queries across 16 complete bars of the same track.</p></div>`;
+  return `<div class="chart-box input-melody"><div class="chart-title"><span>Input melody · piano roll</span><small>${run?.vishwa?'Live pYIN inside the crop':'Saved preview before inference'} · dashed lines mark saved beats</small></div>${pianoRoll(notes,beats,selected.duration_s)}<p class="small muted">The audible excerpt is shown here. Inference uses ${run?.context?.context_notes||selected.context_notes} notes and ${selected.context_beats} beat queries across 16 complete bars of the same track.</p></div>`;
 }
 function familyLegend(){
   return `<div class="family-vocabulary"><p class="small muted">Seven chord-family classes</p><div class="pill-row">${chordFamilies.map(f=>`<span class="pill">${f}</span>`).join('')}</div></div>`;
@@ -108,7 +109,7 @@ async function selectTrack(id){
   catch(error){if(ticket===selectionRequest){$('run-button').disabled=!selected;toast(error.message);}return;}
   if(ticket!==selectionRequest)return;
   selected=preview;
-  run=null;lastFingerprint='';listenFingerprint='';activeStage='context';inspectPinned=false;
+  run=null;lastFingerprint='';listenFingerprint='';activeStage='vishwa';inspectPinned=false;
   $('track-title').textContent=selected.title;
   $('track-subtitle').textContent=`${fmt(selected.duration_s)}-second vocal · excerpt ${fmt(selected.crop_offset_s)}–${fmt(selected.crop_offset_s+selected.duration_s)}s in the original song`;
   $('source-audio').src=selected.audio_url;
@@ -126,17 +127,40 @@ function renderTabs(){
   $('stage-tabs').innerHTML=stageInfo.map(s=>`<button class="stage-tab" id="tab-${s.id}" role="tab" aria-selected="${activeStage===s.id}" aria-controls="stage-detail" data-tab="${s.id}"><span>${s.number}</span>${s.title}</button>`).join('');
   document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{activeStage=b.dataset.tab;inspectPinned=true;renderFlow();renderTabs();renderStage();});
 }
-function renderContext(){
-  const c=run?.context,track=selected;
-  if(!track)return empty('Choose a recording','Saved music features will appear here.');
-  const notes=c?.notes||track.notes,beats=c?.beats||track.beats;
-  return header('The music is already in the dataset.','Feature extraction is deferred. Saved, time-aligned melody notes, beats and a key estimate provide the musical inputs for the two Transformers.','SAVED EXTRACTION',true)
-    +io('Aligned extraction files','Combined melody · beat grid · melody-key estimate · original genre tags',`${track.context_notes} notes + ${track.context_beats} beat queries`,'Sixteen complete bars of context; original song timestamps are aligned to this vocal excerpt.')
-    +`<div class="metrics-row">${metric(notes.length,'notes in the audible excerpt')}${metric(track.context_notes,'notes in model context')}${metric(track.reference_key,'normalization reference')}${metric('Major','fixed refinement mode')}</div>`
-    +`<div class="chart-box"><div class="chart-title"><span>Saved melody · piano roll</span><small>Hover notes for pitch and timing · dashed lines mark beats</small></div>${pianoRoll(notes,beats,track.duration_s)}</div>`
-    +`<div class="notice amber">Saved features are the bridge here, not a live feature-extraction prediction. The models see ${fmt(track.context_duration_s)} seconds of surrounding context; playback shows only the ${fmt(track.duration_s)}-second vocal excerpt.</div>`
-    +details('Inspect the feature handoff',c||{reference_key:track.reference_key,source_key:track.key,genre:$('genre-select')?.value||track.genre,refinement_mode:'major',mode_source:'demo_constant',context_bars:16,context_notes:track.context_notes,context_beats:track.context_beats,crop_offset_s:track.crop_offset_s,example_notes:notes.slice(0,4),example_beats:beats.slice(0,4)});
+function featureHeatmap(values,times,labels,title,probability=false){
+  if(!values.length||!times.length)return '';
+  const W=920,H=220,L=42,T=12,B=25,U=W-L-16,V=H-T-B;
+  const stride=Math.max(1,Math.ceil(times.length/120)),duration=selected.duration_s;
+  let body=axes(duration,W,H);
+  values.forEach((row,j)=>{for(let i=0;i<times.length;i+=stride){
+    const value=Number(row[i]),fraction=Math.max(0,Math.min(1,probability?value:(value+80)/80));
+    const x=L+times[i]/duration*U,w=Math.max(1,((times[Math.min(times.length-1,i+stride)]||duration)-times[i])/duration*U);
+    body+=`<rect x="${x}" y="${T+V*(values.length-1-j)/values.length}" width="${w+1}" height="${V/values.length+1}" fill="hsl(${270-220*fraction},65%,${10+65*fraction}%)"><title>${escapeHtml(labels[j])} · ${fmt(times[i])}s · ${value.toFixed(3)}</title></rect>`;
+  }});
+  return `<div class="chart-box"><div class="chart-title"><span>${escapeHtml(title)}</span><small>${probability?'Rest then C…B, bottom to top · probability 0–1':'80 Mel bands low to high · −80 to 0 dB'}</small></div><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${escapeHtml(title)}">${body}</svg></div>`;
 }
+function renderVishwa(){
+  const v=run?.vishwa,state=stageStatus('vishwa');
+  let html=header('Understand the melody from the accepted voice.','Live audio preparation, Mel features and pYIN notes; the trained CNN and CNN–Transformer run alongside them as weak-score pitch-class experiments.','LIVE AUDIO + CHECKPOINTS');
+  html+=io('BPDR accepted waveform','Mono · 22,050 Hz · peak normalized · source timing preserved','Notes and parallel learned predictions','pYIN notes drive the harmonic models. CNN/hybrid predict rest or pitch class, without octave or note boundaries.');
+  if(!v)html+=empty(state==='running'?'Extracting melody and running both checkpoints…':'Ready to analyse the accepted audio.','Saved library notes are only a pre-run preview. This stage must succeed before the downstream models run.');
+  else{
+    html+=`<div class="metrics-row">${metric(v.notes.length,'live note events')}${metric('18,413','CNN parameters')}${metric('31,117','hybrid parameters')}${metric('2','trained checkpoints executed')}</div>`;
+    html+=`<div class="chart-box"><div class="chart-title"><span>Live melody notes</span><small>pYIN on accepted audio · original crop time</small></div>${pianoRoll(v.notes,run?.context?.beats||selected.beats,selected.duration_s)}</div>`;
+    html+=`<div class="chart-box"><div class="chart-title"><span>Voiced fundamental frequency</span><small>Hz · silence masked</small></div>${lineChart(v.chart.times_s.map((t,i)=>[t,v.chart.f0_hz[i]]),selected.duration_s,'Live pYIN F0')}</div>`;
+    html+=featureHeatmap(v.chart.mel_db,v.chart.times_s,v.chart.mel_db.map((_,i)=>'Mel band '+i),'Live Mel spectrogram');
+    for(const [name,model] of Object.entries(v.pilot_models)){
+      const columns=model.classes.map((_,i)=>model.chart_probabilities.map(row=>row[i]));
+      html+=featureHeatmap(columns,v.chart.times_s,model.classes,name+' · actual checkpoint predictions',true);
+    }
+    html+=`<div class="notice amber">These classifiers have no octave or note-boundary head. Their predictions are shown honestly as experimental outputs. Live pYIN notes replace the entire audible crop, including rests; only surrounding notes remain saved. Beats/key are still saved inputs.</div>`;
+    if(run.artifacts.vishwa_prepared)html+=`<div class="chart-box"><div class="chart-title"><span>Your prepared audio</span></div><audio controls src="${artifact(run.artifacts.vishwa_prepared)}"></audio></div>`;
+    html+=details('Inspect checkpoint identities, preprocessing and handoff',{input_audio_sha256:v.input_audio_sha256,bundle_manifest_sha256:v.bundle_manifest_sha256,preprocessing:v.preprocessing,downstream_source:v.downstream_source,models:Object.fromEntries(Object.entries(v.pilot_models).map(([name,m])=>[name,{checkpoint_sha256:m.checkpoint_sha256,parameters:m.parameters,historical_validation_accuracy:m.historical_validation_recording_macro_accuracy}])),context:run.context,warnings:v.warnings});
+  }
+  for(const [name,text] of Object.entries(researchPanels))html+=`<div class="detail-footer"><details><summary>${escapeHtml(name)}</summary><pre style="white-space:pre-wrap;line-height:1.7">${escapeHtml(text)}</pre></details></div>`;
+  return html;
+}
+
 function renderPraveen(){
   const p=run?.praveen,state=stageStatus('praveen');
   let html=header('Listen first. Assess the vocal.','The notebook-trained ExtraTrees model analyses local pitch context and proposes small corrections in cents. Its technical audio handoff and experimental repair preview are kept separate.','LIVE MODEL');
@@ -157,7 +181,7 @@ function renderPasan(){
   let html=header('Plan harmony with temporal attention.','A melody encoder and beat-query decoder connect nearby notes to each chord position. The latest saved Temporal Transformer predicts a relative root and a coarse chord family.','LIVE MODEL');
   html+=io('Sixteen bars of melody + beats',`${selected?.context_notes||'—'} pitch/timing note events · ${selected?.context_beats||'—'} beat queries · C-based normalization`,'A Roman root + family at every beat','12 relative Roman roots × 7 chord families. Displayed relative to the reference key; the prediction handoff retains the root and family.');
   html+=melodyInput()+familyLegend();
-  if(!p)return html+empty(state==='running'?'The Temporal Transformer is planning the progression…':'The first harmonic plan will appear here.','The checkpoint runs after vocal assessment and the saved-feature bridge complete.');
+  if(!p)return html+empty(state==='running'?'The Temporal Transformer is planning the progression…':'The first harmonic plan will appear here.','The checkpoint runs after vocal assessment and the live melody stage and context bridge complete.');
   html+=`<div class="metrics-row">${metric(p.metadata.epoch,'checkpoint epoch · latest')}${metric('16 bars','exact training context length')}${metric(p.chords.length,'chord queries in this excerpt')}${metric('2 beats','Gaussian attention width')}</div>`;
   html+=`<div class="chart-box"><div class="chart-title"><span>Predicted harmonic plan · Roman numerals</span><small>Relative to ${escapeHtml(selected.reference_key)} · Roman root + family</small></div>${romanTimeline(p.chords,selected.duration_s)}</div>`;
   html+=`<div class="chart-box"><div class="chart-title"><span>Root prediction scores</span><small>Raw softmax scores · not calibrated confidence</small></div>${confidenceChart(p.chords,selected.duration_s)}</div>`;
@@ -167,7 +191,7 @@ function renderPasan(){
 function renderRahul(){
   const r=run?.rahul,state=stageStatus('rahul');
   let html=header('Refine the progression, beat by beat.','The multi-task Transformer combines the harmonic plan with melody, harmonic context, genre and timing. It predicts detailed chord labels and a separate auxiliary quality head.','LIVE MODEL');
-  html+=io('Basic chords + original musical context','Saved melody · key · Roman/function context derived from predicted chords · genre · mode fixed to major','Detailed chords + three candidates','Full-chord vocabulary: 402 classes · auxiliary quality vocabulary: 13 classes · four-bar inference groups.');
+  html+=io('Basic chords + original musical context','Live crop melody + saved outside context · key · Roman/function context derived from predicted chords · genre · mode fixed to major','Detailed chords + three candidates','Full-chord vocabulary: 402 classes · auxiliary quality vocabulary: 13 classes · four-bar inference groups.');
   html+=melodyInput();
   if(!r)return html+empty(state==='running'?'The chord refinement model is refining the harmonic plan…':'The refined progression appears after harmonic planning.','No reference chord targets are passed into either Transformer.');
   const p=run.pasan;
@@ -183,9 +207,9 @@ function renderRahul(){
 function renderStage(){
   if(!selected)return;
   $('stage-detail').setAttribute('role','tabpanel');$('stage-detail').setAttribute('aria-labelledby','tab-'+activeStage);
-  $('stage-detail').innerHTML=({praveen:renderPraveen,context:renderContext,pasan:renderPasan,rahul:renderRahul}[activeStage]||renderContext)();
+  $('stage-detail').innerHTML=({praveen:renderPraveen,context:renderVishwa,vishwa:renderVishwa,pasan:renderPasan,rahul:renderRahul}[activeStage]||renderVishwa)();
   const state=stageStatus(activeStage);
-  $('inspect-state').textContent=state==='running'?'Live inference in progress':state==='complete'?'Actual result · '+run.stages[activeStage].seconds+'s':activeStage==='context'?'Saved source features':'Waiting for inference';
+  $('inspect-state').textContent=state==='running'?'Live inference in progress':state==='complete'?'Actual result · '+run.stages[activeStage].seconds+'s':activeStage==='context'?'Mixed live / saved context':'Waiting for inference';
 }
 function renderRunState(){
   const active=run?.active_stage;
@@ -196,7 +220,7 @@ function renderRunState(){
   $('progress-fill').style.width=(run?.progress||0)+'%';
   $('run-dot').className='run-dot '+(busy?'running':'');
   const handoff=busy&&active&&run?.stages?.[active]?.status==='complete';
-  $('run-status').textContent=handoff?({'context':'Saved feature handoff ready · passing notes and beats to harmonic planning…','pasan':'Harmonic plan ready · passing predictions to chord refinement…','rahul':'Refined chords ready · preparing listening previews…'}[active]||'Handoff complete · continuing…'):run?.status==='complete'?'Pipeline complete · all three models ran':run?.status==='failed'?'This run stopped · inspect the error below':busy?({'praveen':'Assessing the vocal…','context':'Aligning saved musical features…','pasan':'Predicting the harmonic plan…','rahul':'Refining the chords…','render':'Rendering audio and MIDI previews…'}[active]||'Preparing the selected recording…'):'Ready · choose a recording and run the pipeline.';
+  $('run-status').textContent=handoff?({'vishwa':'Live melody ready · aligning with surrounding context…','context':'Live melody handoff ready · passing notes and saved beats to harmonic planning…','pasan':'Harmonic plan ready · passing predictions to chord refinement…','rahul':'Refined chords ready · preparing listening previews…'}[active]||'Handoff complete · continuing…'):run?.status==='complete'?'Pipeline complete · all four components ran':run?.status==='failed'?'This run stopped · inspect the error below':busy?({'praveen':'Assessing the vocal…','vishwa':'Extracting live melody and running both score checkpoints…','context':'Aligning live melody with saved musical context…','pasan':'Predicting the harmonic plan…','rahul':'Refining the chords…','render':'Rendering audio and MIDI previews…'}[active]||'Preparing the selected recording…'):'Ready · choose a recording and run the pipeline.';
   $('error-message').hidden=!run?.error;
   $('error-message').textContent=run?.error||'';
   if(run?.seconds)$('run-elapsed').textContent=run.seconds+'s total';
@@ -208,7 +232,7 @@ function renderListening(){
   if(fingerprint===listenFingerprint)return;listenFingerprint=fingerprint;
   const a=run?.artifacts||{};
   if(!a.combined){$('downloads').innerHTML='';$('listen-players').innerHTML='<div class="card listen-placeholder"><span class="empty-symbol">♫</span><h3>Your harmony starts here.</h3><p>Run the pipeline to create melody, chord and combined audio previews.</p><small>Accompaniment is synthesized instrument audio.</small></div>';return;}
-  const players=[['melody','SAVED MELODY','The extracted melody','Synthesized notes from the saved extraction, aligned to this vocal excerpt.','♬'],['basic','HARMONIC PLANNING OUTPUT','The harmonic plan','An instrumental rendering of the root and family predictions.','▥'],['combined','VOICE + CHORD REFINEMENT OUTPUT','The finished demo','Accepted vocal mixed with synthesized, refined chord accompaniment.','✧']];
+  const players=[['melody','LIVE MELODY OUTPUT','The extracted melody','Synthesized pYIN notes measured from BPDR accepted audio in this run.','♬'],['basic','HARMONIC PLANNING OUTPUT','The harmonic plan','An instrumental rendering of the root and family predictions.','▥'],['combined','VOICE + CHORD REFINEMENT OUTPUT','The finished demo','Accepted vocal mixed with synthesized, refined chord accompaniment.','✧']];
   $('listen-players').innerHTML=players.map(([key,kicker,title,body,icon],i)=>`<div class="card listen-card ${i===2?'featured':''}"><span class="listen-icon">${icon}</span><small>${kicker}</small><h3>${title}</h3><p>${body}</p><audio controls preload="metadata" src="${artifact(a[key])}" aria-label="Play ${escapeHtml(title)}"></audio></div>`).join('');
   $('downloads').innerHTML=`<a class="download" href="${artifact('manifest.json')}" download>↓ Run JSON</a><a class="download" href="${artifact(a.refined_midi)}" download>↓ Refined MIDI</a><a class="download" href="${artifact(a.combined)}" download>↓ Combined WAV</a>`;
 }
@@ -218,13 +242,13 @@ async function pollRun(id){
     const fingerprint=JSON.stringify(next);
     if(fingerprint!==lastFingerprint){
       lastFingerprint=fingerprint;
-      if(!inspectPinned&&next.active_stage&&next.active_stage!=='render')activeStage=next.active_stage;
+      if(!inspectPinned&&next.active_stage&&next.active_stage!=='render')activeStage=next.active_stage==='context'?'vishwa':next.active_stage;
       if(!inspectPinned&&next.status==='complete')activeStage='rahul';
       renderFlow();renderTabs();renderStage();renderRunState();renderListening();drawLibrary();
     }
     if(['complete','failed'].includes(next.status)){
       clearInterval(poll);poll=null;clearInterval(timer);timer=null;
-      if(next.status==='complete'){localStorage.setItem('harmonyLabRun',id);toast('All three models finished. Your listening previews are ready.');}
+      if(next.status==='complete'){localStorage.setItem('harmonyLabRun',id);toast('All four components finished. Your listening previews are ready.');}
       return;
     }
   }catch(error){clearInterval(poll);poll=null;clearInterval(timer);timer=null;busy=false;if(run){run.status='failed';run.error='Could not read run progress: '+error.message;}renderRunState();toast('Could not read this run: '+error.message);}
@@ -244,7 +268,7 @@ async function startRun(){
 }
 function sourceDetails(){
   if(!selected)return;
-  $('source-dialog-body').innerHTML=`<p><strong>${escapeHtml(selected.title)}</strong> is an existing vocal excerpt from your local MTG-Jamendo extraction outputs. It has not been newly recorded or generated by this demo.</p><div class="metrics-row">${metric(fmt(selected.duration_s)+'s','playable vocal excerpt')}${metric(fmt(selected.crop_offset_s)+'s','offset in original song')}</div><p>The source is an existing WAV vocal crop. Its saved checksum is checked before processing. The UI uses the source format directly rather than converting it to MP3.</p><p>Saved melody, beat and key features bridge the deferred feature-extraction stage. The two Transformers use ${fmt(selected.context_duration_s)} seconds of complete sixteen-bar context from the same track, then crop their output timelines back to the audible excerpt.</p><p>Source genre tags: <strong>${escapeHtml(selected.genres.join(', ')||'none')}</strong>. Original saved key estimate: <strong>${escapeHtml(selected.key.tonic+' '+selected.key.mode)}</strong>. Chord refinement mode is independently fixed to <strong>major</strong>.</p><p>No reference chord labels are used as inference inputs. Instrument previews are synthesized accompaniment, not generated harmony vocals.</p>`;
+  $('source-dialog-body').innerHTML=`<p><strong>${escapeHtml(selected.title)}</strong> is an existing vocal excerpt from your local MTG-Jamendo extraction outputs. It has not been newly recorded or generated by this demo.</p><div class="metrics-row">${metric(fmt(selected.duration_s)+'s','playable vocal excerpt')}${metric(fmt(selected.crop_offset_s)+'s','offset in original song')}</div><p>The source is an existing WAV vocal crop. Its saved checksum is checked before processing. The UI uses the source format directly rather than converting it to MP3.</p><p>Melody is extracted live from accepted audio inside this crop. Saved melody is retained only outside the crop; beats and key remain saved metadata. The two Transformers use ${fmt(selected.context_duration_s)} seconds of complete sixteen-bar context from the same track, then crop their output timelines back to the audible excerpt.</p><p>Source genre tags: <strong>${escapeHtml(selected.genres.join(', ')||'none')}</strong>. Original saved key estimate: <strong>${escapeHtml(selected.key.tonic+' '+selected.key.mode)}</strong>. Chord refinement mode is independently fixed to <strong>major</strong>.</p><p>No reference chord labels are used as inference inputs. Instrument previews are synthesized accompaniment, not generated harmony vocals.</p>`;
   $('source-dialog').showModal();
 }
 $('library-search').addEventListener('input',drawLibrary);
@@ -256,8 +280,8 @@ $('waveform').onclick=event=>{if(!selected)return;const box=$('waveform').getBou
 document.addEventListener('play',event=>{if(event.target.tagName==='AUDIO')document.querySelectorAll('audio').forEach(a=>{if(a!==event.target)a.pause();});},true);
 (async function init(){
   try{
-    const data=await request('/api/catalog');tracks=data.tracks;genres=data.genres;
-    $('connection').textContent=Object.values(data.models).every(Boolean)?'Three checkpoints connected':'Some model files are missing';
+    const data=await request('/api/catalog');tracks=data.tracks;genres=data.genres;researchPanels=await request('/api/panels/vishwa');
+    $('connection').textContent=Object.values(data.models).every(Boolean)?'Four components connected':'Some model files are missing';
     drawLibrary();await selectTrack(tracks[0].id);
   }catch(error){$('connection').textContent='Local assets unavailable';$('track-title').textContent='The library could not load';$('track-subtitle').textContent=error.message;toast(error.message);}
 })();

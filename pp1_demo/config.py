@@ -12,7 +12,9 @@ BPDR = ROOT / 'experiments/bpdr_input/BPDR_Workspace'
 BPDR_EXPORT = BPDR / 'exports/selected_run_inference'
 DATASET = ROOT / 'datasets/mtg-jamendo'
 EXTRACTIONS = DATASET / 'melody-chord-extraction-pipeline/outputs'
-BPDR_PYTHON = Path(os.environ.get('PP1_BPDR_PYTHON', str(DATASET / 'melody-chord-extraction-pipeline/.venv-bpdr/bin/python')))
+_legacy_bpdr = DATASET / 'melody-chord-extraction-pipeline/.venv-bpdr/bin/python'
+_app_bpdr = RUNTIME / 'bpdr_env' / ('Scripts/python.exe' if os.name == 'nt' else 'bin/python')
+BPDR_PYTHON = Path(os.environ.get('PP1_BPDR_PYTHON', str(_legacy_bpdr if _legacy_bpdr.is_file() else _app_bpdr)))
 PC_NAMES = ['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B']
 
 

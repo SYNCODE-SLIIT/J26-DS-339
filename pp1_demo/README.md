@@ -1,8 +1,8 @@
 # Harmony Lab — local PP1 demo
 
-A local website that runs **Praveen → saved dataset features → Pasan → Rahul** on
-all locally available compatible Jamendo vocal excerpts (currently 811). Vishwa's component is deferred. All three
-model stages perform real inference; saved features and the fixed major mode are
+A local website that runs **Praveen → Vishwa → context bridge → Pasan → Rahul** on
+all locally available compatible Jamendo vocal excerpts (the count depends on local assets). Vishwa extracts melody live and runs both packaged score-class checkpoints. All four
+components execute; saved outside-crop features and the fixed major mode are
 labelled explicitly.
 
 ## Start
@@ -33,7 +33,7 @@ BPDR runs in the existing compatible interpreter at:
 Override it with `PP1_BPDR_PYTHON=/absolute/path/to/python ./pp1_demo/start.sh` if
 necessary. The BPDR environment's own sklearn/joblib versions take priority;
 optional plotting packages can be read from the main project's site-packages.
-No package installation or changes to either environment were made for this demo.
+For a new machine, use the setup below. An app-local BPDR environment is used when the legacy interpreter is absent.
 
 ## What runs
 
@@ -42,9 +42,14 @@ No package installation or changes to either environment were made for this demo
    prediction, operating policy and accepted-audio path. Plot actual F0 and raw
    correction estimates. Technical acceptance is not a musical-quality score.
    A separate repair preview is exposed only if the owner runtime produces one.
-2. **Saved feature bridge:** read `melody/combined.json`, `beats/beats.json`,
-   `key.json`, the vocal crop record and original genre annotations. No Vishwa
-   model or pYIN replacement is run. No reference chord labels are read.
+2. **Vishwa:** read BPDR accepted audio; prepare mono 22,050-Hz audio; extract
+   Mel features, voiced pYIN F0 and note events. Strictly load the packaged CNN and
+   CNN–Transformer checkpoints with TRAIN normalization and run both on the live
+   Mel frames. Their 13 outputs are rest/pitch class, not octave-aware notes.
+   pYIN supplies the downstream note events. Replace all saved notes inside the
+   audible crop (including rests), retain clipped outside-crop notes, and preserve
+   saved beats/key/genre metadata. Both downstream models consume this mixed-context
+   melody. Checkpoints are hash-verified; missing/corrupt assets stop the stage.
 3. **Pasan:** strictly load `phase3_temporal_transformer_weighted_latest.pt`, epoch
    9, using the notebook’s original Temporal architecture. Normalize melody to the
    reference major collection; normalize time by context duration; infer root and
@@ -55,15 +60,15 @@ No package installation or changes to either environment were made for this demo
    **major**; genre defaults to the recording’s saved metadata and can be changed.
    Full-chord top-3 outputs are raw softmax probabilities; the quality head is not
    fused into them.
-5. Render saved melody and predicted chords as synthetic instruments, and mix the
+5. Render live pYIN melody and predicted chords as synthetic instruments, and mix the
    refined accompaniment with BPDR’s accepted vocal. These are not generated
    harmony vocals or recovered accompaniment stems.
 
 ### Short audio, full model context
 
 The playable vocals are 17–20 second crops. To preserve the trained Temporal
-input format, the demo loads sixteen complete bars of saved musical context from
-around each crop. Both Transformers run on that context; plots and playback are
+input format, the demo retains sixteen complete bars of musical context from
+around each crop, replacing the audible interval with Vishwa’s live notes. Both Transformers run on that context; plots and playback are
 then clipped to the vocal excerpt. Crop offsets are retained in run metadata.
 This is a dataset-context demonstration, not a live microphone transcriber.
 
@@ -114,8 +119,46 @@ This is a functional integration check, not model-accuracy validation.
 ### Expanded vocal library
 
 The library discovers all local vocal crops with a usable saved key, melody and
-sixteen-bar beat context within BPDR’s duration limit. It currently lists 811
+sixteen-bar beat context within BPDR’s duration limit. It lists the compatible locally available
 recordings, including major and minor source keys; Rahul’s demo mode remains major.
 Search by ID, genre or key. Detailed note/beat arrays and waveforms are fetched only
 for the selected recording. Missing or incompatible extraction packages are skipped.
 The expanded catalogue is not a claim that every recording has been rehearsed.
+
+## Reproduce Vishwa on another machine
+
+The small inference bundle is tracked at
+`experiments/vishwa/checkpoints/weak_score_pilot/` (about 211 KB).
+It includes **cnn.pt**, **cnn_transformer.pt**, **train_normalization.npz**, a hash
+manifest, training configuration and evaluation provenance. The portable architecture
+is `src/melody_understanding/score_model.py`. No HumTrans data or training shards
+are needed for inference. These are existing five-epoch feasibility checkpoints,
+not newly trained or production-validated models.
+
+Use Python 3.12 and uv. From the repository root (macOS, Linux or Windows):
+
+```sh
+uv run --no-sync python pp1_demo/tools/setup_demo.py --install
+uv run --no-sync python -B -m unittest discover -s pp1_demo/tests -p test_vishwa.py -v
+uv run --no-sync python pp1_demo/tools/check_vishwa.py --audio path/to/solo_vocal.wav
+uv run --no-sync python -B -m pp1_demo.app
+```
+
+If no environment exists yet, run `uv venv --python 3.12 .venv`, then
+`uv run --no-sync python pp1_demo/tools/setup_demo.py --install`.
+The setup uses uv to install the app's pinned scientific requirements into `.venv`
+and creates a separate BPDR runtime under ignored `pp1_demo/runtime/bpdr_env`.
+It does not sync or edit the root lockfile, download recordings, or retrain models.
+The first BPDR pitch-estimator use may download its upstream PESTO weights.
+
+**Dataset requirement for the existing library UI:** each recording still needs
+`bpdr/vocal.wav`, `bpdr/record.json`, `melody/combined.json`, `beats/beats.json`,
+`key.json`, and matching genre annotations in the existing Jamendo extraction
+layout. Transfer or regenerate those locally through the existing extraction
+pipeline. They are not bundled with model code and raw audio is not committed.
+The standalone Vishwa check accepts your own audio without that dataset.
+
+Vishwa appears in the sidebar, stage timeline and inspection panel. It shows the
+live piano roll, F0, Mel spectrogram, both trained-classifier probability maps,
+checkpoint hashes, preprocessing, decisions, historical results and limitations.
+Edit the existing `pp1_demo/panels/vishwa/*.md` files to update its research notes.

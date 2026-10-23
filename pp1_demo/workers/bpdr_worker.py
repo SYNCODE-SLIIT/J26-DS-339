@@ -1,12 +1,13 @@
 """A private, unchanged BPDR source snapshot confines its cache/output locations."""
 import sys
+import os
 sys.dont_write_bytecode=True
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
 # Reuse optional plotting packages from the main project only after the BPDR
 # environment's own packages, preserving its sklearn/joblib serialization versions.
-shared=ROOT/'.venv/lib'/f'python{sys.version_info.major}.{sys.version_info.minor}'/'site-packages'
+shared=(ROOT/'.venv/Lib/site-packages' if os.name=='nt' else ROOT/'.venv/lib'/f'python{sys.version_info.major}.{sys.version_info.minor}'/'site-packages')
 if shared.is_dir():sys.path.append(str(shared))
 from pp1_demo.config import APP, BPDR, BPDR_EXPORT, RUNTIME, configure_runtime
 configure_runtime()

@@ -1,4 +1,4 @@
-"""Saved, aligned features replace the deferred Vishwa stage. No chord targets read."""
+"""Saved aligned features supply beats, key and context outside the live crop. No chord targets read."""
 from functools import lru_cache
 from pathlib import Path
 import csv
@@ -113,7 +113,7 @@ def context(track_id):
             'bpm':float(beat_data['median_beat_rate_bpm']),
             'files':{name:str(folder / name) for name in ['bpdr/record.json','melody/combined.json','beats/beats.json','key.json']},
             'audio_sha256':record['artifacts']['vocal.wav'],
-            'metadata_source':'Saved GAME / SheetSage melody, saved beat grid and melody-key estimate; Vishwa deferred.'}
+            'metadata_source':'Saved GAME / SheetSage melody, saved beat grid and melody-key estimate; Pre-run preview only; live melody replaces the crop during inference.'}
 
 
 def crop_rows(rows, start, duration):
