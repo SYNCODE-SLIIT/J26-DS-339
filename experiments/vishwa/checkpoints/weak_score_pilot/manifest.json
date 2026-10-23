@@ -1,0 +1,55 @@
+{
+  "format": "vishwa-weak-score-pilot-v1",
+  "training_config": {
+    "seed": 339,
+    "epochs": 5,
+    "batch_size": 8,
+    "window_frames": 256,
+    "learning_rate": 0.001,
+    "device": "cpu",
+    "threads": 2,
+    "selection": "fixed last epoch; no validation selection"
+  },
+  "source_report": "experiments/vishwa/results/score_model_pilot.json",
+  "source_report_sha256": "25444f49d5f96fa6db32d1c726e390381084d70a009ba01d0c03c1d18d529e3f",
+  "classes": [
+    "rest",
+    "C",
+    "C#",
+    "D",
+    "Eb",
+    "E",
+    "F",
+    "F#",
+    "G",
+    "Ab",
+    "A",
+    "Bb",
+    "B"
+  ],
+  "features": {
+    "sample_rate": 22050,
+    "n_fft": 4096,
+    "hop_length": 256,
+    "n_mels": 80,
+    "normalization": "TRAIN mean/std per Mel band",
+    "window_frames": 256
+  },
+  "models": {
+    "cnn": {
+      "parameters": 18413,
+      "validation_recording_macro_accuracy": 0.4252806625092279
+    },
+    "cnn_transformer": {
+      "parameters": 31117,
+      "validation_recording_macro_accuracy": 0.3945138338308555
+    }
+  },
+  "scope": "20 TRAIN / 10 VALID recordings; intended-score pitch-class supervision, not performed-note ground truth. No octave or note boundary head. pYIN remains the downstream note extractor.",
+  "files": {
+    "cnn_transformer.pt": "2ead66468795278da8cb3a37b646fbc644090b121fcec70db53c6230e875ba8c",
+    "train_normalization.npz": "6f3c70d180b7aa04455a7226564ea0a0873933e021d01a5b3e4b883bfcbd87f0",
+    "cnn.pt": "d2488af6c2ae0ddbd5994a66d3d72ce30d02bc6de04ce669ae78bba3e1a6b9da"
+  },
+  "model_source_sha256": "47b04d1e185b2a0decd99e95dbc73ffdc43804f645939e7d175cf2e3883f7c94"
+}
