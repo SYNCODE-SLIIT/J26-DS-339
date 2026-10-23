@@ -1,0 +1,11 @@
+/.venv-*/
+/clips/
+/stems/
+/models/
+/tools/
+/results/
+/report.html
+/run_status.json
+/*.log
+/.round-2-next/
+/.round-2-previous/

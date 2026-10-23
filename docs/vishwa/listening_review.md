@@ -1,0 +1,63 @@
+# R009: eight-case listening protocol
+
+## Open the packet
+
+From the project root:
+
+```sh
+.venv/bin/python scripts/build_listening_review.py
+open datasets/humtrans/derived/research/listening_review/index.html
+```
+
+The generated page contains all eight original recordings, waveform/pitch plots,
+and sine references at MIDI −24, −12, 0 and +12 semitones. All generated audio and
+images stay in the ignored derived-data directory. Rebuilding preserves existing
+decision records. Source hashes must match the earlier R006 audit.
+
+## Review each case
+
+1. Listen to the original before opening the automatic diagnostic panel. Note
+   timestamps of stable notes, ambiguous regions, noise or register changes.
+2. Compare the original-score reference first, then the octave alternatives.
+   Sine tones have different timbre; perceptual similarity alone is insufficient.
+3. Inspect both pitch tracks and MIDI over the same times. Distinguish octave
+   differences from timing errors, unstable voice and estimator mistakes. Do not
+   infer a correction from the filename suffix or the strongest spectral band.
+4. Enter a record in `experiments/vishwa/results/listening_review_decisions.json`.
+   Set status to `reviewed` only after listening. Provide your reviewer name,
+   ISO date/time, both listening confirmations, confidence (`low`, `medium`,
+   `high`), and evidence with timestamps. Leave ambiguous cases `unresolved`.
+5. Run `.venv/bin/python scripts/check_listening_review.py` to validate the form.
+
+Allowed outcomes: `consistent_with_original`,
+`possible_score_performance_octave_difference`, `possible_estimator_error`,
+`timing_or_mixed_issue`, `unresolved`. Suggested shift may be null, −24, −12, 0 or +12;
+this is a hypothesis and does not modify labels. A second independent reviewer
+is useful for disputed cases. The checker checks completeness, not truthfulness
+or musical correctness.
+
+## Decision boundary
+
+No recordings or MIDI are edited by these scripts. A completed review does not
+itself authorize relabeling. Record a separate target-policy decision with its
+supporting evidence before creating versioned derived annotations. Keep original
+score and performed pitch separate. Do not enlarge model training merely because
+a transposed reference agrees better with two algorithms.
+
+The assistant prepared automatic evidence and visual checks; human listening
+remains pending. The page is a playback aid and does not save form entries.
+
+## Simultaneous comparison
+
+Each case includes “Play original + MIDI 0 together” with a play-from-start button,
+a stop button and a seekable player. Use headphones: original audio is on the
+left and unchanged MIDI tones on the right. One stereo file keeps their timelines
+synchronized. Volume differences are preserved; pitch judgments should still be
+checked with the individual players. Playback does not save review decisions.
+
+The MIDI-delay slider moves only the MIDI reference later, from 0 to 1000 ms in
+10 ms increments. Adjust it, then press Play both from start; the shared player
+also permits seeking. Try 300 ms, compare several note transitions, then adjust
+and compare against Reset delay to 0 ms. The comparison extends to retain delayed
+reference endings. Settings are temporary and are not saved as annotation edits
+or completed review decisions.

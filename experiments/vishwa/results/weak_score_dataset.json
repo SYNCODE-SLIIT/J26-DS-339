@@ -1,0 +1,337 @@
+{
+  "recorded_date": "2026-10-21",
+  "target_policy": "weak-score-chroma-v1",
+  "target_meaning": "original MIDI intended-score pitch class, not verified performed F0",
+  "classes": {
+    "0": "rest",
+    "1..12": "MIDI pitch modulo 12 plus 1"
+  },
+  "boundary_margin_s": 0.1,
+  "mel": {
+    "sample_rate": 22050,
+    "n_fft": 4096,
+    "hop_length": 256,
+    "n_mels": 80
+  },
+  "normalization": "per-band mean/std from all TRAIN frames only, no VALID/TEST fit",
+  "split_counts": {
+    "TRAIN": 20,
+    "VALID": 10
+  },
+  "frames_by_split": {
+    "TRAIN": 26157,
+    "VALID": 12817
+  },
+  "supervised_frames_by_split": {
+    "TRAIN": 15120,
+    "VALID": 7382
+  },
+  "normalization_sha256": "6f3c70d180b7aa04455a7226564ea0a0873933e021d01a5b3e4b883bfcbd87f0",
+  "recordings": [
+    {
+      "key": "F01_0101_0001_1_D",
+      "split": "TRAIN",
+      "frames": 776,
+      "supervised_frames": 327,
+      "path": "datasets/humtrans/derived/research/weak_score_features/F01_0101_0001_1_D.npz",
+      "wav_sha256": "61e23d0e491a1adf874ff847c57b46bb05678d0edccca7127d5333f4acc90027",
+      "midi_sha256": "3f9076d9dacf831b3f593642e0b0b4efa36ee62e2273f070d38da99ceebc2d1e",
+      "tensor_sha256": "8b32d46fc22e508e356499b200e75b1b3d45983f495754bb4bf0e50e08e3a683"
+    },
+    {
+      "key": "F01_0487_0001_1_D",
+      "split": "TRAIN",
+      "frames": 919,
+      "supervised_frames": 475,
+      "path": "datasets/humtrans/derived/research/weak_score_features/F01_0487_0001_1_D.npz",
+      "wav_sha256": "9d023997243ad751c45485bac12ec3e60a72a0d3c88e072eb107527499a06fa6",
+      "midi_sha256": "708cde7a96a37835415cdb7d14147706ebc488238fbfcecc7dfcdc19f5ec6d30",
+      "tensor_sha256": "e86fac8760e55b1b90405e38171ae810f58b0b14eeec9df76e72c48c041d97a3"
+    },
+    {
+      "key": "F02_0409_0002_2",
+      "split": "TRAIN",
+      "frames": 1061,
+      "supervised_frames": 532,
+      "path": "datasets/humtrans/derived/research/weak_score_features/F02_0409_0002_2.npz",
+      "wav_sha256": "3056ab2dd7aa177f7ed909765caa978f3a0a71766132bc748237b0ea4969e80a",
+      "midi_sha256": "1046a9f8e4d3a5be4ba6f1f781170ebf20fe6a14c229f62c593be792df0bec31",
+      "tensor_sha256": "2b746dc4db792c1a57c923464242121a86d12fed8a0627201916024ff66bf9a3"
+    },
+    {
+      "key": "F02_0091_0003_1_D",
+      "split": "TRAIN",
+      "frames": 1383,
+      "supervised_frames": 850,
+      "path": "datasets/humtrans/derived/research/weak_score_features/F02_0091_0003_1_D.npz",
+      "wav_sha256": "100c3b86e26624b5932b06d41c0d0c8570940b6ac87bfecafec9c449b302ac8a",
+      "midi_sha256": "8c59647a11eec90377e4e30257c2d4b6026919f32adf3c997e00b0fb2e5e3e16",
+      "tensor_sha256": "3da4f957bbf472223524049544434d637b37ed44621c5287394a067fae2e8824"
+    },
+    {
+      "key": "F03_0444_0002_1_D",
+      "split": "TRAIN",
+      "frames": 1188,
+      "supervised_frames": 673,
+      "path": "datasets/humtrans/derived/research/weak_score_features/F03_0444_0002_1_D.npz",
+      "wav_sha256": "8f7816a8918d0afaf6ce47b6a593c0dfeafec30e3a13415306eae01ba9828b4c",
+      "midi_sha256": "b2b6819dc4e97760b5b1b9aaed96d026d7efe68301c7e39d57e0358168c81bfd",
+      "tensor_sha256": "0d5f68371c3b79a19e4c14967796d5c869078caf61c229ff678fba31c1c19099"
+    },
+    {
+      "key": "F03_0040_0002_1_D",
+      "split": "TRAIN",
+      "frames": 1492,
+      "supervised_frames": 928,
+      "path": "datasets/humtrans/derived/research/weak_score_features/F03_0040_0002_1_D.npz",
+      "wav_sha256": "e608e6ffc9fa0aec309eae4e1d0d36d34fc37041136bc24ae15910d8b3f029c2",
+      "midi_sha256": "c00322e22fcd33e6e15e2e994940980958d262d0710458fe9d179b62fcb98954",
+      "tensor_sha256": "63451dae700bed79d6fe621af0cb762c33867c68993fa0a95c4da9a84a5b5933"
+    },
+    {
+      "key": "F04_0410_0002_2",
+      "split": "TRAIN",
+      "frames": 1128,
+      "supervised_frames": 432,
+      "path": "datasets/humtrans/derived/research/weak_score_features/F04_0410_0002_2.npz",
+      "wav_sha256": "2db3a67b06ce00b8e473eb79a596e16b52843da84a619412ad3733df323de0ce",
+      "midi_sha256": "cb3427fadaea288a99d750904f0bf1907e5ca2603cdb71e7612c645d8d189472",
+      "tensor_sha256": "08ed1c9bb471755ee213c7aaaf0b1048e39e62a34e0982acb3cc79e754bd40e6"
+    },
+    {
+      "key": "F04_0077_0002_2_D",
+      "split": "TRAIN",
+      "frames": 1953,
+      "supervised_frames": 1253,
+      "path": "datasets/humtrans/derived/research/weak_score_features/F04_0077_0002_2_D.npz",
+      "wav_sha256": "560f71544df0a41b7976612e7d45a1e8c6a1a93eb5f8c2c7960aba21fa78075e",
+      "midi_sha256": "297c6e7d830b597350c06559a7c56cb5102c36742850e055c87956f6c84b9c69",
+      "tensor_sha256": "e6ffa5e9054b768f079efe2ff36b1823b42db55886fb9e6309494c0cd95ebfbb"
+    },
+    {
+      "key": "F05_0442_0002_1_D",
+      "split": "TRAIN",
+      "frames": 2021,
+      "supervised_frames": 1197,
+      "path": "datasets/humtrans/derived/research/weak_score_features/F05_0442_0002_1_D.npz",
+      "wav_sha256": "5ea427d5bc6e6746f92d1eb84ff3d91436971442929c7aa09c90bcd0d4254405",
+      "midi_sha256": "f257906d6671707eb9a117c339f145f2d6a547c2163e243379eb5a48474726f4",
+      "tensor_sha256": "f1a60f40ec0abae40a2c841f1f5748f100cdb07d359b05ac57f1a99057ecf311"
+    },
+    {
+      "key": "F05_0321_0002_1_D",
+      "split": "TRAIN",
+      "frames": 1034,
+      "supervised_frames": 501,
+      "path": "datasets/humtrans/derived/research/weak_score_features/F05_0321_0002_1_D.npz",
+      "wav_sha256": "74e38a27d6d5404a5a73bb6f47ff94121b7e209c1fe96a84a55d3b9524c394ef",
+      "midi_sha256": "7a4c86a0e98ac0c0add178434accd8a419a03153fe4c6a686d354dde35066136",
+      "tensor_sha256": "10844c8605e5acbe870f47b72a1b8d82951c20c5994dca0e71e70254c47c4c6f"
+    },
+    {
+      "key": "M01_0311_0002_1",
+      "split": "TRAIN",
+      "frames": 1898,
+      "supervised_frames": 1156,
+      "path": "datasets/humtrans/derived/research/weak_score_features/M01_0311_0002_1.npz",
+      "wav_sha256": "98129f7bdc283f6552c9c1ee0783119a0f4abd264be62b669cac08591626abbe",
+      "midi_sha256": "cee9cf7fca621548217a470214ae52e7eb7f0f0178a01cfd16c9418dca35c15d",
+      "tensor_sha256": "9d6f8974fdc6c51b440cbf20402963945ba5c78cf968f0b9f62dd0e62da14676"
+    },
+    {
+      "key": "M01_0048_0001_2",
+      "split": "TRAIN",
+      "frames": 1928,
+      "supervised_frames": 1155,
+      "path": "datasets/humtrans/derived/research/weak_score_features/M01_0048_0001_2.npz",
+      "wav_sha256": "ed4c44490b66ad821759706efbf367b179a8328a4648237596df3984d738ba70",
+      "midi_sha256": "4835fbfb3e960624c49a8507710fb39cea038cf7a7da94a137c8bc8b5bb78517",
+      "tensor_sha256": "26028ac831d9c66e25925bec6f4b6956c8f14c50382e6d2e63be9ccfb011b5f6"
+    },
+    {
+      "key": "M02_0312_0001_2_D",
+      "split": "TRAIN",
+      "frames": 1292,
+      "supervised_frames": 807,
+      "path": "datasets/humtrans/derived/research/weak_score_features/M02_0312_0001_2_D.npz",
+      "wav_sha256": "49ee79a479ae315589a4f7c7fe6ca3d8c2987db75a5018d846a41cf117cb3e61",
+      "midi_sha256": "b64a950e5a284eb4a0cad97ab1fe7e8d057fd5f13af42a89d8a7348e4f486dcf",
+      "tensor_sha256": "1cca54af9caad3177bdc772e3a73e2fa5fa54fac8ade532ac6b828354b12fc00"
+    },
+    {
+      "key": "M02_0302_0002_1",
+      "split": "TRAIN",
+      "frames": 1143,
+      "supervised_frames": 632,
+      "path": "datasets/humtrans/derived/research/weak_score_features/M02_0302_0002_1.npz",
+      "wav_sha256": "694c29ece0e06696b9e7634df04a2cd9b68bddc07dbf7e43d258f891b511c8cf",
+      "midi_sha256": "8353edb0cf040fd1a58978216d8ff332c064d895be601a4a5b1ca3473ec0c246",
+      "tensor_sha256": "4b32cda01f3efde25f7ede30bbf11ccad966704c569e6a9402e15d3261317674"
+    },
+    {
+      "key": "M03_0435_0001_1_DD",
+      "split": "TRAIN",
+      "frames": 1077,
+      "supervised_frames": 647,
+      "path": "datasets/humtrans/derived/research/weak_score_features/M03_0435_0001_1_DD.npz",
+      "wav_sha256": "7a267e581c760ce6e09d66ddfa20c3048667e62d2b8106bf6f64de27730504e3",
+      "midi_sha256": "f00527bcb8007056324da1323cfb9187e2d62fa059a0bfc53871c5abc795aec1",
+      "tensor_sha256": "d3de3b3b4920fbeb9a675b54817cbe633cc529a8bbb228b065990da5420a2779"
+    },
+    {
+      "key": "M03_0416_0001_2_DD",
+      "split": "TRAIN",
+      "frames": 1214,
+      "supervised_frames": 765,
+      "path": "datasets/humtrans/derived/research/weak_score_features/M03_0416_0001_2_DD.npz",
+      "wav_sha256": "6ae2c7eeb56a72a2e0d9d536dd9a8a529894e6f521e7bdd0182377628edc830c",
+      "midi_sha256": "449623043c736a82d80a1f51e117ea3e7659ac628b6611cf2bdb569b4fe4f0a4",
+      "tensor_sha256": "31a04f0fc88f86af5c779ea046dfc8e89a37558d147535b40e7f98aaa4d04685"
+    },
+    {
+      "key": "M04_0070_0001_1_D",
+      "split": "TRAIN",
+      "frames": 862,
+      "supervised_frames": 638,
+      "path": "datasets/humtrans/derived/research/weak_score_features/M04_0070_0001_1_D.npz",
+      "wav_sha256": "b1a3dc572341f1fce61518dddbcf0fbe456691e1d3e80220b5fae110a37efc4b",
+      "midi_sha256": "d73505a0a6eb6a77b121e15569cdb802e1185939a116b6e43a9dd3206aab63a4",
+      "tensor_sha256": "bcc00bb5ac2f1aed878f022b842489fd160273361eb60ab4c71d93de14f87313"
+    },
+    {
+      "key": "M04_0370_0002_2_D",
+      "split": "TRAIN",
+      "frames": 1292,
+      "supervised_frames": 725,
+      "path": "datasets/humtrans/derived/research/weak_score_features/M04_0370_0002_2_D.npz",
+      "wav_sha256": "f96d89ec5901aa3b60843b8b5933254e832eb781319d5fa86e25fdce8621a655",
+      "midi_sha256": "05c716654c8d70e7a63e0e62bc5c11f4c04b2521c88ab772501385f6a3782c94",
+      "tensor_sha256": "81c53987dcc4ff4ce36f2d30c5695e13140af54f9d9bf116132ad55c13d42074"
+    },
+    {
+      "key": "M05_0263_0001_2",
+      "split": "TRAIN",
+      "frames": 1597,
+      "supervised_frames": 803,
+      "path": "datasets/humtrans/derived/research/weak_score_features/M05_0263_0001_2.npz",
+      "wav_sha256": "a5a5d4f22a9b092e8fafe07316583719342ff0fa5d2a253d5d78a6ebb971edce",
+      "midi_sha256": "9ca26b6f45116a8580a4ebb1a7e64a0ed6d4d67d1a2df1a12046b2bdb4875eb7",
+      "tensor_sha256": "6b89839ac5ecc8d36bfec10a7479e4d76e3743c5ca1402a29ad13b369804a367"
+    },
+    {
+      "key": "M05_0016_0002_1_D",
+      "split": "TRAIN",
+      "frames": 899,
+      "supervised_frames": 624,
+      "path": "datasets/humtrans/derived/research/weak_score_features/M05_0016_0002_1_D.npz",
+      "wav_sha256": "a22363a7c3e3ae805b6fd5a1e0cf8500aea1030fdf69799a84ff32f122714d44",
+      "midi_sha256": "73e7e2c9fc4dd2a7cd3443b7f2acbd140e5a54f96ec2485054194a9b9d575657",
+      "tensor_sha256": "406bfd4e3cb6c01c98e16f70632adb5e7d69daa3a9dcacf75f4294440e6d87c7"
+    },
+    {
+      "key": "F01_0162_0002_1_D",
+      "split": "VALID",
+      "frames": 1034,
+      "supervised_frames": 690,
+      "path": "datasets/humtrans/derived/research/weak_score_features/F01_0162_0002_1_D.npz",
+      "wav_sha256": "99349827cedce2e061d5a68f2a5239bb3180d937bfa7322fa130e01862354fe5",
+      "midi_sha256": "dbeb74f62e28bb42402e711d93af303427cf5d1893c0b76cb0eb75362969a0a5",
+      "tensor_sha256": "e95b7a46e401d4c1b3c0c647ad11b6d7dc5cfe1dc8821957581ebc43406e4fd7"
+    },
+    {
+      "key": "F02_0034_0002_1_D",
+      "split": "VALID",
+      "frames": 862,
+      "supervised_frames": 468,
+      "path": "datasets/humtrans/derived/research/weak_score_features/F02_0034_0002_1_D.npz",
+      "wav_sha256": "d704964128ef51edba09bc645cbcc77a714ea73c89a5c0b10131e6552df6d4d1",
+      "midi_sha256": "f9286b957870d7ac26b50baa4f3bd58b44a8883be6b5afae7338bdbfa2fa9de6",
+      "tensor_sha256": "b75f3f8c63bbace49eea95e743c69af93c805240bff1b9ec0ce2cae9440a8099"
+    },
+    {
+      "key": "F03_0326_0001_1_D",
+      "split": "VALID",
+      "frames": 916,
+      "supervised_frames": 350,
+      "path": "datasets/humtrans/derived/research/weak_score_features/F03_0326_0001_1_D.npz",
+      "wav_sha256": "39c53dd196846d50806c00138a8ddaa138b1784734c1c3ea979b4cb5c915ed8d",
+      "midi_sha256": "35b9f8cb1ce5d7374fb634c13a2e20c4ca90984a3cff72b5fa13bfbbade55af3",
+      "tensor_sha256": "ea9dcfeff9d07180767bc08d81d12aed4b032ee95d98c373a1ca185acfb60200"
+    },
+    {
+      "key": "F04_0256_0001_1_D",
+      "split": "VALID",
+      "frames": 2197,
+      "supervised_frames": 1573,
+      "path": "datasets/humtrans/derived/research/weak_score_features/F04_0256_0001_1_D.npz",
+      "wav_sha256": "497f4658817579b927d5ad3d183d859026abb72fae7dc9f9edd894a30a94ffe1",
+      "midi_sha256": "3bea93a7a836f9912f88adb1cb832f415d4d6c0642f9ebe878adaf5bd66f93a5",
+      "tensor_sha256": "9e92a69a06d4fb9fd3e0c21b4a9dc55f2862506d1c38c5161dd8de1be6cd9992"
+    },
+    {
+      "key": "F05_0034_0002_1_D",
+      "split": "VALID",
+      "frames": 862,
+      "supervised_frames": 468,
+      "path": "datasets/humtrans/derived/research/weak_score_features/F05_0034_0002_1_D.npz",
+      "wav_sha256": "cdcbfbf4e3d07812265d05308db4d3eefeda868885fbdba4b08c62d7c28132ac",
+      "midi_sha256": "f9286b957870d7ac26b50baa4f3bd58b44a8883be6b5afae7338bdbfa2fa9de6",
+      "tensor_sha256": "1cf08578bcef2bada43ce4269dc4f003a2b42416b2c76a9e8ef1f8336eec37d5"
+    },
+    {
+      "key": "M01_0320_0001_2",
+      "split": "VALID",
+      "frames": 963,
+      "supervised_frames": 572,
+      "path": "datasets/humtrans/derived/research/weak_score_features/M01_0320_0001_2.npz",
+      "wav_sha256": "6edf492ce8819c14d8268f8463df26b5c539db1007a32bcef489b7aa5d8378dc",
+      "midi_sha256": "78c00b52b5751be689274b43a0f042c2bf5abb04d31452f5cfed769c54b0455e",
+      "tensor_sha256": "67e9dfc7c482c81acc7a6f6d8c62e4ef7b5ddd4f62482328a3f779898fa0b722"
+    },
+    {
+      "key": "M02_0269_0002_1_D",
+      "split": "VALID",
+      "frames": 1669,
+      "supervised_frames": 1000,
+      "path": "datasets/humtrans/derived/research/weak_score_features/M02_0269_0002_1_D.npz",
+      "wav_sha256": "1311907edcb257148d81932e0a2d919e75f86271950fbc27d4e7d5e0bc96b220",
+      "midi_sha256": "fa6790fbbaddd0e2aed5e893b486d69666492727ad509de46c81cee543eff412",
+      "tensor_sha256": "78dbed08fdd5f6a6022c503ad8710631f788e402ba70c3d19d1325370580d485"
+    },
+    {
+      "key": "M03_0485_0002_1_DD",
+      "split": "VALID",
+      "frames": 1580,
+      "supervised_frames": 1031,
+      "path": "datasets/humtrans/derived/research/weak_score_features/M03_0485_0002_1_DD.npz",
+      "wav_sha256": "16080feaf380b0155da776d0617bf2f0707e96b0f6ac645ed307b652d3cddea7",
+      "midi_sha256": "b1942e41a2d8fa2cf747b44c2c8531f49afa36cd944817f2fc2d961c569433e1",
+      "tensor_sha256": "65a7f462116b955be553bea5e0b8e2b4cee92ee16d526817ed41f135163d33da"
+    },
+    {
+      "key": "M04_0306_0002_2",
+      "split": "VALID",
+      "frames": 1815,
+      "supervised_frames": 895,
+      "path": "datasets/humtrans/derived/research/weak_score_features/M04_0306_0002_2.npz",
+      "wav_sha256": "a1dbbf41f536696eb1e5f320e4b75f6a7991472d6fffb34a003240a7d37733b8",
+      "midi_sha256": "df1ec7767be4ffa118d46ef536566735e87f5a7e58b0aa299e88fd47e4ce5d2e",
+      "tensor_sha256": "09fccc3cb2597346efbfbe8effb220b7fd81660292a94c70c0baf26392aa2630"
+    },
+    {
+      "key": "M05_0089_0002_2_D",
+      "split": "VALID",
+      "frames": 919,
+      "supervised_frames": 335,
+      "path": "datasets/humtrans/derived/research/weak_score_features/M05_0089_0002_2_D.npz",
+      "wav_sha256": "5dc9b1955d01fef9f974f7f7ab7754fee7cc78c7d32f656b9f248d1aa11e2dbc",
+      "midi_sha256": "992be551ea1a575bdf75cbf060c25236451d113be6d14a28e586ec7829dd51d0",
+      "tensor_sha256": "d5c78f58eb2591b0eb4ac85c2d0952b4f7d9b8e863c451049ab0e8338c1147e3"
+    }
+  ],
+  "limitations": [
+    "100 ms boundary mask is a fixed heuristic, not proven timing correction",
+    "Octave invariant task does not establish accurate performed-pitch transcription",
+    "Pilot cohorts are small and validation has been inspected previously"
+  ]
+}

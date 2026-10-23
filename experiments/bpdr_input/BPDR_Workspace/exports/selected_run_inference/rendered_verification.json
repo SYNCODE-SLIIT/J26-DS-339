@@ -1,0 +1,210 @@
+{
+  "version": "delivered-vocalset-recovery-pilot-1",
+  "checkpoint_sha256": "682f8e4839b80fa032a52769d6186ca349937e638ef4ddfd8bdf85278a3ec9b3",
+  "verifier_source_sha256": "97019310dd23450283fc8564140fb144ef5b7f44756cd9fd6a6154455c8b4ba6",
+  "declaration_sha256": "9a12015bbb60ff6b9aec51356d629689a5e9f44f087c6521b56169a803c8e56d",
+  "originals": [
+    {
+      "singer": "female6",
+      "input": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc\\pilot_evaluation\\prepared\\00\\original_working.wav",
+      "output": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\notebook_training\\2759404560ab4b559a633659d316bec0\\rendered\\626d151afec4476c8fee24e49e992626\\accepted.wav",
+      "directory": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\notebook_training\\2759404560ab4b559a633659d316bec0\\rendered\\626d151afec4476c8fee24e49e992626",
+      "outcome": "IDENTITY",
+      "preserved": true,
+      "intervention_exclusion": "NO_OWN_AUDIO_STABLE_RUN_WITH_CONTEXT_FOR_096_SECOND_INTERVENTION"
+    },
+    {
+      "singer": "female6",
+      "input": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc\\pilot_evaluation\\prepared\\01\\original_working.wav",
+      "output": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\notebook_training\\2759404560ab4b559a633659d316bec0\\rendered\\c2104f291cd245919b517e6021736f80\\accepted.wav",
+      "directory": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\notebook_training\\2759404560ab4b559a633659d316bec0\\rendered\\c2104f291cd245919b517e6021736f80",
+      "outcome": "WITHHELD",
+      "preserved": true,
+      "intervention_exclusion": null
+    },
+    {
+      "singer": "male6",
+      "input": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc\\pilot_evaluation\\prepared\\02\\original_working.wav",
+      "output": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\notebook_training\\2759404560ab4b559a633659d316bec0\\rendered\\59eb292667334350ae5fcdb76ea2a86b\\accepted.wav",
+      "directory": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\notebook_training\\2759404560ab4b559a633659d316bec0\\rendered\\59eb292667334350ae5fcdb76ea2a86b",
+      "outcome": "WITHHELD",
+      "preserved": true,
+      "intervention_exclusion": null
+    },
+    {
+      "singer": "male6",
+      "input": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc\\pilot_evaluation\\prepared\\03\\original_working.wav",
+      "output": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\notebook_training\\2759404560ab4b559a633659d316bec0\\rendered\\a0cbdcf68332478c8a36608f851267ea\\accepted.wav",
+      "directory": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\notebook_training\\2759404560ab4b559a633659d316bec0\\rendered\\a0cbdcf68332478c8a36608f851267ea",
+      "outcome": "WITHHELD",
+      "preserved": true,
+      "intervention_exclusion": null
+    }
+  ],
+  "shifts": [
+    {
+      "singer": "female6",
+      "excluded": "NO_OWN_AUDIO_STABLE_RUN_WITH_CONTEXT_FOR_096_SECOND_INTERVENTION",
+      "cents": -30.0
+    },
+    {
+      "singer": "female6",
+      "excluded": "NO_OWN_AUDIO_STABLE_RUN_WITH_CONTEXT_FOR_096_SECOND_INTERVENTION",
+      "cents": -20.0
+    },
+    {
+      "singer": "female6",
+      "excluded": "NO_OWN_AUDIO_STABLE_RUN_WITH_CONTEXT_FOR_096_SECOND_INTERVENTION",
+      "cents": 20.0
+    },
+    {
+      "singer": "female6",
+      "excluded": "NO_OWN_AUDIO_STABLE_RUN_WITH_CONTEXT_FOR_096_SECOND_INTERVENTION",
+      "cents": 30.0
+    },
+    {
+      "singer": "female6",
+      "excluded": "CONTROLLED_INTERVENTION_AUDIT_FAILED",
+      "cents": -30.0
+    },
+    {
+      "singer": "female6",
+      "excluded": "CONTROLLED_INTERVENTION_AUDIT_FAILED",
+      "cents": -20.0
+    },
+    {
+      "singer": "female6",
+      "excluded": "CONTROLLED_INTERVENTION_AUDIT_FAILED",
+      "cents": 20.0
+    },
+    {
+      "singer": "female6",
+      "excluded": "CONTROLLED_INTERVENTION_AUDIT_FAILED",
+      "cents": 30.0
+    },
+    {
+      "singer": "male6",
+      "input": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc\\pilot_evaluation\\prepared\\02\\detuned_-30.wav",
+      "reference": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc\\pilot_evaluation\\prepared\\02\\original_working.wav",
+      "target_path": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc\\pilot_evaluation\\prepared\\02\\targets_-30_NOT_MODEL_INPUT.npz",
+      "output": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\notebook_training\\2759404560ab4b559a633659d316bec0\\rendered\\694de9d22db94748a312276b690cfe51\\experimental_learned_candidate.wav",
+      "directory": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\notebook_training\\2759404560ab4b559a633659d316bec0\\rendered\\694de9d22db94748a312276b690cfe51",
+      "cents": -30.0,
+      "outcome": "VERIFIED_FIXTURE_CANDIDATE",
+      "delivered_preview": true,
+      "scored_frames": 33,
+      "input_mae_cents": 30.80831788992682,
+      "output_mae_cents": 30.80831788992682,
+      "missing_output_scored_frames": 0,
+      "measured_output_mae_cents": 30.80831788992682,
+      "error_reduction_cents": 0.0,
+      "verified_improvement": false,
+      "controller_reasons": []
+    },
+    {
+      "singer": "male6",
+      "excluded": "CONTROLLED_INTERVENTION_AUDIT_FAILED",
+      "cents": -20.0
+    },
+    {
+      "singer": "male6",
+      "input": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc\\pilot_evaluation\\prepared\\02\\detuned_+20.wav",
+      "reference": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc\\pilot_evaluation\\prepared\\02\\original_working.wav",
+      "target_path": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc\\pilot_evaluation\\prepared\\02\\targets_+20_NOT_MODEL_INPUT.npz",
+      "output": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\notebook_training\\2759404560ab4b559a633659d316bec0\\rendered\\5ec3694dcb264f8a9e9cce3d173ed860\\accepted.wav",
+      "directory": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\notebook_training\\2759404560ab4b559a633659d316bec0\\rendered\\5ec3694dcb264f8a9e9cce3d173ed860",
+      "cents": 20.0,
+      "outcome": "WITHHELD",
+      "delivered_preview": false,
+      "scored_frames": 34,
+      "input_mae_cents": 19.513836923427416,
+      "output_mae_cents": 19.513836923427416,
+      "missing_output_scored_frames": 0,
+      "measured_output_mae_cents": 19.513836923427416,
+      "error_reduction_cents": 0.0,
+      "verified_improvement": false,
+      "controller_reasons": [
+        "INSUFFICIENT_SUPPORT"
+      ]
+    },
+    {
+      "singer": "male6",
+      "input": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc\\pilot_evaluation\\prepared\\02\\detuned_+30.wav",
+      "reference": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc\\pilot_evaluation\\prepared\\02\\original_working.wav",
+      "target_path": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc\\pilot_evaluation\\prepared\\02\\targets_+30_NOT_MODEL_INPUT.npz",
+      "output": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\notebook_training\\2759404560ab4b559a633659d316bec0\\rendered\\6227f2a12f7b4ef58a3a841bdc9fc5fd\\experimental_learned_candidate.wav",
+      "directory": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\notebook_training\\2759404560ab4b559a633659d316bec0\\rendered\\6227f2a12f7b4ef58a3a841bdc9fc5fd",
+      "cents": 30.0,
+      "outcome": "VERIFIED_FIXTURE_CANDIDATE",
+      "delivered_preview": true,
+      "scored_frames": 36,
+      "input_mae_cents": 29.202203682082832,
+      "output_mae_cents": 5.424902645131368,
+      "missing_output_scored_frames": 0,
+      "measured_output_mae_cents": 5.424902645131368,
+      "error_reduction_cents": 23.777301036951464,
+      "verified_improvement": true,
+      "controller_reasons": []
+    },
+    {
+      "singer": "male6",
+      "excluded": "CONTROLLED_INTERVENTION_AUDIT_FAILED",
+      "cents": -30.0
+    },
+    {
+      "singer": "male6",
+      "excluded": "CONTROLLED_INTERVENTION_AUDIT_FAILED",
+      "cents": -20.0
+    },
+    {
+      "singer": "male6",
+      "excluded": "CONTROLLED_INTERVENTION_AUDIT_FAILED",
+      "cents": 20.0
+    },
+    {
+      "singer": "male6",
+      "input": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc\\pilot_evaluation\\prepared\\03\\detuned_+30.wav",
+      "reference": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc\\pilot_evaluation\\prepared\\03\\original_working.wav",
+      "target_path": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc\\pilot_evaluation\\prepared\\03\\targets_+30_NOT_MODEL_INPUT.npz",
+      "output": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\notebook_training\\2759404560ab4b559a633659d316bec0\\rendered\\231af3c781804c35b5f942feb4c964e5\\experimental_learned_candidate.wav",
+      "directory": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\notebook_training\\2759404560ab4b559a633659d316bec0\\rendered\\231af3c781804c35b5f942feb4c964e5",
+      "cents": 30.0,
+      "outcome": "VERIFIED_FIXTURE_CANDIDATE",
+      "delivered_preview": true,
+      "scored_frames": 34,
+      "input_mae_cents": 30.24327121252605,
+      "output_mae_cents": 2.90510635687374,
+      "missing_output_scored_frames": 0,
+      "measured_output_mae_cents": 2.90510635687374,
+      "error_reduction_cents": 27.33816485565231,
+      "verified_improvement": true,
+      "controller_reasons": []
+    }
+  ],
+  "by_singer": {
+    "female6": {
+      "attempted": 8,
+      "audited": 0,
+      "delivered_previews": 0,
+      "verified_improvements": 0,
+      "input_mae_cents": null,
+      "output_mae_cents": null,
+      "error_reduction_fraction": null
+    },
+    "male6": {
+      "attempted": 8,
+      "audited": 4,
+      "delivered_previews": 3,
+      "verified_improvements": 2,
+      "input_mae_cents": 27.44190742699078,
+      "output_mae_cents": 14.663040953839834,
+      "error_reduction_fraction": 0.4656697610087467
+    }
+  },
+  "rendered_demo_gate_passes": false,
+  "diagnostic_only": true,
+  "attempted_shift_count": 16,
+  "audited_shift_count": 4,
+  "elapsed_seconds": 21.0,
+  "interpretation": "Audited interventions only have valid labels; every withheld/rolled-back audited input is scored unchanged. Declared scored frames are fixed; missing delivered pitch receives no gain and fails adoption. Exclusions and all four original anchors are reported. Two heldout singers; no natural-error accuracy estimate."
+}

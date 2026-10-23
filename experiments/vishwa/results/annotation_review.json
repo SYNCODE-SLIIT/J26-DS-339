@@ -1,0 +1,514 @@
+{
+  "recorded_date": "2026-10-21",
+  "n": 20,
+  "split": "TRAIN",
+  "config": {
+    "method": "Praat autocorrelation",
+    "time_step_s": 0.011609977324263039,
+    "pitch_floor_hz": 32.70319566257483,
+    "pitch_ceiling_hz": 2093.004522404789,
+    "silence_threshold": 0.03,
+    "voicing_threshold": 0.45,
+    "mapping": "nearest native frame within half a hop; no interpolation",
+    "flag_rule": "shared octave: >=80% estimator agreement within 50 cents and both median errors within .75 semitone of same nonzero octave"
+  },
+  "flags": {
+    "inspect_timing_and_pitch": 12,
+    "shared_octave_discrepancy": 8
+  },
+  "macro_estimator_agreement": 0.9272790685611512,
+  "macro_pyin_midi_frame_agreement": 0.3020295391929803,
+  "macro_praat_midi_frame_agreement": 0.27629967830635405,
+  "versions": {
+    "praat-parselmouth": "0.4.7",
+    "librosa": "1.0.0",
+    "numpy": "2.5.4"
+  },
+  "implementation_sha256": {
+    "scripts/review_annotations.py": "d451c08eeb2fb7d0dd4eae114470131e61e436cd6b8703e9853236713f9dd45f",
+    "src/melody_understanding/review.py": "43e6d32d69617bf5fc46e776bb037906cb4facb3c573e9d8883c21f669c70ddf"
+  },
+  "recordings": [
+    {
+      "key": "F01_0101_0001_1_D",
+      "split": "TRAIN",
+      "review_status": "automated_evidence_only_human_review_pending",
+      "common_voiced_frames": 566,
+      "estimator_agreement_50c": 0.9734982332155477,
+      "pyin_median_error_semitones": 0.0,
+      "praat_median_error_semitones": -0.02567626983480409,
+      "review_flag": "inspect_timing_and_pitch",
+      "pyin_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.3881401617250674,
+        "midi_frame_overall_agreement_50c": 0.375,
+        "midi_voicing_recall": 0.9380053908355795
+      },
+      "praat_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.33692722371967654,
+        "midi_frame_overall_agreement_50c": 0.3346354166666667,
+        "midi_voicing_recall": 0.7641509433962265
+      },
+      "supported_frames": 768,
+      "total_frames": 776,
+      "wav_sha256": "61e23d0e491a1adf874ff847c57b46bb05678d0edccca7127d5333f4acc90027",
+      "midi_sha256": "3f9076d9dacf831b3f593642e0b0b4efa36ee62e2273f070d38da99ceebc2d1e"
+    },
+    {
+      "key": "F01_0487_0001_1_D",
+      "split": "TRAIN",
+      "review_status": "automated_evidence_only_human_review_pending",
+      "common_voiced_frames": 687,
+      "estimator_agreement_50c": 0.9490538573508006,
+      "pyin_median_error_semitones": 0.10000000000000142,
+      "praat_median_error_semitones": 0.12476859473674295,
+      "review_flag": "inspect_timing_and_pitch",
+      "pyin_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.5182038834951457,
+        "midi_frame_overall_agreement_50c": 0.535675082327113,
+        "midi_voicing_recall": 0.8980582524271845
+      },
+      "praat_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.47694174757281554,
+        "midi_frame_overall_agreement_50c": 0.5236004390779363,
+        "midi_voicing_recall": 0.8592233009708737
+      },
+      "supported_frames": 911,
+      "total_frames": 919,
+      "wav_sha256": "9d023997243ad751c45485bac12ec3e60a72a0d3c88e072eb107527499a06fa6",
+      "midi_sha256": "708cde7a96a37835415cdb7d14147706ebc488238fbfcecc7dfcdc19f5ec6d30"
+    },
+    {
+      "key": "F02_0409_0002_2",
+      "split": "TRAIN",
+      "review_status": "automated_evidence_only_human_review_pending",
+      "common_voiced_frames": 609,
+      "estimator_agreement_50c": 0.896551724137931,
+      "pyin_median_error_semitones": 0.7000000000000028,
+      "praat_median_error_semitones": 0.7059410618285398,
+      "review_flag": "inspect_timing_and_pitch",
+      "pyin_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.18880351262349068,
+        "midi_frame_overall_agreement_50c": 0.16698292220113853,
+        "midi_voicing_recall": 0.8441273326015367
+      },
+      "praat_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.17014270032930845,
+        "midi_frame_overall_agreement_50c": 0.16223908918406071,
+        "midi_voicing_recall": 0.6695938529088913
+      },
+      "supported_frames": 1054,
+      "total_frames": 1061,
+      "wav_sha256": "3056ab2dd7aa177f7ed909765caa978f3a0a71766132bc748237b0ea4969e80a",
+      "midi_sha256": "1046a9f8e4d3a5be4ba6f1f781170ebf20fe6a14c229f62c593be792df0bec31"
+    },
+    {
+      "key": "F02_0091_0003_1_D",
+      "split": "TRAIN",
+      "review_status": "automated_evidence_only_human_review_pending",
+      "common_voiced_frames": 971,
+      "estimator_agreement_50c": 0.8959835221421215,
+      "pyin_median_error_semitones": 0.29999999999999716,
+      "praat_median_error_semitones": 0.28621262051605356,
+      "review_flag": "inspect_timing_and_pitch",
+      "pyin_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.20292083013066872,
+        "midi_frame_overall_agreement_50c": 0.24363636363636362,
+        "midi_voicing_recall": 0.9192928516525749
+      },
+      "praat_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.15757109915449655,
+        "midi_frame_overall_agreement_50c": 0.2029090909090909,
+        "midi_voicing_recall": 0.7463489623366641
+      },
+      "supported_frames": 1375,
+      "total_frames": 1383,
+      "wav_sha256": "100c3b86e26624b5932b06d41c0d0c8570940b6ac87bfecafec9c449b302ac8a",
+      "midi_sha256": "8c59647a11eec90377e4e30257c2d4b6026919f32adf3c997e00b0fb2e5e3e16"
+    },
+    {
+      "key": "F03_0444_0002_1_D",
+      "split": "TRAIN",
+      "review_status": "automated_evidence_only_human_review_pending",
+      "common_voiced_frames": 1001,
+      "estimator_agreement_50c": 0.9790209790209791,
+      "pyin_median_error_semitones": 0.0,
+      "praat_median_error_semitones": 0.031190357487844267,
+      "review_flag": "inspect_timing_and_pitch",
+      "pyin_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.6747747747747748,
+        "midi_frame_overall_agreement_50c": 0.65,
+        "midi_voicing_recall": 0.9711711711711711
+      },
+      "praat_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.654054054054054,
+        "midi_frame_overall_agreement_50c": 0.673728813559322,
+        "midi_voicing_recall": 0.9036036036036036
+      },
+      "supported_frames": 1180,
+      "total_frames": 1188,
+      "wav_sha256": "8f7816a8918d0afaf6ce47b6a593c0dfeafec30e3a13415306eae01ba9828b4c",
+      "midi_sha256": "b2b6819dc4e97760b5b1b9aaed96d026d7efe68301c7e39d57e0358168c81bfd"
+    },
+    {
+      "key": "F03_0040_0002_1_D",
+      "split": "TRAIN",
+      "review_status": "automated_evidence_only_human_review_pending",
+      "common_voiced_frames": 1296,
+      "estimator_agreement_50c": 0.9776234567901234,
+      "pyin_median_error_semitones": 0.0,
+      "praat_median_error_semitones": 0.023271399769026146,
+      "review_flag": "inspect_timing_and_pitch",
+      "pyin_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.7161602209944752,
+        "midi_frame_overall_agreement_50c": 0.6987870619946092,
+        "midi_voicing_recall": 0.9654696132596685
+      },
+      "praat_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.6747237569060773,
+        "midi_frame_overall_agreement_50c": 0.6583557951482479,
+        "midi_voicing_recall": 0.8950276243093923
+      },
+      "supported_frames": 1484,
+      "total_frames": 1492,
+      "wav_sha256": "e608e6ffc9fa0aec309eae4e1d0d36d34fc37041136bc24ae15910d8b3f029c2",
+      "midi_sha256": "c00322e22fcd33e6e15e2e994940980958d262d0710458fe9d179b62fcb98954"
+    },
+    {
+      "key": "F04_0410_0002_2",
+      "split": "TRAIN",
+      "review_status": "automated_evidence_only_human_review_pending",
+      "common_voiced_frames": 897,
+      "estimator_agreement_50c": 0.903010033444816,
+      "pyin_median_error_semitones": -0.09999999999999432,
+      "praat_median_error_semitones": -0.11207138200417432,
+      "review_flag": "inspect_timing_and_pitch",
+      "pyin_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.7849246231155779,
+        "midi_frame_overall_agreement_50c": 0.7357142857142858,
+        "midi_voicing_recall": 0.9708542713567839
+      },
+      "praat_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.735678391959799,
+        "midi_frame_overall_agreement_50c": 0.71875,
+        "midi_voicing_recall": 0.9085427135678392
+      },
+      "supported_frames": 1120,
+      "total_frames": 1128,
+      "wav_sha256": "2db3a67b06ce00b8e473eb79a596e16b52843da84a619412ad3733df323de0ce",
+      "midi_sha256": "cb3427fadaea288a99d750904f0bf1907e5ca2603cdb71e7612c645d8d189472"
+    },
+    {
+      "key": "F04_0077_0002_2_D",
+      "split": "TRAIN",
+      "review_status": "automated_evidence_only_human_review_pending",
+      "common_voiced_frames": 1292,
+      "estimator_agreement_50c": 0.9504643962848297,
+      "pyin_median_error_semitones": -0.10000000000000142,
+      "praat_median_error_semitones": -0.08734900594155093,
+      "review_flag": "inspect_timing_and_pitch",
+      "pyin_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.7176974892835273,
+        "midi_frame_overall_agreement_50c": 0.7239074550128535,
+        "midi_voicing_recall": 0.9112063686466626
+      },
+      "praat_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.6209430496019596,
+        "midi_frame_overall_agreement_50c": 0.6771208226221079,
+        "midi_voicing_recall": 0.7979179424372321
+      },
+      "supported_frames": 1945,
+      "total_frames": 1953,
+      "wav_sha256": "560f71544df0a41b7976612e7d45a1e8c6a1a93eb5f8c2c7960aba21fa78075e",
+      "midi_sha256": "297c6e7d830b597350c06559a7c56cb5102c36742850e055c87956f6c84b9c69"
+    },
+    {
+      "key": "F05_0442_0002_1_D",
+      "split": "TRAIN",
+      "review_status": "automated_evidence_only_human_review_pending",
+      "common_voiced_frames": 1723,
+      "estimator_agreement_50c": 0.942542077771329,
+      "pyin_median_error_semitones": 0.09999999999999432,
+      "praat_median_error_semitones": 0.04973150228479284,
+      "review_flag": "inspect_timing_and_pitch",
+      "pyin_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.745559038662487,
+        "midi_frame_overall_agreement_50c": 0.7347242921013413,
+        "midi_voicing_recall": 0.9806687565308255
+      },
+      "praat_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.6922675026123302,
+        "midi_frame_overall_agreement_50c": 0.704421261798311,
+        "midi_voicing_recall": 0.9017763845350052
+      },
+      "supported_frames": 2013,
+      "total_frames": 2021,
+      "wav_sha256": "5ea427d5bc6e6746f92d1eb84ff3d91436971442929c7aa09c90bcd0d4254405",
+      "midi_sha256": "f257906d6671707eb9a117c339f145f2d6a547c2163e243379eb5a48474726f4"
+    },
+    {
+      "key": "F05_0321_0002_1_D",
+      "split": "TRAIN",
+      "review_status": "automated_evidence_only_human_review_pending",
+      "common_voiced_frames": 849,
+      "estimator_agreement_50c": 0.9257950530035336,
+      "pyin_median_error_semitones": 0.09999999999999432,
+      "praat_median_error_semitones": 0.12226002321276752,
+      "review_flag": "inspect_timing_and_pitch",
+      "pyin_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.606029106029106,
+        "midi_frame_overall_agreement_50c": 0.5935672514619883,
+        "midi_voicing_recall": 0.9719334719334719
+      },
+      "praat_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.5592515592515592,
+        "midi_frame_overall_agreement_50c": 0.5682261208576999,
+        "midi_voicing_recall": 0.8835758835758836
+      },
+      "supported_frames": 1026,
+      "total_frames": 1034,
+      "wav_sha256": "74e38a27d6d5404a5a73bb6f47ff94121b7e209c1fe96a84a55d3b9524c394ef",
+      "midi_sha256": "7a4c86a0e98ac0c0add178434accd8a419a03153fe4c6a686d354dde35066136"
+    },
+    {
+      "key": "M01_0311_0002_1",
+      "split": "TRAIN",
+      "review_status": "automated_evidence_only_human_review_pending",
+      "common_voiced_frames": 1434,
+      "estimator_agreement_50c": 0.902370990237099,
+      "pyin_median_error_semitones": -12.0,
+      "praat_median_error_semitones": -12.047317795956069,
+      "review_flag": "shared_octave_discrepancy",
+      "pyin_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.0,
+        "midi_frame_overall_agreement_50c": 0.030687830687830688,
+        "midi_voicing_recall": 0.9034608378870674
+      },
+      "praat_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.0,
+        "midi_frame_overall_agreement_50c": 0.07037037037037037,
+        "midi_voicing_recall": 0.9089253187613844
+      },
+      "supported_frames": 1890,
+      "total_frames": 1898,
+      "wav_sha256": "98129f7bdc283f6552c9c1ee0783119a0f4abd264be62b669cac08591626abbe",
+      "midi_sha256": "cee9cf7fca621548217a470214ae52e7eb7f0f0178a01cfd16c9418dca35c15d"
+    },
+    {
+      "key": "M01_0048_0001_2",
+      "split": "TRAIN",
+      "review_status": "automated_evidence_only_human_review_pending",
+      "common_voiced_frames": 1315,
+      "estimator_agreement_50c": 0.9543726235741445,
+      "pyin_median_error_semitones": -12.299999999999997,
+      "praat_median_error_semitones": -12.278132534724811,
+      "review_flag": "shared_octave_discrepancy",
+      "pyin_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.0,
+        "midi_frame_overall_agreement_50c": 0.0734375,
+        "midi_voicing_recall": 0.9340071343638525
+      },
+      "praat_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.0,
+        "midi_frame_overall_agreement_50c": 0.08645833333333333,
+        "midi_voicing_recall": 0.8049940546967895
+      },
+      "supported_frames": 1920,
+      "total_frames": 1928,
+      "wav_sha256": "ed4c44490b66ad821759706efbf367b179a8328a4648237596df3984d738ba70",
+      "midi_sha256": "4835fbfb3e960624c49a8507710fb39cea038cf7a7da94a137c8bc8b5bb78517"
+    },
+    {
+      "key": "M02_0312_0001_2_D",
+      "split": "TRAIN",
+      "review_status": "automated_evidence_only_human_review_pending",
+      "common_voiced_frames": 820,
+      "estimator_agreement_50c": 0.9365853658536586,
+      "pyin_median_error_semitones": -12.5,
+      "praat_median_error_semitones": -12.464981128878726,
+      "review_flag": "shared_octave_discrepancy",
+      "pyin_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.0,
+        "midi_frame_overall_agreement_50c": 0.027237354085603113,
+        "midi_voicing_recall": 0.8228995057660626
+      },
+      "praat_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.0,
+        "midi_frame_overall_agreement_50c": 0.03268482490272374,
+        "midi_voicing_recall": 0.6803953871499177
+      },
+      "supported_frames": 1285,
+      "total_frames": 1292,
+      "wav_sha256": "49ee79a479ae315589a4f7c7fe6ca3d8c2987db75a5018d846a41cf117cb3e61",
+      "midi_sha256": "b64a950e5a284eb4a0cad97ab1fe7e8d057fd5f13af42a89d8a7348e4f486dcf"
+    },
+    {
+      "key": "M02_0302_0002_1",
+      "split": "TRAIN",
+      "review_status": "automated_evidence_only_human_review_pending",
+      "common_voiced_frames": 666,
+      "estimator_agreement_50c": 0.963963963963964,
+      "pyin_median_error_semitones": -23.700000000000003,
+      "praat_median_error_semitones": -23.752713759512012,
+      "review_flag": "shared_octave_discrepancy",
+      "pyin_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.0,
+        "midi_frame_overall_agreement_50c": 0.022007042253521125,
+        "midi_voicing_recall": 0.8805528134254689
+      },
+      "praat_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.0,
+        "midi_frame_overall_agreement_50c": 0.0625,
+        "midi_voicing_recall": 0.6594274432379073
+      },
+      "supported_frames": 1136,
+      "total_frames": 1143,
+      "wav_sha256": "694c29ece0e06696b9e7634df04a2cd9b68bddc07dbf7e43d258f891b511c8cf",
+      "midi_sha256": "8353edb0cf040fd1a58978216d8ff332c064d895be601a4a5b1ca3473ec0c246"
+    },
+    {
+      "key": "M03_0435_0001_1_DD",
+      "split": "TRAIN",
+      "review_status": "automated_evidence_only_human_review_pending",
+      "common_voiced_frames": 886,
+      "estimator_agreement_50c": 0.8702031602708804,
+      "pyin_median_error_semitones": 1.0,
+      "praat_median_error_semitones": 1.2262913273779148,
+      "review_flag": "inspect_timing_and_pitch",
+      "pyin_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.14776274713839752,
+        "midi_frame_overall_agreement_50c": 0.17680074836295603,
+        "midi_voicing_recall": 0.9750260145681582
+      },
+      "praat_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.13215400624349635,
+        "midi_frame_overall_agreement_50c": 0.21889616463985032,
+        "midi_voicing_recall": 0.9250780437044746
+      },
+      "supported_frames": 1069,
+      "total_frames": 1077,
+      "wav_sha256": "7a267e581c760ce6e09d66ddfa20c3048667e62d2b8106bf6f64de27730504e3",
+      "midi_sha256": "f00527bcb8007056324da1323cfb9187e2d62fa059a0bfc53871c5abc795aec1"
+    },
+    {
+      "key": "M03_0416_0001_2_DD",
+      "split": "TRAIN",
+      "review_status": "automated_evidence_only_human_review_pending",
+      "common_voiced_frames": 1021,
+      "estimator_agreement_50c": 0.8991185112634672,
+      "pyin_median_error_semitones": -0.3999999999999986,
+      "praat_median_error_semitones": -0.4237186570047129,
+      "review_flag": "inspect_timing_and_pitch",
+      "pyin_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.3496143958868895,
+        "midi_frame_overall_agreement_50c": 0.357379767827529,
+        "midi_voicing_recall": 0.9691516709511568
+      },
+      "praat_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.31533847472150817,
+        "midi_frame_overall_agreement_50c": 0.3358208955223881,
+        "midi_voicing_recall": 0.8757497857754927
+      },
+      "supported_frames": 1206,
+      "total_frames": 1214,
+      "wav_sha256": "6ae2c7eeb56a72a2e0d9d536dd9a8a529894e6f521e7bdd0182377628edc830c",
+      "midi_sha256": "449623043c736a82d80a1f51e117ea3e7659ac628b6611cf2bdb569b4fe4f0a4"
+    },
+    {
+      "key": "M04_0070_0001_1_D",
+      "split": "TRAIN",
+      "review_status": "automated_evidence_only_human_review_pending",
+      "common_voiced_frames": 775,
+      "estimator_agreement_50c": 0.9329032258064516,
+      "pyin_median_error_semitones": -12.100000000000001,
+      "praat_median_error_semitones": -12.097392951704464,
+      "review_flag": "shared_octave_discrepancy",
+      "pyin_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.0,
+        "midi_frame_overall_agreement_50c": 0.0,
+        "midi_voicing_recall": 0.9812646370023419
+      },
+      "praat_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.0,
+        "midi_frame_overall_agreement_50c": 0.0,
+        "midi_voicing_recall": 0.9074941451990632
+      },
+      "supported_frames": 854,
+      "total_frames": 862,
+      "wav_sha256": "b1a3dc572341f1fce61518dddbcf0fbe456691e1d3e80220b5fae110a37efc4b",
+      "midi_sha256": "d73505a0a6eb6a77b121e15569cdb802e1185939a116b6e43a9dd3206aab63a4"
+    },
+    {
+      "key": "M04_0370_0002_2_D",
+      "split": "TRAIN",
+      "review_status": "automated_evidence_only_human_review_pending",
+      "common_voiced_frames": 988,
+      "estimator_agreement_50c": 0.8350202429149798,
+      "pyin_median_error_semitones": -12.299999999999997,
+      "praat_median_error_semitones": -12.26821421200804,
+      "review_flag": "shared_octave_discrepancy",
+      "pyin_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.0,
+        "midi_frame_overall_agreement_50c": 0.04046692607003891,
+        "midi_voicing_recall": 0.9242928452579035
+      },
+      "praat_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.0,
+        "midi_frame_overall_agreement_50c": 0.06147859922178988,
+        "midi_voicing_recall": 0.8236272878535774
+      },
+      "supported_frames": 1285,
+      "total_frames": 1292,
+      "wav_sha256": "f96d89ec5901aa3b60843b8b5933254e832eb781319d5fa86e25fdce8621a655",
+      "midi_sha256": "05c716654c8d70e7a63e0e62bc5c11f4c04b2521c88ab772501385f6a3782c94"
+    },
+    {
+      "key": "M05_0263_0001_2",
+      "split": "TRAIN",
+      "review_status": "automated_evidence_only_human_review_pending",
+      "common_voiced_frames": 1226,
+      "estimator_agreement_50c": 0.9347471451876019,
+      "pyin_median_error_semitones": -24.0,
+      "praat_median_error_semitones": -24.016465202038713,
+      "review_flag": "shared_octave_discrepancy",
+      "pyin_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.0,
+        "midi_frame_overall_agreement_50c": 0.02643171806167401,
+        "midi_voicing_recall": 0.9442508710801394
+      },
+      "praat_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.0,
+        "midi_frame_overall_agreement_50c": 0.032724984266834484,
+        "midi_voicing_recall": 0.8613240418118467
+      },
+      "supported_frames": 1589,
+      "total_frames": 1597,
+      "wav_sha256": "a5a5d4f22a9b092e8fafe07316583719342ff0fa5d2a253d5d78a6ebb971edce",
+      "midi_sha256": "9ca26b6f45116a8580a4ebb1a7e64a0ed6d4d67d1a2df1a12046b2bdb4875eb7"
+    },
+    {
+      "key": "M05_0016_0002_1_D",
+      "split": "TRAIN",
+      "review_status": "automated_evidence_only_human_review_pending",
+      "common_voiced_frames": 712,
+      "estimator_agreement_50c": 0.922752808988764,
+      "pyin_median_error_semitones": -12.0,
+      "praat_median_error_semitones": -12.010310933221366,
+      "review_flag": "shared_octave_discrepancy",
+      "pyin_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.0,
+        "midi_frame_overall_agreement_50c": 0.0,
+        "midi_voicing_recall": 0.8653198653198653
+      },
+      "praat_common_grid": {
+        "midi_frame_pitch_agreement_50c": 0.0,
+        "midi_frame_overall_agreement_50c": 0.0,
+        "midi_voicing_recall": 0.8047138047138047
+      },
+      "supported_frames": 891,
+      "total_frames": 899,
+      "wav_sha256": "a22363a7c3e3ae805b6fd5a1e0cf8500aea1030fdf69799a84ff32f122714d44",
+      "midi_sha256": "73e7e2c9fc4dd2a7cd3443b7f2acbd140e5a54f96ec2485054194a9b9d575657"
+    }
+  ],
+  "limitation": "Agreement is not ground truth; this selected TRAIN cohort is not a random corpus-wide audit."
+}
