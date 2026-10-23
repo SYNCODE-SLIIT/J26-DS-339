@@ -21,7 +21,16 @@ STAGES = ['praveen', 'context', 'pasan', 'rahul', 'render']
 def save(run, folder):
     temporary = folder / 'manifest.tmp'
     temporary.write_text(json.dumps(run, indent=2, allow_nan=False))
-    temporary.replace(folder / 'manifest.json')
+    # Windows readers can briefly prevent replacement while polling the manifest.
+    # Keep the atomic write and allow the reader to close its file handle.
+    for attempt in range(20):
+        try:
+            temporary.replace(folder / 'manifest.json')
+            return
+        except PermissionError:
+            if attempt == 19:
+                raise
+            time.sleep(.025)
 
 
 def new_run(track_id, genre=None):

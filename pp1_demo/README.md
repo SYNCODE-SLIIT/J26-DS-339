@@ -9,6 +9,28 @@ labelled explicitly.
 
 From the repository root:
 
+On Windows PowerShell:
+
+```powershell
+.\pp1_demo\start.ps1
+# Optional alternate port:
+.\pp1_demo\start.ps1 -Port 8766
+```
+
+The local Windows setup uses `pp1_demo/.venv/Scripts/python.exe`, reuses the
+existing BPDR environment's scientific packages through a local `.pth` file,
+and installs `pretty-midi`, `mir-eval`, `mido` and `importlib-resources` only in
+the demo environment.
+The launcher enables UTF-8 for the notebooks and model metadata and uses this
+interpreter for BPDR unless `PP1_BPDR_PYTHON` is already set.
+Dataset inputs must exist under the extraction pipeline's `outputs/` folder;
+on this machine they were restored from the existing Downloads archives,
+providing 470 compatible recordings. The first run can take a few minutes while
+scientific libraries initialize. The HTTP check allows up to 300 seconds;
+override this with `--timeout` if needed.
+
+On Linux/macOS:
+
 ```sh
 ./pp1_demo/start.sh
 ```

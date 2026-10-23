@@ -2,6 +2,7 @@
 import argparse,json,time,urllib.request,urllib.error
 
 parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--port',type=int,default=8765)
+parser.add_argument('--timeout',type=float,default=300,help='Maximum pipeline wait in seconds, including first-run initialization')
 args=parser.parse_args();base=f'http://127.0.0.1:{args.port}'
 
 def call(path,data=None,headers=None):
@@ -29,7 +30,8 @@ assert status==202,body
 run_id=json.loads(body)['id']
 assert call('/api/runs',data={'track_id':track['id']})[0]==409
 seen=set()
-for attempt in range(80):
+deadline=time.monotonic()+args.timeout
+while time.monotonic()<deadline:
     status,_,body=call('/api/runs/'+run_id);run=json.loads(body)
     seen.add(run.get('active_stage'))
     if run['status'] in ('complete','failed'):break
