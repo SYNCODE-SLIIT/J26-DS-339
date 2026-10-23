@@ -61,7 +61,9 @@ class Handler(BaseHTTPRequestHandler):
             if route=='/api/catalog':
                 return self.json({'tracks':catalogue(),'genres':read(VOCAB/'feature_vocabularies.json')['genres'],
                                   'models':{'bpdr':(BPDR_EXPORT/'selected_model.joblib').exists(),
-                                            'pasan':PASAN.exists(),'rahul':RAHUL.exists()}})
+                                            'vishwa':all((ROOT/'experiments/vishwa/checkpoints/weak_score_pilot'/name).is_file() for name in ['cnn.pt','cnn_transformer.pt','train_normalization.npz','manifest.json']),'pasan':PASAN.exists(),'rahul':RAHUL.exists()}})
+            if route=='/api/panels/vishwa':
+                return self.json({name:(APP/'panels/vishwa'/(name+'.md')).read_text(encoding='utf-8') for name in ['steps','evidence','decisions','roadmap']})
             if route=='/api/health':return self.json({'status':'ok','application':'pp1_demo'})
             if route.startswith('/api/tracks/'):
                 tid=route.removeprefix('/api/tracks/')

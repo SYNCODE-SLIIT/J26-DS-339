@@ -45,3 +45,28 @@
 - Added recording/genre/key search. Load waveform and full preview data only for
   the selected recording; catalogue metadata is approximately 485 KB and scans in
   1.6 seconds locally. The model pipeline and fixed Rahul mode are unchanged.
+
+## 2026-10-23 — Vishwa restored as a live component
+
+- Supersedes the earlier deferred-stage decision. Pulled team merge `4f60115`.
+- Exported existing CNN/hybrid checkpoints and TRAIN normalization (approximately
+  211 KB), with original report hash verification. No retraining or new accuracy claim.
+- Live BPDR accepted audio now enters Vishwa: pYIN notes plus both learned score-class
+  models. Live notes replace the audible crop; saved notes only supply outside-crop
+  context for the existing sixteen-bar Pasan model. Rahul consumes the same merged
+  melody and keeps the requested constant major mode.
+- Preserved the team's current Pasan latest/epoch-9 selection and all teammate
+  model source. The earlier best-checkpoint plan was superseded by their merged app.
+- Added the melody stage, live plots, experiment probability maps, research panels,
+  manifest provenance, portable setup and Windows runtime-path handling.
+- Real track_0000382: 19.790 seconds, 57 live notes, 42 basic/refined chord intervals.
+  Browser run 16.745 s including display holds, Vishwa 1.042 s. HTTP run 16.024 s.
+- Twelve tests passed; HTTP artifact/range/security/handoff check passed; frontend
+  JavaScript syntax and visible browser results checked. Only 11 compatible recordings
+  are available on this machine, so catalogue tests now check availability rather
+  than incorrectly require the previous machine's >100 recordings.
+- Cross-platform setup is documented; only macOS execution has been verified.
+
+Second real-recording check: `track_0000383` completed in 11.986 s without display holds, with 41 live notes and 41 excerpt chord predictions. Both learned checkpoints ran; the minor source key remained saved metadata and Rahul mode remained the explicit major constant.
+
+Checkpoint export commit: `56d2eb5` (`feat: export portable Vishwa melody checkpoints`).
