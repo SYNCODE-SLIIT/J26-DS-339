@@ -1,5 +1,7 @@
 # Genre-aware Vocal Melody Harmonization
 
+*Github Link* :- https://github.com/SYNCODE-SLIIT/J26-DS-339
+
 **J26-DS-339 · Data Science · SLIIT Faculty of Computing**
 
 A research project that investigates how solo singing or humming can be transformed into musically coherent, genre-aware chord accompaniment. The system separates vocal validation, melody understanding, harmonic progression planning and detailed chord refinement so that each stage can be developed and evaluated independently.
