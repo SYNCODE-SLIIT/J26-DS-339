@@ -259,8 +259,3 @@ The result is written to `pp1_demo/runtime/vishwa_standalone/result.json` alongs
 | A run stops or is rejected | Read the displayed error and run manifest/BPDR log. Downstream stages do not complete after a failed prerequisite. |
 | Output seems repetitive or poorly aligned | Inspect the melody first, then saved beats/key, the plan and refinement. A functional run does not establish musical quality or harmonic-change accuracy. |
 
-## Updating presentation material
-
-Vishwa's expandable research notes are loaded from `panels/vishwa/steps.md`, `evidence.md`, `decisions.md` and `roadmap.md`. Other member panel files exist, but this version's notes endpoint loads only Vishwa's files; the other stage views are rendered by `web/app.js`. Keep historical experiment results separate from live-recording output when updating either source.
-
-For checkpoint-specific limitations and research results, return to the [project README](../README.md) and linked component records. Rehearsal success, model agreement and a completed progress bar are functional observations, not substitutes for independent research evaluation.
