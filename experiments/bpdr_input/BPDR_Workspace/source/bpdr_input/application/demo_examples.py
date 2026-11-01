@@ -34,5 +34,10 @@ def examples():
                                   reference=Path(item['reference']) if item.get('reference') else None,
                                   method=METHOD_NAME))
         records = recovered + records
+    from bpdr_input.repair.held_voice_runtime import METHOD_NAME as HELD_METHOD, available as held_available, load_model as load_held
+    if held_available():
+        _,_,card=load_held()
+        records=[dict(item,input=Path(item['input']),reference=Path(item['reference']),method=HELD_METHOD)
+                 for item in card.get('demo_cases',[])]+records
     # A failed/missing optional dataset never hides the working upload flow.
     return [record for record in records if record['input'] is None or Path(record['input']).exists()]

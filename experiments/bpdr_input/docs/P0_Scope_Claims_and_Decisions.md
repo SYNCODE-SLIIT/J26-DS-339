@@ -1,3 +1,8 @@
+<!-- ACTIVE_PLAN_NOTICE:2026-10-27 -->
+> **Historical planning/scope record — current authority updated 27 October 2026.**
+> Use the [BPDR master plan](BPDR_Master_Plan.md), [implementation tracker](BPDR_Implementation_Tracker.md) and [planning review](Planning_Review_2026-10-27.md) for active scope, status and next work.
+> The original text below is retained unchanged as dated history. Its old current/next/authoritative statements do not override the active master, and no historical result or gate is changed by this notice.
+
 # BPDR scope and interface decisions
 
 **Current scope: 12 October 2026. Owner: Liyanage L. N. P., IT23141506.** Earlier milestone/contract examples are preserved in the recovery snapshot. Use the [master plan](PP1_Master_Plan.md), [execution gates](PP1_Phase_Execution_Plan.md) and [evidence tracker](PP1_Evidence_Tracker.md) together.

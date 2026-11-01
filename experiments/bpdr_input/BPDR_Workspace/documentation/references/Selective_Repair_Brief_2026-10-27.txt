@@ -1,0 +1,1371 @@
+# Research-backed plan and implementation prompt for BPDR selective vocal repair
+
+## Executive recommendation
+
+Based on the state of your project and recent work on automatic singing pitch correction, I would **keep the proposed direction but tighten it considerably**:
+
+> **First make the existing Transformer produce verified, audible local repairs. Then add “Selective Vocal Repair with Protected Regions” as the visible new feature for the presentation.**
+
+This is a better direction than adding another music-analysis capability. Recent automatic pitch-correction research consistently treats preservation of expressive pitch variation—vibrato, bends, transitions, glides—as a central problem rather than simply minimizing pitch error. Continuous corrections have specifically been investigated to avoid the unnatural behavior produced by snapping a voice to discrete note centers. citeturn3view1turn4view4
+
+A particularly relevant 2026 system, BERT-APC, explicitly separates the idea of the perceived/stationary pitch from expressive fluctuations and corrects pitch while attempting to retain intentional deviations. Its authors also evaluate the **pitch of the actually corrected audio**, rather than stopping at target-pitch prediction accuracy. citeturn4view0turn4view2 That distinction is directly relevant to your current situation: according to your project results, **5.84 cents prediction error is encouraging, but it does not prove that the delivered WAV is improved**.
+
+I would **not**, however, copy BERT-APC's music-language-model or musical-context inference into BPDR. BERT-APC reasons about note sequences and musical context; in your team architecture that starts moving toward the melody-understanding and harmonic components. citeturn3view0 Your component can take the safer boundary:
+
+**BPDR predicts and executes local waveform repair. It does not decide notes, beats, keys, chords, or phrases.**
+
+The proposed presentation feature therefore becomes:
+
+> **Selective Vocal Repair with Protected Regions**  
+> BPDR proposes verified local audio corrections. The user can protect intentional expressive regions, preview individual corrections, accept/reject them, and export only a final combination that passes the same technical verification.
+
+That gives you something visibly new without inventing a second unrelated main feature.
+
+## What the research suggests changing
+
+### Prediction quality should no longer be the main success metric
+
+Your present result of **5.84 cents** indicates that the Transformer has learned a useful correction signal, assuming that number was obtained on the evaluation setup you described. The next bottleneck is therefore likely in the path:
+
+**Transformer → region decision → permission policy → renderer → output WAV → output verification**
+
+Recent pitch-correction research supports evaluating this full path. For example, BERT-APC separately extracted pitch from its corrected singing audio to determine whether the synthesized result actually followed the intended pitch; the reported corrected-waveform result was lower than the upstream target-pitch prediction result because expressive variations and rendering affect the final measurement. citeturn4view2
+
+Therefore, do **not** optimize only:
+
+```text
+predicted correction vs. target correction
+```
+
+The core metric should become:
+
+```text
+pitch error in input WAV
+        ↓
+Transformer proposal
+        ↓
+rendered output WAV
+        ↓
+pitch error measured again
+```
+
+A candidate is successful only when the **rendered output** improves.
+
+This is also why your current observation—good prediction error but no improvement in scored shifted regions—is important rather than contradictory. It suggests that prediction, eligibility policy, or audio realization is blocking the improvement.
+
+### Preserve expression instead of forcing a perfectly flat pitch contour
+
+Smooth, context-aware pitch correction is not a new concern. Earlier work explicitly modeled correction as a continuous quantity in frequency and time so that pitch bending and vibrato could survive correction. citeturn3view1 Deep AutoTuner similarly trained using both erroneous intonation and intentional pitch variation, with the latter intended to be preserved. citeturn4view4
+
+More recent singing research gives an even stronger technical clue. VibE-SVC and VibE-SVC2 explicitly decompose F0 information into lower- and higher-frequency components, using the high-frequency contour to represent aspects of vibrato style. citeturn3view5
+
+That means I would avoid a training loss such as:
+
+```text
+make correction completely constant inside every repair interval
+```
+
+because it can produce the wrong inductive bias.
+
+Instead, train the model to predict the **detuning correction**, while preserving fine expressive variation already present in the voice.
+
+A reasonable loss design is:
+
+\[
+L =
+\lambda_{repair} L_{repair}
++
+\lambda_{identity} L_{identity}
++
+\lambda_{gradient} L_{gradient}
++
+\lambda_{boundary} L_{boundary}
+\]
+
+where:
+
+**Repair loss**
+
+\[
+L_{repair} =
+Huber(\hat c_t,c_t)
+\]
+
+on frames that genuinely contain introduced pitch errors.
+
+**Identity loss**
+
+\[
+L_{identity} =
+Huber(\hat c_t,0)
+\]
+
+on clean/original frames.
+
+This directly teaches:
+
+> “When no repair is required, predict no correction.”
+
+That is much better than hoping preservation emerges indirectly.
+
+**Gradient/continuity loss**
+
+\[
+L_{gradient} =
+Huber(
+(\hat c_t-\hat c_{t-1}),
+(c_t-c_{t-1})
+)
+\]
+
+This encourages the *shape* of the correction to behave consistently with the target instead of simply minimizing framewise error.
+
+That distinction matters. A plain total-variation loss on the prediction could accidentally reward overly flat correction curves. Matching the target derivative provides continuity without automatically suppressing legitimate temporal structure.
+
+**Boundary loss**
+
+Penalize non-zero correction immediately outside a repair interval and/or train with tapered correction targets around edit boundaries.
+
+This should reduce the sudden discontinuities that can otherwise become audible when edited audio is inserted back into the original waveform.
+
+This exact combined objective is my design recommendation rather than something copied from one paper, but its components follow the consistent research direction of continuous correction, identity preservation, and explicit handling of expressive pitch structure. citeturn3view1turn4view4turn3view5
+
+### Improve the renderer before increasing Transformer size
+
+I would **not increase the Transformer size yet**.
+
+The evidence you supplied says the model is already predicting corrections with relatively small error, while the allowed/editable path fails to produce corresponding delivered improvements. Adding parameters does not directly solve policy fragmentation, edit boundaries, formant distortion, or verification failures.
+
+The renderer should therefore become a first-class component.
+
+If the project currently uses `librosa.phase_vocoder` directly, that is especially worth revisiting. Librosa's own documentation describes its phase vocoder as a simplified implementation, notes that it does not specially handle transients, warns that audible artifacts are likely, and points users toward Rubber Band for higher-quality processing. citeturn3view4
+
+Rubber Band is particularly relevant for vocal repair because its API supports **formant-preserved pitch shifting**, and its high-consistency mode is specifically intended for dynamically changing pitch shifts without discontinuities. citeturn3view3
+
+I would therefore benchmark:
+
+```text
+existing renderer
+vs.
+Rubber Band / pyrubberband with formant preservation
+```
+
+on exactly the same repaired regions.
+
+Do not automatically replace the existing implementation just because another library exists. If the current renderer performs better in your tests, retain it. But for a singing-voice system, formant-preserving rendering is valuable enough to test before spending time retraining a larger model. citeturn3view3
+
+### Do not make the permission system frame-by-frame
+
+Your description that useful predictions are being rejected suggests that the current policy may be too fragmented.
+
+A vocal repair is naturally a **time span**, even if the Transformer predicts framewise values.
+
+Turn the predictions into objects such as:
+
+```json
+{
+  "repair_id": "repair_003",
+  "start_sec": 4.82,
+  "end_sec": 5.41,
+  "mean_correction_cents": -27.6,
+  "max_abs_correction_cents": 34.2,
+  "confidence": 0.91,
+  "status": "verified",
+  "protected": false,
+  "accepted": true
+}
+```
+
+The regionizer should:
+
+```text
+frame predictions
+      ↓
+confidence/voicing filtering
+      ↓
+hysteresis
+      ↓
+merge short gaps
+      ↓
+reject technical outliers
+      ↓
+produce contiguous repair candidates
+```
+
+Do not independently switch correction on and off every few frames.
+
+This idea is also consistent with recent APC research emphasizing meaningful stable regions rather than treating every fluctuating F0 frame equally. BERT-APC, for example, explicitly gives lower importance to transitional or highly fluctuating areas when estimating a representative pitch. citeturn4view2
+
+Your implementation does **not** need to create musical notes to get the same engineering benefit. It can simply create **audio repair intervals**.
+
+## Proposed BPDR architecture and feature boundary
+
+The cleanest system would look like this:
+
+```text
+                         ┌─────────────────────────┐
+Original vocal WAV ─────►│ Existing preprocessing  │
+                         └────────────┬────────────┘
+                                      │
+                                      ▼
+                         ┌─────────────────────────┐
+                         │ Transformer             │
+                         │ Δ cents + confidence    │
+                         └────────────┬────────────┘
+                                      │
+                                      ▼
+                         ┌─────────────────────────┐
+                         │ Repair Regionizer       │
+                         │ contiguous candidates   │
+                         └────────────┬────────────┘
+                                      │
+                              subtract protected
+                                  user regions
+                                      │
+                                      ▼
+                         ┌─────────────────────────┐
+                         │ Technical Policy Gate   │
+                         │ limits / support / etc. │
+                         └────────────┬────────────┘
+                                      │
+                                      ▼
+                         ┌─────────────────────────┐
+                         │ Local Pitch Renderer    │
+                         │ formants + boundaries   │
+                         └────────────┬────────────┘
+                                      │
+                                      ▼
+                         ┌─────────────────────────┐
+                         │ Delivered-WAV Verifier  │
+                         └────────────┬────────────┘
+                                      │
+                           pass       │       fail
+                           ┌──────────┴──────────┐
+                           ▼                     ▼
+                     candidate shown         rollback /
+                     to user                 unchanged
+                           │
+                     accept/reject
+                           │
+                           ▼
+                    FINAL RENDER FROM
+                    ORIGINAL WAV
+                           │
+                           ▼
+                    FINAL VERIFICATION
+                           │
+                           ▼
+                       Export WAV
+```
+
+The important architectural rule is:
+
+> **Every final export should be reconstructed from the original WAV plus the accepted repair specification—not by repeatedly modifying an already modified WAV.**
+
+That prevents errors and artifacts from accumulating when the user previews, rejects, re-enables, or rearranges edits.
+
+### Protected regions
+
+Protection should be represented simply as intervals:
+
+```json
+{
+  "protected_regions": [
+    {
+      "id": "protect_001",
+      "start_sec": 7.16,
+      "end_sec": 8.02,
+      "label": "Keep original"
+    }
+  ]
+}
+```
+
+Protected regions should participate in policy as:
+
+```text
+effective_edit_mask =
+technical_allowed_mask
+AND model_supported_mask
+AND NOT protected_mask
+```
+
+The crucial rule is:
+
+> **User permission can only remove edits. It can never force an unsafe edit through the technical gate.**
+
+So:
+
+```text
+User says KEEP ORIGINAL
+→ guaranteed no correction.
+
+User says ACCEPT REPAIR
+→ repair is still allowed only if verification passes.
+```
+
+That gives the feature a defensible safety model.
+
+### Individual repair review
+
+Each verified candidate should display only information BPDR owns:
+
+```text
+Repair 2
+4.82 s – 5.41 s
+
+Suggested adjustment:
+−28 cents
+
+Status:
+Verified
+
+[Original] [Repaired]
+
+[Accept repair]
+[Keep original]
+```
+
+Avoid displaying:
+
+```text
+Detected note: C#4
+Correct note: D4
+Key: A major
+Beat: 3
+Chord: B minor
+Phrase: ...
+```
+
+because those values invade your teammates' responsibilities.
+
+The timeline can still display a pitch curve if you already have one internally, but label the objects:
+
+**repair regions**
+
+rather than:
+
+**incorrect notes**.
+
+### Repair audit information
+
+One small companion feature would make the presentation much stronger without expanding scope: expose **why BPDR did or did not repair something**.
+
+For example:
+
+```text
+Repair proposed
+Verified
+User accepted
+```
+
+or:
+
+```text
+No repair applied
+Reason: insufficient model support
+```
+
+or:
+
+```text
+No repair applied
+Reason: protected by user
+```
+
+or:
+
+```text
+Repair rolled back
+Reason: delivered pitch did not improve
+```
+
+This is particularly useful because your system is intentionally conservative. Instead of an unchanged region appearing to be a failure, the demo can visibly show **why it remained unchanged**.
+
+I would include this if it is inexpensive, but it should remain secondary to getting the delivered repairs working.
+
+## Development and evaluation plan
+
+I would restructure your original five phases slightly.
+
+### Repair-path diagnosis
+
+Before retraining anything, create a trace for every candidate.
+
+For each shifted test interval record:
+
+```text
+ground-truth shift
+Transformer predicted correction
+prediction MAE
+prediction confidence
+candidate start/end
+candidate permitted?
+if rejected → exact reason
+render attempted?
+output path
+output pitch error before
+output pitch error after
+outside-region preservation
+final disposition
+```
+
+One machine-readable artifact could be:
+
+```json
+{
+  "sample": "singer_07_clip_12",
+  "region": [2.41, 3.08],
+  "true_shift_cents": 40.0,
+  "predicted_median_cents": -36.7,
+  "prediction_mae_cents": 4.8,
+  "policy": {
+    "permitted": false,
+    "reason": "insufficient_support"
+  },
+  "rendered": false,
+  "verified": false
+}
+```
+
+Then classify every failure into:
+
+```text
+prediction failure
+regionization failure
+permission failure
+renderer failure
+verification failure
+```
+
+Do not start Phase Two until the dominant category is known.
+
+This could reveal, for example, that a Transformer whose correction is fundamentally correct is being broken into many short spans and rejected for insufficient support. In that situation, retraining would attack the wrong layer.
+
+### Prediction and region quality
+
+Only after diagnosis should you modify training.
+
+My preferred experiment order is:
+
+```text
+Baseline current Transformer
+
+A. + identity / zero-correction loss
+
+B. + correction-gradient continuity loss
+
+C. + boundary-aware training
+
+D. + A+B+C
+
+Optional:
+E. low/high-frequency F0 treatment if vibrato preservation remains poor
+```
+
+Do not change several other variables simultaneously.
+
+Use singer-held-out or source-held-out development folds where possible. In particular, do not tune the model, renderer thresholds, region merging, and permission thresholds repeatedly against the evaluation set you intend to cite as final evidence.
+
+Keep the already-inspected calibration examples as **development evidence**, as you suggested.
+
+Once a configuration is frozen, run it on a fresh holdout.
+
+### Rendering and verification
+
+Every permitted region should go through:
+
+```text
+original region
+    ↓
+pitch shift
+    ↓
+boundary transition / crossfade
+    ↓
+insert into original timeline
+    ↓
+remeasure delivered waveform
+```
+
+For a local repair, verification should answer at least:
+
+**Did the targeted region improve?**
+
+```text
+error_after < error_before
+```
+
+preferably by a meaningful margin determined using development data.
+
+**Was untouched material preserved?**
+
+Where samples are intentionally untouched, waveform difference should ideally be zero outside the edit plus crossfade margin if your architecture supports literal copying.
+
+**Did timing remain unchanged?**
+
+```text
+len(output_samples) == len(input_samples)
+```
+
+unless your BPDR specification explicitly allows time modification.
+
+**Were pauses preserved?**
+
+No voiced material should unexpectedly appear in unvoiced sections.
+
+**Was the output damaged?**
+
+Check for NaN/Inf, clipping introduced by processing, empty channels, failed render, channel-count changes, and sample-rate changes.
+
+On any hard failure:
+
+```text
+rollback to original
+```
+
+rather than shipping the questionable repair.
+
+For pitch tracking, CREPE remains a well-established neural monophonic pitch estimator and was specifically evaluated for noise robustness. citeturn1search0 More recent estimators such as SwiftF0 report substantial efficiency and robustness improvements, including evaluation on held-out audio domains. citeturn1search23 I would not replace your existing pitch estimator immediately; a useful research check is to compare a subset with a second estimator so the entire pipeline is not judged only by exactly the same F0 algorithm used upstream.
+
+### Selective review implementation
+
+Only after one or more repairs can reliably survive the delivered-WAV verifier should you add the UI.
+
+The minimum usable feature is:
+
+```text
+timeline
++
+proposed repair regions
++
+drag-select "Keep original"
++
+A/B preview for candidate
++
+accept
++
+reject
++
+final export
+```
+
+The UI does **not** need to become a Melodyne-style note editor.
+
+That would substantially increase implementation effort and blur your team boundary.
+
+A presentation-quality timeline can be much simpler:
+
+```text
+0s                                                     12s
+│────────────────────────────────────────────────────────│
+        █████                  ▒▒▒▒▒          ███
+        Repair                 Protected       Repair
+         ✓                      Keep             ×
+```
+
+Where:
+
+```text
+Repair ✓ = accepted verified repair
+Protected = user-protected original
+Repair × = rejected repair
+```
+
+### Evidence and success gates
+
+Do not report only one aggregate error.
+
+I would report at least these quantities separately.
+
+| Measurement | What it answers |
+|---|---|
+| Prediction MAE in cents | Does the Transformer know the correction? |
+| Delivered region error before/after | Did the resulting WAV actually improve? |
+| Verified repair success rate | How often do attempted repairs succeed? |
+| Useful coverage | How much eligible erroneous material gets successfully repaired? |
+| Rejection rate by reason | Why are corrections being withheld? |
+| Outside-region preservation | Did local repair damage untouched material? |
+| Unchanged-original control | Does a good input remain good? |
+| Duration/sample-count integrity | Did rendering alter timing? |
+| Protected-region preservation | Does the new feature actually prevent editing? |
+
+I strongly recommend **useful coverage** because otherwise a conservative system can obtain excellent preservation scores simply by editing nothing.
+
+For example:
+
+\[
+UsefulCoverage =
+\frac{\text{duration of successfully delivered repair}}
+{\text{duration of eligible shifted material}}
+\]
+
+Then pair it with:
+
+\[
+RepairSuccessRate =
+\frac{\text{verified improved repairs}}
+{\text{attempted repairs}}
+\]
+
+The presentation target is not necessarily 100% coverage.
+
+A defensible BPDR story is:
+
+> “BPDR corrects regions when there is sufficient evidence and leaves uncertain or intentionally protected material unchanged.”
+
+For final perceptual testing, standardized audio-quality methodology exists: ITU-R BS.1534 defines MUSHRA for subjective assessment of intermediate audio quality. citeturn3view6 A full MUSHRA experiment is probably unnecessary for your immediate progress presentation, but the underlying lesson is useful: **objective pitch accuracy and perceived audio quality should not be treated as the same measurement**. Recent APC research likewise reports subjective expression-preservation alongside pitch-correction accuracy. citeturn4view2
+
+## What I would show at the progress presentation
+
+Your next demonstration can tell a much stronger story than simply announcing another model.
+
+### Working main feature
+
+Use one example containing a known local detuning.
+
+Show:
+
+```text
+Original
+→ Transformer proposal
+→ repair span
+→ rendered output
+→ verification result
+```
+
+Then present:
+
+```text
+Before repair: XX.X cents
+After delivered repair: YY.Y cents
+Outside region: preserved
+Duration: unchanged
+Verification: PASS
+```
+
+The important word is **delivered**.
+
+### New selective-control feature
+
+Use an example containing:
+
+```text
+one correction candidate
++
+one expressive slide/vibrato region
++
+another correction candidate
+```
+
+Demonstrate:
+
+1. The model proposes repairs.
+2. You mark the expressive region **Keep original**.
+3. Play Original vs Repaired for one proposed repair.
+4. Accept it.
+5. Reject another.
+6. Export.
+7. Show the final verification result.
+
+That clearly looks like new functionality rather than merely another internal training improvement.
+
+### Conservative behavior
+
+Finally show either:
+
+```text
+clean recording → unchanged
+```
+
+or:
+
+```text
+uncertain candidate
+→ verifier rejects
+→ original retained
+```
+
+That proves preservation is a design requirement rather than an accidental by-product.
+
+Your presentation wording can then safely be:
+
+> **“BPDR prepares vocal input through selective local pitch repair. A Transformer proposes audio corrections, BPDR verifies the resulting waveform before delivery, and users can protect intentional expression and individually accept or reject verified repairs.”**
+
+That wording stays inside your ownership boundary.
+
+I would explicitly state that BPDR **does not perform melody transcription, beat/key analysis, harmonic planning, or chord refinement**.
+
+## Copy-paste implementation prompt
+
+The following is the prompt I would give to a coding/research agent that has access to your repository. It deliberately tells the agent to **inspect first and produce a plan before changing code**, because at your current stage immediately editing the Transformer is risky.
+
+```text
+You are working on an existing research/software project containing a BPDR
+component for vocal preprocessing and local pitch repair.
+
+DO NOT immediately modify code.
+
+First inspect the repository, current BPDR implementation, model pipeline,
+training/evaluation scripts, audio rendering code, permission/preservation
+rules, frontend/backend integration, tests, documentation, and recent result
+artifacts.
+
+The current known project state is:
+
+- The main BPDR feature is local vocal pitch repair.
+- A Transformer currently predicts pitch corrections.
+- Current prediction error has improved to approximately 5.84 cents according
+  to our existing experiment.
+- However, current permission/preservation rules have not yet produced useful
+  improvement in the scored shifted regions of the delivered audio.
+- Therefore prediction quality alone is NOT considered completion.
+- A repair counts only when the resulting rendered WAV measurably improves the
+  intended region while preserving untouched audio.
+- The already inspected calibration/evaluation material must not silently be
+  reused as fresh final evidence.
+
+TEAM SCOPE BOUNDARIES
+
+BPDR owns:
+- recording/audio preparation,
+- local pitch repair,
+- waveform rendering,
+- repair-region selection,
+- protected audio regions,
+- preservation checks,
+- delivered-WAV verification,
+- final repaired-audio export.
+
+Other team components own:
+- melody/note understanding,
+- note names and note durations,
+- beats,
+- musical key and mode,
+- musical phrases,
+- genre-conditioned harmonic functions,
+- chord progressions,
+- chord extensions,
+- chord transitions/refinement.
+
+Do NOT implement new note transcription, beat detection, key detection,
+harmonic analysis, chord prediction, phrase analysis, or another teammate's
+feature.
+
+Repair regions in BPDR must remain TIME-BASED AUDIO EDIT INTERVALS, not a new
+note representation.
+
+NEW FEATURE GOAL
+
+After making the main repair path usable, implement:
+
+"Selective Vocal Repair with Protected Regions"
+
+The user should be able to:
+1. See proposed verified repair regions on a timeline.
+2. Mark an arbitrary time interval as "Keep original".
+3. Preview the original and repaired version of an individual candidate.
+4. Accept or reject individual repairs.
+5. Export the combination of accepted repairs.
+6. Have the final combined WAV verified again before delivery.
+7. See a concise reason when a proposal is rejected/withheld if the existing
+   architecture allows this without major scope expansion.
+
+A user decision may RESTRICT what BPDR edits, but may NEVER bypass technical
+verification or force an unsafe repair.
+
+Example:
+
+technical_allowed = true
+user_accept = true
+=> repair may be applied and must still pass output verification.
+
+technical_allowed = false
+user_accept = true
+=> do NOT apply repair.
+
+protected = true
+=> do NOT apply repair.
+
+CRITICAL ARCHITECTURAL RULE
+
+Always build preview/final output from:
+ORIGINAL WAV + selected repair specification.
+
+Do not repeatedly pitch-shift an already modified WAV when users toggle edits.
+Avoid cumulative rendering artifacts.
+
+==================================================
+STAGE A — REPOSITORY AND FAILURE AUDIT
+==================================================
+
+Before implementation:
+
+1. Locate:
+   - Transformer model definition,
+   - model inputs/outputs,
+   - target correction representation,
+   - training loss,
+   - train/validation/test splitting,
+   - current pitch estimator,
+   - current permission/gating rules,
+   - current rendering implementation,
+   - current verification logic,
+   - current backend API/service boundaries,
+   - current frontend audio player/timeline,
+   - downstream BPDR handoff contract,
+   - tests,
+   - experiment/result files.
+
+2. Trace the exact current repair path:
+
+audio
+-> features
+-> Transformer
+-> correction prediction
+-> permission decision
+-> renderer
+-> output WAV
+-> evaluation/verification
+
+3. Produce a failure table for representative known shifted regions containing:
+
+sample_id
+singer/source_id if available
+region_start
+region_end
+true_shift_cents if known
+predicted_correction
+prediction_error_cents
+prediction_confidence if available
+permission_result
+permission_rejection_reason
+render_attempted
+render_result
+error_before_render
+error_after_render
+preservation_result
+final_status
+
+4. Categorize failures into:
+   - prediction failure,
+   - fragmented-region failure,
+   - correction-limit failure,
+   - insufficient-support failure,
+   - protected-region failure,
+   - rendering failure,
+   - delivered-WAV verification failure,
+   - other.
+
+5. Determine the dominant bottleneck BEFORE suggesting model enlargement.
+
+RETURN A PLAN TO ME BEFORE IMPLEMENTING ANYTHING.
+
+The plan must include:
+- relevant files,
+- current architecture,
+- identified bottleneck(s),
+- proposed minimal changes,
+- proposed tests,
+- expected risks,
+- what will remain untouched.
+
+Do not implement until this audit/plan has been produced.
+
+==================================================
+STAGE B — MAKE TRANSFORMER OUTPUTS REPAIRABLE
+==================================================
+
+If the audit confirms prediction/training behavior needs improvement, preserve
+the existing architecture where practical and test focused objective changes
+before making the Transformer larger.
+
+Candidate objective:
+
+L_total =
+    lambda_repair * L_repair
+  + lambda_identity * L_identity
+  + lambda_gradient * L_gradient
+  + lambda_boundary * L_boundary
+
+Where:
+
+L_repair:
+- Huber/SmoothL1 error between predicted cents correction and target correction
+  on genuinely shifted/repairable frames.
+
+L_identity:
+- Huber/SmoothL1 between predicted correction and 0 cents on clean/original
+  frames and outside intended repair regions.
+- This explicitly teaches preservation.
+
+L_gradient:
+- Compare first differences of predicted and target correction:
+  SmoothL1(
+      pred[t] - pred[t-1],
+      target[t] - target[t-1]
+  )
+  inside valid correction sequences.
+- Do NOT simply force every correction curve to be flat.
+- We want temporal consistency without destroying expressive variation.
+
+L_boundary:
+- Encourage corrections to approach zero outside valid repair spans and/or
+  respect training targets with smooth edit boundaries.
+
+Do NOT invent arbitrary lambda values.
+Make them configuration parameters and evaluate a small fixed ablation using
+training-side validation folds.
+
+Run at least:
+- baseline,
+- identity only,
+- gradient/continuity only,
+- combined objective,
+if computationally feasible.
+
+Do not claim improvement based on one lucky training seed if multiple seeds are
+practical within project resources.
+
+If vibrato/expressive-region damage remains an important failure mode, consider
+a SECONDARY experiment that separates low-frequency pitch bias from
+higher-frequency F0 variation so the system corrects detuning without flattening
+vibrato.
+
+Do not implement this secondary experiment if the simpler identity +
+continuity solution already works.
+
+==================================================
+STAGE C — REPAIR REGIONIZER
+==================================================
+
+Convert frame-level model predictions into contiguous AUDIO REPAIR CANDIDATES.
+
+Do not independently edit every frame.
+
+Create an internal RepairCandidate structure similar to:
+
+RepairCandidate {
+    id
+    start_time
+    end_time
+    predicted_correction_cents
+    confidence
+    policy_status
+    verification_status
+    rejection_reason
+}
+
+Use existing frame rate/hop information.
+
+The regionizer should, where appropriate:
+- ignore unvoiced/invalid frames,
+- apply prediction confidence/support rules,
+- use hysteresis rather than one hard frame threshold if useful,
+- merge very short gaps between otherwise coherent predictions,
+- reject implausibly tiny isolated fragments,
+- keep all thresholds configurable,
+- preserve the current safety limits unless evidence justifies changing them.
+
+Do NOT optimize thresholds directly against the final holdout evaluation set.
+
+Log exactly why each region is allowed or rejected.
+
+==================================================
+STAGE D — AUDIO RENDERING
+==================================================
+
+Inspect the current renderer before replacing it.
+
+Requirements:
+- pitch correction must be local,
+- output duration/sample count should remain unchanged unless the existing
+  BPDR specification says otherwise,
+- timing and pauses must remain unchanged,
+- untouched samples should remain untouched wherever possible,
+- edit boundaries must not create obvious discontinuities,
+- preserve vocal formants/timbre as much as practical.
+
+If the project currently relies directly on a basic librosa phase-vocoder
+implementation, benchmark the existing renderer against a higher-quality
+pitch-shifting approach such as Rubber Band / pyrubberband if dependency and
+license constraints permit.
+
+For Rubber Band, investigate:
+- formant-preserved pitch shifting,
+- high-consistency handling for changing pitch values,
+- appropriate offline-quality mode.
+
+Do not introduce a new dependency without documenting:
+- installation,
+- license implications,
+- fallback behavior,
+- test results compared with the existing renderer.
+
+For local edits:
+- use boundary padding/context where necessary,
+- use short smooth crossfades/tapers at edit boundaries,
+- never alter protected regions,
+- ensure any boundary overlap with protected regions is handled safely.
+
+Do not hard-code arbitrary crossfade lengths.
+Expose them through configuration and validate them experimentally.
+
+==================================================
+STAGE E — DELIVERED-WAV VERIFICATION
+==================================================
+
+This stage is mandatory.
+
+Never call a prediction successful solely because model MAE is low.
+
+After rendering each candidate, reload/reanalyse the ACTUAL generated WAV.
+
+For each repair compute:
+
+1. Target-region pitch error before repair.
+2. Target-region pitch error after repair.
+3. Improvement amount.
+4. Outside-region preservation.
+5. Protected-region preservation.
+6. Duration/sample-count preservation.
+7. Silence/pause preservation where applicable.
+8. sample rate/channel integrity.
+9. NaN/Inf/empty audio checks.
+10. clipping or other obvious rendering failure checks.
+
+A repair that fails a hard verification condition must be rolled back to the
+original audio.
+
+Keep verification thresholds in configuration.
+Do not invent evaluation thresholds only to make the current model pass.
+
+Store results such as:
+
+{
+  "repair_id": "...",
+  "pitch_error_before": ...,
+  "pitch_error_after": ...,
+  "improved": true,
+  "outside_preserved": true,
+  "protected_preserved": true,
+  "duration_preserved": true,
+  "verified": true,
+  "reason": null
+}
+
+If practical, compare some verification examples using a second pitch estimator
+to ensure results are not entirely dependent on one F0 estimator.
+
+==================================================
+STAGE F — PROTECTED REGIONS
+==================================================
+
+Implement protected regions as audio time intervals.
+
+Example:
+
+ProtectedRegion {
+    id
+    start_time
+    end_time
+    label: "Keep original"
+}
+
+Effective editing permission should conceptually be:
+
+effective_allowed =
+    model_supported
+    AND technical_policy_allowed
+    AND NOT protected_by_user
+
+Protected regions must NOT:
+- alter the Transformer's musical prediction,
+- become melody notes,
+- change another team's analysis,
+- bypass technical policy.
+
+They simply prevent BPDR from changing specified samples/time intervals.
+
+Persist protected intervals in the existing project/session format in the least
+invasive way possible.
+
+==================================================
+STAGE G — INDIVIDUAL REPAIR REVIEW
+==================================================
+
+Add the smallest usable interface consistent with the existing UI stack.
+
+For every verified repair candidate allow:
+
+- timeline visualization,
+- start/end time,
+- concise correction magnitude if appropriate,
+- Original preview,
+- Repaired preview,
+- Accept repair,
+- Keep original / Reject repair.
+
+Optional but useful:
+display status/reason such as:
+
+Verified
+Protected by user
+Insufficient support
+Outside correction limit
+Delivered result did not improve
+Rolled back
+
+Do NOT add note names, chords, key, beat numbers, musical phrases, or other
+features owned by other team components.
+
+==================================================
+STAGE H — FINAL COMBINED EXPORT
+==================================================
+
+When the user chooses repairs:
+
+1. Start from the ORIGINAL WAV.
+2. Apply only accepted, technically permitted, verified candidates.
+3. Respect all protected regions.
+4. Render once into a combined result.
+5. Run final delivered-WAV verification again.
+6. If final verification fails, do not silently export a known-bad file.
+7. Preserve the existing downstream API/handoff contract.
+
+Store enough metadata to reproduce which edits produced the exported file.
+
+==================================================
+EVALUATION
+==================================================
+
+Report these separately:
+
+A. Prediction
+- cents MAE/RMSE on shifted regions.
+
+B. Delivered repair benefit
+- pitch error before vs after on actual rendered WAVs.
+- number and percentage of shifted examples improved.
+
+C. Useful coverage
+- successfully repaired eligible shifted material / eligible shifted material.
+
+D. Repair success rate
+- verified successful repairs / attempted repairs.
+
+E. Preservation
+- unchanged-original controls,
+- outside-region pitch/waveform change,
+- protected-region change,
+- expressive controls.
+
+F. Integrity
+- duration/sample count,
+- sample rate,
+- channels,
+- pauses/silence,
+- failed renders,
+- clipping/errors.
+
+G. Generalization
+- singer-held-out evaluation if singer identities exist,
+  otherwise source/recording-group-held-out evaluation.
+- Do not mix segments from the same source recording across train and final test
+  if that would leak identity/context.
+
+H. Rejection analysis
+- counts for every rejection reason.
+
+IMPORTANT:
+Preservation cannot be considered successful simply because the system rejects
+all edits.
+
+Report useful coverage together with preservation.
+
+Do not remove rejected/failed examples from the reported denominator merely to
+make performance look better.
+
+==================================================
+EXPERIMENT HYGIENE
+==================================================
+
+Treat previously inspected calibration examples as development material.
+
+Use training-side validation/group folds for:
+- model choice,
+- lambda selection,
+- policy thresholds,
+- region-merging rules,
+- renderer parameters,
+- verification thresholds.
+
+After choices are frozen, evaluate once on an appropriate fresh holdout if the
+dataset allows it.
+
+Record:
+- seed,
+- split,
+- checkpoint,
+- configuration,
+- renderer,
+- thresholds,
+- metrics.
+
+==================================================
+TESTS
+==================================================
+
+Add automated tests where practical for:
+
+1. Clean/no-shift input:
+   - should not receive an unnecessary correction.
+
+2. Known synthetic local shift:
+   - candidate generated,
+   - delivered region improves.
+
+3. Protected overlap:
+   - protected samples are not modified.
+
+4. Rejected candidate:
+   - original samples retained.
+
+5. Boundary condition:
+   - no large edit discontinuity at repair boundary.
+
+6. Silence:
+   - pause remains silence/unvoiced.
+
+7. Duration:
+   - output sample count matches input.
+
+8. User reject:
+   - rejected repair not present in final export.
+
+9. User accept:
+   - accepted + technically valid repair present.
+
+10. Technical failure after user accept:
+    - verification wins; repair is rolled back/withheld.
+
+11. Multiple accepted repairs:
+    - combined output created from original, not recursively processed output.
+
+12. Existing downstream API:
+    - remains compatible.
+
+Do not delete or weaken existing tests to make the new implementation pass.
+
+==================================================
+PRESENTATION DELIVERABLE
+==================================================
+
+Prepare one reproducible demo containing:
+
+DEMO A — MAIN FEATURE
+- a supported vocal example,
+- Transformer correction proposal,
+- permitted region,
+- rendered repair,
+- measured actual-WAV improvement,
+- preserved timing/outside audio.
+
+DEMO B — NEW FEATURE
+- at least two candidate regions,
+- mark an intentional expressive region "Keep original",
+- preview original vs repaired,
+- accept one repair,
+- reject another,
+- export the selected result,
+- final verification passes.
+
+DEMO C — CONSERVATIVE CONTROL
+- clean original remains unchanged
+  OR
+- uncertain/unsafe proposal is rejected and original retained.
+
+Prepare a compact result table suitable for a progress-presentation slide.
+
+Suggested presentation statement, ONLY if demonstrated by the implementation:
+
+"BPDR prepares vocal input through selective local pitch repair. The
+Transformer proposes corrections, BPDR verifies the resulting waveform before
+delivery, and the user can protect intentional expression and individually
+review verified edits."
+
+==================================================
+DOCUMENTATION
+==================================================
+
+Also inspect the repository's system/component documentation for ownership
+conflicts.
+
+There is a known documentation concern:
+some system-level descriptions may place preprocessing under melody
+understanding while the BPDR scope treats audio preparation as BPDR.
+
+Do not silently rewrite architecture ownership.
+
+Instead:
+- identify the conflicting files/text,
+- propose the smallest clarification,
+- make it explicit that BPDR owns AUDIO PREPARATION / LOCAL AUDIO REPAIR,
+  while the melody component owns MUSICAL INTERPRETATION.
+
+==================================================
+IMPLEMENTATION PRIORITY
+==================================================
+
+Priority 1:
+diagnose why good predictions do not become successful delivered repairs.
+
+Priority 2:
+make at least one class of local repair consistently survive:
+prediction -> policy -> rendering -> actual-WAV verification.
+
+Priority 3:
+improve preservation/continuity objectives only where the audit shows they are
+needed.
+
+Priority 4:
+add protected regions and per-repair accept/reject UI.
+
+Priority 5:
+integrate/export/rehearse the complete demo.
+
+Do NOT spend the first iteration:
+- making the Transformer substantially larger,
+- adding melody transcription,
+- adding key/chord features,
+- redesigning the entire frontend,
+- introducing a generative voice model,
+- claiming success from prediction MAE alone.
+
+FIRST RESPONSE REQUIRED FROM YOU
+
+Before editing code, return:
+
+1. Current BPDR architecture found in the repository.
+2. Exact files involved.
+3. Current prediction -> permission -> render -> verify path.
+4. Failure points you found.
+5. Whether the 5.84-cent result appears reproducible from available artifacts.
+6. Whether rejected repairs are mainly caused by model output, region
+   fragmentation, policy, renderer, or verification.
+7. Proposed minimal implementation changes.
+8. Proposed training experiments.
+9. Proposed renderer experiment.
+10. Proposed UI/API changes for Selective Vocal Repair.
+11. Tests you will add.
+12. Evaluation protocol.
+13. Any conflict with another team member's scope.
+14. A phased implementation plan.
+
+Do not implement until that analysis has been returned.
+```
+
+The central decision I would carry into implementation is therefore **not “add a UI feature to the current system immediately.”** It is:
+
+> **Turn the Transformer result into a verified local-audio-repair pipeline first; then expose those verified repair objects through protected regions and individual accept/reject controls.**
+
+That gives you a coherent progression from your reported **5.84-cent model result** to something you can legitimately call a **usable completed main feature**, while the selective-review workflow becomes the clear new capability for the next presentation.

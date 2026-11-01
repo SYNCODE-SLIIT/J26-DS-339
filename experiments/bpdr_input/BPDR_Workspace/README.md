@@ -2,9 +2,13 @@
 
 This is the working project. Open [results/index.html](results/index.html), or run `Run-System.ps1` here. The source, original datasets, selected model, pinned model tools, notebooks, tests and documentation are physically under this folder.
 
-For the working demo, run `Run-Demo.ps1`. Start with the **experimental learned repair** real-voice example and press **Process recording** to compare actual input and output. This uses a trained ExtraTrees model and saved weights. The historical Transformer, conservative baseline, original preservation and noise reduction remain available. The app does not train while presenting. [Notebook 05](notebooks/05_panel_demonstration.ipynb), the [offline comparison](results/panel_demo/index.html) and [panel instructions](documentation/Panel_Demo_Runbook_2026-10-18.md) retain earlier evidence; they do not contain the new learned-model result.
+**Current development — 28 October 2026:** use the [master plan](documentation/BPDR_Master_Plan.md) and [tracker](documentation/BPDR_Implementation_Tracker.md). **MOD-03 remains ACTIVE:** the [latest Transformer result](documentation/Transformer_Usability_Result_2026-10-28.md) improves 5/48 independent attempts and preserves all 12 originals, but fails usable coverage across four singers. The guarded adapter and repeatable accuracy check work; the candidate remains inactive and the demo remains ExtraTrees. Later features remain planned. The main research goal remains a matched test of boundary-invariance/counter-detuning learning, preservation and downstream extraction benefit.
 
-The [current workflow](documentation/Working_Demo_2026-10-19.md) includes provisional vocal-evidence review, explicit intention, a separate user-reviewed WAV package and an accepted-only GAME connection. Start with [notebook 07](notebooks/07_learned_stable_note_recovery.ipynb) ([executed HTML](notebooks/07_learned_stable_note_recovery.html)) for the new original-VocalSet experiment and audible model output. Two of four scoreable controlled interventions improved; four originals were preserved. Twelve of sixteen attempted interventions were unscorable, and broader validation criteria failed. This is an experimental preview, not a validated general singing model. [Notebook 06](notebooks/06_real_voice_pilot_and_usefulness.ipynb) preserves the earlier original-data pilot.
+For the working demo, run `Run-Demo.ps1`. Start with the **experimental learned repair** real-voice example and press **Process recording** to compare actual input and output. This uses trained ExtraTrees weights. The historical Transformer, conservative baseline, original preservation and noise reduction remain available. The app does not train while presenting. The [offline comparison](results/panel_demo/index.html) and [panel instructions](documentation/Panel_Demo_Runbook_2026-10-18.md) retain earlier evidence; they are separate from the new context-Transformer experiment.
+
+The [existing workflow](documentation/Working_Demo_2026-10-19.md) includes provisional vocal-evidence review, explicit intention, a separate user-reviewed WAV package and an accepted-only GAME connection. In the earlier ExtraTrees delivered-WAV pilot, two of four scoreable interventions improved and four originals were preserved; twelve of sixteen attempts were unscorable and broader criteria failed. The separate [27 October Transformer experiment](documentation/Transformer_Recovery_2026-10-27.md) reached 5.839-cent raw error on ten of sixteen calibration attempts, but its recorded permission replay produced no useful correction on the scored shifted regions. Keep these denominators/results separate. Neither is a validated general singing model.
+
+Use the [canonical six-notebook index](notebooks/index.html) for foundations, methodology, data, training/evaluation, audio/handoff and verification. Old notebook 07 and former 05/06 filenames in historical reports were superseded; see the [notebook guide](documentation/NOTEBOOK_GUIDE.md).
 
 | Folder | Contents |
 | --- | --- |
@@ -17,7 +21,7 @@ The [current workflow](documentation/Working_Demo_2026-10-19.md) includes provis
 | `source/bpdr_input/reporting` | Notebook execution, evidence reading and result reports |
 | `source/bpdr_input/packaging` | Review/archive builders; not training models |
 | `datasets` | Original/derived data and links to frozen training/evaluation material |
-| `selected_model` | Working BPDR weights, verified against the immutable archive |
+| `selected_model` | Historical selected Transformer weights; the current learned demo uses its separately guarded ExtraTrees card |
 | `models_and_tools` | Pinned acoustic/separator/GAME models and component-local tool runtimes |
 | `notebooks` | Input analysis, full study history, Transformer training/evaluation, panel demo and current real-data pilot |
 | `results` | Executed reading views, implementation map and artifact checksums |
@@ -27,10 +31,10 @@ The [current workflow](documentation/Working_Demo_2026-10-19.md) includes provis
 
 ## Start and inspect
 
-`Run-System.ps1` starts recording/upload, input/output comparison and saved results. `Run-Notebooks.ps1` opens editable notebook sources. [Implementation map](results/CODE_MAP.md) identifies every source file and explains the renamed `presentation_*` modules. They were a mixture of interface, model evaluation, statistics and packaging; they were not all notebook-generation code.
+`Run-System.ps1` opens the laboratory interface; `Run-Demo.ps1` opens the focused working demo. `Open-Notebooks.ps1` opens the canonical notebook index. [Implementation map](results/CODE_MAP.md) identifies source responsibilities and explains historical module names; inspect actual source when using newer additions.
 
-For the focused notebook walkthrough, follow **01 → 03 → 04**. Notebook 02 contains the detailed experiment history. `Run-Notebooks.ps1 -Check` verifies the environment; `-Execute` reruns the notebook suite without fitting models. See [notebook instructions](notebooks/README.md) for JupyterLab and VS Code kernel selection.
+The current notebook order is **01 foundations → 02 methodology → 03 data → 04 training/evaluation → 05 audio/handoff → 06 verification**. From BPDR_Workspace, run `../.venv/Scripts/python.exe -X utf8 -B tools/execute_research_notebooks.py` for the canonical verification workflow. See [notebook instructions](notebooks/README.md) for kernel selection and explicit opt-in fitting steps.
 
-The selected model uses synthetic pretraining with real Vocadito/Jamendo adaptation. Controlled pitch-repair and real-source noise-cleaning examples are measured. General real-voice pitch accuracy and a BPDR advantage remain unproven. The original downstream working copy is retained; candidates are separate.
+The historical selected Transformer uses synthetic pretraining with real Vocadito/Jamendo adaptation. The guarded ExtraTrees preview and the new context Transformer use separate declared VocalSet investigations. Controlled pitch-repair and noise-cleaning examples are measured; general real-voice accuracy and a BPDR advantage remain unproven. The original downstream working copy is retained; candidates are separate.
 
 Older outputs, execution logs, recovery copies and references live in `../research_archive`. Original root folder paths remain compatibility junctions, so saved absolute paths continue to reach the same files. They are not duplicate datasets or source copies. Keep those compatibility links while old evidence is in use. The Python environment/configuration remains component-local at the parent level. This is one organized local workspace, not a portable environment distribution.

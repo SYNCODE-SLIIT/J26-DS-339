@@ -13,10 +13,15 @@ METHODS = ('BPDR Transformer', 'Conservative stable-note baseline', 'Noise reduc
 
 def available_methods():
     from bpdr_input.repair.learned_runtime import METHOD_NAME, available
-    return METHODS + ((METHOD_NAME,) if available() else ())
+    from bpdr_input.repair.held_voice_runtime import METHOD_NAME as HELD_METHOD, available as held_available
+    return METHODS + ((METHOD_NAME,) if available() else ()) + ((HELD_METHOD,) if held_available() else ())
 
 
 def run(source, method=METHODS[0], noise_reference=False, output_root=None):
+    from bpdr_input.repair.held_voice_runtime import METHOD_NAME as HELD_METHOD
+    if method == HELD_METHOD:
+        from bpdr_input.repair.held_voice_runtime import run as held
+        return held(source,output_root=output_root)
     from bpdr_input.repair.learned_runtime import METHOD_NAME
     if method == METHOD_NAME:
         from bpdr_input.repair.learned_runtime import run as learned

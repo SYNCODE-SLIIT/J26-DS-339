@@ -1,35 +1,48 @@
 # Research gap and implementation status
 
+**Updated: 28 October 2026.** Current decisions and task order are in the [master plan](BPDR_Master_Plan.md); status is in the [tracker](BPDR_Implementation_Tracker.md). The [planning review](Planning_Review_2026-10-27.md) records source authority and deviations.
 
-## Proposed research, implemented work and remaining work
+## Main question
 
-| Requirement | Proposal | Existing implementation / evidence | Remaining work |
-|---|---|---|---|
-| Transformer | Compact bidirectional correction encoder | `modeling/model.py`; saved historical checkpoint loads | Reliable real-voice correction response |
-| Four-view learning | Shared A/B/C/D model | Pair preparation, losses and matched historical experiments exist | Independent natural-voice validation of the methodological advantage |
-| Boundary score | 71st input for full and augmentation-only | Present in Transformer; absent from tree's 31-feature interface | Calibrated natural analyser errors and held-out split/merge/jitter evaluation |
-| Boundary consistency | Same audio should get stable repair | `boundary_invariance`; numerical tests and historical training | Demonstrate benefit beyond low response / constant output |
-| Detuning response | Known added e requires response −e | `counter_detuning`; numerical sign tests | Useful paired response and original preservation on held-out voices |
-| Anchors | Accepted originals zero; audited detuning reverse target | Training rows and masks reconstruct from cached files | Independently reviewed natural reference material |
-| Current ExtraTrees | Additional engineering alternative | 96 trees / 31 own-audio features, optional experimental preview | Does not implement the original BPDR losses |
-| Dataset | Permitted material, source-separated partitions, planned participants | Public VocalSet/Vocadito/Jamendo exploratory experiments | Planned recruitment was not completed by generating variants |
-| Validation | Matched neural comparisons and held-out natural material | Historical synthetic comparisons; current calibration/pilot gates fail | Untouched singers/melodies, listening and confidence intervals |
-| Permission / rendering | Bounded changes, preservation, rollback | Controller, Praat renderer, exact encoded-WAV re-audit | Threshold calibration and audible-quality validation |
-| Downstream | Fixed extractor before/after comparison | Exact accepted WAV → GAME MIDI/CSV receipt | Reference-note precision/recall/F1 benefit |
+Can BPDR ignore false split/merge/timing changes in provisional boundaries while making useful local counter-detuning corrections, improving delivered repair and subsequent extraction without more harmful alteration at matched acceptance coverage?
 
-**A model that excludes boundary metadata is invariant to it by construction. That alone does not prove learned boundary-pitch disentanglement.** The frame-only Transformer is therefore a necessary control, not a failed version of BPDR.
+The primary learned comparison remains full BPDR versus augmentation-only, with a matched frame-only Transformer testing the simpler boundary-free alternative. Original audio and conservative rule correction are practical references. ExtraTrees is supplementary engineering evidence.
 
-## Limitations and a realistic sequence of work
+| Requirement / proposal source | Implemented or measured | Remaining work |
+|---|---|---|
+| Main objective, p15 | Technical preparation, controlled learning/evaluation and export paths exist | Held-out delivered repair, preservation and downstream benefit together |
+| Compact correction Transformer, pp21–22 | Historical 71-feature model; new 32/31-context-feature two-layer model with saved weights | Useful permitted output; explicit architecture/feature-version deviations |
+| Four views and objective, pp17–22 | Historical preparation/losses/comparisons; new context-model experiment | Matched inputs/budgets/selection; proposal MAE response definition in the proposal-aligned study |
+| Boundary consistency | Same-audio alternative boundary views and numerical comparisons | Benefit beyond augmentation-only, coupled with useful response and natural-analyser controls |
+| Counter-detuning | New BPDR-condition raw MAE 5.839 cents on 10/16 calibration attempts | Delivered-WAV gain and preservation; raw tolerance percentage is not general singing accuracy |
+| Preservation anchors | MOD-01 adds broader original/outside anchors; CV requests 5.312 -> 3.688 cents while correction error rises 9.857 -> 10.568 | All-singer preservation/response gate still fails; no general accuracy improvement established |
+| Practical comparison | ExtraTrees raw MAE 10.031; augmentation-only 5.644; frame-only 5.652; BPDR 5.839 | No BPDR-loss advantage established by this seed; retain simpler alternatives and negative results |
+| Permission and region selection | Scope, largest-span selector and fixed limits exist | Seven scored regions entirely excluded by scope; multiple candidates and explicit eligibility experiment |
+| Rendering / rollback, p26 | MOD-02 runs new-model actual-WAV checks: 3 unique technical passes, 1 rollback, 0/16 useful gains; two original controls altered | Useful repair, original preservation and actual listening remain unmet |
+| FR1–FR3: input/feedback, p28 | Upload/recording, source retention, technical statuses, provisional acoustic review | Independent user evidence and calibrated usability judgments |
+| FR4–FR6: local edits/export, p28 | Whole-recording comparison and separate reviewed experimental package | Protected regions, per-candidate Accept/Keep and final composition/reverification: planned new feature |
+| FR7: diagnostics, p28 | Repeatable lineage-checked accuracy command; complete legacy-policy raw/scope/selection/permission/render trace with exclusions | Extend tracing to the future versioned selective runtime; diagnostics do not pass repair gates |
+| Data/partitions, pp16–17 | Vocadito, exploratory Jamendo and supplemental VocalSet/HumTrans preparation | Fresh reserved singers, prior-use/overlap checks, approved references; augmented variants are not new participants |
+| References/participants, pp16–17,39–40 | Typed performed-pitch references and automated audits | Actual reviewers, ethics/consent and guide-melody/free-hum collection; no completed recruitment claimed |
+| Extraction benefit, pp18–20 | Exact accepted WAV can produce GAME MIDI/CSV | Independent-reference before/after note precision/recall/F1 and repeat variation |
+| Listening/uncertainty, pp19–20 | Saved clips and source-aware summaries | Actual blinded judgments, disagreement, matched coverage, singer-level uncertainty and separate seed variation |
+| Deployment, p29 | Local runtime, failure handling and provenance | Median/p95 latency against the proposed 30-second target, memory and accessibility checks |
 
-1. **Immediate:** keep this executed pack and local assets available; rehearse code search and audio; show failed criteria beside favorable demonstrations. Restore missing artifacts before dependent cells rather than substituting outputs.
-2. **Near term:** predeclare a revised diagnosis of Transformer response using existing training-side evidence; broaden audited positive/negative shift coverage and compare an independent corruption renderer. Do not infer a cause from architectural comparisons where features and training changed together.
-3. **Main study:** finish independently reviewed references and permitted participant collection; reserve untouched singers and melodies; run the existing full four-view, augmentation-only and matched frame-only implementations with equal budgets and selection. Historical code/training is complete; real-voice contribution validation is not.
-4. Evaluate natural analyser errors, identity controls, no-change phrases and expressive transitions at matched acceptance coverage. Keep harmful edits, withheld cases, unscorable interventions and render failures visible.
-5. Add blinded tune-preservation and rendering-quality listening, user recognition of free-hummed ideas, and fixed-extractor note precision/recall/F1 against independent annotations. Report singer-level uncertainty and training-seed variation separately.
+## How the selective feature supports the main goal
 
-Professional sustained vowels do not represent novice melodies, ordinary reading, overlap or accompaniment. Known detuning does not label private intention. Current improvement coverage is directional; estimator agreement is not truth. Calibration selection is not a final test. Exact-hash checks cannot exclude every near-duplicate recording or shared session. Numerical rendering passes cannot certify artifact-free listening. A single scoreable pilot singer does not support population confidence intervals. Full latency/memory profiling remains a deployment task; a single run time is descriptive only.
+Protected intervals and individual review extend preservation, changed-interval inspection and verified export. They do not infer notes or transfer key/beat/chord responsibilities into BPDR. User acceptance can remove edits but cannot authorize a technically failed one. Compose the final WAV from the original plus selected specifications and verify it after encoding.
 
-Use licensed or explicitly consented recordings, retain attribution and coded source IDs, and keep personal contact/consent records outside demo artifacts. No participant recruitment or ethics approval is claimed by this pack. Keep unmodified recordings and failed results. No automatic training, large download, external service or cloud charge occurs during the fast presentation route.
+This is an engineering feature. Evidence for the proposed learning method still requires the matched scientific comparison. A model without a boundary column is invariant by construction; a zero-output model cannot demonstrate useful repair through low sensitivity alone.
 
+The completed [five-objective model-first study](Transformer_Improvement_2026-10-27.md) adds a repeatable [after-training accuracy workflow](Transformer_Accuracy_Workflow.md). Its broader seven-singer CV and separate two-singer calibration must remain distinct from the earlier recovery results above. The fixed default calibration has 6.670-cent raw error / 79.87% within 10 cents but zero delivered improvements. No objective passes every CV singer. This supports further model/data work and a separate controller comparison, not adoption or a claim that the main research hypothesis has been validated.
 
-The primary literature comparison is in notebook 09, block LITERATURE; source identities and links are in panel_source_manifest.json.
+## Evidence rules
+
+- Keep the two sixteen-attempt experiments separate: four scoreable cases in the earlier delivered ExtraTrees pilot versus ten in the new Transformer calibration.
+- A validly labelled, scope-excluded case remains a scored withheld/unchanged outcome; it does not become an intervention-construction exclusion.
+- Score actual delivered WAVs against references in controlled evaluation. For uploads, verify requested movement and preservation without inventing intended-pitch truth.
+- Retain all failures, source/singer counts, direction coverage and no-change controls. Frames, variants and seeds are not additional singers.
+- Participant collection, independent review and downstream musical benefit remain separate from working interface execution. A user checkbox is not independent approval.
+- Preserve dataset permissions/attribution and originals. Uploads are not automatically reused for training/research.
+
+**Next: MOD-03**, continue declared model/data improvement before later features. Reserve another independent cohort before changing the model; retain the failed final result. The [28 October usability result](Transformer_Usability_Result_2026-10-28.md) records 47 completed neural fits, a guarded project adapter and 57 passing targeted tests. The locked four-singer evaluation improved **5/48 attempted interventions (5/40 scoreable)** and preserved **12/12 original controls**. All four singers failed the coverage/gain criteria. The candidate remains inactive; MOD-03 stays ACTIVE and later feature work stays on hold. These final recordings have now been inspected and cannot be reused as a new untouched test.

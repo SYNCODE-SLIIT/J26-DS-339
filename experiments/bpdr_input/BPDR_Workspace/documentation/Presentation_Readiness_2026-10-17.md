@@ -1,3 +1,8 @@
+<!-- ACTIVE_PLAN_NOTICE:2026-10-27 -->
+> **Historical planning/scope record — current authority updated 27 October 2026.**
+> Use the [BPDR master plan](BPDR_Master_Plan.md), [implementation tracker](BPDR_Implementation_Tracker.md) and [planning review](Planning_Review_2026-10-27.md) for active scope, status and next work.
+> The original text below is retained unchanged as dated history. Its old current/next/authoritative statements do not override the active master, and no historical result or gate is changed by this notice.
+
 # BPDR presentation handover - 17 October 2026
 
 **Status: verified engineering prototype; the main real-user research study is not complete.**

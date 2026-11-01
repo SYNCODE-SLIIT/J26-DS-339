@@ -1,3 +1,8 @@
+<!-- ACTIVE_PLAN_NOTICE:2026-10-27 -->
+> **Historical planning/scope record — current authority updated 27 October 2026.**
+> Use the [BPDR master plan](BPDR_Master_Plan.md), [implementation tracker](BPDR_Implementation_Tracker.md) and [planning review](Planning_Review_2026-10-27.md) for active scope, status and next work.
+> The original text below is retained unchanged as dated history. Its old current/next/authoritative statements do not override the active master, and no historical result or gate is changed by this notice.
+
 **Completion pass - 17 October 2026:** A4-safe real inputs, HumTrans intake and bounded training, revised optional noise cleaning, fixed GAME consistency check and 448-test verification are completed. The new real/humming candidates failed their gates, so the working mixed-data presentation model is retained. Updated notebooks and the current presentation handover distinguish verified engineering from unfulfilled real-user research requirements. Shared pipeline unchanged; research-ready examples remain zero.
 
 **Current presentation release — 17 October 2026:** the mixed-data BPDR presentation preview uses Vocadito, Jamendo and synthetic training; the working synthetic references are retained. A local recording/upload interface, audio-only inference, real Vocadito/Jamendo transfer, matched mixed-data adaptation, nonlongest-note challenge and fresh evidence notebooks are implemented. See [presentation readiness and proposal traceability](Presentation_Readiness_2026-10-17.md). E/F remain open; D/J4 review is deferred; the prepared-audio hand-off stays off. These are controlled engineering results, not a completed human research study.

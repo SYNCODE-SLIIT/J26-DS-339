@@ -1,0 +1,132 @@
+# BPDR implementation and research tracker
+
+**Updated:** 29 October 2026  
+**Active specification:** [BPDR master plan v1.5](BPDR_Master_Plan.md)  
+**Current position:** **MOD-03 ACTIVE — make the Transformer useful before other feature work.** This iteration is complete but usability failed: 5/48 independent improvements and 12/12 unchanged originals. All four final singers fail; the candidate stays inactive. See [28 October execution record](Transformer_Usability_2026-10-28.md). Selective-review UI remains unimplemented.
+
+## 1. Current evidence baseline
+
+| ID | Existing capability / observation | State | Evidence and limitation |
+|---|---|---|---|
+| BASE-01 | Technical validation, source preservation and accepted-only package | IMPLEMENTED | `audio/pipeline.py`, `audio/contracts.py`; musical correctness remains separate |
+| BASE-02 | Acoustic features, PESTO/YIN and runtime boundary views | IMPLEMENTED | `audio/analysis.py`, `repair/model_runtime.py`; agreement is not intended-note truth |
+| BASE-03 | ExtraTrees reviewed experimental demo | IMPLEMENTED / LIMITED | Whole-recording review/export exists; prior calibration/pilot research gates failed |
+| BASE-04 | New context Transformer fit and saved weights | EXECUTED / LIMITED | [Run evidence](../results/transformer_recovery/760a6f1745c94263a5b9a51b7dafffd5/evidence.json); 43 audited training interventions / 64 attempts, 7 represented training singers |
+| BASE-05 | New calibration raw correction | VERIFIED DEVELOPMENT RESULT | 5.839 cents; 10 scoreable / 16 attempts; 2 singers / 3 scoreable original recordings; no BPDR-loss superiority established |
+| BASE-06 | New-Transformer permitted correction | FAILED TO SHOW BENEFIT | [Permission audit](../results/transformer_recovery/760a6f1745c94263a5b9a51b7dafffd5/permission_audit.json); scored error remains 25.833 cents; no rendering in this replay |
+| BASE-07 | Scope/selector bottleneck | READ-ONLY REPLAY VERIFIED | [Baseline replay](../results/planning_review/2026-10-27_1754e056/baseline_replay.json); 7/10 cases have no scope-eligible scored frames |
+| BASE-08 | Encoded-WAV audit and rollback helpers | IMPLEMENTED | Existing learned runtime; not yet a usable integration of the new context Transformer |
+| BASE-09 | Individual repair review / user protections | NOT IMPLEMENTED | Whole-recording confirmation is existing functionality; per-repair control is the new feature |
+| BASE-10 | Independent listener / novice study / extraction benefit | NOT ESTABLISHED | Reviewer status deferred/unconfirmed; no fabricated approvals; MIDI/CSV execution does not establish F1 gain |
+| BASE-11 | Model-first improvement matrix | EXECUTED / MIXED RESULT | [60-fit report](Transformer_Improvement_2026-10-27.md); original requests fall 30.6%, correction MAE rises 7.2%; all objectives fail all-singer prediction gate |
+| BASE-12 | Standalone rendered accuracy command | VERIFIED DEVELOPMENT RESULT / REPAIR FAILED | Reproduces seed 339: raw MAE 6.670 cents, 79.87% within 10 cents; 0/10 scoreable and 0/16 attempted delivered improvements; 24 targeted tests passed |
+
+Historical full-suite and notebook-suite test counts refer to different receipts. The 27 October development work reported four new model tests plus three existing recovery tests passing. Do not report these as a newly executed full regression suite.
+
+## 2. Selective-repair work register
+
+Task states: **DONE, ACTIVE, NEXT, PLANNED, BLOCKED, DEFERRED**. Do not replace these with percent-complete guesses.
+
+| Task | Deliverable | State | Depends on | Completion evidence required |
+|---|---|---|---|---|
+| SVR-00 | Consolidate goals, plans, decisions and evidence baseline | DONE | Owner's planning decisions | Master, this tracker, planning review, preserved brief, precedence notices and document-link/hash checks |
+| MOD-01 | Model-first five-objective, four-fold, three-seed comparison | DONE | Owner's latest priority; cached audited training data | [Completed report](Transformer_Improvement_2026-10-27.md); 60 held-out fits, locked diagnostic selection, 3 full refits and separate calibration; all-singer prediction gate failed, no activation |
+| MOD-02 | Repeatable checkpoint accuracy command and report | DONE | MOD-01 and lineage/metric checks | [Accuracy workflow](Transformer_Accuracy_Workflow.md); overlap refusal and standalone rendered repeat checked; [verification receipt](../results/transformer_improvement/d6e8b933b23546c78a53aa2292c03c1a/technical_execution/final_verification.json) |
+| MOD-03 | Usable scoped Transformer and guarded BPDR adapter | ACTIVE | Owner's 28 October priority | [Execution record](Transformer_Usability_2026-10-28.md); broader sources, grouped fitting, locked policy, development/final actual WAVs, unchanged originals, loader and live app receipt; no research-completion claim |
+| SVR-01 | Reusable complete repair-path trace, legacy policy | DONE | SVR-00; implemented within MOD-02 | Every attempt retains exclusion or raw/scope/selection/permission/render disposition; seed 339 includes actual output audits and rollback. This does not implement the new regionizer |
+| SVR-02 | Reserve fresh sources and freeze development protocol | DONE | SVR-01 | 42 bounded new source files; training IDs7, four final IDs8/9 reserved before acoustic analysis; prospective run/partition declarations in MOD-03. [Final result and protocol receipts](Transformer_Usability_Result_2026-10-28.md); final cohort now inspected |
+| SVR-03 | Multiple-candidate regionizer and versioned eligibility | PLANNED | SVR-01, SVR-02 | Frozen-checkpoint comparison; hysteresis/gap grid; hard preservation controls; no target/support input at runtime; no duration-padding trick |
+| SVR-04 | Focused training-side preservation/continuity/limit experiments | PLANNED | SVR-02, SVR-03 | Five declared conditions, seeds 339/340/341, four grouped folds, adjacent-target validity, retained failures and deterministic selection record |
+| SVR-05 | Actual-WAV repair and conditional renderer benchmark | ACTIVE | SVR-03; candidate from SVR-04 when available | [Frozen curve/renderer comparison](Transformer_Curve_Study_2026-10-28.md) executed; alternate renderer rejected on training-side WAVs. Full model usability and independent confirmation remain unmet |
+| SVR-06 | Guarded context-Transformer selective runtime | PLANNED | SVR-03, SVR-05 | Saved-config loader, source/model/policy hashes, verified receipts, controlled failures and no legacy-loader/selection bypass |
+| SVR-07 | Protected-region and individual repair review UI | PLANNED | SVR-06 and at least one verified repair | Local waveform drag selection + time fields; whole-candidate protection; A/B playback; Accept/Keep; reasons and stale-state invalidation |
+| SVR-08 | Compose selected edits from original and export | PLANNED | SVR-07 | Multiple accepted repairs, combined 25% budget, exact protected/outside samples, decoded final-WAV audit, renewed confirmation and compatible accepted-only package |
+| SVR-09 | Locked fresh-singer evaluation and listener evidence | PLANNED | SVR-02, SVR-05, SVR-08 | Actual before/after WAV scores, per-singer/direction/attempt coverage, all failures, original controls, latency and actual review records or explicit missing-review status |
+| SVR-10 | Scoped eligibility, presentation package and rehearsal | PLANNED | SVR-09 | Gate receipt bound to actual bytes; three demonstration routes; reproducible result table; no simulated or overstated evidence |
+
+The per-region UI may be prototyped against explicitly labelled test fixtures after backend contracts are fixed. Such fixtures cannot complete SVR-06, SVR-09 or a model-success claim. Do not begin a broad frontend redesign while useful repairs are still unavailable.
+
+## 3. Research obligations retained from the proposal
+
+| Task | Remaining research work | State | Completion evidence |
+|---|---|---|---|
+| RES-01 | Proposal-aligned matched BPDR / augmentation-only / frame-only comparison | PLANNED | Common frozen inputs/budgets/selection, MAE response terms, original + conservative-rule references, explicit feature-version deviation and held-out paired result |
+| RES-02 | Split/merge/jitter, +/-10/20/30-cent and no-change evaluation | PLANNED | Boundary/shift/direction/control breakdowns; natural analyser errors and matched coverage; no constant-zero shortcut |
+| RES-03 | Independent suitability anchors and listening | BLOCKED | Two actual qualified independent decisions and records; current reviewer availability is unconfirmed/deferred, not approval |
+| RES-04 | Consented novice guide-melody/free-humming study | BLOCKED | Ethics/consent prerequisites and prospective sample-size/precision rationale; original eight-person pilot is an estimate only |
+| RES-05 | Fixed-extractor before/after note benefit | PLANNED | Independent references, frozen extractor/decodes and onset+pitch / offset-aware precision, recall, F1; no teammate-feature implementation |
+| RES-06 | Paired uncertainty, seed variation, matched acceptance and cost | PLANNED | Singer/source independent units, paired intervals with small-study caveats, seed variation separately, median/p95 latency and memory/render failures |
+| RES-07 | Decide whether the main hypothesis is supported | PLANNED | Full BPDR vs augmentation-only is the primary comparison; report null/negative outcomes and the boundary-free alternative honestly |
+
+Research work can be prepared alongside engineering, but neither completed UI nor the scoped public-data evaluation closes these obligations automatically. Review unavailability does not stop source-preserving engineering.
+
+## 4. Required gates and how to count outcomes
+
+| Gate | Pass condition | Current state |
+|---|---|---|
+| G1: permitted repair | At least one supported new-Transformer candidate passes unchanged numerical permission limits | Numerical permission observed in MOD-02; one target-overlap attempt rolls back and the technically verified detuned edit does not improve scored frames |
+| G2: delivered repair | Encoded/reloaded output improves the reference-controlled shifted region and passes preservation checks | Observed in MOD-03: 5/40 scoreable, 5/48 attempted final interventions; insufficient usable coverage |
+| G3: original preservation | Existing per-singer raw/permitted original and edit-rate criteria satisfied; exact zero-change/protected samples where promised | Latest MOD-03 preserves all 12 final originals; prior MOD-02 failures retained separately |
+| G4: useful scoped coverage | Positive delivered gain, both directions represented by actual verified improvements, >=25% all-attempt verified coverage per represented evaluation singer | FAILED MOD-03: every final singer falls below coverage/gain criteria; originals remain preserved |
+| G5: selective controls | Protected overlap veto, per-edit decisions, fresh confirmation and final combination verified | NOT IMPLEMENTED |
+| G6: reviewed presentation evidence | Honest demonstration routes, actual listener status, byte-bound artifacts and repeatable rehearsal | PLANNED; no missing listener result may be recorded as a pass |
+| G7: methodological advantage | Matched held-out BPDR objective benefit with preservation at matched coverage | UNESTABLISHED; historical failed gates remain failed |
+
+For every comparison, keep attempted sources/interventions, scoreable interventions, eligible candidates, permitted repairs, rendered outputs, verified delivered improvements and withheld/failed outputs separate. Report overlap between rejection reasons. A scoreable but scope-excluded case stays a scored unchanged/withheld result; it does not become an intervention-audit exclusion.
+
+Useful duration coverage is the **union** of scored erroneous duration actually improved by verified output divided by the declared eligible erroneous duration. Also report verified-improved cases divided by all attempted interventions. Do not double-count overlapping edits or hide low construction yield behind eligible-only percentages.
+
+## 5. How to update this tracker
+
+Before starting a task, read the master, check the current code/artifact hashes, and record its declaration/configuration. Mark a task DONE only after its completion evidence exists. When blocked, name the missing prerequisite rather than claiming completion or removing the row. Never change old outcomes to make a new experiment appear successful.
+
+Each work entry must include:
+
+| Field | Required content |
+|---|---|
+| Date / task | Local date and stable task ID |
+| Change | Specific behavior or experiment completed |
+| Evidence | Relative run/receipt/report or source change |
+| Verification | Commands/checks actually run and their outcomes |
+| Counts / limits | Independent source/singer counts, exclusions, failures and unresolved issues |
+| Decision / next | Adopted or not adopted, reason, and next task ID |
+
+### Work log
+
+| Date / task | Work completed | Evidence / verification | Remaining / next |
+|---|---|---|---|
+| 2026-10-27 / BASE-04–07 | New context-model experiment and read-only failure diagnosis already completed before this plan consolidation | Existing checkpoint/evidence/permission files; planning baseline replay reproduces 5.83948 cents and the 7/10 zero-scope finding | No usable scored repair from this candidate yet |
+| 2026-10-27 / SVR-00 | Original research objective checked; current master, tracker and review created; supplied brief preserved; historical entry points redirected | [Planning review](Planning_Review_2026-10-27.md), baseline/backup manifest and documentation verification receipt | **SVR-01 is next**; no new feature, fit, renderer or model activation in this documentation task |
+| 2026-10-27 / MOD-01–02, SVR-01 | Completed five-objective matrix, 3 final refits, separate calibration and standalone rendered repeat; added lineage checks, metrics/reports and legacy-policy traces | [Results](Transformer_Improvement_2026-10-27.md), [receipt](../results/transformer_improvement/d6e8b933b23546c78a53aa2292c03c1a/technical_execution/final_verification.json); 24 targeted tests passed; original data/models/notebook hashes preserved; technical resume correction retained | No adoption: stronger preservation trades off correction accuracy; 0/16 delivered gains. SVR-02 next; SVR-03 frozen-model controller comparison separate |
+
+| 2026-10-28 / MOD-03, SVR-02 | Expanded sources; 47 saved neural fits; input-only step-feature Transformer; versioned policy; guarded adapter; locked independent final and standalone repeat | [Result](Transformer_Usability_Result_2026-10-28.md); 57 targeted tests passed; 5/48 final gains, 12/12 originals unchanged; activation refused | MOD-03 ACTIVE: all four final singers fail coverage/gain. No activation or later feature work; new independent cohort needed for subsequent changes |
+
+**Latest completed experiment:** [Frozen curve and renderer studies](Transformer_Curve_Study_2026-10-28.md). The training-side rule selects median11/Praat; known-development repairs improve from6/48 to8/48 and all12 originals stay unchanged, but female5 gain remains23.394%, below25%. The phase-vocoder alternative loses (16/200 versus22/200 constant-Praat); no development replay for it. Four curve/controller tests and two renderer tests pass. No new neural fits or final-data access. MOD-03 remains ACTIVE; next is a matched-budget adjacent-frame-supervision model experiment, not further renderer tuning.
+
+**Latest outcome, 29 October:** [Response weighting](Transformer_Response_Study_2026-10-29.md) completed8 fits and lost actual-WAV comparison (17/200 versus23/200). [Localized context](../results/transformer_usability/2026-10-29_v13_localized/REPORT.md) completed4 new fits using the verified baseline: raw MAE improves11.901 ->10.665 cents, but original requests rise and the all-singer prediction gate fails. Both verify23/200 repairs and preserve50/50 originals; localized delivered error is worse. No full refits, activation or new evaluation-audio access. Next test broad+local context together with targeted difficult-original sampling; retain all gates and the fresh source reservations.
+
+**Completed broad/local comparison:** [Study](Transformer_Multiscale_Study_2026-10-29.md), eight new CV fits. Uniform/difficult-original conditions verify21/200 and23/200 gains versus23/200 baseline, preserve50/50 originals each, fail female1 raw-original limits, and lose delivered error. Reference retained; actual refit command refuses promotion. Integrity check verifies546 frozen hashes,8 checkpoint lineages,44 unique encoded verified WAVs and6 protected files. No activation or new confirmation-audio access.
+
+**Latest completed execution:** [Warm-started broad/local candidate](Transformer_Warm_Start_2026-10-29.md), four new CV fits starting from corresponding partition parents. Initial predictions match exactly; lineage checked. All-singer prediction gate passes; raw MAE11.464 versus11.901 cents baseline. Actual-WAV improvements fall23/200 ->21/200; delivered error rises20.342 ->21.648 cents. All50 originals remain unchanged; candidate rejected. Thirteen focused tests pass. Independent replay verifies552 frozen hashes,4 checkpoint lineages,21 encoded WAVs and6 protected files. Additional training budget and combined interventions are explicit. MOD-03 remains ACTIVE; next diagnose model-supported candidate withholding and output direction failures before another training change.
+
+**Completed support study:** [Result](Transformer_Support_Study_2026-10-29.md):8 fits, matched traces, both prediction gates pass, both21/200 repairs and50/50 originals preserved. Reference23/200 retained; continuity68/108 unchanged. Fifteen focused tests pass;552 hashes,8 fold lineages and42 encoded WAVs independently verified. No full refits or activation.
+
+**Latest completed execution:** [Broader actual-audio pool and model study](Transformer_Audio_Pool_2026-10-29.md). All373 unique variants re-audit, including108 base cases without label loss;265 additional examples share the same50 originals/10 singers. Eight matched new fits complete, with exact V16 control reproduction. Broader data reduces raw error11.901 ->11.322 cents and increases model-only support68 ->72/108, but fails female2 raw-original3.207>3 cents and yields18/200 verified repairs versus23/200. All50 originals unchanged; no adoption. Eighteen focused tests pass;1,419 hashes,8 lineages and39 encoded WAVs verified. Dataset and failures retained. Next fixed, dispersion-aware ensemble comparison; no confirmation access or activation.
+
+## 6. Handoff instruction for the next implementation session
+
+**Latest execution,1 November:** [V31 matched absolute response](Transformer_Absolute_Response_2026-11-01.md) is running. All4 new MSE controls exactly reproduce V12 tensors, all validation arrays and actual sample/source/singer traces.4 MAE-response fits follow at the same1200 updates/seed339. Only the paired residual changes from square to absolute; every other architecture/input/loss/sampler/output limit stays fixed. Poll the existing CV process before restart, then actual median11/Praat delivery and `verify_absolute_response_study.py`; no selection from raw metrics alone.32 focused tests pass. V30 is terminal and rejected (21/200,21.801c,50 originals identity;216 views/21 WAVs independently verified). FCPE and privileged context diagnostics are complete and not adopted. No known-development or reserved audio access, UI, export, notebook or sibling changes. MOD-03 remains ACTIVE.
+
+**Current handoff,1 November:** owner resumed the paused goal. FCPE sidecar setup,24 synthetic controls and real200/108/92 measurement complete; [diagnostic](Acoustic_Measurement_2026-11-01.md) rejects replacement:91.064c relative MAE versus0.860c YIN, with all158 cached recordings independently replayed exactly. Current YIN/PESTO auditors stay unchanged. The privileged201-frame context diagnostic permits48 versus45,3 additions/0 losses; all108 cases and97 original-crop queries replay, not a deployable algorithm. V30 fixed binary activity decoding passes raw gates (11.873c error,0.434c original magnitude) on frozen weights; delivery is live and must be polled before any restart, followed by `verify_activity_decoding.py`. No development/fresh confirmation until qualified selection and lineage lock.28 existing focused tests plus2 new decoder tests pass. Keep all protected artifacts,200/108/92 denominators and sibling boundaries; MOD-03 is incomplete.
+
+**Authoritative handoff,30 October completed:** read [repair feasibility diagnosis](Repair_Feasibility_Diagnosis_2026-10-30.md). V28 original CV session21580 and every recovery/evaluation/audit job are terminal; do not restart. All4 tree fits are saved, original roundoff failure retained, separate serial-reload continuation completed, actual delivery20/200 and21.217c loses to reference23/200 and20.342c, and raw gate fails male7 original4.428c. Independent216-view/20-WAV/4-fold verification passes. Combined V27/V28 alternatives verify648 views/57 WAVs/12 lineages; all50 originals unchanged per family,6 protected files match,25 tests pass. No model selected or activated. Privileged known-label diagnostics45 permitted/35 verified/10 rollbacks and supplementary outside-injection preservation are independently verified, explicitly not deployable accuracy. Next prospectively check input-measurement precision/localization using approved training sources (PENN/FCPE preflight with isolated dependencies and unchanged auditors/limits), not another generic architecture sweep. Keep200/108/92 denominators, all history, reserved confirmation audio, protected notebook/export, shared demo and sibling components intact. MOD-03 remains ACTIVE; no usability or musical-review pass.
+
+**Newest result:** V27 completes8 fits and audio delivery. GRU18/200,21.626c,raw-gate fail; TCN19/200,21.281c,raw-gate pass; reference23/200,20.342c retained. Independent432-view/37-WAV replay and8 actual sampler/source/checkpoint lineages pass,50 originals unchanged per family,6 protected files unchanged.25 tests pass. V28 original tree CV process remains live: poll it, do not restart. Its frozen reload check is bitwise despite threaded float64 reduction; a prospective recovery tool and exact requirements are documented in [comparison](Model_Family_Comparison_2026-10-30.md). Only if the original process is terminal after checkpoint saving, use its saved models and explicit verification amendment, then delivery and independent tree verification. No usability or research pass yet.
+
+**Current handoff, superseding older next-step paragraphs below:** follow the owner's expanded30 October goal and [model-family comparison](Model_Family_Comparison_2026-10-30.md). V26 completes4 dense residual head fits; raw gate passes but delivery21/200 and21.394c loses to reference23/200 and20.342c. Independent216-view/21-WAV/frozen-parent replay passes;50 originals unchanged and6 protected files match. All25 focused tests pass. V27 eight GRU/TCN fits and V28 four fresh context-ExtraTrees fits are running; poll their existing process handles before any restart, then finish actual-WAV evaluation and `verify_model_family_comparison.py sequence/tree`. Require matching V12 sampled-source/singer traces and preserve all200/108/92 counts. No family result yet, no selection or activation change. Primary-source research, bottleneck counts and component-safe recording-coach/multiple-take/readiness suggestions are in [model choice and input usability](Model_Choice_and_Input_Usability_2026-10-30.md). Preserve all previous failures, untouched CSD/male10/male11 audio, user notebook, exports, `pp1_demo` and sibling ownership. MOD-03 remains ACTIVE.
+
+**Latest,30 October:** [Candidate-head/readout results](Transformer_Candidate_Head_2026-10-30.md):8 new head fits,0 new backbone fits. V22/V23 fail response gates at20/200 and21/200 verified repairs. Frozen V24 centre readout passes raw gates and reaches24/200 but loses delivered error20.706 versus20.342. All50 originals unchanged. Twenty tests pass;8 parent states/fold counts/fallbacks and65 encoded WAVs verified,6 protected files unchanged. None selected; no refits or new evaluation-audio access. Next fixed within-region distribution-readout comparison with unchanged criteria.
+
+**Latest completed work:** [Ensemble](Transformer_Ensemble_2026-10-29.md) rejected at2/200 repairs despite prediction-gate pass; [R3 renderer](Transformer_R3_Renderer_2026-10-29.md) rejected at22/200 versus23/200 Praat. Both preserve50/50 originals. Seventeen combined tests pass;12 ensemble lineages,24 total encoded verified outputs and6 protected files checked. No new neural fits or evaluation audio access. [Candidate preflight](Transformer_Candidate_Preflight_2026-10-29.md):177 positive/8 negative/14 unassessed regions;39 baseline cases lack candidate overlap. Dense fallback required.96 unchanged feature controls add zero candidates; retain result and all denominators. Next small region head plus explicit original anchors; no activation.
+
+Read the [V25 result](Transformer_Distribution_Readout_2026-10-30.md) and [accuracy workflow](Transformer_Accuracy_Workflow.md). Continue **MOD-03**; usability is incomplete. V25 median/upper-quartile readouts pass raw gates but verify only18/200 and19/200 repairs, with remaining error21.444c/21.992c versus reference20.342c. Neither selected. All50 originals unchanged per arm;20 tests and independent37-WAV/prediction/fallback checks pass,6 protected files unchanged. Next prospectively declare a function-preserving dense amplitude/activity residual adapter with frozen backbone, input-only cues and exact zero-adapter control. Retain temporal shape, all existing limits, held-out source separation and200/108 denominators. Selection remains raw all-singer gates, all50 originals identity, lower singer-macro delivered error; count alone cannot substitute. Keep39/108 candidate-overlap and8-real-negative limitations explicit. Require a qualified locked model/decoder before development/fresh confirmation. Reserved CSD/male10/male11 audio remains unopened. Preserve notebook/export/model/data history, shared `pp1_demo` and sibling code; no selective UI or activation yet.

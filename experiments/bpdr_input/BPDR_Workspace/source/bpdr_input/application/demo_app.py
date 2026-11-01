@@ -13,6 +13,7 @@ from bpdr_input.repair.demo_runtime import METHODS, available_methods, run, sele
 from bpdr_input.repair.demo_review import review, export_reviewed
 from bpdr_input.application.demo_examples import examples
 from bpdr_input.repair.learned_runtime import METHOD_NAME as LEARNED_METHOD
+from bpdr_input.repair.held_voice_runtime import METHOD_NAME as HELD_METHOD
 
 WORKSPACE = COMPONENT_ROOT / 'BPDR_Workspace'
 
@@ -51,6 +52,9 @@ def main():
     method = st.selectbox('Processing method', methods, index=suggested, key='method_' + str(known_case))
     if method == METHODS[0]:
         st.caption('Historical experimental Transformer. Controlled generated-voice results do not establish reliable repair of real singing; inspect its actual output and checks.')
+    if method == HELD_METHOD:
+        st.caption('Scoped Transformer preview for small, sustained local deviations in stable held vocals. Other material can be retained unchanged. This model does not infer intended notes or snap to a musical scale.')
+        st.caption('The model is available only while its saved development and final encoded-audio checks remain valid. Independent listening and general singing accuracy remain unassessed; listen before choosing an output.')
     if method == LEARNED_METHOD:
         st.caption('Learned from a small subset of real VocalSet singers. Intended scope: small local pitch deviations inside long stable notes; this is not a general singing-correctness model.')
         st.warning('Experimental model: broader calibration and singer-coverage criteria failed. The selected listening example demonstrates a verified improvement; the complete pilot includes unsuccessful and unscorable attempts. Listen before choosing any output.')

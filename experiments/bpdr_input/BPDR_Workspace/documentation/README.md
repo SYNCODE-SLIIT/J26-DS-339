@@ -1,13 +1,30 @@
 # Documentation index
 
-Start with the current handover. Dated experiment reports are retained history; their old next-step statements do not override the current handover. No existing report has been moved or deleted.
+**Latest model work, 29 October:** [Matched temporal study](Transformer_Temporal_Study_2026-10-29.md): eight fits completed, no usable candidate; response calibration is next. The new confirmation source is reserved without audio access. The active demo remains ExtraTrees.
+
+**Current work, 28 October:** The [28 October usability result](Transformer_Usability_Result_2026-10-28.md) records 47 completed neural fits, a guarded project adapter and 57 passing targeted tests. The locked four-singer evaluation improved **5/48 attempted interventions (5/40 scoreable)** and preserved **12/12 original controls**. All four singers failed the coverage/gain criteria. The candidate remains inactive; MOD-03 stays ACTIVE and later feature work stays on hold. These final recordings have now been inspected and cannot be reused as a new untouched test.
+
+Start with the [BPDR master plan](BPDR_Master_Plan.md) and [implementation tracker](BPDR_Implementation_Tracker.md), updated 28 October 2026. MOD-01/MOD-02 and source reservation are complete; MOD-03 remains active because independent repair coverage fails.
+
+The [planning review](Planning_Review_2026-10-27.md) reconciles the proposal, existing plans, code and results. Dated reports and the old PP1 plans remain history; their old “next/current” statements do not override the active master. Original research obligations and failed gates are retained.
 
 ## Current handover, plans and decisions
 
+- [Master plan](BPDR_Master_Plan.md) — original research objective, current architecture, usable Transformer repair, selective review, study obligations and decisions.
+- [Implementation and research tracker](BPDR_Implementation_Tracker.md) — stable task IDs, actual status, dependencies, exit evidence and a work log.
+- [Planning review](Planning_Review_2026-10-27.md) — 72-document inventory, proposal traceability, conflicts, deviations and preservation checks.
+- [Transformer improvement results](Transformer_Improvement_2026-10-27.md) — completed 60-fit comparison, preservation/accuracy tradeoff, calibration and standalone actual-WAV checks; candidate not adopted.
+- [Initial Transformer recovery](Transformer_Recovery_2026-10-27.md) — earlier raw-prediction improvement and unsuccessful permitted-repair replay.
+- [Transformer accuracy workflow](Transformer_Accuracy_Workflow.md) — grouped improvement experiment, independent checkpoint evaluation commands, metrics and report interpretation.
+- [Working demo guide](Working_Demo_2026-10-19.md) — existing ExtraTrees experimental workflow; selective per-region review is planned.
 - [Notebook guide](NOTEBOOK_GUIDE.md) — six research topics, searchable code blocks and reproducible execution.
 - [Experiment verification report](EXPERIMENT_VERIFICATION_REPORT.md) — recomputed measurements, denominators and retained failed/blocked research criteria.
 - [Research status](RESEARCH_STATUS.md) — proposed BPDR, implemented methods and remaining validation.
 - [Notebook history and archive](notebook_history.json) and [current environment pins](requirements-notebooks.txt).
+
+## Historical PP1 plans and boundary records
+
+These retain their dated outcomes and original text. Their entry notices point to the current master; they are not a second active task queue.
 
 - [Presentation_Readiness_2026-10-17.md](Presentation_Readiness_2026-10-17.md)
 - [PP1_Master_Plan.md](PP1_Master_Plan.md)
