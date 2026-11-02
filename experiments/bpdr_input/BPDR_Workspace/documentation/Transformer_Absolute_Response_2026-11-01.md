@@ -33,8 +33,10 @@ controls reproduce the authenticated V12 model tensors, all validation predictio
 arrays and actual sample digests exactly. Source/singer partitions and seed/
 update lineage also match. Only after all four controls pass do MAE fits begin.
 
-Four controls are complete; four absolute-response fits are running. Their
-accuracy and delivered-audio outcomes are pending. All32 focused tests pass,
+All8 fits finish. Four controls reproduce exactly; the four absolute-response
+fits pass raw singer gates but worsen raw MAE12.293c versus11.901c. They deliver
+18/200 verified repairs with22.062c remaining error versus reference23/200
+and20.342c. All50 original WAVs stay unchanged. **Not selected.** All32 focused tests pass,
 including preservation of the control arithmetic and signed gradients of the
 absolute response. New loss tests are not an accuracy qualification.
 
@@ -48,9 +50,11 @@ authenticated control WAV evidence is reused only after exact control
 reproduction. No claims of equal total wall-clock budgets beyond the stated
 per-fit data,optimizer and1200 update schedule.
 
-Independent verification is implemented in `verify_absolute_response_study.py`
-for control reproduction, MAE metadata, held-source separation, matching
-sampler traces, actual predictions and saved WAVs. It runs after delivery.
+Independent `verify_absolute_response_study.py` passes exact reproduction of4
+controls, all4 MAE checkpoint/source/sampler lineages,216 prediction views,
+18 encoded WAVs,50 original identities and6 protected artifacts. The response
+term alone does not supply a usable gain under this protocol. No full refits
+or known-development/confirmation access follow.
 Any later full fits/default339,known development and untouched confirmation
 need their own qualified lock. No current adoption or usability claim.
 
@@ -58,3 +62,18 @@ Commands: `train_absolute_response_transformer.py cv`, then `delivery`, then
 `verify_absolute_response_study.py`, using the existing workspace environment.
 Evidence: `results/transformer_usability/2026-11-01_v31_absolute_response`.
 Existing files and all previous failed studies are retained.
+
+## Next evidence
+
+The training-sampling audit reconstructs all172800 draw rows across4 folds with
+exact old sampler hashes. Real-C known-zero queries within43 frames of a known
+positive occupy2.22–2.82% of all draw rows; positive/nearby-zero draw ratios are
+6.26–7.94. At the shorter10-frame bound there are no trusted zero queries;
+the original audit deliberately leaves transition/ramp neighborhoods unknown.
+These observations motivate investigating localization supervision, but do not
+prove that changing sampling or filling unknown labels improves the model.
+Do not invent transition targets or treat draw rows as independent people.
+
+The owner requested the [review and collection plan](Review_and_Collection_Plan_2026-11-01.md)
+to obtain actual independent reference-suitability/preservation judgments and
+consented pilot data. Its templates contain no reviews or participant records.

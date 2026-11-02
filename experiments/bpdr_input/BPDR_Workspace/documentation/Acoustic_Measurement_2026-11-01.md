@@ -109,3 +109,12 @@ also reproduce independently for all108 cases and97 original/crop queries.
 Next is the [matched absolute-response loss study](Transformer_Absolute_Response_2026-11-01.md),
 not another tracker swap or decoder sweep. No adoption, development/confirmation
 access or new feature release occurs.
+
+
+Subsequent completion,1 November: V31 absolute-response training is independently
+verified and rejected (18/200,22.062c remaining error). V32 nearby trusted-zero
+sampling also rejects adoption (20/200,21.108c), despite smaller original/outside
+requests. All four lost reference successes have one opposing coarse-direction
+frame while fine direction passes. The next diagnosis reconstructs those
+measurement disagreements on the declared candidate set; neither tracker is
+presumed wrong and no guard is relaxed. See the [V32 result](Transformer_Nearby_Zero_2026-11-01.md).
