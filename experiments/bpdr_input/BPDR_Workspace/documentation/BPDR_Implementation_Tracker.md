@@ -1,10 +1,126 @@
 # BPDR implementation and research tracker
 
-**Updated:** 29 October 2026  
-**Active specification:** [BPDR master plan v1.5](BPDR_Master_Plan.md)  
-**Current position:** **MOD-03 ACTIVE — make the Transformer useful before other feature work.** This iteration is complete but usability failed: 5/48 independent improvements and 12/12 unchanged originals. All four final singers fail; the candidate stays inactive. See [28 October execution record](Transformer_Usability_2026-10-28.md). Selective-review UI remains unimplemented.
+**7 November delivery update.** All 189 neural candidates have new verified
+PCM24 exports. The seven former over-full-scale candidates reproduced their
+21 FLOAT scores before rescoring. One delivered PESTO score fell by 0.222
+percentage points and the other 20 matched. This is bounded export evidence.
+Full inference replay, delay, listening and qualification remain open.
+The independent reviewer brief is ready in `output/pdf/`, with trial audio
+and actual ratings pending.
+
+**Updated:** 7 November 2026  
+**Active specification:** [BPDR master plan v1.29](BPDR_Master_Plan.md)  
+**Current position:** **MOD-03 INCOMPLETE — no qualified short-hum repair candidate.**
+The owner targets January 2027, keeps free humming essential and permits optional
+guide mode. Follow the [7 November continuation recommendation](Continuation_Method_and_January_Plan_2026-11-07.md)
+and [finite experiment protocol](Next_Experiment_Protocol_2026-11-07.md). Qualification,
+independent review/collection, useful preparation and accepted-WAV integration
+remain required; broader component progress is not synonymous with model accuracy.
+
+**Latest audit:** five current result files match their replay receipts; both
+noise-study aggregate tables reproduce; 189 enhanced WAVs pass shape/finite checks
+but seven exceed full scale. Neural gating harms one clean PESTO control. Fifty
+existing tests pass. The original all-tracker neural gate remains failed. The
+objective comparison has six intact fits out of twelve and no final comparison.
+No runtime/model/default was changed. Earlier “active job” statements below are
+historical and are superseded by the current continuation record.
 
 ## 1. Current evidence baseline
+
+V70 raw/query replay completes:coverage guarantees all original queries, but
+correction error21.529c versus20.995c and original means nearly unchanged;raw gates
+fail. V71 WAV checks22672 and positive/head diagnosis69538 are active. No sweep.
+
+V68 raw replay is COMPLETE:8 parent/new checkpoints,996 held prediction arrays
+and4 exact traces. The tail-loss correction error20.995372c versus19.701240c is
+worse; original means.766431c versus1.051955c are lower. Both raw gates fail.
+V69 independently replays498 new plans,178 candidate audits,152 encoded outputs,
+445 reference records and53 original controls;498 baseline records are inherited
+under verified identity, not rerendered. Tail/uniform32/24 beneficial repairs,
+109/148 reference harms,101/143 known-zero harms,11/11 changed originals. Remaining
+23.902523/24.028204c from24.896935c input. This is a genuine measured delivered
+tradeoff/improvement, but not usable qualification.80654 is terminal0.
+
+V67 query audit2752 also completes:26836/40899 reliable training frame/model
+positions directly queried as originals,29734 with exact C-zero token equivalents.
+782/1548 activation-tail positions and440/748 proposed original positions lack
+those queries.115200 direct-original draws and57600 C-zero draws are accounted
+for across folds. Repeated model/frame positions are not independent people;
+similar-input gradients and late optimization drift are not measured.
+
+V70/V71 are declared and active in session22672:4 coverage-sampler fits -> raw
+checkpoint/query replay -> fixed actual-WAV evaluation/replay/report. Three sampler
+tests pass, including full-pass-before-repeat and budget refusal. First fit reaches
+1200 updates; its general-original trace queries all10552 eligible frames within
+14400 draws. Queries are not guaranteed nonzero gradient updates under top4 loss.
+No new model score/qualification result yet. V71 frozen tail baseline reuses V69
+only after data/policy/prediction identity. No extra seed/epoch/threshold sweep.
+
+
+V68's4 fits finish with initial correction-error/original-preservation tradeoff
+(20.995c/.766c versus19.701c/1.052c); raw gates fail, replay/V69 remain active
+in80654. No further parameter sweep or activation.
+
+V66/V67 independent replay completes; both candidates remain rejected. V68/V69
+are now live in80654 under the loss-only specification linked below. No activation.
+
+V65 raw comparison is independently VERIFIED:8 checkpoints,996 held arrays,
+8 sampler traces and2988 training-only teacher arrays reproduce all summaries.
+Uniform/mined overall error19.701240/19.958749c, HumTrans16.923916/18.708845c,
+Vocadito20.858458/20.479542c; both raw gates FAIL. Within10c singer-macro fractions
+are.262964/.241584; unchanged-command baseline error24.905844c. Original means
+are1.051955/1.243259c, hiding activation tails in33/37 original windows and maxima
+27.580/27.500c. Raw known-zero activation frames8079/10159 are repeated derived
+frames, not independent people or rendered harm counts. Paired singer bootstrap
+for mined-minus-uniform MAE is+.257509c, descriptive95% interval[-.678951,1.307409];
+this does not establish population superiority for either sampler. No mining adoption.
+
+Pipeline44844 is terminal1 AFTER successful checkpoint replay:the raw reporter
+assumed every technical working clip had reliable pitch frames. `vocadito_8` has
+zero such frames; it is retained with null pitch statistics, not scored as zero
+error.52/53 original windows have measurable reliable-frame statistics; all53
+remain actual-WAV identity controls. `raw_report_failure.json` preserves the failure.
+No new fit was needed. V67 prepared diagnosis/replay also preserve this distinction.
+
+Current pipeline session83651 is RUNNING from corrected raw reporting onward:
+raw report COMPLETE -> V66 delivered evaluation ACTIVE -> independent output replay
+-> domain/duration/direction report. Check the durable pipeline status and poll83651;
+do not rerun training or replay because old44844 is terminal. V66 remains fixed and
+no actual-output result or activation is claimed yet. V67 diagnosis/replay is prepared
+for AFTER V66 replay; it is not queued in the already-running driver.
+
+
+V63 metadata verification is complete:72 slots/53 working windows,27 unchanged source regions and26 changed, with audio/context bytes and partitions unchanged. V64 construction is terminal0 (session95750):445 passing examples/1152 attempts versus V58's349,17 contributing groups,53 valid original windows.432 case records exactly reuse unchanged geometry,171 valid examples reused;274 are newly measured at the new support geometry. Exclusions:332 no source region,304 short-window,71 three-tracker audit failures. These construction results now pass independent replay; they are not learned accuracy. All audit/renderer limits remain fixed.
+
+V64 independent replay is COMPLETE:340 new decoded audits,1360 refused wrong-request controls (1240 with adequate common coverage),340 refused outside-sample tampers,274 labels and6096 arrays recomputed. All445 pairs are verified. Coverage comparison:127 newly constructible keys,31 lost at the changed locations,137 old-and-new valid keys with changed support; net+96 is a reference-coverage gain, not matched repair accuracy. S10/S15/S20 are newly represented.
+
+Initial pipeline15131 is terminal1:the sampler placeholder used n*441 samples, giving n+1 controller frames for n feature frames. No fit/checkpoint or model score existed at failure. The fix uses (n-1)*441+1 samples; protection exactly matches actual-waveform policy on3 representative lengths/cases. Original failed declarations and failure receipt are retained under V65/V66; the training-recipe hash was reissued before fitting, with no data/model/loss/threshold change.
+
+Historical completed-fit pipeline44844 (terminal at reporter failure after replay):8 fixed-budget uniform/mined fits -> independent checkpoint/sampler replay -> detailed raw report -> V66 delivered-WAV evaluation -> independent delivered replay -> domain/duration/direction report. Every nonzero phase stops later work. Check `results/transformer_usability/preservation_pipeline_status.json` and poll44844 before restarting. All8 fits are complete; initial raw gates fail for both arms and checkpoint replay is complete. Corrected output pipeline83651 is active; no activation. The prepared raw reporter passes singer-weighting/empty-subset checks;3 mining unit tests and the refusal of unverified data also pass. V66's fixed output protocol is locked before new scores.
+
+**Authoritative current state:** [continuation record](CONTINUATION_STATE.md). V52 delivered replay completes:6 beneficial/34 preservation harms/4 changed originals for added hums, still rejected. V56 independent4-checkpoint/112-array/112-plan replay confirms2/84 fitted and4/28 held unwanted proposals. V57/V58 independently verify53 working windows and349 pairs/1152 attempts from the same33 training recordings; no new people, held evaluation access or fits. The current data/geometry limits and objective audit are in [short-phrase plan v1.8](Short_Phrase_Transformer_Plan_2026-11-02.md). The64-attempt pilot and V64 uniform scaling/replay are complete under unchanged audit limits. Preservation-mined sampling has3 passing helper tests but no trained candidate. Model qualification remains incomplete.
+
+**Pilot/trace/timing completion:** V60 now verifies50 physical passes/64 attempts from the3 previously unscoreable training groups;224 negative controls refuse (196 assessable),56 sample tampers refuse and800 arrays replay. V61 traces all34 harms to actual outside-injection sample changes and separates guard-label gaps from existing-zero failures. V62 reproduces4 known full-path outputs in5.61–12.31s, with explicit small-sample/input/startup limitations. Uniform scaling/replay now pass, and the bounded preservation contrast is active; no new model accuracy gain or activation is claimed.
+
+**Historical stage notes:** all earlier running/next-stage statements below are retained history, superseded by the authoritative current state above.
+
+**Latest verified result:** [V51 transfer](HumTrans_Transfer_Result_2026-11-02.md) completes4 fits,8-checkpoint/408-array/4-trace replay. Added hums improve hum error19.365->17.845c, regress Vocadito21.201->22.652c and fail all represented-group gates. V52 delivered evaluation runs under prospectively fixed policy. V53 app-frontend probe accepts5 previously excluded training crops technically;4 meet target duration. Existing gain protection is unchanged; independent replay recreates all5 working files exactly. Only2 recovered sources have short-context eligibility. Uniform whole-cohort frontend alignment and physical-pair replay must precede a new fit. MOD-03 ACTIVE, no activation. Older fitting status below is historical.
+
+**Latest execution:** V50 is independently verified:61/192 short HumTrans pairs,4 contributing singers,9 valid originals;64 decoded audits,128 controls,1,441 arrays and61 labels reproduced. V51 matched transfer comparison is running4 new fits against4 frozen V46 parents. It adds real-hum training data with the same Transformer/loss/budget, preserving all528 attempts and33 attempted originals. No comparison result, activation or usability claim yet. F01/M01 remain unassessed on positive repair. [Details](Local_HumTrans_Recovery_2026-11-02.md).
+
+**Current correction:** [local HumTrans recovery](Local_HumTrans_Recovery_2026-11-02.md) verifies24 existing recordings/references and preserves12 training/12 development roles. The V48 proposed split is superseded; its acquisition commands now refuse conflicting reservations. Actual official composition IDs are separate across splits, singers are shared. Training-only short construction/replay are complete (61/192 valid); matched new fitting is underway. Thirteen focused preparation tests pass. No network blocker for existing data; no new model qualification. Earlier acquisition-stage claims below are historical.
+
+**Preparation update:** the [HumTrans plan](HumTrans_Data_Plan_2026-11-02.md) now has a bounded ZIP64 range reader and guarded pilot acquirer. Twelve local tests pass; neither test fixtures nor code completion establish real acquisition. A fresh direct metadata retry still fails and browser acquisition times out. No real reservation/audio/model fit is added. Dataset access must recover before broader humming training can proceed; MOD-03 remains ACTIVE.
+
+**Current update:** [V43–V47](Paired_Short_Transformer_Result_2026-11-02.md): failed local-event cue, independently replayed experimental short-audit calibration, 115 staged physical pairs, eight paired Transformer fits with independent checkpoint replay. Both raw gates FAIL. Delivered physical/virtual-pretrained arms produce 4/2 beneficial repairs, 32/36 known-zero harms and 2/4 changed originals. Neither qualifies; independent delivered replay completes:268 proposals,83 candidate audits,80 encoded audits,230 reference records and38 original controls. Next is [HumTrans metadata-first preparation](HumTrans_Data_Plan_2026-11-02.md), not another blind architecture sweep. Auditor implemented and three synthetic tests pass; actual metadata acquisition fails with connection resets, so no real split audit, reservation or audio acquisition is claimed. MOD-03 ACTIVE. The existing PDF remains a V41/V42 snapshot.
+
+**Latest completed result:** [V41/V42](Short_Phrase_Model_Result_2026-11-02.md):12 fits complete; all raw gates FAIL. Revised raw24.147c versus frozen24.925c does not translate to usability:4 target gains,4 target harms,2/19 originals changed and remaining error25.236301c versus input25.040978c. Independent252-prediction and252-plan/24-encoded/176-reference/76-control replays pass. Candidate REJECTED; MOD-03 ACTIVE; defaults unchanged. Current-system PDF generated from the verified results; next version addresses short-event observability, singer transfer and known-zero preservation.
+
+**Retained construction stage:** [V40/V41 short-phrase training](Short_Phrase_Training_2026-11-02.md):44 valid pairs/336 attempts from6 singers;19 valid originals;128 decoded audits,1,134 feature arrays and44 label files independently replayed. Revised genuine Transformer and opt-in policy implemented with9 passing contract checks; defaults unchanged. Four-fold comparison subsequently completed and was rejected; see latest result above. Actual-WAV V42 protocol locked before final raw results; neither qualification nor activation complete.
+
+**Latest verification:** [V39 timing feasibility](Short_Support_Timing_Study_2026-11-02.md): real-voice forward perturbations pass8/96 baseline,17/96 guard-only,23/96 shorter ramp+guard;240 decoded audits and240 opposite-request controls independently replayed,144 exclusions reproduced. No model accuracy or production selection. V40 training-source reservation retains21 recordings/14 singers and all existing holdouts; preparation/training have not begun. Short-scale model features are required because existing step evidence starts at0.86 s.
+
+**Current override:** MOD-03 remains ACTIVE. The owner chose 5–15-second melodic hums with short notes. V35/V36 centered-auditor engineering results are 29/200 and 11/48 verified outputs; original controls unchanged. V37 fresh construction has zero scoreable cases among 48 attempts, so fresh model accuracy remains unassessed. The next implementation is the [short-phrase plan](Short_Phrase_Transformer_Plan_2026-11-02.md), starting with experimental short-support rendering/measurement before retraining. Older held-voice next actions below are historical. The Transformer and shared demo selection remain unchanged.
 
 | ID | Existing capability / observation | State | Evidence and limitation |
 |---|---|---|---|
@@ -136,3 +252,184 @@ Each work entry must include:
 **Latest completed work:** [Ensemble](Transformer_Ensemble_2026-10-29.md) rejected at2/200 repairs despite prediction-gate pass; [R3 renderer](Transformer_R3_Renderer_2026-10-29.md) rejected at22/200 versus23/200 Praat. Both preserve50/50 originals. Seventeen combined tests pass;12 ensemble lineages,24 total encoded verified outputs and6 protected files checked. No new neural fits or evaluation audio access. [Candidate preflight](Transformer_Candidate_Preflight_2026-10-29.md):177 positive/8 negative/14 unassessed regions;39 baseline cases lack candidate overlap. Dense fallback required.96 unchanged feature controls add zero candidates; retain result and all denominators. Next small region head plus explicit original anchors; no activation.
 
 Read the [V25 result](Transformer_Distribution_Readout_2026-10-30.md) and [accuracy workflow](Transformer_Accuracy_Workflow.md). Continue **MOD-03**; usability is incomplete. V25 median/upper-quartile readouts pass raw gates but verify only18/200 and19/200 repairs, with remaining error21.444c/21.992c versus reference20.342c. Neither selected. All50 originals unchanged per arm;20 tests and independent37-WAV/prediction/fallback checks pass,6 protected files unchanged. Next prospectively declare a function-preserving dense amplitude/activity residual adapter with frozen backbone, input-only cues and exact zero-adapter control. Retain temporal shape, all existing limits, held-out source separation and200/108 denominators. Selection remains raw all-singer gates, all50 originals identity, lower singer-macro delivered error; count alone cannot substitute. Keep39/108 candidate-overlap and8-real-negative limitations explicit. Require a qualified locked model/decoder before development/fresh confirmation. Reserved CSD/male10/male11 audio remains unopened. Preserve notebook/export/model/data history, shared `pp1_demo` and sibling code; no selective UI or activation yet.
+
+| 2026-11-03 / V55 | Rebuilt short-phrase pairs on frontend-matched V54 inputs: 528 attempts, 188 valid (176 reused, 12 new), 32/33 originals valid; no fits | [Result](Canonical_Short_Pairs_2026-11-03.md); builder ran to completion; independent replay NOT yet run | No fit justified by +12 pairs; next: V55 replay verifier, then address region availability/objective comparison. MOD-03 ACTIVE |
+
+
+### V65/V66 measurement addition,4 November
+
+V66 actual-WAV evaluation is prospectively declared before new training scores:
+`2026-11-04_v66_preservation_delivery/declaration.json`. Both V65 arms use identical
+1152 attempted/445 scoreable cases and53 original controls, the unchanged input-only
+controller, renderer, three-tracker audit and strict original/known-zero requirements.
+Its evaluator, independent replay and domain/duration/direction reporter are prepared
+but not executed. Historical V52 totals are not a matched model-effect baseline on
+this changed support geometry. The added raw metric reporter also compares the
+zero-command baseline,10/25c fractions, signed response, original extremes and
+known-zero requests; descriptive paired singer bootstrap uses2000 draws/seed339,
+not overlapping frames as independent people. No confidence calibration or natural
+intention accuracy is claimed. Execute these after V65 checkpoint replay succeeds.
+
+
+### V64 reference ceiling and queued preservation diagnosis
+
+V64 reference sufficiency now explicitly includes duration-valid denominators.
+Only HumTrans:F01,S1,S21 remain below the25% historical coverage ceiling (all have
+zero scoreable pairs;16/112/32 duration-valid attempts respectively), versus seven
+groups under V58. This is construction coverage, not learned repair coverage.
+The retained V58 ceiling still describes V58; do not present it as the V64 ceiling.
+
+The prepared V67 original-preservation diagnosis compares both V65 arms on53
+original windows across four models each:159 fitted-source/model combinations and
+53 held controls per arm. It records local activation tails, input-only permitted
+proposals and actual held original changes, and has a separate424-array/plan replay
+implementation. Run `diagnose_preservation_sampling.py`, then
+`verify_preservation_diagnosis.py` after V66 replay. Neither has executed yet. No
+fitted proposal is labelled a delivered harm. This is inference only, not extra fits.
+
+
+### V65 initial completed fits, replay pending
+
+V65 completes all8 fits (4 folds x uniform/mined,seed339,1200 updates each).
+Initial raw summaries are awaiting independent replay. Uniform/mined positive
+singer-macro errors are19.701240/19.958749c overall,16.923916/18.708845c on HumTrans,
+and20.858458/20.479542c on Vocadito. Original-control means are1.051955/1.243259c.
+Both fail the represented-group raw gate. S29 exceeds the3c original mean limit
+(3.510123/4.338468c); S20/S22 have negative signed response in both arms. The newly
+constructible S10/S15/S20 groups do not meet the response requirement either.
+
+These matched results do not support adoption of the mined sampler; no extra
+seed/threshold/epoch sweep is authorized by this contrast. V51's different pool is
+not a matched model-effect baseline. Pipeline44844 is now independently replaying
+checkpoints/sampling before the fixed V66 actual-WAV comparison; delivered benefit,
+known-zero harm and unchanged-original outcomes are still pending. No activation.
+
+
+### V66 initial WAV outcome, independent replay active
+
+V66 initial delivered evaluation completes both arms on the same1152 attempted /
+445 scoreable cases and53 original controls. Independent replay is running in83651;
+these figures are not yet the completed replay result. Uniform/mined:24/21 beneficial
+repairs,148/128 reference harms,143/127 known-zero harms,11/9 changed originals.
+Remaining singer-macro target error24.028204/23.618242c from input24.896935c.
+Uniform has275 identity/183 audited candidate/40 rollback outcomes; mined293/158/47.
+Humming:15/9 beneficial and33/21 harms on100 scoreable cases; Vocadito9/12 beneficial
+and115/107 harms on345. These are controlled reference failures, not subjective
+claims that every change is audible. No encoded rollback occurs in these totals.
+
+Mined sampling has a delivered-output tradeoff despite worse raw mean error:
+fewer harms/changed originals and lower remaining target error, but fewer beneficial
+outputs. Neither arm meets preservation/coverage/raw requirements. It must not be
+adopted or called usable. Raw-only averages did not determine that comparison.
+
+Prepared `tools/trace_preservation_delivery.py` requires the V66 integrity receipt
+and writes `V66/pipeline_trace.json` after replay. It checks actual output waveform
+hashes and separates target direction, misplaced support, unlabelled edge requests,
+already-zero-labelled false requests and actual samples changed outside injection.
+Run it after V66 replay, then the prepared V67 diagnosis/replay; no new fit yet.
+
+
+### V66/V67 completed verification and diagnosis
+
+V66 is now independently VERIFIED:996 plans,428 candidate audits,341 encoded
+outputs,890 positive/zero reference scores and106 original controls replay. Both
+arms remain rejected:uniform/mined24/21 beneficial,148/128 reference harms,
+143/127 known-zero harms and11/9 changed originals. Remaining target error
+24.028204/23.618242c from24.896935c. Mined has fewer harms but fewer useful gains;
+it is not a qualified improvement. Pipeline83651 is terminal0.
+
+The V66 actual-sample trace confirms all143/127 known-zero harms change samples
+outside injected support.84/77 include unlabelled edge requests (292/282 frames),
+but125/116 also request already-zero-labelled frames (2060/2064 frames total).
+58/46 harmful plans have no overlap with the injection. Even14/11 numerically
+beneficial outputs change samples in the excluded near-edge guard; beneficial
+means the registered reference gate, not perfect ground-truth support localization.
+
+V67 independently replays8 checkpoints/424 arrays/plans and matches106 held
+original events to V66. Uniform/mined training-assigned combinations:24/18 unwanted
+permitted proposals out of159; held controls12/13 out of53, with11/9 actual changes.
+Training-assigned proposals were not rendered and are not measured harms.156/159
+training combinations and52/53 held windows have reliable pitch evidence; one
+zero-evidence window is kept with null statistics. Fitted failures mean this is not
+only an unfamiliar-singer problem. Pipeline96363 is terminal0; no jobs remain live.
+
+## V68 active loss-only contrast
+
+[Predeclared methods and research limits](Short_Phrase_Transformer_Plan_2026-11-02.md)
+and [full result record](HumTrans_Transfer_Result_2026-11-02.md) retain the evidence.
+V67 fitted-source failures and V66 already-labelled zero requests motivate testing
+upper-third preservation loss before adding edge labels. Four frozen V65 uniform
+parents versus4 new fits; only C-zero/generalA aggregation changes to largest4/12.
+Exact traces/data/labels/model/seed339/1200 updates/48 forward rows/runtime gates
+stay fixed. No k/seed/epoch/threshold sweep or zero-command-collapse adoption.
+
+V68 implementation now passes4 loss/gradient tests and an exact source comparison
+against V65's physical fitting function:only the two negative aggregation terms
+change. V68 declaration and V69 unchanged-WAV policy are locked before new scores.
+V69 inherits only the verified V66 uniform arm after exact data/policy/prediction
+identity checks; it performs no new baseline render. The new variant is separately
+rendered and independently replayed. No changed target/sampler or external code.
+
+Current live pipeline80654 runs V68 four fits -> raw checkpoint replay/report ->
+V69 new-arm WAV evaluation/replay/domain report. At leastfold1 fit/held predictions
+are complete; fold2 is fitting at last inspection. Poll80654 and the durable status
+before restarting. Four fits maximum, no k/seed/epoch/threshold sweep or promotion.
+
+
+### V70 query-coverage contrast predeclared
+
+V68/V69 raw and WAV replay complete:tail loss32 gains/109 reference harms versus
+24/148 uniform, but11 originals still change. Next is a four-fit original-query
+coverage contrast with data/labels/tail loss fixed;positive/C-zero draws stay fixed,
+original group/record frequencies explicitly change. See the [exact predeclaration](Short_Phrase_Transformer_Plan_2026-11-02.md). No activation.
+**6 November short-hum validation.** The eight-case renderer control reproduced
+small pitch changes alongside waveform differences from zero-shift forced
+resynthesis. V71 decoded-WAV replay passed and confirmed 22/445 beneficial,
+89/445 harmful and 8/53 changed originals. The spectral-context comparison
+is still running. No short-hum Transformer candidate qualifies.
+[V71 result](HumTrans_Transfer_Result_2026-11-02.md#v71-independently-replayed-on-6-november)
+
+The frozen V68 checkpoint replay matched the archived clean and shifted
+predictions for the eight renderer controls. Zero-shift resynthesis produced
+a 16.94-cent average request change in one case and under 1 cent in the
+other seven. [V68 response diagnostic](HumTrans_Transfer_Result_2026-11-02.md#frozen-v68-response-to-the-control)
+
+The S7 follow-up isolated the outlier to the pitch, voicing and pitch-delta
+input block in the tested feature substitutions. The diagnostic reproduced
+without a fit or policy change. [Feature trace](HumTrans_Transfer_Result_2026-11-02.md#s7-feature-substitution)
+
+The archived short-phrase boundary perturbation affects every scored
+positive query context, with the acoustic columns held fixed. This
+passes the data preflight for the full BPDR, augmentation-only and
+frame-only objective comparison. All three arms pass one frozen-trace
+update and held inference. The full 12-fit run and checkpoint replay are
+queued sequentially in session 68661.
+
+The completed spectral replay matched all 1,494 arrays across the two
+fitted arms and frozen baseline. The spectral candidate remains rejected.
+[Verified spectral result](HumTrans_Transfer_Result_2026-11-02.md#verified-matched-spectral-context-result)
+
+The longer-hum extension probe reproduced eight scoreable constructions
+out of 14 attempts, with all 32 negative controls rejected. This confirms
+physical coverage on existing sources, with model evaluation still pending.
+[Longer-hum probe](HumTrans_Transfer_Result_2026-11-02.md#replayed-longer-hum-physical-probe)
+
+Frozen singer-held-out V68 inference on those eight cases reproduced
+13.261 cents of raw error versus 20 for zero. Large requests on all four
+originals keep preservation unresolved. The follow-up delivery replay
+returned six identities and two renderer rollbacks. All altered inputs
+and originals stayed exact, so the model produced no useful longer-hum
+repair in this sample.
+[Longer-hum transfer](HumTrans_Transfer_Result_2026-11-02.md#frozen-v68-transfer-beyond-10-seconds)
+
+The two renderer rollbacks come from a nonzero request at the exact
+waveform endpoint. Clearing that frame passes the diagnostic audits,
+and decoded scoring confirms known-zero harm in both cases. One edit
+starts after the detune, and the other repairs the target while editing
+past it. This isolates the endpoint mismatch and a localization error.
+[Endpoint trace](HumTrans_Transfer_Result_2026-11-02.md#f05-endpoint-trace)
+
+The experimental sample-backed planner now withholds this impossible
+request before rendering and preserves the input waveform. The endpoint,
+controller and short-policy suites passed all 16 tests. This guard is
+separate from the frozen comparison and does not qualify any repair model.

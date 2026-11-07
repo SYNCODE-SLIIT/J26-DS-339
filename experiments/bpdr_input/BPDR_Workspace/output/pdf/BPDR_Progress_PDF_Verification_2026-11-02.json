@@ -1,0 +1,52 @@
+{
+  "pdf_sha256": "899c35db0c7d956b0d374484f10f80e7ed7ee10817d450e8d7eff0e82ae7c4ab",
+  "generator_sha256": "86b763243269b1c6918414fa4de2b638430a76db566950699d397c5e772e1ea8",
+  "page_count": 7,
+  "pages": [
+    {
+      "page": 1,
+      "words": 256,
+      "glyph_bounds_passed": true
+    },
+    {
+      "page": 2,
+      "words": 204,
+      "glyph_bounds_passed": true
+    },
+    {
+      "page": 3,
+      "words": 245,
+      "glyph_bounds_passed": true
+    },
+    {
+      "page": 4,
+      "words": 216,
+      "glyph_bounds_passed": true
+    },
+    {
+      "page": 5,
+      "words": 277,
+      "glyph_bounds_passed": true
+    },
+    {
+      "page": 6,
+      "words": 326,
+      "glyph_bounds_passed": true
+    },
+    {
+      "page": 7,
+      "words": 283,
+      "glyph_bounds_passed": true
+    }
+  ],
+  "all_seven_rendered_pages_visually_inspected": true,
+  "model_and_delivery_receipts_bound": {
+    "results\\transformer_usability\\2026-11-02_v40_short_phrase_data\\integrity_receipt.json": "1c628823e7cec46fc4187f6f4abd7deb650692dd7a546f710a4c3f3e9cfe3849",
+    "results\\transformer_usability\\2026-11-02_v41_short_phrase_models\\results.json": "ae9818a59fb9b3e52c69b5ee314737cb84d77c05c520e4429ffa0da52b78e11f",
+    "results\\transformer_usability\\2026-11-02_v41_short_phrase_models\\integrity_receipt.json": "abf80f49da2ae39b0df5a23428a1fa73d04efed9c535625bef4b6972256ceb93",
+    "results\\transformer_usability\\2026-11-02_v42_short_delivery\\results.json": "bc7da85191accc9811f147af04a56aa16cd3749d07fd50c66470eb62887703fd",
+    "results\\transformer_usability\\2026-11-02_v42_short_delivery\\integrity_receipt.json": "39355a3fdbcbd216cd5f6be5d375c64d11fb951a7401b4a7f237bae5cd92aabe",
+    "results\\transformer_usability\\2026-11-02_v42_short_delivery\\reference_preservation_diagnosis.json": "563e151a35c1e07ea75ea203d7fe9707ad9dfcf3d0322b56123ff8c8577eab9f"
+  },
+  "status": "Candidate rejected; no usable-accuracy or activation claim"
+}

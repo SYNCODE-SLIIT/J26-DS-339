@@ -1,8 +1,54 @@
 # BPDR review and recording-collection plan
 
+The [independent reviewer brief and printable rating form](../output/pdf/BPDR_Independent_Reviewer_Brief_2026-11-07.pdf)
+is ready to share with prospective reviewers. Its fourth page lists the
+academic and coordinator actions. The owner will provide the progress
+rubric later and can arrange reviewers. Trial audio, packet order,
+permissions, contacts and dates still need to be supplied.
+
 Prepared1 November2026 for the input-preparation component.
+Updated 2 November 2026: the owner selected **5–15-second melodic hums with short notes**. This is now the usability target; long held tones must not be required to make a recording fit the benchmark. Follow the [short-phrase plan](Short_Phrase_Transformer_Plan_2026-11-02.md). Historical held-voice review remains a separate baseline. All participant/reviewer counts below remain planned, not collected.
 Status: proposed protocol and blank templates. No participants recruited,
 consent obtained, reviewer assigned, ratings collected or ethics approval claimed.
+
+**Current short-note update, 2 November:** the [paired Transformer experiment](Paired_Short_Transformer_Result_2026-11-02.md)
+fails preservation and remains inactive. Its controlled recovery scores are not
+intended-idea accuracy. The legacy37-trial held-voice packet below remains a
+separate historical review plan; it does not evaluate the new short-hum model.
+After a short-hum candidate qualifies on development, prepare a new blinded
+packet from the complete declared short-hum cohort, include unchanged expressive
+controls and retain abstentions/harmful attempts in the accounting. Freeze trial
+selection/order before ratings; never select only favorable short-note repairs.
+The [HumTrans preparation](HumTrans_Data_Plan_2026-11-02.md) supplies potential
+engineering data only and cannot replace the planned novice/intent/reviewer study.
+
+## 6 November decision for the short-hum pilot
+
+The primary input is a 5–15-second melodic hum with multiple short notes.
+Guided takes provide a musical target when the singer confirms the intended
+register and phrasing. Free hums test whether BPDR preserves the participant's
+idea. The 37-trial held-voice review in Section 2 is separate historical
+development work.
+
+Before collection, freeze the guide audio and note timing, include short notes
+in all three guided phrases, and document permitted registers and intentional
+expressive movement. Record clip lengths and note durations so coverage can
+be reported. Keep out-of-scope attempts and retries in the feasibility count.
+
+Give both reviewers the full clip, the aligned guide where available, and two
+versions in independently randomized order at identical playback gain.
+Collect preference, preservation judgments and timestamped artifacts. Ask
+the participant separately whether the output still expresses their idea.
+Use identity controls and retain withholds in the attempt count. Label
+experimental previews separately from audio the system actually delivers.
+
+Compare the frozen Transformer, ExtraTrees and original audio on the same
+eligible clips and reference spans. Report pitch error and improvement on
+delivered WAVs where a reliable reference exists, coverage over all attempts,
+changes to protected audio, audible harm and downstream note agreement where
+independent note labels exist. Break out guided and free hums and show counts
+by participant. Freeze the evaluation rules before confirmation. The current
+short-note experiments failed declared gates, so promotion remains pending.
 
 ## 1. What this plan needs to establish
 
@@ -106,7 +152,7 @@ Each participant records3 guided phrases and3 free-hummed/sung ideas:
 
 | Task | Purpose | Reference evidence |
 |---|---|---|
-| G01: simple phrase with a comfortable held region | Test the declared stable-voice scope | Approved guide and agreed intended register |
+| G01: simple stepped phrase with short notes | Measure short-note recovery and preservation | Approved guide and agreed intended register |
 | G02: phrase with changes and a pause | Observe boundaries and appropriate preservation | Approved guide, independent alignment/annotation |
 | G03: phrase with an optional expressive movement | Test preservation of intentional expression | Guide plus participant's explanation of intended movement |
 | F01/F02/F03: participant-created short ideas | Observe realistic unaccompanied input | Participant explanation and preservation judgment; intended pitch may remain unknown |
