@@ -1,5 +1,102 @@
 # Usable-input plan and status (5 Nov 2026)
 
+## 8 November full actual-consumer development result
+
+All 378 calls completed for 189 opened cases: 21 training-role Vocadito
+recordings, 14 singers, first eight seconds, four root noise clips at
+10/0 dB plus clean controls. B0 is peak-safe format-only PCM24; B2 is
+the frozen saved neural output exported as PCM24. The owning shared
+pYIN consumer and preprocessing remain unchanged. A1 and A2 are scored
+separately against independent note annotations. These are development
+digital mixtures of singing, not new real-hum confirmation participants.
+
+`tools/report_primary_cleanup_development.py` independently reconstructs
+all twelve summaries from saved per-case metrics; maximum difference
+2.43e-17. Input hashes match the prior audit/export receipt. The full
+fresh-process 378-call inference replay completed in **session 88786**,
+exit 0. All metrics and preprocessing reproduce exactly; the verifier's
+independent aggregate error is 6.94e-18. All 378 raw consumer outputs
+are retained and match their receipt hashes. This is full development
+inference replay, not fresh confirmation or listening qualification.
+Results, aggregate receipt and caches are in
+`results/transformer_usability/2026-11-08_primary_cleanup_development/`.
+
+| Slice | A1 onset/pitch F1, B0 -> B2 | A2 onset/pitch F1, B0 -> B2 | A1 harms / benefits | A2 harms / benefits |
+|---|---|---|---|---|
+| Clean (21 cases) | .3000 -> .2898 | .2903 -> .2830 | 4 / 2 | 3 / 0 |
+| 10 dB (84 cases) | .3024 -> .2938 | .2928 -> .2793 | 40 / 26 | 41 / 19 |
+| 0 dB (84 cases) | .2832 -> .2866 | .2637 -> .2766 | 35 / 32 | 36 / 31 |
+
+F1 entries are singer-macro means. Harm/benefit counts use per-case
+changes below -0.02 / above +0.02; these are descriptive development
+counts, not independent population observations. At 0 dB the A1/A2
+paired gains are +0.00333 / +0.01293, with singer-bootstrap 95% intervals
+[-0.01747, +0.02447] / [-0.00792, +0.03711]. Neither excludes zero.
+Both 10 dB intervals also cross zero. The A2 clean interval is negative
+[-0.01313, -0.00158]. Offset-aware results are retained: at 0 dB A1
+gain is -0.00512 and A2 +0.01762, both intervals crossing zero.
+
+RPA50 B0 -> B2 is .59796 -> .80829 at 0 dB, .78096 -> .82044 at
+10 dB and .82762 -> .82405 on clean inputs. Thus the large noisy-frame
+pitch benefit does not establish useful note-event improvement for
+this actual consumer. At 0 dB mean estimated event count rises from
+25.38 to 28.36; counts alone cannot establish fragmentation as the cause.
+Raw replay outputs are retained for event-level diagnosis.
+
+**Decision:** always-on B2 remains inactive and has no demonstrated
+qualification. No new selector is fitted or inferred from these labels.
+This does not evaluate B1 or a declared B3 runtime policy, and does not
+alter the historical failed three-tracker gate or the BPDR comparison.
+
+## 7 November encoded-output follow-up
+
+### 8 November actual-consumer compatibility check
+
+The fixed track-1 clean/rain-10/rain-0 check now calls the owning
+`melody_understanding.analyze_vocal(path, trim=False)` on format-only
+PCM24 and neural PCM24 inputs. Its normalization and final-frame handling
+match the five pinned consumer source files. Mir_eval 0.8.2 is isolated
+under the experiment dependencies and scores both independent note
+annotators separately with the declared tolerances. Reference intervals
+are intersected with the eight-second crop, with truncated-note counts
+retained.
+
+| Case | Human-F0 RPA50 original → neural | A1 onset/pitch F1 | A2 onset/pitch F1 |
+|---|---|---|---|
+| Rain 0 dB | 71.41% → 85.11% | 21.62% → 19.05% | 25.00% → 17.78% |
+| Rain 10 dB | 82.42% → 85.33% | 27.03% → 20.51% | 25.00% → 19.05% |
+| Clean | 85.11% → 85.22% | 25.64% → 24.39% | 23.81% → 22.73% |
+
+All six calls reproduced in a separate invocation, including note
+metrics and preprocessing. Offset-aware scores are retained separately
+and are mixed in the 0 dB case. This one-source development result
+does not establish population performance, but it directly shows why
+frame-pitch gains cannot qualify the actual consumer's note output.
+The neural candidate has not passed the primary usefulness criterion.
+Results and replay receipt are under
+`2026-11-08_primary_cleanup_compatibility/`.
+
+The metric uses 50 ms onset and 50-cent pitch tolerance, with the
+offset-aware version additionally using max(20% reference duration,
+50 ms). [Official mir_eval transcription documentation](https://mir-eval.readthedocs.io/latest/api/transcription.html)
+
+All 189 saved neural candidates now have deterministic, peak-safe PCM24
+exports in `2026-11-07_neural_delivery_encoding_v2`. All 567 estimator
+scores were recomputed on those decoded files. The seven formerly
+over-full-scale FLOAT inputs reproduced all 21 historical estimates.
+Across the full export set, 566 scores match the archived FLOAT value.
+One PESTO score falls by 0.002219756. Separate aggregate calculations
+reproduce the new summary.
+
+With the historical gate decisions held fixed, 0 dB singer-macro RPA50
+is pYIN 0.59796 to 0.79918, Praat 0.68429 to 0.93227 and PESTO
+0.82879 to 0.86419. PESTO still has 18 harmful outputs among 84
+0 dB cases and one harmful accepted clean control among 21 clean
+sources. The historical gate remains failed. This study isolates
+encoding and does not recompute the runtime decision after export.
+Delay configuration, listening and fresh confirmation remain open.
+The full result and aggregate receipt are in `full_rescore/`.
+
 Status key: DONE = run, recorded, rule declared before scores. PARTIAL = run with stated limits. TODO = not started. BLOCKED = needs a decision/data/person.
 None of the results below has been independently replayed. Nothing is committed. Shared code, defaults and the demo are unchanged.
 

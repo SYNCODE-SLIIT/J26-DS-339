@@ -676,3 +676,52 @@ These diagnostic WAVs are
 experimental, and the existing policy and qualification decision
 remain in effect. See `endpoint_trace.json` and
 `endpoint_decoded_scores.json` in the physical probe folder.
+## 7 November objective fitting prerequisite
+
+The no-fit gradient audit found that zero-target gradient norm was
+about 173 times positive-target norm at the saved checkpoint. Its
+dot product with the total gradient indicates a small adverse local
+direction for positive error under gradient descent. There were no
+conflicting labels among the 208 exact unique token contexts checked.
+
+A single declared change to equal nonzero/zero anchor mass lowered
+fixed-batch positive MAE to 3.062 cents at 200 updates, with signed
+response 0.8406 and mean zero-target request 1.184 cents. The model,
+optimizer, initialization, batch and smoothness remained matched.
+This result reproduced exactly in a separate process. It identifies
+a training supervision problem that can be addressed without another
+architecture search. Held-singer preservation and delivered benefit are
+unmeasured. See `2026-11-07_balanced_anchor_fit_probe`.
+
+The boundary intervention audit now covers split, merge and jitter
+on all 498 existing original/controlled records. All acoustic columns
+are fixed between views. Split changes 1,700 of 3,534 positive token
+contexts, merge changes 1,599, and jitter changes all 3,534. A changed
+boundary-free output is still structurally impossible in the control.
+See `2026-11-07_boundary_corruption_audit`.
+
+The one-variable probe bypassing the activity multiplier also failed
+to fit the same batch in 200 updates. With identical initial tensors,
+loss, samples and optimizer, positive MAE was 22.715 cents and maximum
+request was 0.04175 cents. Suppression by that multiplier is therefore
+insufficient to explain this failure. The diagnostic is in
+`2026-11-07_ungated_objective_fit_probe`.
+
+The original 36-query construction assigns one sixth of total anchor
+weight to nonzero targets and five sixths to zero. On the first fold's
+fixed training batch, the saved augmentation-only model and a fresh
+200-update diagnostic produce effectively zero correction. The latter
+reproduced exactly in an independent process.
+
+Full BPDR's 200 shared warm-up updates match the control exactly.
+After 200 additional response updates, positive MAE is 22.727 cents,
+signed response is 0.00000159, and activity probability ranges from
+0.00376 to 0.00990. The counter-detuning loss remains approximately
+0.25 in 30-cent-normalized units. This single training batch fails
+the fitting prerequisite and motivates inspecting the gated head and
+supervision balance before spending more on the stopped comparison.
+It does not measure unseen-singer performance or establish impossibility
+of the original research hypothesis.
+
+Artifacts are in `2026-11-07_short_objective_fit_diagnosis` and
+`2026-11-07_bpdr_response_fit_diagnosis` under the usability results.

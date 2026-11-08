@@ -2,6 +2,14 @@
 
 **Version:** 1.29 — 4 November 2026
 
+**8 November status authority:** use [CONTINUATION_STATE.md](CONTINUATION_STATE.md)
+for live handles, verified findings and next actions. The corrected twelve-fit
+comparison is running; the full actual-consumer cleanup evaluation and its
+378-call independent replay are complete, without qualifying always-on
+neural cleanup. Selected-WAV pYIN handoff also has separate synthetic
+engineering evidence. Historical execution snapshots
+below retain their original job descriptions; they are not current process state.
+
 **7 November continuation review:** the owner targets January 2027 and requires
 free humming; guide mode may be optional. Read the
 [continuation method and January plan](Continuation_Method_and_January_Plan_2026-11-07.md)
@@ -14,7 +22,7 @@ claimed. The verified V71 result is 22/445 benefits, 89/445 harms and 8/53 chang
 originals; the spectral comparison fails; the objective comparison has six of
 twelve fit receipts. See the current continuation record for audit details.
 
-## Current verified position
+## Historical verified-position snapshot (4 November)
 
 V70 raw/query replay completes:coverage guarantees all original queries, but
 correction error21.529c versus20.995c and original means nearly unchanged;raw gates

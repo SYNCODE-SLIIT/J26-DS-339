@@ -1,5 +1,141 @@
 # BPDR implementation and research tracker
 
+**8 November balanced comparison, provisional first pass.** All twelve
+fits exist. Saved aggregation reports BPDR raw positive singer-macro MAE
+21.387088 cents versus augmentation-only 23.246071 and frame-only
+24.905712 cents; 11/17 scoreable groups
+fail a required BPDR raw criterion. `advance_to_delivery=false`. Independent
+checkpoint/prediction replay remains live in session 36082, with no final
+receipt yet. Jitter boundary sensitivity is worse than augmentation-only
+(0.257566 versus 0.108847 cents). No delivery qualification or activation follows. The new
+stratified reporter is syntax checked and awaits that receipt before
+execution; identity controls are also predeclared and await parent replay.
+
+**8 November request/permission/output readout.** The selected version now
+shows measured decoded sample changes separately from model requests and
+permitted preview requests. Original selection is zero-change even with a
+valid preview. Cleanup is labelled separately; withheld files gain no
+permission from existence. Export checks the summary's selected role/hash.
+Eight focused tests and all 43 affected regressions pass. Six UI state/role
+pairs independently replay with exact summaries/export hashes (25090 exit 0).
+See [the result record](Request_Delivery_Check_2026-11-08.md).
+
+**8 November time-specific feedback.** The review UI now shows measured
+quiet ranges, near-full-scale peaks and uncertain pitch-measurement spans.
+Pauses and expression remain neutral; acceptance/repair gates are unchanged.
+Eight focused tests pass, and a four-state UI check independently replays
+(35926 exit 0), including malformed-source handling. Feedback metadata
+survives export while original/prepared WAV hashes remain unchanged.
+See the [result record](Recording_Feedback_Check_2026-11-08.md).
+The full updated regression suite passes: 35 tests, session 5430 exit 0.
+
+**8 November real-hum workflow.** Upload, simulated recording-widget bytes,
+controlled-rain preview/protection/undo/export and silence refusal pass
+through the actual review UI. Fresh-process replay matches all consequential
+results (session 21082, exit 0): eight route executions and six actual pYIN
+calls on one already opened training hum and its derivative. The fixed
+spectral example delivers +2.45525 dB paired SNR with preservation checks
+passed. All selected/consumer hashes match; exported confirmations are
+automated fixtures, never human approvals. See the [result record](Real_Hum_Workflow_Check_2026-11-08.md).
+No live microphone, novice/human review or general cleanup qualification.
+
+**8 November local-edit review.** The opt-in review UI now supports
+selection of existing permitted local edits, rejection of all edits,
+undo and fresh final-combination PCM24/acoustic auditing. Failed audits
+retain the previous usable version. Twenty-seven backend/UI tests pass.
+The fixed two-edit synthetic control passes eight real decoded-WAV audits
+across create/fresh-process verify; all hashes and acoustic results match.
+Its combined export retains selection metadata and reaches frozen pYIN in
+two matching-hash calls. See the [handoff result](Accepted_Pyin_Handoff_Engineering_2026-11-08.md#local-edit-selection-and-final-combination-verification).
+This is engineering evidence, with no participants or trained-model
+accuracy claim. Real-hum qualification and shared PP1 orchestration remain open.
+
+**8 November full cleanup extension.** Session 98279 completed all
+189 opened development cases (378 owning-consumer calls). Independent
+saved-metric aggregation reproduces all twelve summaries (error <1e-12).
+At 0 dB onset/pitch F1 gains are +0.00333/+0.01293 for A1/A2, with both
+95% singer intervals crossing zero and 35/84, 36/84 harmful cases.
+Clean harms are 4/21, 3/21. The fresh-process 378-call replay completed
+in session 88786 (exit 0), matching every metric/preprocessing record
+exactly and independent aggregates within 6.94e-18. It retains all raw
+consumer outputs. Inputs match the
+earlier audit/export receipt. No reserved data or shared code changed.
+Always-on neural cleanup remains inactive; see the full cleanup result.
+
+**8 November selected-WAV handoff engineering.** New opt-in
+`repair/primary_handoff.py` calls the frozen owning pYIN consumer in a
+bounded child process from an explicitly reviewed package. Synthetic
+original/prepared exports have different hashes; four real consumer
+calls (two repeated per selection) consume exact selected bytes and
+match results excluding runtime. Receipt:
+`results/demo_sessions/2026-11-08_primary_selected_handoff/integrity_receipt.json`.
+No human review or improved-audio quality is claimed. Twenty
+review/handoff/protection tests pass, including actual UI selection,
+protection veto and undo. The new opt-in `Run-Review-Demo.ps1` uses a
+separate review UI; historical locked Python sources are restored exactly.
+Current-source original/prepared/protected-original exports and six real
+consumer calls replay under `2026-11-08_primary_selected_handoff_v3`.
+This is local demo integration, not completed shared PP1
+orchestration or qualified pitch repair. No owning extractor was edited.
+
+**8 November consumer check.** Three fixed development cases and both
+note annotators were evaluated through the actual frozen pYIN consumer.
+Six calls replayed. RPA improves while onset/pitch note F1 declines
+on all three cases for both annotators. Cleanup remains unqualified.
+See the [consumer result](Usable_Input_Plan_Status_2026-11-05.md#8-november-actual-consumer-compatibility-check).
+
+**8 November corrected comparison.** All three matched arms passed
+split/merge/jitter training smoke checks and held inference. Twelve
+new fits and checkpoint replay were started in session 35400 under
+`2026-11-07_balanced_short_objectives`. The balanced anchor is common
+to all arms. The full BPDR response losses are unchanged. No historical
+failed result or qualification criterion is replaced.
+
+That session stopped after five intact fits on a two-ULP frame-only
+duplicate prediction difference (2.33e-10 cents, one endpoint frame).
+The no-fit diagnosis reproduces identical tokens and exact repeated
+outputs. Session 36082 now uses the separately declared numerical resume
+wrapper: four-ULP duplicate-output assertion, exact token and checkpoint
+prediction replay, unchanged raw predictions, fits and scientific gates.
+All twelve fit receipts are now hash-verified (four per arm). Final held
+aggregation and complete independent replay remain;
+no candidate is qualified.
+
+The eight-case identity-resynthesis extension is implemented and predeclared
+for correct held checkpoints after the parent replay completes. It compares
+all arms/perturbations with no fits and no cohort selection. Source roles,
+unsupported cases and numerical input equality remain explicit.
+
+**Training prerequisite improvement.** The equal-class anchor diagnostic
+reaches 3.062 cents MAE and 0.8406 signed response on the fixed training
+batch, compared with 22.727 cents under the original weighting.
+Zero-target mean request is 1.184 cents. Exact replay matched.
+No new generalization or delivered-output qualification is claimed.
+Split, merge and jitter now have audited input support on all 498
+records, with actual acoustic-token equality and meaningful changed
+boundary contexts. The corrected comparison now has its own frozen
+declaration and implementation and is running as recorded above.
+
+**Complete PCM24 rescore.** All 189 candidates and 567 estimates finished,
+with independently reproduced aggregates. One estimator score changed
+versus FLOAT. The old neural gate still fails PESTO preservation,
+including an accepted clean-control harm. Export safety is verified
+for these files. Cleanup qualification remains incomplete.
+
+**E02 diagnostic, 7 November.** A fixed training batch assigns one sixth
+of anchor mass to nonzero targets. Its 200-update fit remains near zero,
+matching the stopped augmentation-only arm's failure on that batch.
+Independent replay matched exactly. Further full comparison fits await this
+diagnostic. The full PCM24 cleanup export rescore is also active.
+The original full BPDR terms are now being tested on the same fixed
+batch after the declared warm-up.
+
+The 400-update full-objective diagnostic completed. Warm-up matches the
+control, but positive response stays near zero after enabling the terms.
+The six historical comparison fits remain retained and stopped.
+The 21-clean-control waveform alignment check shows 103/105 zero-lag
+peaks, with two nonzero local peaks requiring further inspection.
+
 **7 November delivery update.** All 189 neural candidates have new verified
 PCM24 exports. The seven former over-full-scale candidates reproduced their
 21 FLOAT scores before rescoring. One delivered PESTO score fell by 0.222
