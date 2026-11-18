@@ -1,0 +1,39 @@
+{
+  "declared": "2026-11-16, before any fit of FastTNet v2",
+  "purpose": "Follow-up to declaration_e2e.json (FastTNet v1) addressing three identified limitations: (1) hardcoded +0.9 eval logit bias and pos_weight=10.0 causing 18/18 fits to saturate at THRS=0.8 ceiling; (2) trailing TCN on dev_M02 (0.754 vs 0.780) due to stride-4 transposed-conv upsampling, overlapping window delta indexing, and unscheduled constant-LR training; (3) single-seed (339) Transformer coverage in v1.",
+  "data_hygiene": "Train ONLY on HumTrans training persons (F01-F05, M01; 525 clips). Internal stratified split: every 10th clip per training person (52 clips) held out strictly for checkpoint selection and threshold calibration; remaining 473 clips used for gradient updates. Test ONLY on Vocadito training-role windows (33 usable windows with >=3 A1 onsets across 14 singers; 39 total Vocadito records in manifest) and HumTrans development person M02 (64 clips). M03-M05, VALID, TEST untouched.",
+  "configurations": {
+    "architectures": {
+      "transformer_v2": "FastTNetV2: 7-channel exact non-overlapping multi-scale pitch/confidence deltas + GroupNorm(4,40) + 6 residual dilated fine convs (1,2,4,8,1,2) + stride-2 downsampling + depthwise conv positional encoding (k=7) + 2 pre-norm Transformer blocks (d=40, 4 heads, dropout=0.1) + linear-interpolation upsample & conv refinement head (~92.8k params < 200k)."
+    },
+    "feature_sets": {
+      "full": "pitch, reliable flag, confidence, z-scored log-energy, onset score (+ boundary track for augmentation_only and bpdr); nin=5 or 6",
+      "lean": "pitch, reliable flag, confidence only (+ boundary track for augmentation_only and bpdr); nin=3 or 4"
+    },
+    "arms": [
+      "frame_only",
+      "augmentation_only",
+      "bpdr"
+    ],
+    "seeds": [
+      339,
+      340
+    ]
+  },
+  "training_and_calibration": {
+    "steps": 350,
+    "batch_size": 24,
+    "optimizer": "AdamW(lr=3e-3, weight_decay=1e-2)",
+    "lr_schedule": "30-step linear warmup from 0.1*lr to lr, followed by cosine annealing to 1e-4",
+    "grad_clip_norm": 1.0,
+    "loss": "BCEWithLogitsLoss(pos_weight=5.0) on soft targets (1.0 center, 0.5 neighbors) over valid frames across (X, XB, Xd), plus BPDR probability L1 consistency terms (weight 10.0) for the bpdr arm",
+    "eval_logit_offset": 0.0,
+    "threshold_grid": [0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90],
+    "checkpoint_selection": "Evaluate at steps [200, 250, 300, 350] on the 52-clip internal HumTrans validation split; select checkpoint and threshold maximizing internal validation Onset F1 (50 ms).",
+    "fit_health": "Healthy if training-subset Onset F1 at 50 ms >= 0.9x extractor baseline on a stratified 120-clip training subset."
+  },
+  "comparison_bars": {
+    "vs_v1": "Compare transformer_v2 (2 seeds: 339, 340) against transformer v1, TCN, and Extractor on Vocadito (singer-macro 14 singers, 95% bootstrap CI) and dev_M02 (64 clips), plus verify threshold calibration does not saturate at ceiling.",
+    "checkpoint_export": "Export best full frame_only checkpoint (nin=5, standalone without heuristic boundary track) to results/studio/r1/boundary_transformer_v2.pt with metadata JSON results/studio/r1/boundary_transformer_v2_meta.json, plus best full bpdr checkpoint (nin=6) to results/studio/r1/boundary_transformer_v2_bpdr.pt."
+  }
+}

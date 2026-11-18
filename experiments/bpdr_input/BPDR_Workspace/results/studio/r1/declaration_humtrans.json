@@ -1,0 +1,11 @@
+{
+  "declared": "2026-11-13, before any HumTrans fit; the Vocadito run stays reported",
+  "data": "589 kept HumTrans clips (DTW-aligned, mean abs error <=60 c after tuning offset, >=50% frames matched): training persons F01-F05, M01 (kept 115,120,69,85,35,101); development person M02 (64 kept). M03, M04, M05, VALID, TEST untouched. Reference per sung frame = matched MIDI pitch plus whole-semitone transposition, so the target is intended pitch on the equal-tempered grid; per-clip tuning offset removed from model output and baselines alike.",
+  "caveat": "reference comes from DTW against the sung pitch, so a few frames may be matched to a neighbouring note; the 60 c / 50% filter bounds this but does not remove it",
+  "folds": "leave-person-out over the 6 training persons (6 folds) with seeds 339 and 340; then one fit per arm and seed trained on all 6 persons and scored on M02",
+  "model": "same TCN as the Vocadito run; 300 steps, 24 random training clips per step, Adam 3e-3, L1; identical in all arms",
+  "arms": "frame_only / augmentation_only / bpdr exactly as in declaration.json",
+  "baselines_scored_on_the_same_test_clips": ["frame pitch", "plain median with extractor boundaries", "rolling median 0.2 s", "oracle: median over true note runs (not available at inference)"],
+  "fit_health": "fit healthy if sampled training MAE < 0.9x frame-pitch training MAE; at least 90% of fits must be healthy",
+  "win_condition": "unchanged: bpdr beats the rolling-median baseline with a person-level 95% bootstrap interval of the difference excluding 0, is within 1 c of the best other arm or better, and its jitter change is <=70% of augmentation_only's. M02 reported separately as the development check. Report all arms either way."
+}

@@ -1,0 +1,40 @@
+{
+  "declared": "2026-11-13, before any fit of this experiment",
+  "purpose": "Three follow-ups to the boundary model (declaration_boundary.json): (1) end-to-end note F1 with the boundary hint fed through note formation; (2) a real Transformer encoder instead of the temporal convolution network (TCN); (3) does BPDR's loss help where the model must use the extractor's boundary track.",
+  "ownership": "Note formation here is a local demonstration segmenter, not the shared extractor (src/melody_understanding is not edited or called). Same segmenter for every boundary source, so the comparison is fair. The extractor owner decides how to use a boundary hint.",
+  "data": "Training: the 6 HumTrans training persons (525 clips), all arms and seeds, one fit on all of them. Test: the 39 independent Vocadito training-role windows (14 singers) for notes and boundaries; development person M02 (64 clips) for boundary F1 only (labels alignment-derived). M03-M05, VALID, TEST untouched.",
+  "note_formation": "For each boundary source, cut the clip at the boundary times; in each segment keep reliable frames; a note needs at least 4 reliable frames (80 ms); onset = time of the first reliable frame in the segment; pitch = round(69 + median(fine cents)/100). Reference = Vocadito A1 and A2 annotations (crop offset applied); note F1 = onset within 50 ms AND pitch within 50 cents, one-to-one nearest matching, mean of A1 and A2, singer-macro over 14 singers.",
+  "boundary_sources": [
+    "extractor: column-70 peaks as is",
+    "model: peak-picked output of each arm (threshold chosen on 80 training clips)",
+    "each also after false split, merge and jitter of the input track (seed 339)"
+  ],
+  "configurations": {
+    "architectures": {
+      "tcn": "8 dilated residual conv layers, width 32, 300 steps, Adam 3e-3 (as in declaration_boundary.json)",
+      "transformer": "FastTNet: stride-4 dilated residual highway + multi-scale pitch step deltas + depthwise conv positional encoding + fast pre-norm attention (2 layers, 4 heads, width 32), 250 steps, AdamW 3e-3, same batch size and losses"
+    },
+    "feature_sets": {
+      "full": "pitch, reliable flag, confidence, energy, onset score (+ boundary track for augmentation_only and bpdr)",
+      "lean": "pitch, reliable flag, confidence only (+ boundary track for augmentation_only and bpdr): the model cannot get onset cues from energy or onset score, so it must use the boundary track"
+    },
+    "arms": "frame_only, augmentation_only, bpdr, losses exactly as in declaration_boundary.json (batch 24, 50% of clips with a corrupted track, L_B and L_D terms for bpdr)",
+    "seeds": {
+      "tcn": [
+        339,
+        340
+      ],
+      "transformer": [
+        339
+      ]
+    }
+  },
+  "fit_health": "a fit is healthy if its onset F1 at 50 ms on 80 training clips is at least 0.9x the extractor baseline on the same clips; report the healthy share",
+  "bar": {
+    "part_1_end_to_end": "WIN if, with the TCN full-feature bpdr arm, note F1 using the model's boundaries beats note F1 using the extractor's boundaries, difference with singer-level 95% bootstrap interval excluding 0. Also report onset-only F1 and the same under split, merge and jitter. Report all arms either way.",
+    "part_2_transformer": "Report the Transformer next to the TCN for every arm and feature set. Adopt the Transformer only if its Vocadito onset F1 at 50 ms exceeds the TCN's for the same arm with a singer-level 95% interval of the difference excluding 0; otherwise say it did not help. Underfitting in 400 steps (one seed) is a stated limitation, not a reason to change the schedule after seeing results.",
+    "part_3_bpdr_loss": "WIN for BPDR's loss if, with LEAN features and either architecture, bpdr beats BOTH frame_only and augmentation_only on Vocadito onset F1 at 50 ms averaged over the three corruptions (split, merge, jitter), each difference with singer-level 95% interval excluding 0. Otherwise report that BPDR's loss terms do not help even when the track is needed."
+  },
+  "claims_not_made": "no repair claim; development-scale evidence; not the shared extractor; HumTrans labels are alignment-derived; supervisor decides claim wording",
+  "amended": "2026-11-13, before any fit of this experiment: a plain 4-layer Transformer over 501 frames cost 5.5 s per training step (about 55 min per fit, 11 h in total), so the Transformer arm uses a conv front end at half frame rate. No result had been seen. 2026-11-15: FastTNet architecture amendment (stride-4 dilated residual highway + multi-scale pitch step deltas + depthwise conv positional encoding + fast pre-norm attention, 250 steps, lr=3e-3) replacing initial TNet to preserve translation equivariance, detect legato transitions, and improve training speed and convergence."
+}

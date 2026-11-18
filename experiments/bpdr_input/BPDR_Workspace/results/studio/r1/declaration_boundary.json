@@ -1,0 +1,20 @@
+{
+  "declared": "2026-11-13, before any boundary fit. Pivot after the note-centre task showed no headroom (plan sections 10-11).",
+  "scope_and_ownership": "The model outputs a per-frame note-boundary probability only, delivered through the sidecar. Notes, key, tempo and chords stay with their owners; the extractor owner may use or ignore the boundary track. No note list is produced.",
+  "task": "Predict note-onset (boundary) frames from frame features: reliable pitch relative to clip median, reliable flag, confidence, energy, onset score (col 69), and, for two arms, the extractor's boundary track (col 70) which may be corrupted.",
+  "labels": "HumTrans: first matched frame of each DTW-aligned MIDI note (kept clips only, valid region = first onset -0.1 s to last onset +0.5 s, label timing is DTW-derived so 50 ms is a hard bar). Vocadito: A1 annotation onsets (accurate), used ONLY as an external evaluation, never for training.",
+  "data": "HumTrans kept clips: training persons F01-F05, M01 (525 clips with at least 3 onsets); development person M02 (64 clips); Vocadito training-role windows (39). M03, M04, M05, VALID, TEST untouched.",
+  "folds": "leave-person-out over the 6 HumTrans training persons (6 folds) x seeds 339, 340; then per arm and seed one fit on all 6 persons scored on M02 and on Vocadito.",
+  "model": "same TCN as earlier runs (8 dilated residual layers, width 32), 300 steps, 24 random clips per step, Adam 3e-3. Loss: BCE with pos_weight 10 on soft onset targets (1.0 at the onset frame, 0.5 on neighbours) over valid frames. Peak picking: scipy find_peaks, min gap 5 frames, height = the threshold in {0.3,0.4,0.5,0.6,0.7,0.8} that maximises onset F1 at 50 ms on 80 training clips of that fit.",
+  "arms": {
+    "frame_only": "no boundary-track input",
+    "augmentation_only": "boundary track as input; during training it is randomly false-split, false-merged or jittered (corrupt_boundaries), 50% of clips; supervised loss only",
+    "bpdr": "augmentation_only plus L_B (L1 between output probabilities under the original and a corrupted boundary track on valid frames) and L_D (L1 between outputs with and without a +-20/30 c local detune on a 0.28 s span, i.e. boundary decisions must not change under small local detuning)"
+  },
+  "baselines": ["extractor boundary track (col-70 peaks) used as is", "the same track after false split / merge / jitter (seed 339)", "frame_only arm"],
+  "metrics": "onset F1 at 50 ms (and 100 ms reported), one-to-one nearest matching, person-macro; computed with the clean track and with each corruption (split, merge, jitter, seed 339) at test time. Stability = clean F1 minus corrupted F1.",
+  "fit_health": "a fit is healthy if its training-clip onset F1 at 50 ms is at least 0.9x the extractor baseline on the same training clips; at least 90% of fits must be healthy for a comparison to be interpretable",
+  "label_leakage_note": "HumTrans onsets come from aligning the MIDI to the sung pitch, so a pitch jump and an onset label are coupled; HumTrans scores are expected to be inflated (a smoke test with 8 training steps already reached F1 0.86 on training clips against 0.67 for the extractor). The independent Vocadito annotations are therefore the DECISIVE test, added to the bar below before any full fit.",
+  "win_condition": "ALL of: (1) on Vocadito (independent labels, all arms trained on HumTrans persons only), bpdr clean onset F1 at 50 ms beats the extractor baseline (0.595 measured) with a singer-level 95% bootstrap interval of the difference excluding 0; (2) on Vocadito, bpdr F1 under each of split, merge, jitter is at least the extractor's F1 under the same corruption; (3) bpdr clean F1 on Vocadito is within 0.01 of the best other arm or better; (4) bpdr's mean drop under corruption on Vocadito is at most 70% of augmentation_only's; (5) HumTrans leave-person-out and M02 are reported but cannot by themselves establish a win, and must not reverse the sign of (1). Report all arms either way.",
+  "claims_not_made": "no repair claim; development-scale evidence; confirmation sets stay closed; HumTrans label timing is alignment-derived"
+}

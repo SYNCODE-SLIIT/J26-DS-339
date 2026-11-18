@@ -15,3 +15,7 @@
 **/.ipynb_checkpoints/
 __pycache__/
 *.py[cod]
+
+# Local scratch/compiler caches and editable package metadata.
+/tmp/
+source/*.egg-info/

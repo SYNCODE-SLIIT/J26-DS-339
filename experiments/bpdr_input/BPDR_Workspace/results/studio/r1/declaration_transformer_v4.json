@@ -1,0 +1,31 @@
+{
+  "declared": "2026-11-16, before any fit of FastTNet v4 / v1_rep",
+  "purpose": "Item 1a: Test whether v1's 0.601 Vocadito Note F1 holds across seeds (adding seed 340 v1_rep) and whether POS_WEIGHT=10.0 with calibrated eval_logit_offset=0.0 and expanded THRS=0.20..0.95 recovers v1's singing generalization without threshold ceiling saturation.",
+  "data_hygiene": "Train ONLY on all 525 HumTrans training clips (F01-F05, M01). Select threshold on tr[:80] matching v1's protocol. Test ONLY on Vocadito training-role windows (33 usable windows with >=3 A1 onsets across 14 singers; 39 manifest windows) and HumTrans development person M02 (64 clips). M03-M05, VALID, TEST untouched.",
+  "configurations": {
+    "v1_rep": {
+      "arch": "transformer_v1_rep",
+      "model": "Exact FastTNet (d=32, nhead=4, nlayers=2, stride=4, 4 fine_convs dilations (1,2,4,8)) with eval_logit_offset=0.9",
+      "feature_set": "full",
+      "arms": ["frame_only", "bpdr"],
+      "seeds": [340],
+      "steps": 250,
+      "optimizer": "torch.optim.AdamW(net.parameters(), lr=3e-3) matching fit_r1_e2e.py (constant LR, no grad clipping)",
+      "loss": "BCEWithLogitsLoss(pos_weight=10.0) + BPDR L1 consistency (10.0) for bpdr arm",
+      "threshold_grid": [0.30, 0.40, 0.50, 0.60, 0.70, 0.80]
+    },
+    "v4": {
+      "arch": "transformer_v4",
+      "model": "Exact FastTNet (d=32, nhead=4, nlayers=2, stride=4, 4 fine_convs dilations (1,2,4,8)) with eval_logit_offset=0.0",
+      "feature_set": "full",
+      "arms": ["frame_only", "bpdr"],
+      "seeds": [339, 340],
+      "steps": 250,
+      "optimizer": "torch.optim.AdamW(net.parameters(), lr=3e-3) matching fit_r1_e2e.py (constant LR, no grad clipping)",
+      "loss": "BCEWithLogitsLoss(pos_weight=10.0) + BPDR L1 consistency (10.0) for bpdr arm",
+      "threshold_grid": [0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95]
+    }
+  },
+  "fit_health": "Healthy if tr[:80] Onset F1 at 50 ms >= 0.9x extractor baseline on tr[:80].",
+  "checkpoint_export": "Save best v4 full frame_only checkpoint (by trF1) to results/studio/r1/boundary_transformer_v4.pt, best v4 full bpdr checkpoint (by trF1) to results/studio/r1/boundary_transformer_v4_bpdr.pt, and metadata JSON to results/studio/r1/boundary_transformer_v4_meta.json."
+}
