@@ -104,6 +104,80 @@ class FastTNet(nn.Module):
         return out if self.training else out + self.eval_logit_bias
 
 
+V5_CHECKPOINT = (
+    Path(__file__).resolve().parents[3] / "results" / "studio" / "r1" / "boundary_transformer_v5.pt"
+)
+V5_DELTA_CHANNELS = 16
+
+
+def _wsum(v, w, side):
+    """Windowed sum of (B, T) over the w frames left of / right of / around each frame (zero padded)."""
+    k = torch.zeros(1, 1, 2 * w + 1, dtype=v.dtype, device=v.device)
+    if side == "left":
+        k[..., :w] = 1.0
+    elif side == "right":
+        k[..., w + 1:] = 1.0
+    else:
+        k[...] = 1.0
+    return tnf.conv1d(v[:, None], k, padding=w)[:, 0]
+
+
+class FastTNetV5(FastTNet):
+    """FastTNet v1 backbone plus singing-aware input deltas (signed multi-scale pitch steps, vibrato index,
+    energy dip/step, flux prominence). Input stays the 5 canonical channels; the extra 16 are derived inside."""
+
+    def __init__(self, nin=5, d=32, nhead=4, nlayers=2, eval_logit_bias=0.0):
+        super().__init__(nin=nin, d=d, nhead=nhead, nlayers=nlayers, eval_logit_bias=eval_logit_bias)
+        self.in_proj = nn.Conv1d(nin + V5_DELTA_CHANNELS, d, 3, padding=1)
+
+    def _deltas(self, x):
+        p, ok, conf, en, fl = x[:, :, 0], x[:, :, 1], x[:, :, 2], x[:, :, 3], x[:, :, 4]
+        dp1 = torch.zeros_like(p)
+        dp1[:, 1:] = (p[:, 1:] - p[:, :-1]).abs() * ok[:, 1:] * ok[:, :-1]
+        dok = torch.zeros_like(ok)
+        dok[:, 1:] = (ok[:, 1:] - ok[:, :-1]).abs()
+        dc1 = torch.zeros_like(conf)
+        dc1[:, 1:] = (conf[:, 1:] - conf[:, :-1]).abs()
+        steps = [dp1.clamp(0, 2.0), dok, dc1.clamp(0, 1.0)]
+        po = p * ok
+        for w in (3, 6, 10):
+            cl, cr = _wsum(ok, w, "left"), _wsum(ok, w, "right")
+            lp = _wsum(po, w, "left") / cl.clamp_min(1.0)
+            rp = _wsum(po, w, "right") / cr.clamp_min(1.0)
+            valid = ((cl >= 1.0) & (cr >= 1.0)).float()
+            sg = ((rp - lp) * valid).clamp(-2.0, 2.0)
+            steps += [sg, sg.abs()]
+        c = _wsum(ok, 5, "both")
+        m = _wsum(po, 5, "both") / c.clamp_min(1.0)
+        m2 = _wsum(po * po, 5, "both") / c.clamp_min(1.0)
+        std = ((m2 - m * m).clamp_min(0.0).sqrt() * (c >= 3.0).float()).clamp(0, 1.0)
+        steps += [std, (steps[6] - std).clamp(-1.0, 1.0)]
+        edip = (en - tnf.max_pool1d(en[:, None], 9, 1, 4)[:, 0]).clamp(-3.0, 0.0)
+        ed1 = torch.zeros_like(en)
+        ed1[:, 1:] = (en[:, 1:] - en[:, :-1]).abs()
+        erl = ((_wsum(en, 3, "right") - _wsum(en, 3, "left")) / 3.0).clamp(-3.0, 3.0)
+        steps += [edip, ed1.clamp(0, 3.0), erl]
+        fprom = (fl - tnf.avg_pool1d(fl[:, None], 9, 1, 4, count_include_pad=False)[:, 0]).clamp(-1.0, 1.0)
+        fpk = (fl - tnf.max_pool1d(fl[:, None], 5, 1, 2)[:, 0]).clamp(-1.0, 0.0)
+        steps += [fprom, fpk]
+        return torch.stack(steps, dim=-1)
+
+
+def refine_peak_times(probs, peak_idx, hop_s, subframe=False, shift_s=0.0):
+    """Peak times in seconds. Optional 3-point parabolic sub-frame vertex and a constant shift (seconds)."""
+    probs = np.asarray(probs, dtype=float)
+    out = []
+    for i in np.asarray(peak_idx, dtype=int):
+        off = 0.0
+        if subframe and 0 < i < len(probs) - 1:
+            y0, y1, y2 = probs[i - 1], probs[i], probs[i + 1]
+            den = y0 - 2.0 * y1 + y2
+            if den < -1e-9:
+                off = float(np.clip(0.5 * (y0 - y2) / den, -0.5, 0.5))
+        out.append((float(i) + off) * hop_s + float(shift_s))
+    return out
+
+
 class FastTransformerBlockV2(nn.Module):
     """Pre-norm multi-head self-attention block with dropout and GELU FFN."""
 
@@ -283,20 +357,30 @@ def load_boundary_model(checkpoint_path=None, map_location="cpu"):
         )
     else:
         inferred_nin = in_weight.shape[1] - 5 if in_weight is not None else 5
+        is_v5 = model_cls == "fasttnetv5" or (
+            in_weight is not None and in_weight.shape[1] - V5_DELTA_CHANNELS in (5, 6)
+        )
+        if is_v5:
+            inferred_nin = in_weight.shape[1] - V5_DELTA_CHANNELS
         nin_key = "bpdr_nin" if (is_bpdr and "bpdr_nin" in meta) else "nin"
         nin = int(meta.get(nin_key, inferred_nin))
-        if in_weight is not None and in_weight.shape[1] - 5 != nin:
-            nin = in_weight.shape[1] - 5
+        delta_ch = V5_DELTA_CHANNELS if is_v5 else 5
+        if in_weight is not None and in_weight.shape[1] - delta_ch != nin:
+            nin = in_weight.shape[1] - delta_ch
         d = int(meta.get("d", in_weight.shape[0] if in_weight is not None else 32))
-        eval_logit_bias = float(meta.get("eval_logit_offset", meta.get("eval_logit_bias", DEFAULT_EVAL_LOGIT_BIAS)))
+        default_bias = 0.0 if is_v5 else DEFAULT_EVAL_LOGIT_BIAS
+        eval_logit_bias = float(meta.get("eval_logit_offset", meta.get("eval_logit_bias", default_bias)))
         thr_key = "bpdr_calibrated_threshold" if (is_bpdr and "bpdr_calibrated_threshold" in meta) else "calibrated_threshold"
         threshold = float(meta.get(thr_key, meta.get("threshold", DEFAULT_THRESHOLD)))
         model_name = str(meta.get("model", meta.get("arch", "boundary_transformer")))
-        model = FastTNet(nin=nin, d=d, nhead=nhead, nlayers=nlayers, eval_logit_bias=eval_logit_bias)
+        model_ctor = FastTNetV5 if is_v5 else FastTNet
+        model = model_ctor(nin=nin, d=d, nhead=nhead, nlayers=nlayers, eval_logit_bias=eval_logit_bias)
 
     model.load_state_dict(state)
     model.eval()
     model.default_threshold = threshold
+    model.subframe_peaks = bool(meta.get("subframe_peaks", False))
+    model.onset_shift_s = float(meta.get("onset_shift_s", 0.0))
     model.checkpoint_path = str(path)
     model.model_name = model_name
     model.metadata = meta
@@ -506,14 +590,22 @@ def extract_boundary_hints(
         model, trk, x=x, sr=sr, boundary_edges=boundary_edges, return_times=True
     )
     peak_idx, _ = find_peaks(probs, height=resolved_threshold, distance=peak_distance)
-    peaks_s = t_grid[peak_idx].tolist() if len(peak_idx) > 0 else []
     hop_s = canonical_hop_samples(sr) / float(sr)
+    subframe = bool(getattr(model, "subframe_peaks", False))
+    shift_s = float(getattr(model, "onset_shift_s", 0.0))
+    if subframe or shift_s != 0.0:
+        peaks_s = refine_peak_times(probs, peak_idx, hop_s, subframe=subframe, shift_s=shift_s)
+        peaks_s = [t0 for t0 in peaks_s if t0 >= 0.0]
+    else:
+        peaks_s = t_grid[peak_idx].tolist() if len(peak_idx) > 0 else []
     return {
         "times_s": np.round(t_grid, 4).tolist(),
         "probabilities": np.round(probs, 4).tolist(),
         "peaks_s": [round(float(p), 4) for p in peaks_s],
         "peak_indices": peak_idx.tolist(),
         "threshold": resolved_threshold,
+        "subframe_peaks": subframe,
+        "onset_shift_s": shift_s,
         "frame_hop_s": round(float(hop_s), 6),
         "boundary_edges_source": boundary_edges_source,
         "model": str(getattr(model, "model_name", "boundary_transformer")),
@@ -530,3 +622,140 @@ def write_boundary_hints_to_sidecar(sidecar_path, hints):
     data["boundary_hints"] = hints
     p.write_text(json.dumps(data, indent=2), encoding="utf-8")
     return p
+
+
+NOTE_NAMES = ("C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B")
+
+
+def midi_to_note_name(midi_num: int) -> str:
+    """Convert integer MIDI note number to scientific pitch notation (e.g. 69 -> A4)."""
+    m = int(round(midi_num))
+    return f"{NOTE_NAMES[m % 12]}{(m // 12) - 1}"
+
+
+def notes_from_track_with_boundary_hints(
+    trk,
+    boundary_hints,
+    end_s: float,
+    sr: int = 22050,
+    min_frames: int = 4,
+    split_unvoiced_gap_s: float = 0.10,
+):
+    """Form advisory segmented notes from a pitch track using FastTNet boundary peak hints.
+
+    Matches the canonical 20 ms benchmark segmentation rule while also computing exact
+    note duration (up to the last voiced frame in each segment) for hear-back synthesis.
+    """
+    aligned = align_track_to_20ms(trk, sr=sr)
+    t = np.asarray(aligned["t"], dtype=float)
+    f0 = np.asarray(aligned["f0"], dtype=float)
+    voiced = np.asarray(aligned["voiced"], dtype=bool)
+    conf = np.asarray(aligned["conf"], dtype=float)
+    rel = voiced & np.isfinite(f0) & (f0 > 0)
+    if len(t) == 0 or not rel.any():
+        return []
+
+    hop_s = float(aligned["hop_s"])
+    fine = np.zeros(len(t), dtype=float)
+    fine[rel] = 1200.0 * np.log2(np.maximum(f0[rel], 1e-6) / 440.0)
+
+    peaks_s = boundary_hints.get("peaks_s", []) if isinstance(boundary_hints, dict) else list(boundary_hints)
+    edges = np.sort(np.asarray(peaks_s, dtype=float))
+    seg = np.digitize(t, edges)
+
+    notes = []
+    for s in np.unique(seg):
+        idx = np.flatnonzero((seg == s) & rel)
+        if len(idx) < min_frames:
+            continue
+        # Optionally split interior unvoiced silence gaps (>= split_unvoiced_gap_s) for clean audio playback
+        if split_unvoiced_gap_s and split_unvoiced_gap_s > 0 and len(idx) > 1:
+            cuts = np.flatnonzero(np.diff(t[idx]) > float(split_unvoiced_gap_s)) + 1
+            sub_groups = np.split(idx, cuts)
+        else:
+            sub_groups = [idx]
+
+        for g in sub_groups:
+            if len(g) < min_frames:
+                continue
+            med_cents = float(np.median(fine[g]))
+            midi_float = 69.0 + med_cents / 100.0
+            midi_int = int(round(midi_float))
+            if not (0 <= midi_int <= 127):
+                continue
+            onset_s = float(t[g[0]])
+            stop_s = min(float(t[g[-1]]) + hop_s, float(end_s))
+            dur_s = max(hop_s * len(g), stop_s - onset_s)
+            dev_cents = float((midi_float - midi_int) * 100.0)
+            vib_std = float(np.std(fine[g] - med_cents)) if len(g) >= 3 else 0.0
+            notes.append({
+                "pitch_midi": midi_int,
+                "note_name": midi_to_note_name(midi_int),
+                "onset_s": round(onset_s, 4),
+                "duration_s": round(dur_s, 4),
+                "median_hz": round(float(440.0 * (2.0 ** (med_cents / 1200.0))), 2),
+                "deviation_cents": round(dev_cents, 2),
+                "vibrato_std_cents": round(vib_std, 2),
+                "mean_confidence": round(float(np.mean(conf[g])), 3),
+                "n_frames": int(len(g)),
+            })
+    return notes
+
+
+def analyze_boundary_spans(
+    trk,
+    boundary_hints,
+    end_s: float,
+    tuning_center_cents: float = None,
+    sr: int = 22050,
+    min_frames: int = 4,
+):
+    """Produce per-span boundary-disentangled pitch diagnostics and review-only repair candidates.
+
+    Uses FastTNet boundaries to isolate individual sung note spans and measures each span's
+    pitch center, tuning-calibrated deviation from nearest semitone, and vibrato stability.
+    """
+    notes = notes_from_track_with_boundary_hints(
+        trk, boundary_hints, end_s=end_s, sr=sr, min_frames=min_frames, split_unvoiced_gap_s=0.10
+    )
+    tun = float(tuning_center_cents) if (tuning_center_cents is not None and np.isfinite(tuning_center_cents)) else 0.0
+    spans = []
+    for k, n in enumerate(notes, 1):
+        raw_dev = float(n["deviation_cents"])
+        # Wrap tuning-adjusted deviation into [-50, +50] cents around the singer's tuning grid
+        adj_dev = float(((raw_dev - tun + 50.0) % 100.0) - 50.0)
+        vib = float(n["vibrato_std_cents"])
+        conf = float(n["mean_confidence"])
+        dur = float(n["duration_s"])
+        # A span is a review-gated repair candidate when it is sufficiently steady & voiced
+        # but sits 18..45 cents off the singer's own tuning grid.
+        is_candidate = (
+            dur >= 0.12
+            and conf >= 0.65
+            and vib <= 45.0
+            and 18.0 <= abs(adj_dev) <= 45.0
+        )
+        rec_shift = float(np.clip(-adj_dev, -35.0, 35.0)) if is_candidate else 0.0
+        spans.append({
+            "span_id": k,
+            "start_s": n["onset_s"],
+            "end_s": round(n["onset_s"] + dur, 4),
+            "duration_s": dur,
+            "pitch_midi": n["pitch_midi"],
+            "note_name": n["note_name"],
+            "median_hz": n["median_hz"],
+            "raw_deviation_cents": round(raw_dev, 2),
+            "tuning_adjusted_deviation_cents": round(adj_dev, 2),
+            "vibrato_std_cents": round(vib, 2),
+            "mean_confidence": conf,
+            "review_repair_candidate": bool(is_candidate),
+            "recommended_shift_cents": round(rec_shift, 2),
+            "status": "REVIEW_CANDIDATE" if is_candidate else "IN_TUNE_PRESERVED",
+        })
+    return {
+        "n_spans": len(spans),
+        "n_review_candidates": sum(1 for s in spans if s["review_repair_candidate"]),
+        "tuning_center_cents": round(tun, 2),
+        "spans": spans,
+    }
+

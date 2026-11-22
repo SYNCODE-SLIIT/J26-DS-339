@@ -179,7 +179,22 @@ def candidate_checkpoints():
     v4_bpdr = R1_DIR / 'boundary_transformer_v4_bpdr.pt'
     cands.append(('studio_v4', v4))
     cands.append(('studio_v4_bpdr', v4_bpdr))
+    v5 = getattr(boundary, 'V5_CHECKPOINT', R1_DIR / 'boundary_transformer_v5.pt')
+    cands.append(('studio_v5', Path(v5)))
     return [(name, p) for name, p in cands if p.exists()]
+
+
+NOISE_FILE = WS / 'datasets' / 'environmental_noise' / '1-100210-A-36.wav'
+NOISY_OUT = R1_DIR / 'studio_vocadito_benchmark_noisy.json'
+SNR_LEVELS = {'clean': None, '10db': 10, '0db': 0}
+
+
+def mix_noise(x, noise, snr_db):
+    """Add looped environmental noise at snr_db, then peak-normalise to 0.9 (same recipe as the Studio evidence probes)."""
+    n = np.resize(noise, len(x))
+    g = np.sqrt((x ** 2).mean() / ((n ** 2).mean() * 10 ** (snr_db / 10)))
+    y = (x + g * n).astype(np.float32)
+    return (y / (np.abs(y).max() / 0.9)).astype(np.float32)
 
 
 def score_predictions(est_pairs, refs):
@@ -230,11 +245,17 @@ def summarize_benchmark(rows, methods):
     return summary
 
 
-def run_benchmark(limit=None, include_pre_parity=False):
-    """Run the Studio Vocadito benchmark and return the JSON-serializable payload."""
+def run_benchmark(limit=None, include_pre_parity=False, snr_db=None):
+    """Run the Studio Vocadito benchmark and return the JSON-serializable payload.
+
+    snr_db: None for the original clean audio, or a number to mix environmental noise into every window first.
+    """
     windows = load_vocadito_windows()
     if limit is not None:
         windows = windows[:limit]
+    noise = None
+    if snr_db is not None:
+        noise, _ = librosa.load(NOISE_FILE, sr=E.SR)
 
     ckpts = candidate_checkpoints()
     loaded_models = {name: boundary.load_boundary_model(path) for name, path in ckpts}
@@ -250,6 +271,8 @@ def run_benchmark(limit=None, include_pre_parity=False):
         s0 = max(0, int(round(w['offset_s'] * E.SR)))
         s1 = min(len(x_full), s0 + int(round(w['duration_s'] * E.SR)))
         x = x_full[s0:s1]
+        if noise is not None:
+            x = mix_noise(x, noise, snr_db)
         dur = len(x) / E.SR
 
         xn = E.normalize(x)
@@ -328,18 +351,36 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description='Benchmark real Studio end-to-end Vocadito accuracy.')
     parser.add_argument('--limit', type=int, default=None, help='Optional cap on number of windows.')
     parser.add_argument('--include-pre-parity', action='store_true', help='Include unaligned 100 Hz thr=0.50 pre-parity ablation.')
-    parser.add_argument('--output', type=str, default=str(DEFAULT_OUT), help='Output JSON path.')
+    parser.add_argument('--output', type=str, default=None, help='Output JSON path (default: protected clean file, or the noisy file when --snr-levels adds noise).')
+    parser.add_argument('--snr-levels', type=str, default='clean', help='Comma list from clean,10db,0db. Anything beyond clean writes a separate noisy results file.')
     args = parser.parse_args(argv)
 
-    payload = run_benchmark(limit=args.limit, include_pre_parity=args.include_pre_parity)
-    out_path = Path(args.output)
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(payload, indent=2), encoding='utf-8')
-    print(f'\nWrote Studio Vocadito benchmark to: {out_path}')
-    for m, stats in payload['summary'].items():
-        nt = stats['note_f1']
-        on = stats['onset_f1']
-        print(f"{m:<36} | Note F1: {nt[0]:.3f} [{nt[1]:.3f}, {nt[2]:.3f}] | Onset F1: {on[0]:.3f} [{on[1]:.3f}, {on[2]:.3f}]")
+    levels = [s.strip().lower() for s in args.snr_levels.split(',') if s.strip()]
+    unknown = [s for s in levels if s not in SNR_LEVELS]
+    if unknown:
+        parser.error(f'unknown snr level(s): {unknown}')
+    if levels == ['clean']:
+        out_path = Path(args.output) if args.output else DEFAULT_OUT
+        payload = run_benchmark(limit=args.limit, include_pre_parity=args.include_pre_parity)
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_text(json.dumps(payload, indent=2), encoding='utf-8')
+        print(f'\nWrote Studio Vocadito benchmark to: {out_path}')
+        payloads = {'clean': payload}
+    else:
+        out_path = Path(args.output) if args.output else NOISY_OUT
+        payloads = {}
+        for lv in levels:
+            print(f'\n=== SNR level: {lv} ===', flush=True)
+            payloads[lv] = run_benchmark(limit=args.limit, include_pre_parity=args.include_pre_parity, snr_db=SNR_LEVELS[lv])
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_text(json.dumps({'levels': payloads}, indent=2), encoding='utf-8')
+        print(f'\nWrote noisy Studio Vocadito benchmark to: {out_path}')
+    for lv, payload in payloads.items():
+        print(f'\n--- {lv} ---')
+        for m, stats in payload['summary'].items():
+            nt = stats['note_f1']
+            on = stats['onset_f1']
+            print(f"{m:<36} | Note F1: {nt[0]:.3f} [{nt[1]:.3f}, {nt[2]:.3f}] | Onset F1: {on[0]:.3f} [{on[1]:.3f}, {on[2]:.3f}]")
 
 
 if __name__ == '__main__':

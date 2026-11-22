@@ -277,8 +277,56 @@ Evaluated from `results/transformer_usability/2026-11-17_r2_weight_matched_contr
 ### 15.3 Updated open items
 
 - **DONE `[V]`:** Candidate R2 weight-matched control (`results/transformer_usability/2026-11-17_r2_weight_matched_control/`, `12/12` healthy, `advance_to_delivery = False`, honest negative documented).
+- **DONE `[V]`:** `FastTNet v5` cumulative ablation ladder and real-audio clean/noisy Vocadito benchmark (Section 16).
 - **Remaining open items `[P]`:**
-  1. Real-browser manual check of microphone recording, audio upload, and immediate session deletion flows.
-  2. Clean local commit on `bpdr-experiment` followed by merging `origin/main` and verifying Studio end-to-end against the live PP1 orchestrator.
+  1. Real-browser manual check of microphone recording, audio upload, and immediate session deletion flows (`Run-Studio.ps1`).
+  2. Merge `origin/main` into this branch and test the Studio end-to-end against the live PP1 orchestrator.
   3. Teammate/supervisor handoff (`accepted.wav` + `sidecar.json` contract with advisory `boundary_hints`, plus honest-negative framing).
   4. Freeze all thresholds before opening the confirmation set (`5–11 Dec` window -> **`11 Dec` decision**).
+
+## 16. FastTNet v5 cumulative ablation ladder, noisy-audio benchmark, and promotion evaluation (20 Nov 2026) [V]
+
+Follow-up to Section 14 executing the declared Model 2 improvement plan (`model2_improvement_plan.md`, declared first in `results/studio/r1/declaration_transformer_v5.json`, SHA-256 `5965e6149bb654c7eae71e303f33bbf5e9a760580318b6c08146f6bc456fca7d`). Reserved splits (`HumTrans M03–M05`, `VALID`, `TEST`) remain strictly untouched.
+
+### 16.1 Phase 0 Error Diagnostics on `studio_v1` (`v1_error_diagnostics.json`) [V]
+
+Evaluated `studio_v1` across all 39 Vocadito windows under clean, 10 dB, and 0 dB looped environmental noise (`datasets/environmental_noise/1-100210-A-36.wav`), paired with 64 `dev_M02` humming clips (`tools/diagnose_boundary_errors.py`):
+
+1. **Precision vs Recall:** On Vocadito clean singing, `studio_v1` achieves Precision `0.809` and Recall `0.727`. Under 0 dB noise, Recall stays flat at `0.765` while Precision collapses to `0.619` (false positives triple from 76 to 308, driven by noise-induced spectral flux bursts).
+2. **Humming vs Singing Threshold Divergence:** On humming (`dev_M02`), `studio_v1` exhibits the exact opposite balance (Precision `0.680` / Recall `0.850`), confirming that humming onsets have sharper energy discontinuities than singing, and that tuning thresholds on humming risks over-suppressing softer singing note transitions.
+3. **Repeated Notes:** 41.9% of same-pitch repeated notes (67/160) are missed vs ~24% for pitch-step onsets.
+4. **Oracle Note Formation:** Feeding oracle ground-truth onsets into the standard note formation yields Note F1 of `0.849` (clean) and `0.840` (0 dB), proving that the upstream boundary picker—not the note formation rule—is the true accuracy bottleneck.
+
+### 16.2 Phase 1–2 Ablation Ladder on HumTrans 6-Fold Out-of-Fold Cross-Validation [V]
+
+Evaluated 6 cumulative steps using 6-fold leave-one-speaker-out CV on `HumTrans TRAIN` (525 clips, 6 speakers `F01–F05, M01`), scored by mean person-macro Onset F1 across clean and noise views (`tools/fit_r1_transformer_v5.py`, `results/studio/r1/v5/ladder_results.json`):
+
+| Step | Configuration | Best OOF `thr` | OOF Clean F1 | OOF Noisy F1 | Composite Score | Pre-declared Action |
+|---|---|---|---|---|---|---|
+| `a_base` | `v1` backbone, OOF grid, `offset=0.0` | 0.90 | 0.8643 | 0.8559 | 0.8601 | ADOPT (baseline) |
+| **`b_feats`** | **+ FastTNetV5 16-channel singing deltas** | **0.85** | **0.8806** | **0.8768** | **0.8787** | **ADOPT (+0.0186 gain)** |
+| `c_samepitch` | + Same-pitch repeat augmentation | 0.90 | 0.8605 | 0.8570 | 0.8588 | Reject (-0.0199) |
+| `d_bridge` | + Synthetic vibrato & legato glide | 0.85 | 0.8769 | 0.8714 | 0.8742 | Reject (-0.0045) |
+| `e_noise` | + Noise floor elevation & pitch jitter | 0.80 | 0.8803 | 0.8750 | 0.8776 | Reject (-0.0011) |
+| `f_soft` | + Soft Gaussian targets (`sigma=0.8`) | 0.85 | 0.8794 | 0.8752 | 0.8773 | Reject (-0.0014) |
+
+- **Winning configuration:** `b_feats` (`FastTNetV5`, `flags={'feats': 1}`) delivers a solid **+1.86 point composite gain** over `a_base` on out-of-fold validation.
+- **Decoding Search:** Grid search over subframe parabolic peak interpolation and timing shifts in `[-30, +30]` ms confirmed `subframe=False, shift_ms=0.0` remains optimal.
+- **Development Split (`dev_M02`, 64 clips, 3 seeds `[339, 340, 341]`):** `b_feats` achieved mean Onset F1 of **`0.8044` (clean)** and **`0.8035` (noisy)** vs `studio_v1` baseline of **`0.7538` (clean)** and **`0.7048` (noisy)**, representing a **+5.06 point clean** and **+9.87 point noisy** gain on humming.
+
+### 16.3 Phase 3 Real-Audio Vocadito Benchmark & Promotion Verdict [V]
+
+Evaluated `studio_v5` (`FastTNetV5 b_feats`, seed `339`, `thr=0.85`, `boundary_transformer_v5.pt`) on all 39 Vocadito windows across 14 singers under clean, 10 dB, and 0 dB noise (`tools/benchmark_studio_vocadito.py`, `results/studio/r1/studio_vocadito_benchmark.json` and `studio_vocadito_benchmark_noisy.json`; 1,000 bootstrap resamples):
+
+| SNR Condition | Method | Note F1 (Mean [95% CI]) | Onset F1 (Mean [95% CI]) | Paired Diff vs `studio_v1` (Note F1) | Paired Diff vs `studio_v1` (Onset F1) | Promotion Bar Met? |
+|---|---|---|---|---|---|---|
+| **Clean** | `studio_v1` | **0.631 [0.585, 0.676]** | **0.767 [0.732, 0.799]** | - | - | Reference default |
+| Clean | `studio_v5` | 0.576 [0.526, 0.627] | 0.731 [0.699, 0.763] | **-0.055** [-0.092, -0.021] | **-0.036** [-0.058, -0.013] | **FAIL** (CI < 0) |
+| **10 dB** | `studio_v1` | **0.638 [0.586, 0.690]** | **0.783 [0.751, 0.815]** | - | - | Reference default |
+| 10 dB | `studio_v5` | 0.595 [0.556, 0.640] | 0.756 [0.728, 0.783] | **-0.043** [-0.081, -0.005] | **-0.027** [-0.045, -0.008] | **FAIL** (CI < 0) |
+| **0 dB** | `studio_v1` | **0.590 [0.544, 0.636]** | **0.741 [0.707, 0.775]** | - | - | Reference default |
+| 0 dB | `studio_v5` | 0.569 [0.524, 0.617] | 0.730 [0.696, 0.766] | **-0.021** [-0.049, +0.006] | **-0.011** [-0.031, +0.006] | **FAIL** (CI includes 0) |
+
+- **Verdict on Promotion:** Per the pre-declared promotion rule (`Note F1 and Onset F1 95% CI diff vs studio_v1 strictly > 0`), **`studio_v5` is NOT promoted to the Studio default**.
+- **Scientific Takeaway:** The cross-domain humming-to-singing gap is asymmetric: optimizing boundary detection on HumTrans humming data (even with multi-scale deltas and noise calibration) produces models that excel on humming (`dev_M02` jumps from `0.754` to `0.804`), but are overly conservative on softer vocal tract transitions in natural polyphonic singing. `FastTNet v1` (`V1_CHECKPOINT`, `eval_logit_bias=0.9`, `thr=0.80`) remains the most balanced detector on real singing audio.
+- **Decision:** **`V1_CHECKPOINT` (`boundary_transformer.pt`) remains the frozen Studio default** heading into the Dec 5–11 confirmation window. Candidate `v5` files and receipts are preserved under `results/studio/r1/v5/`.

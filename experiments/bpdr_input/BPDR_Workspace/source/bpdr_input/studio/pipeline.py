@@ -7,6 +7,7 @@ here: the note lists below exist only to show what the shared extractor would do
 import hashlib
 import json
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Sequence, Union
 
 import numpy as np
 import soundfile as sf
@@ -146,21 +147,35 @@ def prepare(path, outdir, intent="unsure", with_pyin=True, clip_limit=0.02, min_
     if with_boundary_hints:
         try:
             b_hints = boundary.extract_boundary_hints(trk_p, x=prepared, sr=E.SR, checkpoint_path=boundary_checkpoint)
+            span_diag = boundary.analyze_boundary_spans(
+                trk_p, b_hints, end_s=dur, tuning_center_cents=q["tuning_center_cents"], sr=E.SR
+            )
+            b_hints["span_diagnostics"] = span_diag
             sidecar["boundary_hints"] = b_hints
             result["boundary_hints"] = b_hints
+            result["span_diagnostics"] = span_diag
         except Exception as exc:
             result["advisories"].append(f"Boundary hints could not be extracted: {exc}")
     (out / "sidecar.json").write_text(json.dumps(sidecar), encoding="utf-8")
 
     notes = {"after_prepared_pesto": E.notes_from_track(trk_p, dur),              # PROPOSED: needs the extractor to use the sidecar
              "evidence_only_original_pesto": E.notes_from_track(trk_o, dur)}
+    if result.get("boundary_hints"):
+        notes["after_fasttnet_boundary_hints"] = boundary.notes_from_track_with_boundary_hints(
+            trk_p, result["boundary_hints"], end_s=dur, sr=E.SR
+        )
     if with_pyin:
         before = consumer.shared_extractor_notes(path)                            # what the shared extractor does today
         if before is None:
             before = E.notes_from_track(E.pyin_track(x), dur)
         notes["before_current_extractor_pyin"] = before
         notes["shared_extractor_on_prepared"] = consumer.shared_extractor_notes(accepted)
-    for key, wavname in (("before_current_extractor_pyin", "heard_before.wav"), ("after_prepared_pesto", "heard_after.wav")):
+    after_key = "after_fasttnet_boundary_hints" if "after_fasttnet_boundary_hints" in notes else "after_prepared_pesto"
+    for key, wavname in (
+        ("before_current_extractor_pyin", "heard_before.wav"),
+        (after_key, "heard_after.wav"),
+        ("after_fasttnet_boundary_hints", "heard_after_fasttnet.wav"),
+    ):
         if key in notes:
             sf.write(out / wavname, synth.render_notes(notes[key], dur), E.SR, subtype="PCM_16")
     sf.write(out / "original_mono.wav", xn, E.SR, subtype="PCM_24")
@@ -173,3 +188,78 @@ def prepare(path, outdir, intent="unsure", with_pyin=True, clip_limit=0.02, min_
                   reasons=["Cleaned candidate chosen: pitch evidence improved and pitch/voicing were preserved."] if use_clean
                   else ["Original kept: no candidate beat it without risk to pitch or voicing (format conversion only)."])
     return result
+
+
+def evaluate_and_repair_vocal(
+    user_audio_path: str,
+    ref_audio_or_notes: Optional[Any] = None,
+    outdir: Optional[str] = None,
+    max_shift_cents: float = 120.0,
+    boundary_checkpoint: Optional[str] = None,
+    repair_checkpoint: Optional[str] = None,
+) -> Dict[str, Any]:
+    """Complete paired/solo vocal evaluation and transformer-guided minimal repair pipeline.
+    
+    1. Evaluates user singing (amateur tool/karaoke) against reference song or solo cues.
+    2. Runs BPDRRepairTransformer with boundary conditioning to fix flat/sharp intonation & drift.
+    3. Verifies repaired audio post-render with PESTO tracking (Do-No-Harm contract).
+    4. Produces accepted audio WAV + comprehensive provenance sidecar for downstream components.
+    """
+    from . import evaluator, span_repair
+
+    user_x, meta = E.load_mono(user_audio_path, max_s=E.MAX_SECONDS)
+    dur = len(user_x) / E.SR
+    
+    # Run transformer repair pipeline
+    repair_res = span_repair.repair_singing_with_transformer(
+        user_audio_or_path=user_x,
+        ref_audio_or_notes=ref_audio_or_notes,
+        sr=E.SR,
+        checkpoint_path=repair_checkpoint,
+        max_shift_cents=max_shift_cents,
+        boundary_checkpoint=boundary_checkpoint,
+    )
+
+    repaired_wav = repair_res['repaired_audio']
+    status = repair_res['repaired_status']
+    
+    # Save files if outdir provided
+    accepted_path = None
+    sidecar_path = None
+    if outdir is not None:
+        out_p = Path(outdir)
+        out_p.mkdir(parents=True, exist_ok=True)
+        accepted_path = str(out_p / "prepared.wav")
+        sf.write(accepted_path, repaired_wav, E.SR, subtype="PCM_24")
+        
+        # Save sidecar
+        trk_final = E.pesto_track(E.normalize(repaired_wav))
+        sidecar = {
+            "schema": SCHEMA,
+            "pipeline_mode": "paired_evaluator_transformer_repair" if ref_audio_or_notes is not None else "solo_evaluator_repair",
+            "source_user_audio": str(user_audio_path),
+            "status": status,
+            "duration_s": dur,
+            "scorecard": repair_res['eval_after']['scorecard'],
+            "applied_repairs_count": repair_res['applied_count'],
+            "rolled_back_count": repair_res['rolled_back_count'],
+            "verified_edits": repair_res['verified_edits'],
+            "cents_mae_before": repair_res['cents_mae_before'],
+            "cents_mae_after": repair_res['cents_mae_after'],
+            "summary": repair_res['eval_after']['summary'],
+            "ownership_note": "Audio validation, pitch repair, and provenance owned by Component 1 (BPDR). Downstream owns note transcription, tempo, and harmony."
+        }
+        sidecar_path = str(out_p / "sidecar.json")
+        with open(sidecar_path, 'w', encoding='utf-8') as f:
+            json.dump(sidecar, f, indent=2)
+
+    return {
+        "status": status,
+        "accepted_audio": accepted_path,
+        "sidecar": sidecar_path,
+        "repair_result": repair_res,
+        "scorecard": repair_res['eval_after']['scorecard'],
+        "errors": repair_res['eval_before']['errors'],
+        "duration_s": dur,
+    }
+

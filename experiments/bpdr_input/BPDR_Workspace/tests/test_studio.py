@@ -249,6 +249,113 @@ class StudioTests(unittest.TestCase):
         with self.assertRaises(FileNotFoundError):
             boundary.load_boundary_model("non_existent_boundary_model.pt")
 
+    def test_fasttnet_v5_deltas_forward_and_roundtrip(self):
+        import json
+        import torch
+
+        net = boundary.FastTNetV5(nin=5)
+        self.assertIsInstance(net, boundary.FastTNet)
+        T = 120
+        x = torch.zeros(3, T, 5)
+        x[:, :, 1] = 1.0
+        x[0, 60:, 0] = 1.0                      # upward step of one semitone at frame 60
+        x[1, :60, 0] = 1.0                      # downward step at frame 60
+        x[2, :, 0] = 0.4 * torch.sin(torch.arange(T) * 2 * np.pi * 0.28)   # ~5.6 Hz vibrato on a 50 Hz grid
+        dx = net._deltas(x)
+        self.assertEqual(dx.shape, (3, T, boundary.V5_DELTA_CHANNELS))
+        self.assertTrue(torch.isfinite(dx).all())
+        sg6 = dx[:, :, 5]                       # signed 6-frame step
+        self.assertGreater(float(sg6[0, 60]), 0.5)
+        self.assertLess(float(sg6[1, 60]), -0.5)
+        self.assertGreater(float(dx[2, 30:90, 9].mean()), float(dx[0, 30:50, 9].mean()))   # vibrato index
+        net.eval()
+        self.assertEqual(tuple(net(x).shape), (3, T))
+
+        with tempfile.TemporaryDirectory() as td:
+            ck = Path(td) / "boundary_toy_v5.pt"
+            torch.save(net.state_dict(), ck)
+            (Path(td) / "boundary_toy_v5_meta.json").write_text(json.dumps(
+                {"model_class": "FastTNetV5", "nin": 5, "calibrated_threshold": 0.55,
+                 "subframe_peaks": True, "onset_shift_s": 0.005}), encoding="utf-8")
+            loaded = boundary.load_boundary_model(ck)
+            self.assertIsInstance(loaded, boundary.FastTNetV5)
+            self.assertAlmostEqual(loaded.default_threshold, 0.55)
+            self.assertTrue(loaded.subframe_peaks)
+            self.assertAlmostEqual(loaded.onset_shift_s, 0.005)
+            self.assertEqual(float(loaded.eval_logit_bias), 0.0)
+            self.assertTrue(torch.allclose(loaded(x), net(x), atol=1e-6))
+
+    def test_refine_peak_times_subframe_and_shift(self):
+        probs = np.zeros(20)
+        probs[9], probs[10], probs[11] = 0.5, 0.9, 0.7      # true peak slightly after frame 10
+        hop = 0.02
+        plain = boundary.refine_peak_times(probs, [10], hop)
+        self.assertAlmostEqual(plain[0], 10 * hop)
+        sub = boundary.refine_peak_times(probs, [10], hop, subframe=True)
+        self.assertGreater(sub[0], 10 * hop)
+        self.assertLess(sub[0], 10.5 * hop)
+        shifted = boundary.refine_peak_times(probs, [10], hop, shift_s=0.012)
+        self.assertAlmostEqual(shifted[0], 10 * hop + 0.012)
+        edge = boundary.refine_peak_times(probs, [0], hop, subframe=True)
+        self.assertAlmostEqual(edge[0], 0.0)
+
+    def test_old_checkpoints_keep_plain_peak_decoding(self):
+        model = boundary.load_boundary_model()
+        self.assertFalse(model.subframe_peaks)
+        self.assertEqual(model.onset_shift_s, 0.0)
+        self.assertNotIsInstance(model, boundary.FastTNetV5)
+
+    def test_notes_from_track_with_boundary_hints_and_span_repair(self):
+        from bpdr_input.studio import span_repair
+
+        dur = 1.6
+        t = np.arange(0.0, dur, 0.02)
+        # Two notes: first note exactly A4 (440 Hz), second note ~30 cents sharp of C5 (523.25 Hz)
+        f0 = np.full(len(t), 440.0, dtype=np.float64)
+        c5_sharp30 = 523.2511 * (2.0 ** (30.0 / 1200.0))
+        f0[t >= 0.80] = c5_sharp30
+        voiced = np.ones(len(t), dtype=bool)
+        conf = np.full(len(t), 0.95, dtype=np.float32)
+        trk = {"t": t, "f0": f0, "voiced": voiced, "conf": conf}
+        hints = {"peaks_s": [0.80]}
+
+        notes = boundary.notes_from_track_with_boundary_hints(trk, hints, end_s=dur, sr=E.SR)
+        self.assertEqual(len(notes), 2)
+        self.assertEqual(notes[0]["pitch_midi"], 69)
+        self.assertEqual(notes[1]["pitch_midi"], 72)
+
+        diag = boundary.analyze_boundary_spans(trk, hints, end_s=dur, tuning_center_cents=0.0, sr=E.SR)
+        self.assertEqual(diag["n_spans"], 2)
+        self.assertEqual(diag["n_review_candidates"], 1)
+        self.assertFalse(diag["spans"][0]["review_repair_candidate"])
+        self.assertTrue(diag["spans"][1]["review_repair_candidate"])
+        self.assertLess(diag["spans"][1]["recommended_shift_cents"], -20.0)
+
+        # Build synthetic audio matching the two notes and test review-gated span repair
+        t_audio = np.arange(int(dur * E.SR)) / float(E.SR)
+        freq_audio = np.where(t_audio < 0.80, 440.0, c5_sharp30)
+        x = (0.4 * np.sin(2.0 * np.pi * np.cumsum(freq_audio) / E.SR)).astype(np.float32)
+
+        def _mock_tracker(y):
+            # Simple synthetic tracker measuring zero-crossing / STFT peak frequency per 20 ms
+            f0_est = np.zeros(len(t), dtype=np.float64)
+            for i, ti in enumerate(t):
+                a = max(0, int(round((ti - 0.04) * E.SR)))
+                b = min(len(y), int(round((ti + 0.04) * E.SR)))
+                seg = y[a:b]
+                if len(seg) > 32:
+                    spec = np.abs(np.fft.rfft(seg * np.hanning(len(seg)), n=8192))
+                    freqs = np.fft.rfftfreq(8192, 1.0 / E.SR)
+                    f0_est[i] = float(freqs[int(np.argmax(spec))])
+                else:
+                    f0_est[i] = 440.0
+            return {"t": t, "f0": f0_est, "voiced": voiced, "conf": conf}
+
+        rep = span_repair.verify_and_apply_span_repairs(x, trk, diag, sr=E.SR, tracker_fn=_mock_tracker)
+        self.assertEqual(len(rep["audio"]), len(x))
+        self.assertEqual(rep["applied_count"], 1)
+        self.assertEqual(rep["status"], "REPAIR_VERIFIED")
+
     def test_boundary_feature_extraction_shapes_and_values(self):
         t = np.arange(80) * 0.02
         f0 = np.full(80, 440.0)
