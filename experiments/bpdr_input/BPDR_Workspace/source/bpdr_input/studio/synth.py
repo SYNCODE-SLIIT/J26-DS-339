@@ -18,7 +18,9 @@ def _tone(freqs, n, sr, amp):
 def render_notes(notes, duration_s, sr=SR, amp=0.25):
     out = np.zeros(int(duration_s * sr) + 1, dtype=np.float32)
     for n in notes:
-        a = int(n["onset_s"] * sr)
+        a = max(0, int(n["onset_s"] * sr))
+        if a >= len(out):
+            continue
         length = max(int(n["duration_s"] * sr), 1)
         seg = _tone([float(midi_hz(n["pitch_midi"]))], length, sr, amp)
         atk, rel = min(int(.01 * sr), length // 2), min(int(.04 * sr), length // 2)
@@ -26,6 +28,8 @@ def render_notes(notes, duration_s, sr=SR, amp=0.25):
         if atk: env[:atk] = np.linspace(0, 1, atk)
         if rel: env[-rel:] *= np.linspace(1, 0, rel)
         b = min(a + length, len(out))
+        if b <= a:
+            continue
         out[a:b] += (seg * env)[: b - a].astype(np.float32)
     return out
 

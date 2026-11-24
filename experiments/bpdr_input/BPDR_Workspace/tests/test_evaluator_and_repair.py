@@ -69,6 +69,18 @@ class EvaluatorAndRepairTests(unittest.TestCase):
         self.assertIn('cents_mae_before', rep)
         self.assertIn('cents_mae_after', rep)
 
+    def test_multiview_bpdr_controller(self):
+        t = np.arange(0.0, 1.6, 0.02)
+        c5_sharp30 = 523.2511 * (2.0 ** (30.0 / 1200.0))
+        f0 = np.where(t < 0.80, 440.0, c5_sharp30)
+        trk = {"t": t, "f0": f0, "voiced": np.ones(len(t), bool), "conf": np.full(len(t), 0.95, dtype=np.float32)}
+        mv = repair_transformer.predict_multiview_bpdr(trk, sr=E.SR)
+        self.assertIn("r_nominal_cents", mv)
+        self.assertIn("r_split_cents", mv)
+        self.assertIn("r_merge_cents", mv)
+        self.assertIn("mean_boundary_sensitivity_cents", mv)
+        self.assertEqual(len(mv["r_nominal_cents"]), len(t))
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,12 +1,15 @@
-# BPDR vocal input workspace
+# Component 1 — Praveen (`IT23141506`)
 
-**Use [BPDR_Workspace](BPDR_Workspace/README.md).** Open [the results index](BPDR_Workspace/results/index.html), or run `./Run-System.ps1`.
+**Project:** `J26-DS-339` — *Genre-Aware Automatic Vocal Melody Harmonization Using Hierarchical Deep Learning*  
+**Scope:** Vocal Input Validation, Boundary-Robust Modeling, and Active Intent Confirmation (`AIC v0.2`)
 
-- `BPDR_Workspace/`: actual source, datasets, selected model, tools, notebooks, tests, documentation and current result views.
-- `research_archive/`: all older runs/logs, recovery records, references and legacy launchers.
-- `Run-System.ps1`, `Run-Notebooks.ps1`, `Open-Results.ps1`: short convenience entry points.
-- `.venv`, `.tools`, `.jupyter`, `.streamlit`, `pyproject.toml`, `uv.lock`: retained local runtime/configuration.
+---
 
-The old `src`, `data`, `checkpoints`, `notebooks`, `tests`, `docs`, `extraction`, `final`, `runs` and `private` directories are compatibility junctions to their new physical locations. They contain no separate copies. Existing absolute dataset/evidence paths still resolve. Do not remove those links casually or clean through both paths as though they were different datasets.
+## Primary Entry Points
 
-The source package root now has only its initialization file and clear responsibility folders. The ambiguous `presentation_*` filenames were renamed; stable old imports remain compatible. No historical log, research result or original dataset was deleted to create this layout. See [the migration record](runs/reorganization/current.json) for hashes, recovery and the path map.
+- **`deliverables/`** — Curated latest research briefs, feasibility verdicts, Claims Ledger, proposal PDF, and verified benchmark JSONs ([deliverables/README.md](deliverables/README.md)).
+- **`BPDR_Workspace/`** — Active development workspace containing source code, web UI, tests, datasets, checkpoints, and organized archive ([BPDR_Workspace/README.md](BPDR_Workspace/README.md)).
+- **`.\Run-Component1.ps1`** — Launch the primary Component 1 Web Service (Starlette + HTML/JS, port `8505`, includes `/research` panel view).
+- **`.\Run-Component1-Panel.ps1`** — Launch the Component 1 Assessment Panel Streamlit App (port `8515`).
+
+> **Note:** `experiments/Praveen` and `experiments/bpdr_input` point to the same physical component directory so all Python virtual environments, team imports, and saved evidence paths remain 100% compatible.

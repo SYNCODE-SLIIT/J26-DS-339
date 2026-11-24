@@ -154,6 +154,15 @@ def prepare(path, outdir, intent="unsure", with_pyin=True, clip_limit=0.02, min_
             sidecar["boundary_hints"] = b_hints
             result["boundary_hints"] = b_hints
             result["span_diagnostics"] = span_diag
+            try:
+                from . import repair_transformer
+                mv_bpdr = repair_transformer.predict_multiview_bpdr(
+                    trk_p, x=prepared, sr=E.SR, boundary_hints=b_hints, span_diagnostics=span_diag
+                )
+                sidecar["bpdr_multiview"] = mv_bpdr
+                result["bpdr_multiview"] = mv_bpdr
+            except Exception as mv_exc:
+                result["advisories"].append(f"BPDR multi-view analysis skipped: {mv_exc}")
         except Exception as exc:
             result["advisories"].append(f"Boundary hints could not be extracted: {exc}")
     (out / "sidecar.json").write_text(json.dumps(sidecar), encoding="utf-8")

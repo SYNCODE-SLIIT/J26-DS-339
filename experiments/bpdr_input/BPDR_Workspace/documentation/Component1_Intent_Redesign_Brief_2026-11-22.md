@@ -219,3 +219,41 @@ untouched. Any experiment is declared first (hashed declaration file) and report
 FINISH by listing: what runs, what was verified (with commands), what is untested, and the
 decisions that remain with the owner or supervisors (brief section 9).
 ```
+
+---
+
+## 13. Coordinator addendum (23 Nov 2026): R-1 to R-5 research upgrades
+
+Source: an external audit pasted by the owner on 23 Nov, checked against the repo before filing. [V] = verified in files, [P] = proposed, [C] = correction to the pasted text.
+
+### 13.1 Verified state
+- [V] Web service built (`web/`, `source/bpdr_input/web/`, `Run-Component1.ps1`), uncommitted. [C] Test count is 45 on the last run, not 50; re-run before quoting a number.
+- [V] Note-rule ablation in `results/studio/aic/aic_dev_results.json`: pesto_notes_from_track 0.4863; segment_median_extractor_boundaries 0.6015; studio_v1 0.6307. Of the +0.1444 gain, +0.1152 comes from the segment-median rule with heuristic edges; the learned model adds +0.0292 [-0.0145, +0.0774] on clean windows (CI includes 0). The jitter result (+0.050 [+0.018, +0.084]) is the only place the learned model is supported.
+- [C] H-I3 "0.0% harmful edits" must NOT be quoted. `tools/evaluate_aic_dev.py:379` appends a constant 0.0. It is not a measurement. Also, the EIG vs lowest-confidence gap is about 0.002 note F1, so do not describe EIG as better than the simple rule.
+- [C] The pitch curve assumes perfect repair, trust_curve values are hand-set, and ECE figures use default not leave-one-out selection. Treat the calibration numbers as provisional until these are fixed.
+
+### 13.2 Tasks (all [P])
+- Fix first (before R-1 to R-5): replace the constant harm value with a real measurement, add paired CIs and a recall ceiling, rescope the onset claim in `web/app.py`.
+- R-1: `compute_boundary_span_features` and `build_single_view_features` in `studio/repair_transformer.py` still use `ref_anchor_cents` for training; wild inference falls back to semitone rounding. Replace with a reference-free phrase-context estimate used identically in both. Declare before training; report frame_only ties or wins honestly.
+- R-2: derive question priors from 4-view boundary variance and gate mean instead of the hand-set logistic (`question_engine.py`). Needs the fixed evaluation to show any benefit.
+- R-3: `tools/evaluate_downstream_harmony_impact.py` comparing pyin_4096, pesto_notes_from_track, studio_v1, studio_v1+AIC through the teammates' read-only chord adapters.
+- R-4: `tools/benchmark_bpdr_delivered_wav.py`, post-render PESTO re-check of the delivered WAV, rollback rate, identity preservation.
+- R-5: `tools/generate_blinded_review_packet.py`, blinded X/Y trials, identity controls, repeats, sealed owner key. No human ratings are fabricated.
+
+### 13.3 Constraints
+Do not commit. Do not touch HumTrans M03-M05, VALID or TEST. One heavy job at a time on CPU (15 GB RAM); do not restart a reaped job unless asked.
+
+### 13.4 Results of the evaluation fixes (23 Nov 2026, `aic_dev_evaluation/0.2`) [V]
+Files: `results/studio/aic/aic_dev_results.json` (v0.1 kept as `..._v0.1_superseded.json`), `downstream_harmony_impact.json`, `results/studio/listening_packet/`. Full test suite: 773 passed. Development data only; simulated listeners only.
+
+Fixed: measured harm rate; leave-one-out selection (singer/group held out); paired CIs; recall ceilings; repair residual 7.47 c replaces perfect repair. NOT fixed: `trust_curve` is still hand-set (claims ledger now says so).
+
+Findings (all honest, several negative):
+- **EIG is not better than the simple rule.** Boundary note F1, paired EIG minus lowest-confidence: oracle user K=3 -0.0095 [-0.024, +0.002], K=5 -0.0103 [-0.025, +0.003]; noisy user K=3 +0.0024 [-0.002, +0.009]. All CIs include 0. EIG beats "no questions" (+0.019 [+0.006, +0.034] at K=3, oracle). Pitch MAE: EIG vs lowest-confidence K=5 -0.42 c [-0.81, -0.09] (small win), K=3 null.
+- **Ceilings.** Boundary: answering every extractor candidate with the oracle gives note F1 0.691 [0.654, 0.728] (K=5 oracle reaches 0.645, baseline 0.6185); exact reference edges give 0.836. Pitch: only 34% [24, 44] of detuned pairs have any error candidate, so best positive MAE is 18.9 c vs 24.9 c uncorrected; with a noisy listener and 7.47 c residual, EIG K=5 reaches 21.7 c.
+- **Harm (H-I3, replaces the constant 0.0).** Untouched originals (n=53) edited under AIC K=3: 0% with an oracle listener (by construction), 19.6% [7.3, 33.1] with a 10%-flip listener; automatic repair of every candidate would edit 92.8% [83.0, 100]. AIC reduces harm versus auto-repair but is not harmless. Human listeners not tested.
+- **Calibration (leave-out):** boundary ECE 0.195 to 0.026, pitch ECE 0.543 to 0.018 (fitted on the same data pools, per held-out singer/group).
+- **Downstream chords (R-3, 39 windows, 14 singers):** agreement with A1-derived chords: pyin_4096 0.479 [0.369, 0.596]; pesto_notes +0.027 [-0.053, +0.097]; studio_v1 +0.030 [-0.079, +0.151]; studio_v1+AIC(oracle K=3) +0.027 [-0.088, +0.152]. No detectable chord effect; do not claim downstream benefit. Strong-beat compatibility metric not computed.
+- **R-5:** blinded packet generated (12 pairs, 10 identity controls, 4 repeats, sealed key). It tests today's delivered output (cleanup), not pitch repair. No ratings exist.
+
+Still open: R-1 (reference-free phrase context, needs declared retraining), R-4 (delivered-WAV benchmark), R-2 (4-view priors), held-out confirmation (needs owner approval to open reserved splits), human ratings (reviewers, consent).

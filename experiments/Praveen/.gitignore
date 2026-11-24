@@ -1,0 +1,34 @@
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+data/
+runs/
+checkpoints/
+.pytest_cache/
+.tools/
+.jupyter/
+.ipynb_checkpoints/
+
+# Local-only material: datasets live in data/ (ignored above); personal PDFs and plans live in private/
+/private/
+# macOS archive leftovers shipped inside the datasets
+.DS_Store
+._*
+__MACOSX/
+
+# Physical workspace assets retain the same local-only policy after migration.
+/BPDR_Workspace/datasets/
+/BPDR_Workspace/models_and_tools/
+/BPDR_Workspace/selected_model/
+/research_archive/
+
+# Old directory names are compatibility junctions, not second source trees.
+/src/
+/docs/
+/notebooks/
+/tests/
+/extraction/
+/final/
