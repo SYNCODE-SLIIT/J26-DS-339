@@ -1,6 +1,6 @@
 # Research notebooks
 
-Open [index.html](index.html) to search code blocks, view executed output or expand source functions. Run `../Open-Notebooks.ps1` to open the local index.
+Open [index.html](index.html) to search code blocks, view executed output or expand source functions. Open `index.html` directly in a browser (the old `Open-Notebooks.ps1` helper was retired in the 24 Nov 2026 reorganisation).
 
 | Order | Notebook |
 |---|---|
@@ -15,8 +15,8 @@ Use the component `.venv` with the **BPDR local Python** kernel. Results, interp
 
 Search IDs: `BPDR-LOSSES`, `DATA-CLEAN`, `DATA-FEATURES`, `MODEL-ACCURACY`, `MODEL-GATES`, `DEMO-RUN`, `RENDER-AUDIT`, `HANDOFF-EXTRACTOR`, `VERIFY-TESTS`.
 
-Verified: 6 notebooks, 125 code cells, 0 errors, 65 passing tests, 14 plots and 8 audio players. Scientific acceptance failures remain visible.
+Last notebook execution receipt (October 2026, before the AIC work): 6 notebooks, 125 code cells, 0 errors, 65 passing tests at that time, 14 plots and 8 audio players. Re-run before quoting; the current suite has 99 tests. Scientific acceptance failures remain visible.
 
 Run `../.venv/Scripts/python.exe -X utf8 -B tools/execute_research_notebooks.py` from BPDR_Workspace to verify these six notebooks. Current execution receipt: `results/research_notebooks/current.json`. Superseded notebooks and exact user-edited originals were checksum-verified and archived under the location recorded in `results/notebook_cleanup/current.json`; they are no longer in the active notebook folder.
 
-See [environment pins](../documentation/requirements-notebooks.txt), [usage guide](../documentation/NOTEBOOK_GUIDE.md), and [verification report](../documentation/EXPERIMENT_VERIFICATION_REPORT.md). Data, weights, historical receipts and generated outputs remain local and ignored by Git.
+See [environment pins](../archive/documentation/requirements-notebooks.txt), [usage guide](../archive/documentation/NOTEBOOK_GUIDE.md), and [verification report](../archive/documentation/EXPERIMENT_VERIFICATION_REPORT.md). Data, weights, historical receipts and generated outputs remain local and ignored by Git.

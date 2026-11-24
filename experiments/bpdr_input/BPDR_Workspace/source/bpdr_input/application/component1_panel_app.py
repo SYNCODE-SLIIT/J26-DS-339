@@ -5,8 +5,8 @@ Component 1: Vocal Input Validation and Minimal Musical Repair using Boundary-Pi
 Researcher: Liyanage L. N. P. (IT23141506)
 
 Built specifically for the research panel demonstration:
-- Focused 100% on Component 1 (Input Validation, Do-No-Harm Preparation, FastTNet Boundary-Pitch
-  Disentangled Transformer Inference, Boundary-Segmented Span Diagnostics, and Review-Gated Span Repair).
+- Focused 100% on Component 1 (Input Validation, Do-No-Harm Preparation, FastTNet
+  Learned Boundary Transformer Inference, Boundary-Segmented Span Diagnostics, and Review-Gated Span Repair).
 - Uses the real trained PyTorch FastTNet primary model checkpoint (results/studio/r1/boundary_transformer.pt)
   and optional FastTNetV5 16-channel singing-delta checkpoint (boundary_transformer_v5.pt).
 - Allows live testing on real annotated benchmark recordings (Vocadito singing & HumTrans humming
@@ -252,7 +252,7 @@ def plot_component1_diagnostic_figure(
         ax1.plot(t_grid, step_120ms, color="#d2a8ff", linewidth=1.3, label="Multi-Scale Pitch Step Delta |Δp| (120 ms)")
     ax1.set_ylabel("Feature Magnitude", color="#c9d1d9", fontsize=10)
     ax1.set_title(
-        "Panel B — Boundary-Pitch Disentangled Cues (64-Mel Positive Spectral Flux & Multi-Scale Pitch-Step Deltas)",
+        "Panel B — Boundary and Pitch-Step Cues (64-Mel Positive Spectral Flux & Multi-Scale Pitch-Step Deltas)",
         color="#f0f6fc",
         fontsize=10.5,
         fontweight="bold",
@@ -357,7 +357,7 @@ def main():
         layout="wide",
     )
 
-    st.title("J26-DS-339 — Component 1: Vocal Input Validation & Boundary-Pitch Disentangled Preparation")
+    st.title("J26-DS-339 — Component 1: Vocal Input Validation & Boundary-Aware Preparation")
     st.caption(
         "**Researcher:** Liyanage L. N. P. (`IT23141506`) | **Supervisors:** Prof. Dilshan De Silva & Prof. Samantha Thelijjagoda | "
         "**Scope:** Component 1 Only (Standalone Research Verification & Panel Demonstration)"
@@ -815,7 +815,7 @@ def main():
                 })
 
             # --- STAGE 2 VISUALIZATION ---
-            st.subheader("Stage 2 — Live `FastTNet` Boundary-Pitch Disentangled Transformer Inference (20 ms Grid)")
+            st.subheader("Stage 2 — Live `FastTNet` Learned Boundary Transformer Inference (20 ms Grid)")
             fig = plot_component1_diagnostic_figure(
                 aligned_trk=aligned_20ms,
                 acoustic_energy=feats_20ms[:, 3],
@@ -887,7 +887,7 @@ def main():
 
             with col_ft:
                 st.markdown("#### 4. Our Primary Model (`FastTNet`)")
-                st.caption("Boundary-Pitch Disentangled Transformer")
+                st.caption("Learned Boundary Transformer (FastTNet)")
                 st.audio(_wav_bytes(synth.render_notes(fasttnet_notes, dur_s)), format="audio/wav")
                 st.metric("Detected Notes", f"{len(fasttnet_notes)} notes")
                 if sc_ft:
@@ -898,7 +898,7 @@ def main():
 
             # --- STAGE 4: BOUNDARY-DISENTANGLED SPAN DIAGNOSTICS & REVIEW-GATED REPAIR ---
             st.markdown("---")
-            st.subheader("Stage 4 — Boundary-Disentangled Per-Span Pitch Diagnostics & Review-Gated Minimal Repair")
+            st.subheader("Stage 4 — Boundary-Segmented Per-Span Pitch Diagnostics & Review-Gated Minimal Repair")
             st.markdown(
                 "Using `FastTNet` boundaries to isolate each sung note span, Component 1 measures each span's **tuning-calibrated pitch deviation** "
                 "(subtracting the singer's overall tuning offset so expressive singers are not falsely penalized) and flags steady spans with "

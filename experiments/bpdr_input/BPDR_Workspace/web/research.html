@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Component 1 — Panel Research View (/research)</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script type="module" src="/static/research.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-badge">J26-DS-339 · RESEARCH</span>
+      <span>Component 1 Panel Evidence &amp; Claims Ledger</span>
+    </div>
+    <nav class="top-links" aria-label="Research navigation">
+      <a href="/">← Back to User Flow</a>
+    </nav>
+  </header>
+
+  <main class="shell wide-shell">
+    <section class="card">
+      <div class="eyebrow">Panel Evaluation View · Development &amp; Control Evidence Only</div>
+      <h1>Boundary-Pitch Disentangled Learning (BPDR) &amp; Active Intent Confirmation</h1>
+      <p class="muted">
+        All charts and tables below render strictly from saved JSON result files under <code>results/</code>.
+        Reserved HumTrans M03–M05, VALID, and TEST splits remain untouched.
+      </p>
+    </section>
+
+    <section class="card">
+      <div class="eyebrow">Core Proposed Novelty · Proposal Sections 1.3, 3.3 &amp; 3.6 vs. BERT-APC (Kim et al., 2026)</div>
+      <h2>Four-View BPDR Disentangled Benchmark (False Splits &amp; False Merges Tested Separately from Jitter)</h2>
+      <p class="small muted">
+        3 matched arms (<code>frame_only</code>, <code>augmentation_only</code>, <code>bpdr</code>) &times; 3 seeds (339, 340, 341)
+        evaluating boundary-invariance loss $L_B$ and counter-detuning equivariance loss $L_D$ on boundary-segmented span context.
+      </p>
+      <div id="bpdr-4view-table"></div>
+    </section>
+
+    <section class="card">
+      <div class="eyebrow">Section A · Hypothesis H-I1a &amp; H-I1b</div>
+      <h2>Question-Budget Curves (K = 0..5)</h2>
+      <p class="small muted">Comparing <code>eig</code> vs <code>lowest_confidence</code>, <code>random</code>, and <code>none</code>.</p>
+      <div class="ab-grid">
+        <div class="canvas-box" id="chart-hi1a-oracle"></div>
+        <div class="canvas-box" id="chart-hi1a-noisy"></div>
+      </div>
+      <div class="canvas-box" id="chart-hi1b-pitch"></div>
+    </section>
+
+    <section class="card">
+      <div class="eyebrow">Section B · Hypothesis H-I2 &amp; H-I3</div>
+      <h2>Leave-Singer-Out Uncertainty Calibration &amp; Do-No-Harm</h2>
+      <div id="calibration-summary"></div>
+    </section>
+
+    <section class="card">
+      <div class="eyebrow">Section C · Studio Benchmark &amp; Section 11 Confound Ablation</div>
+      <h2>Real-Audio Vocadito Benchmark &amp; Note-Formation Rule Decomposition</h2>
+      <div id="ablation-tables"></div>
+    </section>
+
+    <section class="card">
+      <div class="eyebrow">Section D · Candidate R2 Weight-Matched Control (Honest Negative)</div>
+      <h2>Blind Reference-Free Pitch Repair Control (12/12 Healthy Fits)</h2>
+      <div id="r2-table"></div>
+    </section>
+
+    <section class="card">
+      <div class="eyebrow">Section E · Claims Ledger &amp; Provenance</div>
+      <h2>What May Be Claimed vs. Do Not Claim</h2>
+      <div id="claims-ledger"></div>
+      <h3 style="margin-top:18px;">Saved Result Provenance (SHA-256)</h3>
+      <div id="provenance-table"></div>
+    </section>
+  </main>
+</body>
+</html>

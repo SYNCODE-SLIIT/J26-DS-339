@@ -1,0 +1,74 @@
+{
+  "local_documents": [
+    {
+      "path": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\documentation\\IT23141506_J26_DS_339.pdf",
+      "pages": 43,
+      "sha256": "cd50323e4980d0c2725c717995897d44ca3687bda57ad9c258227572f519123a",
+      "extracted": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\panel_preparation\\27c3487e5620422591213ba3e0305c56\\source_1.json",
+      "found": true
+    },
+    {
+      "path": "C:\\Users\\lnipu\\Downloads\\ced6e92c-d33b-43a9-b3fd-735e35edd403_BPDR_Four-View_Research_Process_.pdf",
+      "pages": 26,
+      "sha256": "7e1181b0aa9d93e8919fbd51fb14aa18f1f2ee2b5add97b6c1c20f2ca87ef563",
+      "extracted": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\panel_preparation\\27c3487e5620422591213ba3e0305c56\\source_2.json",
+      "found": true
+    },
+    {
+      "path": "BERT-APC.pdf (local copy not located)",
+      "found": false,
+      "sha256": null,
+      "pages": null
+    }
+  ],
+  "primary_online_references": [
+    {
+      "title": "BERT-APC",
+      "url": "https://arxiv.org/html/2511.20006v1",
+      "inspected_on": "2026-10-20",
+      "scope": "Literature only, not reproduced performance"
+    },
+    {
+      "title": "MusicBERT",
+      "url": "https://aclanthology.org/2021.findings-acl.70/",
+      "inspected_on": "2026-10-20",
+      "scope": "Literature only, not reproduced performance"
+    },
+    {
+      "title": "PESTO",
+      "url": "https://archives.ismir.net/ismir2023/paper/000063.pdf",
+      "inspected_on": "2026-10-20",
+      "scope": "Literature only, not reproduced performance"
+    },
+    {
+      "title": "SPICE",
+      "url": "https://arxiv.org/abs/1910.11664",
+      "inspected_on": "2026-10-20",
+      "scope": "Literature only, not reproduced performance"
+    },
+    {
+      "title": "ROSVOT",
+      "url": "https://aclanthology.org/2024.acl-long.526/",
+      "inspected_on": "2026-10-20",
+      "scope": "Literature only, not reproduced performance"
+    },
+    {
+      "title": "Temporal Ensembling",
+      "url": "https://arxiv.org/abs/1610.02242",
+      "inspected_on": "2026-10-20",
+      "scope": "Literature only, not reproduced performance"
+    },
+    {
+      "title": "AutoTune official guidance",
+      "url": "https://help.antarestech.com/hc/en-us/articles/42858099043092-AutoTune-Best-Practices",
+      "inspected_on": "2026-10-20",
+      "scope": "Literature only, not reproduced performance"
+    },
+    {
+      "title": "Melodyne official manual",
+      "url": "https://helpcenter.celemony.com/M5/doc/melodyneStudio5/en/M5tour_ToolModulationDrift_2?env=dawsWithAra",
+      "inspected_on": "2026-10-20",
+      "scope": "Literature only, not reproduced performance"
+    }
+  ]
+}

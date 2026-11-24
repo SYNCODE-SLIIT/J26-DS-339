@@ -7,7 +7,7 @@ name = "j26-bpdr-input-experiment"
 version = "0.1.0"
 description = "Boundary-Pitch Disentangled Repair vocal input workspace"
 requires-python = ">=3.12"
-dependencies = ["numpy>=2.0", "scipy>=1.13", "soundfile>=0.13", "librosa>=0.11", "matplotlib>=3.9", "pesto-pitch>=1.0"]
+dependencies = ["numpy>=2.0", "scipy>=1.13", "soundfile>=0.13", "librosa>=0.11,<1.1", "matplotlib>=3.9", "pesto-pitch>=1.0"]
 
 [project.optional-dependencies]
 rendering = ["praat-parselmouth==0.4.7"]

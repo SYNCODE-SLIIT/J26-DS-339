@@ -20,6 +20,7 @@ import numpy as np
 WS = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(WS / 'source'), str(WS)]
 
+from bpdr_input.reporting.provenance import relpath, sha256_file
 from bpdr_input.studio import boundary, clean, evidence as E
 from tools.benchmark_studio_vocadito import (
     load_vocadito_windows, make_notes_from_aligned, note_f1, onset_f1,
@@ -269,8 +270,8 @@ def main(argv=None):
                   f"v1note={r['note_f1_variants']['legacy']:.3f}", flush=True)
         per_cond[cond] = {'summary': summarize(rows), 'rows': rows}
     payload = {
-        'model': 'studio_v1', 'checkpoint': str(boundary.V1_CHECKPOINT), 'threshold': float(model.default_threshold),
-        'noise_file': str(NOISE), 'tolerance_s': TOL, 'n_windows': len(windows),
+        'model': 'studio_v1', 'checkpoint': relpath(boundary.V1_CHECKPOINT, WS), 'checkpoint_sha256': sha256_file(boundary.V1_CHECKPOINT), 'threshold': float(model.default_threshold),
+        'noise_file': relpath(NOISE, WS), 'tolerance_s': TOL, 'n_windows': len(windows),
         'vocadito': {c: v['summary'] for c, v in per_cond.items()},
         'dev_M02': dev_m02(model),
         'rows': {c: v['rows'] for c, v in per_cond.items()},

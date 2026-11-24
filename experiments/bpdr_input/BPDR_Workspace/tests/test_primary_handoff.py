@@ -16,7 +16,7 @@ from bpdr_input.repair import primary_handoff as primary
 class PrimaryHandoffTests(unittest.TestCase):
     def setUp(self):
         parent = primary.WORKSPACE / 'results/demo_sessions'
-        parent.mkdir(exist_ok=True)
+        parent.mkdir(parents=True, exist_ok=True)
         self.temp = TemporaryDirectory(dir=parent)
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)

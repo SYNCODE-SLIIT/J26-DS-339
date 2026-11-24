@@ -1,0 +1,33 @@
+{
+  "template_only": true,
+  "participant_id": null,
+  "participant_slot_id": null,
+  "adult_eligibility_confirmed": false,
+  "consent_record_id": null,
+  "consent_status": "not_obtained",
+  "consent_evaluation_and_two_reviewer_access": false,
+  "consent_future_training": false,
+  "consent_presentation_playback": false,
+  "consent_wider_audio_sharing": false,
+  "withdrawal_deadline": null,
+  "withdrawal_status": "not_applicable_not_enrolled",
+  "institutional_process_reference": null,
+  "storage_and_retention_policy_reference": null,
+  "split_role": "unassigned",
+  "split_assignment_receipt": null,
+  "experience_optional": null,
+  "source_or_voice_category_optional": null,
+  "recordings": [],
+  "recording_required_fields": [
+    "recording_id", "task_id", "attempt_number", "retry_of",
+    "source_path", "source_sha256", "source_sample_rate", "source_channels",
+    "working_copy_path", "working_copy_sha256", "time_mapping_reference",
+    "technical_status", "technical_failure_reason", "guide_reference_id",
+    "participant_intent_record", "intended_pitch_known",
+    "reference_annotation_status", "reviewer_record_ids", "split_role"
+  ],
+  "default_recording_status": "not_collected",
+  "research_training_eligible": false,
+  "approved_independent_reviews": 0,
+  "confirmation_audio_accessed": false
+}

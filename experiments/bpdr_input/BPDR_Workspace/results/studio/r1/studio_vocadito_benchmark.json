@@ -15,32 +15,32 @@
   ],
   "models": {
     "studio_v1": {
-      "checkpoint": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\studio\\r1\\boundary_transformer.pt",
+      "checkpoint": "results/studio/r1/boundary_transformer.pt",
       "nin": 5,
       "default_threshold": 0.8
     },
     "studio_v2": {
-      "checkpoint": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\studio\\r1\\boundary_transformer_v2.pt",
+      "checkpoint": "results/studio/r1/boundary_transformer_v2.pt",
       "nin": 5,
       "default_threshold": 0.65
     },
     "studio_v2_bpdr": {
-      "checkpoint": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\studio\\r1\\boundary_transformer_v2_bpdr.pt",
+      "checkpoint": "results/studio/r1/boundary_transformer_v2_bpdr.pt",
       "nin": 6,
       "default_threshold": 0.6
     },
     "studio_v4": {
-      "checkpoint": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\studio\\r1\\boundary_transformer_v4.pt",
+      "checkpoint": "results/studio/r1/boundary_transformer_v4.pt",
       "nin": 5,
       "default_threshold": 0.85
     },
     "studio_v4_bpdr": {
-      "checkpoint": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\studio\\r1\\boundary_transformer_v4_bpdr.pt",
+      "checkpoint": "results/studio/r1/boundary_transformer_v4_bpdr.pt",
       "nin": 6,
       "default_threshold": 0.9
     },
     "studio_v5": {
-      "checkpoint": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\studio\\r1\\boundary_transformer_v5.pt",
+      "checkpoint": "results/studio/r1/boundary_transformer_v5.pt",
       "nin": 5,
       "default_threshold": 0.85
     }

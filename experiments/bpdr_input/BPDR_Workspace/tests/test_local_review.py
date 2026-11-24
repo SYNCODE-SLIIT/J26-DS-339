@@ -16,6 +16,7 @@ from bpdr_input.repair.repair_controller import decision_hash, plan_fixture
 class LocalReviewTests(unittest.TestCase):
     def setUp(self):
         parent = local.WORKSPACE / 'results/demo_sessions'
+        parent.mkdir(parents=True, exist_ok=True)
         self.temp = TemporaryDirectory(dir=parent)
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)

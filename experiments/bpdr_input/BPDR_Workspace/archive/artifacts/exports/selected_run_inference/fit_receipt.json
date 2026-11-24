@@ -1,0 +1,16 @@
+{
+  "fit_completed": true,
+  "model": "extra_trees",
+  "training_rows": 16842,
+  "features": 31,
+  "audited_pairs": 43,
+  "original_recordings": 13,
+  "training_singers": 7,
+  "fit_seconds": 0.9335726000135764,
+  "arrays_sha256": "9c28754ff7016c3f387565ad1b0fef562872648d4f351e4f972d6f776578bdb8",
+  "declaration_sha256": "9a12015bbb60ff6b9aec51356d629689a5e9f44f087c6521b56169a803c8e56d",
+  "train_weighted_mae_cents": 3.487888431837239,
+  "zero_train_mae_cents": 8.680952380952382,
+  "calibration_or_pilot_used_for_fit": false,
+  "research_gates_passed": false
+}

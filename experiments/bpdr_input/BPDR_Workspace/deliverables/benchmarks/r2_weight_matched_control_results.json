@@ -1,0 +1,2941 @@
+{
+  "arms": {
+    "augmentation_only": {
+      "split": {
+        "raw": {
+          "groups": [
+            {
+              "group": "HumTrans:F01",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.06750410795211792,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "HumTrans:F02",
+              "positive_mae_cents": 24.415127012464737,
+              "signed_response": 0.0011852137783231835,
+              "original_mae_cents": 0.4769706157967448,
+              "outside_mae_cents": 1.0185392300287883,
+              "scoreable_pairs": 9
+            },
+            {
+              "group": "HumTrans:F03",
+              "positive_mae_cents": 5.897553055517135,
+              "signed_response": 0.9086971648277775,
+              "original_mae_cents": 0.7359214089810848,
+              "outside_mae_cents": 0.8592115381071644,
+              "scoreable_pairs": 31
+            },
+            {
+              "group": "HumTrans:F04",
+              "positive_mae_cents": 8.975418597459793,
+              "signed_response": 0.7431765133515,
+              "original_mae_cents": 2.407626191775004,
+              "outside_mae_cents": 1.7292740762233734,
+              "scoreable_pairs": 40
+            },
+            {
+              "group": "HumTrans:F05",
+              "positive_mae_cents": 24.88708734512329,
+              "signed_response": 0.004485396566451527,
+              "original_mae_cents": 0.19664081931114197,
+              "outside_mae_cents": 0.11959606129676104,
+              "scoreable_pairs": 8
+            },
+            {
+              "group": "HumTrans:M01",
+              "positive_mae_cents": 28.25732723871867,
+              "signed_response": -0.13959132262971252,
+              "original_mae_cents": 0.02525891433469951,
+              "outside_mae_cents": 0.006443373044021428,
+              "scoreable_pairs": 12
+            },
+            {
+              "group": "S1",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.008868911458800236,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "S10",
+              "positive_mae_cents": 24.918589765375312,
+              "signed_response": 0.0030763666367089504,
+              "original_mae_cents": 0.3935448080301285,
+              "outside_mae_cents": 0.13116828284480356,
+              "scoreable_pairs": 22
+            },
+            {
+              "group": "S11",
+              "positive_mae_cents": 11.641810029745102,
+              "signed_response": 0.5882620443589985,
+              "original_mae_cents": 1.9287878274917603,
+              "outside_mae_cents": 1.0909381732344627,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S13",
+              "positive_mae_cents": 19.426189601421356,
+              "signed_response": 0.27675574795820895,
+              "original_mae_cents": 1.5929556687672932,
+              "outside_mae_cents": 0.7784475993953253,
+              "scoreable_pairs": 38
+            },
+            {
+              "group": "S15",
+              "positive_mae_cents": 24.510444402694702,
+              "signed_response": 0.06034749125440916,
+              "original_mae_cents": 1.531826138496399,
+              "outside_mae_cents": 0.43564915657043457,
+              "scoreable_pairs": 12
+            },
+            {
+              "group": "S20",
+              "positive_mae_cents": 25.076581597328186,
+              "signed_response": -0.0029167837055865675,
+              "original_mae_cents": 0.0504271499812603,
+              "outside_mae_cents": 0.0322980034397915,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S21",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.0059116557240486145,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "S22",
+              "positive_mae_cents": 24.7532257437706,
+              "signed_response": 0.01024716284700844,
+              "original_mae_cents": 0.7464140057563782,
+              "outside_mae_cents": 0.18987000756897032,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S23",
+              "positive_mae_cents": 25.7301648580111,
+              "signed_response": 0.050159850086157136,
+              "original_mae_cents": 1.2660404182970524,
+              "outside_mae_cents": 0.6131687188664308,
+              "scoreable_pairs": 13
+            },
+            {
+              "group": "S25",
+              "positive_mae_cents": 15.813980916272039,
+              "signed_response": 0.4730738278316415,
+              "original_mae_cents": 3.030762871106466,
+              "outside_mae_cents": 0.6683337578307027,
+              "scoreable_pairs": 23
+            },
+            {
+              "group": "S28",
+              "positive_mae_cents": 13.124090413252512,
+              "signed_response": 0.5940878068756622,
+              "original_mae_cents": 0.7009768486022949,
+              "outside_mae_cents": 0.25060274427135787,
+              "scoreable_pairs": 30
+            },
+            {
+              "group": "S29",
+              "positive_mae_cents": 17.873882110978737,
+              "signed_response": 0.3627220810532711,
+              "original_mae_cents": 5.03738303296268,
+              "outside_mae_cents": 5.766775029360271,
+              "scoreable_pairs": 122
+            },
+            {
+              "group": "S5",
+              "positive_mae_cents": 22.573500303121712,
+              "signed_response": 0.23511171742127493,
+              "original_mae_cents": 1.8264946937561035,
+              "outside_mae_cents": 0.6822059750556946,
+              "scoreable_pairs": 26
+            },
+            {
+              "group": "S7",
+              "positive_mae_cents": 20.7071458643133,
+              "signed_response": 0.16767615530195393,
+              "original_mae_cents": 1.023206353187561,
+              "outside_mae_cents": 0.9199604771353982,
+              "scoreable_pairs": 11
+            }
+          ],
+          "positive_singer_macro_mae_cents": 19.916595226798137,
+          "original_singer_macro_mae_cents": 1.152676122088451,
+          "raw_gate_passed": false
+        },
+        "positive": {
+          "boundary_cents": 0.8960405293239017,
+          "counter_detuning_error_cents": 20.426471127472976,
+          "by_group_boundary_and_response": {
+            "S5": [
+              0.20153016310471755,
+              20.151117159770084
+            ],
+            "S7": [
+              2.1152178636508655e-05,
+              22.87794030796398
+            ],
+            "S10": [
+              0.0,
+              24.91867143457586
+            ],
+            "S11": [
+              5.974543035030365,
+              14.12439152598381
+            ],
+            "S13": [
+              0.0,
+              20.88265928469206
+            ],
+            "S15": [
+              0.0,
+              23.48137601216634
+            ],
+            "S20": [
+              0.2947271801531315,
+              25.050921320915222
+            ],
+            "S22": [
+              0.02656631320132874,
+              24.75138008594513
+            ],
+            "S23": [
+              1.3567023809139562,
+              22.901349727924053
+            ],
+            "S25": [
+              0.12134184720723526,
+              15.344877885735553
+            ],
+            "S28": [
+              0.32241468330224354,
+              15.66811326344808
+            ],
+            "S29": [
+              0.7335414126261227,
+              17.27270556473341
+            ],
+            "HumTrans:F02": [
+              0.007342233633001645,
+              24.420703252156574
+            ],
+            "HumTrans:F03": [
+              1.174998247335034,
+              7.652200168178927
+            ],
+            "HumTrans:F04": [
+              3.362502509355545,
+              15.450500249862671
+            ],
+            "HumTrans:F05": [
+              0.04102040734142065,
+              24.919832944869995
+            ],
+            "HumTrans:M01": [
+              1.6154374331235886,
+              27.381268978118896
+            ]
+          }
+        },
+        "known_zero": {
+          "boundary_cents": 0.03393799369551477,
+          "counter_detuning_error_cents": 0.1581855409947532,
+          "by_group_boundary_and_response": {
+            "S5": [
+              0.09523808146612002,
+              0.06377956630911705
+            ],
+            "S7": [
+              0.08077253536744551,
+              0.004779780082489279
+            ],
+            "S10": [
+              5.975999357219057e-12,
+              0.021980892348272555
+            ],
+            "S11": [
+              0.017483674543882444,
+              0.056325858391574
+            ],
+            "S13": [
+              2.816908690954867e-10,
+              0.1594842068244409
+            ],
+            "S15": [
+              0.0,
+              0.2791665916641553
+            ],
+            "S20": [
+              0.0004060420023961342,
+              0.0016357980675820727
+            ],
+            "S22": [
+              0.004247572005624534,
+              0.11247686456772499
+            ],
+            "S23": [
+              0.04353330150367513,
+              0.03127016428893862
+            ],
+            "S25": [
+              0.0015919077837758739,
+              0.46713815018554905
+            ],
+            "S28": [
+              0.00012140355098810748,
+              0.0019027271521432946
+            ],
+            "S29": [
+              0.1190993137107188,
+              0.5005745057047146
+            ],
+            "HumTrans:F02": [
+              0.00010250641854428168,
+              0.00501551768845982
+            ],
+            "HumTrans:F03": [
+              0.10028738300165822,
+              0.6440671038243079
+            ],
+            "HumTrans:F04": [
+              0.11391155309320311,
+              0.33891436115372925
+            ],
+            "HumTrans:F05": [
+              4.7339163302240195e-05,
+              0.00027961211708316114
+            ],
+            "HumTrans:M01": [
+              0.00010327892474985371,
+              0.0003624965405227461
+            ]
+          }
+        }
+      },
+      "merge": {
+        "raw": {
+          "groups": [
+            {
+              "group": "HumTrans:F01",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.06750410795211792,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "HumTrans:F02",
+              "positive_mae_cents": 24.415127012464737,
+              "signed_response": 0.0011852137783231835,
+              "original_mae_cents": 0.4769706157967448,
+              "outside_mae_cents": 1.0185392300287883,
+              "scoreable_pairs": 9
+            },
+            {
+              "group": "HumTrans:F03",
+              "positive_mae_cents": 5.897553055517135,
+              "signed_response": 0.9086971648277775,
+              "original_mae_cents": 0.7359214089810848,
+              "outside_mae_cents": 0.8592115381071644,
+              "scoreable_pairs": 31
+            },
+            {
+              "group": "HumTrans:F04",
+              "positive_mae_cents": 8.975418597459793,
+              "signed_response": 0.7431765133515,
+              "original_mae_cents": 2.407626191775004,
+              "outside_mae_cents": 1.7292740762233734,
+              "scoreable_pairs": 40
+            },
+            {
+              "group": "HumTrans:F05",
+              "positive_mae_cents": 24.88708734512329,
+              "signed_response": 0.004485396566451527,
+              "original_mae_cents": 0.19664081931114197,
+              "outside_mae_cents": 0.11959606129676104,
+              "scoreable_pairs": 8
+            },
+            {
+              "group": "HumTrans:M01",
+              "positive_mae_cents": 28.25732723871867,
+              "signed_response": -0.13959132262971252,
+              "original_mae_cents": 0.02525891433469951,
+              "outside_mae_cents": 0.006443373044021428,
+              "scoreable_pairs": 12
+            },
+            {
+              "group": "S1",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.008868911458800236,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "S10",
+              "positive_mae_cents": 24.918589765375312,
+              "signed_response": 0.0030763666367089504,
+              "original_mae_cents": 0.3935448080301285,
+              "outside_mae_cents": 0.13116828284480356,
+              "scoreable_pairs": 22
+            },
+            {
+              "group": "S11",
+              "positive_mae_cents": 11.641810029745102,
+              "signed_response": 0.5882620443589985,
+              "original_mae_cents": 1.9287878274917603,
+              "outside_mae_cents": 1.0909381732344627,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S13",
+              "positive_mae_cents": 19.426189601421356,
+              "signed_response": 0.27675574795820895,
+              "original_mae_cents": 1.5929556687672932,
+              "outside_mae_cents": 0.7784475993953253,
+              "scoreable_pairs": 38
+            },
+            {
+              "group": "S15",
+              "positive_mae_cents": 24.510444402694702,
+              "signed_response": 0.06034749125440916,
+              "original_mae_cents": 1.531826138496399,
+              "outside_mae_cents": 0.43564915657043457,
+              "scoreable_pairs": 12
+            },
+            {
+              "group": "S20",
+              "positive_mae_cents": 25.076581597328186,
+              "signed_response": -0.0029167837055865675,
+              "original_mae_cents": 0.0504271499812603,
+              "outside_mae_cents": 0.0322980034397915,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S21",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.0059116557240486145,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "S22",
+              "positive_mae_cents": 24.7532257437706,
+              "signed_response": 0.01024716284700844,
+              "original_mae_cents": 0.7464140057563782,
+              "outside_mae_cents": 0.18987000756897032,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S23",
+              "positive_mae_cents": 25.7301648580111,
+              "signed_response": 0.050159850086157136,
+              "original_mae_cents": 1.2660404182970524,
+              "outside_mae_cents": 0.6131687188664308,
+              "scoreable_pairs": 13
+            },
+            {
+              "group": "S25",
+              "positive_mae_cents": 15.813980916272039,
+              "signed_response": 0.4730738278316415,
+              "original_mae_cents": 3.030762871106466,
+              "outside_mae_cents": 0.6683337578307027,
+              "scoreable_pairs": 23
+            },
+            {
+              "group": "S28",
+              "positive_mae_cents": 13.124090413252512,
+              "signed_response": 0.5940878068756622,
+              "original_mae_cents": 0.7009768486022949,
+              "outside_mae_cents": 0.25060274427135787,
+              "scoreable_pairs": 30
+            },
+            {
+              "group": "S29",
+              "positive_mae_cents": 17.873882110978737,
+              "signed_response": 0.3627220810532711,
+              "original_mae_cents": 5.03738303296268,
+              "outside_mae_cents": 5.766775029360271,
+              "scoreable_pairs": 122
+            },
+            {
+              "group": "S5",
+              "positive_mae_cents": 22.573500303121712,
+              "signed_response": 0.23511171742127493,
+              "original_mae_cents": 1.8264946937561035,
+              "outside_mae_cents": 0.6822059750556946,
+              "scoreable_pairs": 26
+            },
+            {
+              "group": "S7",
+              "positive_mae_cents": 20.7071458643133,
+              "signed_response": 0.16767615530195393,
+              "original_mae_cents": 1.023206353187561,
+              "outside_mae_cents": 0.9199604771353982,
+              "scoreable_pairs": 11
+            }
+          ],
+          "positive_singer_macro_mae_cents": 19.916595226798137,
+          "original_singer_macro_mae_cents": 1.152676122088451,
+          "raw_gate_passed": false
+        },
+        "positive": {
+          "boundary_cents": 0.07576539381560961,
+          "counter_detuning_error_cents": 20.45312762500793,
+          "by_group_boundary_and_response": {
+            "S5": [
+              0.0,
+              20.06506716288053
+            ],
+            "S7": [
+              0.7028851183977994,
+              22.87618602405895
+            ],
+            "S10": [
+              0.00016717339828822085,
+              24.918684352527965
+            ],
+            "S11": [
+              0.0,
+              13.453339964151382
+            ],
+            "S13": [
+              0.008895194010907099,
+              20.881377345637272
+            ],
+            "S15": [
+              0.0,
+              23.48137601216634
+            ],
+            "S20": [
+              0.0,
+              25.076582193374634
+            ],
+            "S22": [
+              0.038299400548567064,
+              24.73307168483734
+            ],
+            "S23": [
+              0.20829664743863618,
+              22.9057958309467
+            ],
+            "S25": [
+              0.030122239770286757,
+              15.339280646780264
+            ],
+            "S28": [
+              0.18597689762633915,
+              15.735812457402547
+            ],
+            "S29": [
+              0.07761811702936834,
+              17.388908677413816
+            ],
+            "HumTrans:F02": [
+              0.0,
+              24.41436619228787
+            ],
+            "HumTrans:F03": [
+              0.0,
+              7.220233498081084
+            ],
+            "HumTrans:F04": [
+              0.035608604177832605,
+              16.068611407279967
+            ],
+            "HumTrans:F05": [
+              0.0001423024673385953,
+              24.887148141860962
+            ],
+            "HumTrans:M01": [
+              0.0,
+              28.257328033447266
+            ]
+          }
+        },
+        "known_zero": {
+          "boundary_cents": 0.01070604590866997,
+          "counter_detuning_error_cents": 0.15742442161515816,
+          "by_group_boundary_and_response": {
+            "S5": [
+              0.0019328064616573751,
+              0.04889879846030873
+            ],
+            "S7": [
+              0.0009392691850238903,
+              0.00483148198955777
+            ],
+            "S10": [
+              0.000571906161481324,
+              0.022107752548022705
+            ],
+            "S11": [
+              0.011928752792300656,
+              0.04427725233290403
+            ],
+            "S13": [
+              0.04155609890930416,
+              0.1774521238617844
+            ],
+            "S15": [
+              4.066342989972327e-05,
+              0.2791666140158971
+            ],
+            "S20": [
+              0.000150500475683657,
+              0.0014693821176479105
+            ],
+            "S22": [
+              0.01864323821337166,
+              0.11346684950694907
+            ],
+            "S23": [
+              0.0016276046606855323,
+              0.03150066887386716
+            ],
+            "S25": [
+              0.0031965914759380016,
+              0.46655824616976566
+            ],
+            "S28": [
+              0.0011397280727881783,
+              0.002246781950816512
+            ],
+            "S29": [
+              0.07918018017901841,
+              0.49482362518911477
+            ],
+            "HumTrans:F02": [
+              0.002246227917364902,
+              0.0050171224607361686
+            ],
+            "HumTrans:F03": [
+              0.004118874939458985,
+              0.6366033207985663
+            ],
+            "HumTrans:F04": [
+              0.014659925730666146,
+              0.34718533645209393
+            ],
+            "HumTrans:F05": [
+              4.814037356482004e-05,
+              0.00027949726063525304
+            ],
+            "HumTrans:M01": [
+              2.2271469182063203e-05,
+              0.0003303134690213483
+            ]
+          }
+        }
+      },
+      "jitter": {
+        "raw": {
+          "groups": [
+            {
+              "group": "HumTrans:F01",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.06750410795211792,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "HumTrans:F02",
+              "positive_mae_cents": 24.415127012464737,
+              "signed_response": 0.0011852137783231835,
+              "original_mae_cents": 0.4769706157967448,
+              "outside_mae_cents": 1.0185392300287883,
+              "scoreable_pairs": 9
+            },
+            {
+              "group": "HumTrans:F03",
+              "positive_mae_cents": 5.897553055517135,
+              "signed_response": 0.9086971648277775,
+              "original_mae_cents": 0.7359214089810848,
+              "outside_mae_cents": 0.8592115381071644,
+              "scoreable_pairs": 31
+            },
+            {
+              "group": "HumTrans:F04",
+              "positive_mae_cents": 8.975418597459793,
+              "signed_response": 0.7431765133515,
+              "original_mae_cents": 2.407626191775004,
+              "outside_mae_cents": 1.7292740762233734,
+              "scoreable_pairs": 40
+            },
+            {
+              "group": "HumTrans:F05",
+              "positive_mae_cents": 24.88708734512329,
+              "signed_response": 0.004485396566451527,
+              "original_mae_cents": 0.19664081931114197,
+              "outside_mae_cents": 0.11959606129676104,
+              "scoreable_pairs": 8
+            },
+            {
+              "group": "HumTrans:M01",
+              "positive_mae_cents": 28.25732723871867,
+              "signed_response": -0.13959132262971252,
+              "original_mae_cents": 0.02525891433469951,
+              "outside_mae_cents": 0.006443373044021428,
+              "scoreable_pairs": 12
+            },
+            {
+              "group": "S1",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.008868911458800236,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "S10",
+              "positive_mae_cents": 24.918589765375312,
+              "signed_response": 0.0030763666367089504,
+              "original_mae_cents": 0.3935448080301285,
+              "outside_mae_cents": 0.13116828284480356,
+              "scoreable_pairs": 22
+            },
+            {
+              "group": "S11",
+              "positive_mae_cents": 11.641810029745102,
+              "signed_response": 0.5882620443589985,
+              "original_mae_cents": 1.9287878274917603,
+              "outside_mae_cents": 1.0909381732344627,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S13",
+              "positive_mae_cents": 19.426189601421356,
+              "signed_response": 0.27675574795820895,
+              "original_mae_cents": 1.5929556687672932,
+              "outside_mae_cents": 0.7784475993953253,
+              "scoreable_pairs": 38
+            },
+            {
+              "group": "S15",
+              "positive_mae_cents": 24.510444402694702,
+              "signed_response": 0.06034749125440916,
+              "original_mae_cents": 1.531826138496399,
+              "outside_mae_cents": 0.43564915657043457,
+              "scoreable_pairs": 12
+            },
+            {
+              "group": "S20",
+              "positive_mae_cents": 25.076581597328186,
+              "signed_response": -0.0029167837055865675,
+              "original_mae_cents": 0.0504271499812603,
+              "outside_mae_cents": 0.0322980034397915,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S21",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.0059116557240486145,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "S22",
+              "positive_mae_cents": 24.7532257437706,
+              "signed_response": 0.01024716284700844,
+              "original_mae_cents": 0.7464140057563782,
+              "outside_mae_cents": 0.18987000756897032,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S23",
+              "positive_mae_cents": 25.7301648580111,
+              "signed_response": 0.050159850086157136,
+              "original_mae_cents": 1.2660404182970524,
+              "outside_mae_cents": 0.6131687188664308,
+              "scoreable_pairs": 13
+            },
+            {
+              "group": "S25",
+              "positive_mae_cents": 15.813980916272039,
+              "signed_response": 0.4730738278316415,
+              "original_mae_cents": 3.030762871106466,
+              "outside_mae_cents": 0.6683337578307027,
+              "scoreable_pairs": 23
+            },
+            {
+              "group": "S28",
+              "positive_mae_cents": 13.124090413252512,
+              "signed_response": 0.5940878068756622,
+              "original_mae_cents": 0.7009768486022949,
+              "outside_mae_cents": 0.25060274427135787,
+              "scoreable_pairs": 30
+            },
+            {
+              "group": "S29",
+              "positive_mae_cents": 17.873882110978737,
+              "signed_response": 0.3627220810532711,
+              "original_mae_cents": 5.03738303296268,
+              "outside_mae_cents": 5.766775029360271,
+              "scoreable_pairs": 122
+            },
+            {
+              "group": "S5",
+              "positive_mae_cents": 22.573500303121712,
+              "signed_response": 0.23511171742127493,
+              "original_mae_cents": 1.8264946937561035,
+              "outside_mae_cents": 0.6822059750556946,
+              "scoreable_pairs": 26
+            },
+            {
+              "group": "S7",
+              "positive_mae_cents": 20.7071458643133,
+              "signed_response": 0.16767615530195393,
+              "original_mae_cents": 1.023206353187561,
+              "outside_mae_cents": 0.9199604771353982,
+              "scoreable_pairs": 11
+            }
+          ],
+          "positive_singer_macro_mae_cents": 19.916595226798137,
+          "original_singer_macro_mae_cents": 1.152676122088451,
+          "raw_gate_passed": false
+        },
+        "positive": {
+          "boundary_cents": 0.4371078525598492,
+          "counter_detuning_error_cents": 20.477257322761897,
+          "by_group_boundary_and_response": {
+            "S5": [
+              1.4588363346142263,
+              20.108044330890362
+            ],
+            "S7": [
+              0.4808837974613363,
+              23.092083974318072
+            ],
+            "S10": [
+              0.017785651916214687,
+              24.926068045876242
+            ],
+            "S11": [
+              0.20516702253371477,
+              13.45744040608406
+            ],
+            "S13": [
+              0.48898195965509667,
+              20.883165886527614
+            ],
+            "S15": [
+              0.7530385553836823,
+              23.06827974319458
+            ],
+            "S20": [
+              0.022325835074298084,
+              25.076651573181152
+            ],
+            "S22": [
+              0.022897944538271986,
+              24.749667525291443
+            ],
+            "S23": [
+              0.9360848252589886,
+              23.049428646381084
+            ],
+            "S25": [
+              1.0559053291445193,
+              15.659571108610734
+            ],
+            "S28": [
+              0.42693680924518657,
+              15.700695045789082
+            ],
+            "S29": [
+              0.747619478824953,
+              17.402917114437603
+            ],
+            "HumTrans:F02": [
+              0.0013279382191184494,
+              24.41466416252984
+            ],
+            "HumTrans:F03": [
+              0.07369938366595775,
+              7.214831425297644
+            ],
+            "HumTrans:F04": [
+              0.5972258381545543,
+              16.135484480857848
+            ],
+            "HumTrans:F05": [
+              0.01607773690193426,
+              24.901361227035522
+            ],
+            "HumTrans:M01": [
+              0.12603905292538306,
+              28.273019790649414
+            ]
+          }
+        },
+        "known_zero": {
+          "boundary_cents": 0.0750569812067045,
+          "counter_detuning_error_cents": 0.1608093150331707,
+          "by_group_boundary_and_response": {
+            "S5": [
+              0.0822902899235487,
+              0.04888042674457001
+            ],
+            "S7": [
+              0.1374096701090986,
+              0.043093946889381514
+            ],
+            "S10": [
+              0.01655093429144472,
+              0.0219179956686937
+            ],
+            "S11": [
+              0.18446712847799063,
+              0.10073623888820293
+            ],
+            "S13": [
+              0.06567880859304416,
+              0.16231745454072216
+            ],
+            "S15": [
+              0.07930898759514093,
+              0.2455986843754848
+            ],
+            "S20": [
+              0.0016658003223710693,
+              0.0013809702468279283
+            ],
+            "S22": [
+              0.015835012076422572,
+              0.11387333663878962
+            ],
+            "S23": [
+              0.09569208692902556,
+              0.029108800137272246
+            ],
+            "S25": [
+              0.07241851727113775,
+              0.4685837130578559
+            ],
+            "S28": [
+              0.030271098048736653,
+              0.0020969477094088993
+            ],
+            "S29": [
+              0.3106457714342558,
+              0.5110884299349101
+            ],
+            "HumTrans:F02": [
+              0.01810437875489394,
+              0.005429816380557086
+            ],
+            "HumTrans:F03": [
+              0.03616866000717686,
+              0.6379423420275411
+            ],
+            "HumTrans:F04": [
+              0.09400059059262275,
+              0.34111837809468853
+            ],
+            "HumTrans:F05": [
+              0.03490358870476484,
+              0.00026287289801985025
+            ],
+            "HumTrans:M01": [
+              0.0005573573823009307,
+              0.0003280013309752879
+            ]
+          }
+        }
+      }
+    },
+    "frame_only": {
+      "split": {
+        "raw": {
+          "groups": [
+            {
+              "group": "HumTrans:F01",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.06545691937208176,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "HumTrans:F02",
+              "positive_mae_cents": 17.171722226672703,
+              "signed_response": 0.47532484469573116,
+              "original_mae_cents": 0.6432097256183624,
+              "outside_mae_cents": 1.048804587788052,
+              "scoreable_pairs": 9
+            },
+            {
+              "group": "HumTrans:F03",
+              "positive_mae_cents": 9.169129371643066,
+              "signed_response": 0.7158335053752507,
+              "original_mae_cents": 0.5545271662995219,
+              "outside_mae_cents": 0.7982507780674966,
+              "scoreable_pairs": 31
+            },
+            {
+              "group": "HumTrans:F04",
+              "positive_mae_cents": 10.145532855391503,
+              "signed_response": 0.6677842141129077,
+              "original_mae_cents": 2.512534817059835,
+              "outside_mae_cents": 2.3791090488433837,
+              "scoreable_pairs": 40
+            },
+            {
+              "group": "HumTrans:F05",
+              "positive_mae_cents": 22.210978150367737,
+              "signed_response": 0.10666693301755004,
+              "original_mae_cents": 0.10985375195741653,
+              "outside_mae_cents": 0.19770398177206516,
+              "scoreable_pairs": 8
+            },
+            {
+              "group": "HumTrans:M01",
+              "positive_mae_cents": 20.87036993106206,
+              "signed_response": 0.30781437704960507,
+              "original_mae_cents": 0.3501650672405958,
+              "outside_mae_cents": 0.1933806985616684,
+              "scoreable_pairs": 12
+            },
+            {
+              "group": "S1",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.008105984656140208,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "S10",
+              "positive_mae_cents": 26.173161116513338,
+              "signed_response": -0.003957306228006597,
+              "original_mae_cents": 0.9981034249067307,
+              "outside_mae_cents": 0.15072732571173797,
+              "scoreable_pairs": 22
+            },
+            {
+              "group": "S11",
+              "positive_mae_cents": 14.650945842266083,
+              "signed_response": 0.4377098064869642,
+              "original_mae_cents": 2.001622200012207,
+              "outside_mae_cents": 0.8476538881659508,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S13",
+              "positive_mae_cents": 19.489846919712267,
+              "signed_response": 0.279662931502619,
+              "original_mae_cents": 2.092305064201355,
+              "outside_mae_cents": 0.8962708094010228,
+              "scoreable_pairs": 38
+            },
+            {
+              "group": "S15",
+              "positive_mae_cents": 22.98194670677185,
+              "signed_response": 0.0941457495209761,
+              "original_mae_cents": 0.3124604821205139,
+              "outside_mae_cents": 0.1607375401072204,
+              "scoreable_pairs": 12
+            },
+            {
+              "group": "S20",
+              "positive_mae_cents": 25.00355565547943,
+              "signed_response": -1.8576334696263075e-05,
+              "original_mae_cents": 0.17587508261203766,
+              "outside_mae_cents": 0.1831413432955742,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S21",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.11446676775813103,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "S22",
+              "positive_mae_cents": 25.030964612960815,
+              "signed_response": -0.004166477738181129,
+              "original_mae_cents": 0.8042025566101074,
+              "outside_mae_cents": 0.08316281670704484,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S23",
+              "positive_mae_cents": 27.615939653836765,
+              "signed_response": 0.06770439331348126,
+              "original_mae_cents": 2.052129030227661,
+              "outside_mae_cents": 0.844834872163259,
+              "scoreable_pairs": 13
+            },
+            {
+              "group": "S25",
+              "positive_mae_cents": 14.407496410867441,
+              "signed_response": 0.5116801493922654,
+              "original_mae_cents": 2.8688812255859375,
+              "outside_mae_cents": 0.7360915089350032,
+              "scoreable_pairs": 23
+            },
+            {
+              "group": "S28",
+              "positive_mae_cents": 10.286299800872802,
+              "signed_response": 0.6908257821681522,
+              "original_mae_cents": 0.4944222867488861,
+              "outside_mae_cents": 0.09537487775087357,
+              "scoreable_pairs": 30
+            },
+            {
+              "group": "S29",
+              "positive_mae_cents": 16.05449083203175,
+              "signed_response": 0.4234610092511294,
+              "original_mae_cents": 4.730351366847754,
+              "outside_mae_cents": 5.440366914648502,
+              "scoreable_pairs": 122
+            },
+            {
+              "group": "S5",
+              "positive_mae_cents": 23.888481369385353,
+              "signed_response": 0.16662477486981794,
+              "original_mae_cents": 2.016774594783783,
+              "outside_mae_cents": 0.5307930467220453,
+              "scoreable_pairs": 26
+            },
+            {
+              "group": "S7",
+              "positive_mae_cents": 21.8291260545904,
+              "signed_response": 0.1323817757974294,
+              "original_mae_cents": 0.9540948867797852,
+              "outside_mae_cents": 0.3766553429040042,
+              "scoreable_pairs": 11
+            }
+          ],
+          "positive_singer_macro_mae_cents": 19.234116912377964,
+          "original_singer_macro_mae_cents": 1.1929771200699422,
+          "raw_gate_passed": false
+        },
+        "positive": {
+          "boundary_cents": 0.0,
+          "counter_detuning_error_cents": 18.7474811983665,
+          "by_group_boundary_and_response": {
+            "S5": [
+              0.0,
+              20.781229459322414
+            ],
+            "S7": [
+              0.0,
+              24.882096247239545
+            ],
+            "S10": [
+              0.0,
+              25.722382632168856
+            ],
+            "S11": [
+              0.0,
+              15.670007646083832
+            ],
+            "S13": [
+              0.0,
+              19.17631053297143
+            ],
+            "S15": [
+              0.0,
+              22.826141834259033
+            ],
+            "S20": [
+              0.0,
+              25.00355589389801
+            ],
+            "S22": [
+              0.0,
+              24.832203030586243
+            ],
+            "S23": [
+              0.0,
+              22.069484857412483
+            ],
+            "S25": [
+              0.0,
+              17.236976934515912
+            ],
+            "S28": [
+              0.0,
+              10.446444805463155
+            ],
+            "S29": [
+              0.0,
+              15.958253766669602
+            ],
+            "HumTrans:F02": [
+              0.0,
+              13.903558413187662
+            ],
+            "HumTrans:F03": [
+              0.0,
+              7.847675304259023
+            ],
+            "HumTrans:F04": [
+              0.0,
+              12.641162323951722
+            ],
+            "HumTrans:F05": [
+              0.0,
+              22.210978507995605
+            ],
+            "HumTrans:M01": [
+              0.0,
+              17.49871818224589
+            ]
+          }
+        },
+        "known_zero": {
+          "boundary_cents": 2.8447572261342096e-11,
+          "counter_detuning_error_cents": 0.15338781064972218,
+          "by_group_boundary_and_response": {
+            "S5": [
+              8.366387977708757e-12,
+              0.045789596869816214
+            ],
+            "S7": [
+              0.0,
+              0.0047227354953065515
+            ],
+            "S10": [
+              1.7553117557163195e-11,
+              0.1914252474988726
+            ],
+            "S11": [
+              1.2711213976667759e-12,
+              0.05262533483437437
+            ],
+            "S13": [
+              9.657972667223715e-11,
+              0.24210934007025667
+            ],
+            "S15": [
+              0.0,
+              0.19053446066876253
+            ],
+            "S20": [
+              4.79647076993394e-12,
+              0.000684753518726211
+            ],
+            "S22": [
+              0.0,
+              0.06389544688136084
+            ],
+            "S23": [
+              0.0,
+              0.027413278746490296
+            ],
+            "S25": [
+              0.0,
+              0.14540446468669435
+            ],
+            "S28": [
+              9.66352865783282e-13,
+              0.004138176915391038
+            ],
+            "S29": [
+              3.474306291765056e-10,
+              0.495096976548189
+            ],
+            "HumTrans:F02": [
+              0.0,
+              0.016601429941753548
+            ],
+            "HumTrans:F03": [
+              0.0,
+              0.5350290695505757
+            ],
+            "HumTrans:F04": [
+              0.0,
+              0.590223356646311
+            ],
+            "HumTrans:F05": [
+              0.0,
+              0.0007069928215059917
+            ],
+            "HumTrans:M01": [
+              6.644922025816902e-12,
+              0.0011921193508896977
+            ]
+          }
+        }
+      },
+      "merge": {
+        "raw": {
+          "groups": [
+            {
+              "group": "HumTrans:F01",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.06545691937208176,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "HumTrans:F02",
+              "positive_mae_cents": 17.171722226672703,
+              "signed_response": 0.47532484469573116,
+              "original_mae_cents": 0.6432097256183624,
+              "outside_mae_cents": 1.048804587788052,
+              "scoreable_pairs": 9
+            },
+            {
+              "group": "HumTrans:F03",
+              "positive_mae_cents": 9.169129371643066,
+              "signed_response": 0.7158335053752507,
+              "original_mae_cents": 0.5545271662995219,
+              "outside_mae_cents": 0.7982507780674966,
+              "scoreable_pairs": 31
+            },
+            {
+              "group": "HumTrans:F04",
+              "positive_mae_cents": 10.145532855391503,
+              "signed_response": 0.6677842141129077,
+              "original_mae_cents": 2.512534817059835,
+              "outside_mae_cents": 2.3791090488433837,
+              "scoreable_pairs": 40
+            },
+            {
+              "group": "HumTrans:F05",
+              "positive_mae_cents": 22.210978150367737,
+              "signed_response": 0.10666693301755004,
+              "original_mae_cents": 0.10985375195741653,
+              "outside_mae_cents": 0.19770398177206516,
+              "scoreable_pairs": 8
+            },
+            {
+              "group": "HumTrans:M01",
+              "positive_mae_cents": 20.87036993106206,
+              "signed_response": 0.30781437704960507,
+              "original_mae_cents": 0.3501650672405958,
+              "outside_mae_cents": 0.1933806985616684,
+              "scoreable_pairs": 12
+            },
+            {
+              "group": "S1",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.008105984656140208,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "S10",
+              "positive_mae_cents": 26.173161116513338,
+              "signed_response": -0.003957306228006597,
+              "original_mae_cents": 0.9981034249067307,
+              "outside_mae_cents": 0.15072732571173797,
+              "scoreable_pairs": 22
+            },
+            {
+              "group": "S11",
+              "positive_mae_cents": 14.650945842266083,
+              "signed_response": 0.4377098064869642,
+              "original_mae_cents": 2.001622200012207,
+              "outside_mae_cents": 0.8476538881659508,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S13",
+              "positive_mae_cents": 19.489846919712267,
+              "signed_response": 0.279662931502619,
+              "original_mae_cents": 2.092305064201355,
+              "outside_mae_cents": 0.8962708094010228,
+              "scoreable_pairs": 38
+            },
+            {
+              "group": "S15",
+              "positive_mae_cents": 22.98194670677185,
+              "signed_response": 0.0941457495209761,
+              "original_mae_cents": 0.3124604821205139,
+              "outside_mae_cents": 0.1607375401072204,
+              "scoreable_pairs": 12
+            },
+            {
+              "group": "S20",
+              "positive_mae_cents": 25.00355565547943,
+              "signed_response": -1.8576334696263075e-05,
+              "original_mae_cents": 0.17587508261203766,
+              "outside_mae_cents": 0.1831413432955742,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S21",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.11446676775813103,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "S22",
+              "positive_mae_cents": 25.030964612960815,
+              "signed_response": -0.004166477738181129,
+              "original_mae_cents": 0.8042025566101074,
+              "outside_mae_cents": 0.08316281670704484,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S23",
+              "positive_mae_cents": 27.615939653836765,
+              "signed_response": 0.06770439331348126,
+              "original_mae_cents": 2.052129030227661,
+              "outside_mae_cents": 0.844834872163259,
+              "scoreable_pairs": 13
+            },
+            {
+              "group": "S25",
+              "positive_mae_cents": 14.407496410867441,
+              "signed_response": 0.5116801493922654,
+              "original_mae_cents": 2.8688812255859375,
+              "outside_mae_cents": 0.7360915089350032,
+              "scoreable_pairs": 23
+            },
+            {
+              "group": "S28",
+              "positive_mae_cents": 10.286299800872802,
+              "signed_response": 0.6908257821681522,
+              "original_mae_cents": 0.4944222867488861,
+              "outside_mae_cents": 0.09537487775087357,
+              "scoreable_pairs": 30
+            },
+            {
+              "group": "S29",
+              "positive_mae_cents": 16.05449083203175,
+              "signed_response": 0.4234610092511294,
+              "original_mae_cents": 4.730351366847754,
+              "outside_mae_cents": 5.440366914648502,
+              "scoreable_pairs": 122
+            },
+            {
+              "group": "S5",
+              "positive_mae_cents": 23.888481369385353,
+              "signed_response": 0.16662477486981794,
+              "original_mae_cents": 2.016774594783783,
+              "outside_mae_cents": 0.5307930467220453,
+              "scoreable_pairs": 26
+            },
+            {
+              "group": "S7",
+              "positive_mae_cents": 21.8291260545904,
+              "signed_response": 0.1323817757974294,
+              "original_mae_cents": 0.9540948867797852,
+              "outside_mae_cents": 0.3766553429040042,
+              "scoreable_pairs": 11
+            }
+          ],
+          "positive_singer_macro_mae_cents": 19.234116912377964,
+          "original_singer_macro_mae_cents": 1.1929771200699422,
+          "raw_gate_passed": false
+        },
+        "positive": {
+          "boundary_cents": 0.0,
+          "counter_detuning_error_cents": 18.7474811983665,
+          "by_group_boundary_and_response": {
+            "S5": [
+              0.0,
+              20.781229459322414
+            ],
+            "S7": [
+              0.0,
+              24.882096247239545
+            ],
+            "S10": [
+              0.0,
+              25.722382632168856
+            ],
+            "S11": [
+              0.0,
+              15.670007646083832
+            ],
+            "S13": [
+              0.0,
+              19.17631053297143
+            ],
+            "S15": [
+              0.0,
+              22.826141834259033
+            ],
+            "S20": [
+              0.0,
+              25.00355589389801
+            ],
+            "S22": [
+              0.0,
+              24.832203030586243
+            ],
+            "S23": [
+              0.0,
+              22.069484857412483
+            ],
+            "S25": [
+              0.0,
+              17.236976934515912
+            ],
+            "S28": [
+              0.0,
+              10.446444805463155
+            ],
+            "S29": [
+              0.0,
+              15.958253766669602
+            ],
+            "HumTrans:F02": [
+              0.0,
+              13.903558413187662
+            ],
+            "HumTrans:F03": [
+              0.0,
+              7.847675304259023
+            ],
+            "HumTrans:F04": [
+              0.0,
+              12.641162323951722
+            ],
+            "HumTrans:F05": [
+              0.0,
+              22.210978507995605
+            ],
+            "HumTrans:M01": [
+              0.0,
+              17.49871818224589
+            ]
+          }
+        },
+        "known_zero": {
+          "boundary_cents": 2.8447572261342096e-11,
+          "counter_detuning_error_cents": 0.15338781064972218,
+          "by_group_boundary_and_response": {
+            "S5": [
+              8.366387977708757e-12,
+              0.045789596869816214
+            ],
+            "S7": [
+              0.0,
+              0.0047227354953065515
+            ],
+            "S10": [
+              1.7553117557163195e-11,
+              0.1914252474988726
+            ],
+            "S11": [
+              1.2711213976667759e-12,
+              0.05262533483437437
+            ],
+            "S13": [
+              9.657972667223715e-11,
+              0.24210934007025667
+            ],
+            "S15": [
+              0.0,
+              0.19053446066876253
+            ],
+            "S20": [
+              4.79647076993394e-12,
+              0.000684753518726211
+            ],
+            "S22": [
+              0.0,
+              0.06389544688136084
+            ],
+            "S23": [
+              0.0,
+              0.027413278746490296
+            ],
+            "S25": [
+              0.0,
+              0.14540446468669435
+            ],
+            "S28": [
+              9.66352865783282e-13,
+              0.004138176915391038
+            ],
+            "S29": [
+              3.474306291765056e-10,
+              0.495096976548189
+            ],
+            "HumTrans:F02": [
+              0.0,
+              0.016601429941753548
+            ],
+            "HumTrans:F03": [
+              0.0,
+              0.5350290695505757
+            ],
+            "HumTrans:F04": [
+              0.0,
+              0.590223356646311
+            ],
+            "HumTrans:F05": [
+              0.0,
+              0.0007069928215059917
+            ],
+            "HumTrans:M01": [
+              6.644922025816902e-12,
+              0.0011921193508896977
+            ]
+          }
+        }
+      },
+      "jitter": {
+        "raw": {
+          "groups": [
+            {
+              "group": "HumTrans:F01",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.06545691937208176,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "HumTrans:F02",
+              "positive_mae_cents": 17.171722226672703,
+              "signed_response": 0.47532484469573116,
+              "original_mae_cents": 0.6432097256183624,
+              "outside_mae_cents": 1.048804587788052,
+              "scoreable_pairs": 9
+            },
+            {
+              "group": "HumTrans:F03",
+              "positive_mae_cents": 9.169129371643066,
+              "signed_response": 0.7158335053752507,
+              "original_mae_cents": 0.5545271662995219,
+              "outside_mae_cents": 0.7982507780674966,
+              "scoreable_pairs": 31
+            },
+            {
+              "group": "HumTrans:F04",
+              "positive_mae_cents": 10.145532855391503,
+              "signed_response": 0.6677842141129077,
+              "original_mae_cents": 2.512534817059835,
+              "outside_mae_cents": 2.3791090488433837,
+              "scoreable_pairs": 40
+            },
+            {
+              "group": "HumTrans:F05",
+              "positive_mae_cents": 22.210978150367737,
+              "signed_response": 0.10666693301755004,
+              "original_mae_cents": 0.10985375195741653,
+              "outside_mae_cents": 0.19770398177206516,
+              "scoreable_pairs": 8
+            },
+            {
+              "group": "HumTrans:M01",
+              "positive_mae_cents": 20.87036993106206,
+              "signed_response": 0.30781437704960507,
+              "original_mae_cents": 0.3501650672405958,
+              "outside_mae_cents": 0.1933806985616684,
+              "scoreable_pairs": 12
+            },
+            {
+              "group": "S1",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.008105984656140208,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "S10",
+              "positive_mae_cents": 26.173161116513338,
+              "signed_response": -0.003957306228006597,
+              "original_mae_cents": 0.9981034249067307,
+              "outside_mae_cents": 0.15072732571173797,
+              "scoreable_pairs": 22
+            },
+            {
+              "group": "S11",
+              "positive_mae_cents": 14.650945842266083,
+              "signed_response": 0.4377098064869642,
+              "original_mae_cents": 2.001622200012207,
+              "outside_mae_cents": 0.8476538881659508,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S13",
+              "positive_mae_cents": 19.489846919712267,
+              "signed_response": 0.279662931502619,
+              "original_mae_cents": 2.092305064201355,
+              "outside_mae_cents": 0.8962708094010228,
+              "scoreable_pairs": 38
+            },
+            {
+              "group": "S15",
+              "positive_mae_cents": 22.98194670677185,
+              "signed_response": 0.0941457495209761,
+              "original_mae_cents": 0.3124604821205139,
+              "outside_mae_cents": 0.1607375401072204,
+              "scoreable_pairs": 12
+            },
+            {
+              "group": "S20",
+              "positive_mae_cents": 25.00355565547943,
+              "signed_response": -1.8576334696263075e-05,
+              "original_mae_cents": 0.17587508261203766,
+              "outside_mae_cents": 0.1831413432955742,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S21",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.11446676775813103,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "S22",
+              "positive_mae_cents": 25.030964612960815,
+              "signed_response": -0.004166477738181129,
+              "original_mae_cents": 0.8042025566101074,
+              "outside_mae_cents": 0.08316281670704484,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S23",
+              "positive_mae_cents": 27.615939653836765,
+              "signed_response": 0.06770439331348126,
+              "original_mae_cents": 2.052129030227661,
+              "outside_mae_cents": 0.844834872163259,
+              "scoreable_pairs": 13
+            },
+            {
+              "group": "S25",
+              "positive_mae_cents": 14.407496410867441,
+              "signed_response": 0.5116801493922654,
+              "original_mae_cents": 2.8688812255859375,
+              "outside_mae_cents": 0.7360915089350032,
+              "scoreable_pairs": 23
+            },
+            {
+              "group": "S28",
+              "positive_mae_cents": 10.286299800872802,
+              "signed_response": 0.6908257821681522,
+              "original_mae_cents": 0.4944222867488861,
+              "outside_mae_cents": 0.09537487775087357,
+              "scoreable_pairs": 30
+            },
+            {
+              "group": "S29",
+              "positive_mae_cents": 16.05449083203175,
+              "signed_response": 0.4234610092511294,
+              "original_mae_cents": 4.730351366847754,
+              "outside_mae_cents": 5.440366914648502,
+              "scoreable_pairs": 122
+            },
+            {
+              "group": "S5",
+              "positive_mae_cents": 23.888481369385353,
+              "signed_response": 0.16662477486981794,
+              "original_mae_cents": 2.016774594783783,
+              "outside_mae_cents": 0.5307930467220453,
+              "scoreable_pairs": 26
+            },
+            {
+              "group": "S7",
+              "positive_mae_cents": 21.8291260545904,
+              "signed_response": 0.1323817757974294,
+              "original_mae_cents": 0.9540948867797852,
+              "outside_mae_cents": 0.3766553429040042,
+              "scoreable_pairs": 11
+            }
+          ],
+          "positive_singer_macro_mae_cents": 19.234116912377964,
+          "original_singer_macro_mae_cents": 1.1929771200699422,
+          "raw_gate_passed": false
+        },
+        "positive": {
+          "boundary_cents": 0.0,
+          "counter_detuning_error_cents": 18.7474811983665,
+          "by_group_boundary_and_response": {
+            "S5": [
+              0.0,
+              20.781229459322414
+            ],
+            "S7": [
+              0.0,
+              24.882096247239545
+            ],
+            "S10": [
+              0.0,
+              25.722382632168856
+            ],
+            "S11": [
+              0.0,
+              15.670007646083832
+            ],
+            "S13": [
+              0.0,
+              19.17631053297143
+            ],
+            "S15": [
+              0.0,
+              22.826141834259033
+            ],
+            "S20": [
+              0.0,
+              25.00355589389801
+            ],
+            "S22": [
+              0.0,
+              24.832203030586243
+            ],
+            "S23": [
+              0.0,
+              22.069484857412483
+            ],
+            "S25": [
+              0.0,
+              17.236976934515912
+            ],
+            "S28": [
+              0.0,
+              10.446444805463155
+            ],
+            "S29": [
+              0.0,
+              15.958253766669602
+            ],
+            "HumTrans:F02": [
+              0.0,
+              13.903558413187662
+            ],
+            "HumTrans:F03": [
+              0.0,
+              7.847675304259023
+            ],
+            "HumTrans:F04": [
+              0.0,
+              12.641162323951722
+            ],
+            "HumTrans:F05": [
+              0.0,
+              22.210978507995605
+            ],
+            "HumTrans:M01": [
+              0.0,
+              17.49871818224589
+            ]
+          }
+        },
+        "known_zero": {
+          "boundary_cents": 2.8447572261342096e-11,
+          "counter_detuning_error_cents": 0.15338781064972218,
+          "by_group_boundary_and_response": {
+            "S5": [
+              8.366387977708757e-12,
+              0.045789596869816214
+            ],
+            "S7": [
+              0.0,
+              0.0047227354953065515
+            ],
+            "S10": [
+              1.7553117557163195e-11,
+              0.1914252474988726
+            ],
+            "S11": [
+              1.2711213976667759e-12,
+              0.05262533483437437
+            ],
+            "S13": [
+              9.657972667223715e-11,
+              0.24210934007025667
+            ],
+            "S15": [
+              0.0,
+              0.19053446066876253
+            ],
+            "S20": [
+              4.79647076993394e-12,
+              0.000684753518726211
+            ],
+            "S22": [
+              0.0,
+              0.06389544688136084
+            ],
+            "S23": [
+              0.0,
+              0.027413278746490296
+            ],
+            "S25": [
+              0.0,
+              0.14540446468669435
+            ],
+            "S28": [
+              9.66352865783282e-13,
+              0.004138176915391038
+            ],
+            "S29": [
+              3.474306291765056e-10,
+              0.495096976548189
+            ],
+            "HumTrans:F02": [
+              0.0,
+              0.016601429941753548
+            ],
+            "HumTrans:F03": [
+              0.0,
+              0.5350290695505757
+            ],
+            "HumTrans:F04": [
+              0.0,
+              0.590223356646311
+            ],
+            "HumTrans:F05": [
+              0.0,
+              0.0007069928215059917
+            ],
+            "HumTrans:M01": [
+              6.644922025816902e-12,
+              0.0011921193508896977
+            ]
+          }
+        }
+      }
+    },
+    "bpdr": {
+      "split": {
+        "raw": {
+          "groups": [
+            {
+              "group": "HumTrans:F01",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.6280033588409424,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "HumTrans:F02",
+              "positive_mae_cents": 12.653055455949572,
+              "signed_response": 0.46357237009538543,
+              "original_mae_cents": 0.5212288722395897,
+              "outside_mae_cents": 1.0788690116670396,
+              "scoreable_pairs": 9
+            },
+            {
+              "group": "HumTrans:F03",
+              "positive_mae_cents": 5.844077519832119,
+              "signed_response": 0.8744866424991239,
+              "original_mae_cents": 0.7020071926526725,
+              "outside_mae_cents": 0.8043915331363678,
+              "scoreable_pairs": 31
+            },
+            {
+              "group": "HumTrans:F04",
+              "positive_mae_cents": 7.981111568212509,
+              "signed_response": 0.7560568626970052,
+              "original_mae_cents": 1.4865378737449646,
+              "outside_mae_cents": 1.388427023589611,
+              "scoreable_pairs": 40
+            },
+            {
+              "group": "HumTrans:F05",
+              "positive_mae_cents": 24.74998712539673,
+              "signed_response": 0.010038966454885667,
+              "original_mae_cents": 0.08925147354602814,
+              "outside_mae_cents": 0.02299993555061519,
+              "scoreable_pairs": 8
+            },
+            {
+              "group": "HumTrans:M01",
+              "positive_mae_cents": 22.828591028849285,
+              "signed_response": 0.0833390638193426,
+              "original_mae_cents": 0.010050963144749403,
+              "outside_mae_cents": 0.005159998234982292,
+              "scoreable_pairs": 12
+            },
+            {
+              "group": "S1",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.014254617970436811,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "S10",
+              "positive_mae_cents": 24.989544348283246,
+              "signed_response": 0.00041830286020492417,
+              "original_mae_cents": 0.07404251210391521,
+              "outside_mae_cents": 0.030335301533341408,
+              "scoreable_pairs": 22
+            },
+            {
+              "group": "S11",
+              "positive_mae_cents": 15.43749326467514,
+              "signed_response": 0.4477211404591799,
+              "original_mae_cents": 2.1064717769622803,
+              "outside_mae_cents": 0.9574664793908596,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S13",
+              "positive_mae_cents": 22.163271514992964,
+              "signed_response": 0.10873990086915192,
+              "original_mae_cents": 0.769869382182757,
+              "outside_mae_cents": 0.5450421067837038,
+              "scoreable_pairs": 38
+            },
+            {
+              "group": "S15",
+              "positive_mae_cents": 23.90503978729248,
+              "signed_response": 0.04595733263219396,
+              "original_mae_cents": 0.7475314736366272,
+              "outside_mae_cents": 0.47608842079838115,
+              "scoreable_pairs": 12
+            },
+            {
+              "group": "S20",
+              "positive_mae_cents": 25.020739912986755,
+              "signed_response": -0.0007746848486931412,
+              "original_mae_cents": 0.054626040160655975,
+              "outside_mae_cents": 0.056895471876487136,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S21",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.008410107577219605,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "S22",
+              "positive_mae_cents": 25.038711071014404,
+              "signed_response": -0.0016066279804363148,
+              "original_mae_cents": 0.06501376628875732,
+              "outside_mae_cents": 0.13344807125395164,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S23",
+              "positive_mae_cents": 17.212219164921688,
+              "signed_response": 0.44745958453187573,
+              "original_mae_cents": 1.9131222367286682,
+              "outside_mae_cents": 1.2915050112284148,
+              "scoreable_pairs": 13
+            },
+            {
+              "group": "S25",
+              "positive_mae_cents": 14.743101959643157,
+              "signed_response": 0.45123725392572256,
+              "original_mae_cents": 2.714347799619039,
+              "outside_mae_cents": 0.9823241351253312,
+              "scoreable_pairs": 23
+            },
+            {
+              "group": "S28",
+              "positive_mae_cents": 20.272870920101802,
+              "signed_response": 0.22232209022331517,
+              "original_mae_cents": 0.5839563558499018,
+              "outside_mae_cents": 0.3883573397994041,
+              "scoreable_pairs": 30
+            },
+            {
+              "group": "S29",
+              "positive_mae_cents": 17.195950234522584,
+              "signed_response": 0.41625158789981065,
+              "original_mae_cents": 4.732175382040441,
+              "outside_mae_cents": 5.3501533674778505,
+              "scoreable_pairs": 122
+            },
+            {
+              "group": "S5",
+              "positive_mae_cents": 22.605956107378006,
+              "signed_response": 0.2415190041065216,
+              "original_mae_cents": 2.158267021179199,
+              "outside_mae_cents": 0.8196696111789117,
+              "scoreable_pairs": 26
+            },
+            {
+              "group": "S7",
+              "positive_mae_cents": 20.128383246335115,
+              "signed_response": 0.19129260729029987,
+              "original_mae_cents": 0.654098391532898,
+              "outside_mae_cents": 0.68450097062371,
+              "scoreable_pairs": 11
+            }
+          ],
+          "positive_singer_macro_mae_cents": 18.98647671943456,
+          "original_singer_macro_mae_cents": 1.001663329900087,
+          "raw_gate_passed": false
+        },
+        "positive": {
+          "boundary_cents": 0.410161231702249,
+          "counter_detuning_error_cents": 19.086879545925616,
+          "by_group_boundary_and_response": {
+            "S5": [
+              0.13500787375064996,
+              20.72530297132639
+            ],
+            "S7": [
+              3.1209827656394653e-06,
+              20.303278923034668
+            ],
+            "S10": [
+              0.0,
+              24.990441755814985
+            ],
+            "S11": [
+              0.8967708516865969,
+              15.311142325401306
+            ],
+            "S13": [
+              0.0,
+              21.898517677658482
+            ],
+            "S15": [
+              0.0,
+              23.90504026412964
+            ],
+            "S20": [
+              0.004959201178280637,
+              25.020082712173462
+            ],
+            "S22": [
+              0.0017826316034188494,
+              25.03765296936035
+            ],
+            "S23": [
+              1.616441126970148,
+              16.112572266505314
+            ],
+            "S25": [
+              0.40465322655180225,
+              16.115914178931195
+            ],
+            "S28": [
+              0.3620888988176982,
+              19.431097745895386
+            ],
+            "S29": [
+              0.2864470119038514,
+              16.162324541904887
+            ],
+            "HumTrans:F02": [
+              1.5221368157201343,
+              13.986015478769938
+            ],
+            "HumTrans:F03": [
+              0.35565892967485613,
+              6.161640274909235
+            ],
+            "HumTrans:F04": [
+              0.6477427884936333,
+              11.228927665948868
+            ],
+            "HumTrans:F05": [
+              0.09569919406203553,
+              24.838863372802734
+            ],
+            "HumTrans:M01": [
+              0.6433492675423622,
+              23.24813715616862
+            ]
+          }
+        },
+        "known_zero": {
+          "boundary_cents": 0.012050962918647901,
+          "counter_detuning_error_cents": 0.17721634795317748,
+          "by_group_boundary_and_response": {
+            "S5": [
+              0.023828498159463588,
+              0.0788283511154497
+            ],
+            "S7": [
+              0.02004655416716229,
+              0.008909038797190244
+            ],
+            "S10": [
+              3.068453881528962e-12,
+              0.0012689577018715102
+            ],
+            "S11": [
+              0.006417246437877111,
+              0.033212356800504494
+            ],
+            "S13": [
+              3.8631889792402996e-10,
+              0.05973740984604534
+            ],
+            "S15": [
+              0.0,
+              0.39982248842716217
+            ],
+            "S20": [
+              0.00020234494695614558,
+              0.0009346368788101245
+            ],
+            "S22": [
+              0.005501169018316432,
+              0.12549913826660486
+            ],
+            "S23": [
+              0.03257224784017755,
+              0.018546900819413938
+            ],
+            "S25": [
+              0.0051492512107158646,
+              0.4570757643997912
+            ],
+            "S28": [
+              1.6313340840470568e-05,
+              0.0009804670388499895
+            ],
+            "S29": [
+              0.043859428506360834,
+              0.46241464332646887
+            ],
+            "HumTrans:F02": [
+              0.0002461936027329001,
+              0.0037104536830965015
+            ],
+            "HumTrans:F03": [
+              0.030256735491416147,
+              0.6972632360073828
+            ],
+            "HumTrans:F04": [
+              0.03670627126884938,
+              0.6635057360501377
+            ],
+            "HumTrans:F05": [
+              3.050704617635347e-05,
+              0.0006949650669412222
+            ],
+            "HumTrans:M01": [
+              3.3608190581920404e-05,
+              0.0002733709782963463
+            ]
+          }
+        }
+      },
+      "merge": {
+        "raw": {
+          "groups": [
+            {
+              "group": "HumTrans:F01",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.6280033588409424,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "HumTrans:F02",
+              "positive_mae_cents": 12.653055455949572,
+              "signed_response": 0.46357237009538543,
+              "original_mae_cents": 0.5212288722395897,
+              "outside_mae_cents": 1.0788690116670396,
+              "scoreable_pairs": 9
+            },
+            {
+              "group": "HumTrans:F03",
+              "positive_mae_cents": 5.844077519832119,
+              "signed_response": 0.8744866424991239,
+              "original_mae_cents": 0.7020071926526725,
+              "outside_mae_cents": 0.8043915331363678,
+              "scoreable_pairs": 31
+            },
+            {
+              "group": "HumTrans:F04",
+              "positive_mae_cents": 7.981111568212509,
+              "signed_response": 0.7560568626970052,
+              "original_mae_cents": 1.4865378737449646,
+              "outside_mae_cents": 1.388427023589611,
+              "scoreable_pairs": 40
+            },
+            {
+              "group": "HumTrans:F05",
+              "positive_mae_cents": 24.74998712539673,
+              "signed_response": 0.010038966454885667,
+              "original_mae_cents": 0.08925147354602814,
+              "outside_mae_cents": 0.02299993555061519,
+              "scoreable_pairs": 8
+            },
+            {
+              "group": "HumTrans:M01",
+              "positive_mae_cents": 22.828591028849285,
+              "signed_response": 0.0833390638193426,
+              "original_mae_cents": 0.010050963144749403,
+              "outside_mae_cents": 0.005159998234982292,
+              "scoreable_pairs": 12
+            },
+            {
+              "group": "S1",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.014254617970436811,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "S10",
+              "positive_mae_cents": 24.989544348283246,
+              "signed_response": 0.00041830286020492417,
+              "original_mae_cents": 0.07404251210391521,
+              "outside_mae_cents": 0.030335301533341408,
+              "scoreable_pairs": 22
+            },
+            {
+              "group": "S11",
+              "positive_mae_cents": 15.43749326467514,
+              "signed_response": 0.4477211404591799,
+              "original_mae_cents": 2.1064717769622803,
+              "outside_mae_cents": 0.9574664793908596,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S13",
+              "positive_mae_cents": 22.163271514992964,
+              "signed_response": 0.10873990086915192,
+              "original_mae_cents": 0.769869382182757,
+              "outside_mae_cents": 0.5450421067837038,
+              "scoreable_pairs": 38
+            },
+            {
+              "group": "S15",
+              "positive_mae_cents": 23.90503978729248,
+              "signed_response": 0.04595733263219396,
+              "original_mae_cents": 0.7475314736366272,
+              "outside_mae_cents": 0.47608842079838115,
+              "scoreable_pairs": 12
+            },
+            {
+              "group": "S20",
+              "positive_mae_cents": 25.020739912986755,
+              "signed_response": -0.0007746848486931412,
+              "original_mae_cents": 0.054626040160655975,
+              "outside_mae_cents": 0.056895471876487136,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S21",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.008410107577219605,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "S22",
+              "positive_mae_cents": 25.038711071014404,
+              "signed_response": -0.0016066279804363148,
+              "original_mae_cents": 0.06501376628875732,
+              "outside_mae_cents": 0.13344807125395164,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S23",
+              "positive_mae_cents": 17.212219164921688,
+              "signed_response": 0.44745958453187573,
+              "original_mae_cents": 1.9131222367286682,
+              "outside_mae_cents": 1.2915050112284148,
+              "scoreable_pairs": 13
+            },
+            {
+              "group": "S25",
+              "positive_mae_cents": 14.743101959643157,
+              "signed_response": 0.45123725392572256,
+              "original_mae_cents": 2.714347799619039,
+              "outside_mae_cents": 0.9823241351253312,
+              "scoreable_pairs": 23
+            },
+            {
+              "group": "S28",
+              "positive_mae_cents": 20.272870920101802,
+              "signed_response": 0.22232209022331517,
+              "original_mae_cents": 0.5839563558499018,
+              "outside_mae_cents": 0.3883573397994041,
+              "scoreable_pairs": 30
+            },
+            {
+              "group": "S29",
+              "positive_mae_cents": 17.195950234522584,
+              "signed_response": 0.41625158789981065,
+              "original_mae_cents": 4.732175382040441,
+              "outside_mae_cents": 5.3501533674778505,
+              "scoreable_pairs": 122
+            },
+            {
+              "group": "S5",
+              "positive_mae_cents": 22.605956107378006,
+              "signed_response": 0.2415190041065216,
+              "original_mae_cents": 2.158267021179199,
+              "outside_mae_cents": 0.8196696111789117,
+              "scoreable_pairs": 26
+            },
+            {
+              "group": "S7",
+              "positive_mae_cents": 20.128383246335115,
+              "signed_response": 0.19129260729029987,
+              "original_mae_cents": 0.654098391532898,
+              "outside_mae_cents": 0.68450097062371,
+              "scoreable_pairs": 11
+            }
+          ],
+          "positive_singer_macro_mae_cents": 18.98647671943456,
+          "original_singer_macro_mae_cents": 1.001663329900087,
+          "raw_gate_passed": false
+        },
+        "positive": {
+          "boundary_cents": 0.03928182699634566,
+          "counter_detuning_error_cents": 18.94525724776873,
+          "by_group_boundary_and_response": {
+            "S5": [
+              0.0,
+              20.631590824860794
+            ],
+            "S7": [
+              0.2618775272911245,
+              20.3581654808738
+            ],
+            "S10": [
+              4.769010642617518e-05,
+              24.99043880809437
+            ],
+            "S11": [
+              0.0,
+              15.342794090509415
+            ],
+            "S13": [
+              0.00045371672144698863,
+              21.898592114448547
+            ],
+            "S15": [
+              0.0,
+              23.90504026412964
+            ],
+            "S20": [
+              0.0,
+              25.020739555358887
+            ],
+            "S22": [
+              0.0025582648668205366,
+              25.038827061653137
+            ],
+            "S23": [
+              0.2899642540858342,
+              15.51524437390841
+            ],
+            "S25": [
+              0.020102427381536236,
+              16.133992734162703
+            ],
+            "S28": [
+              0.04960233302263077,
+              19.360682328542072
+            ],
+            "S29": [
+              0.022516791548278875,
+              16.168324918043417
+            ],
+            "HumTrans:F02": [
+              0.0,
+              12.756300237443712
+            ],
+            "HumTrans:F03": [
+              0.0,
+              6.100473642349243
+            ],
+            "HumTrans:F04": [
+              0.01997246341779828,
+              11.268931859731675
+            ],
+            "HumTrans:F05": [
+              0.0006955904959795589,
+              24.750643730163574
+            ],
+            "HumTrans:M01": [
+              0.0,
+              22.828591187795002
+            ]
+          }
+        },
+        "known_zero": {
+          "boundary_cents": 0.007432268805459491,
+          "counter_detuning_error_cents": 0.1762579661143132,
+          "by_group_boundary_and_response": {
+            "S5": [
+              0.00112638499539409,
+              0.07389710269098242
+            ],
+            "S7": [
+              0.0004917771359693936,
+              0.008978632786734537
+            ],
+            "S10": [
+              5.390585614474151e-05,
+              0.001269447347360917
+            ],
+            "S11": [
+              0.0018646669705049135,
+              0.0294515928162582
+            ],
+            "S13": [
+              0.020566591478331918,
+              0.07025312730317972
+            ],
+            "S15": [
+              1.2811698828348502e-05,
+              0.3998224859436353
+            ],
+            "S20": [
+              0.00017599570674065035,
+              0.0009732147882459685
+            ],
+            "S22": [
+              0.009131988226727117,
+              0.11768239938101033
+            ],
+            "S23": [
+              0.000562944694628151,
+              0.018684505090977136
+            ],
+            "S25": [
+              0.0008910260650104053,
+              0.4546696823394007
+            ],
+            "S28": [
+              0.0004760842622393587,
+              0.0012010036870681992
+            ],
+            "S29": [
+              0.02919175689868232,
+              0.4589481624062784
+            ],
+            "HumTrans:F02": [
+              0.003042390233733588,
+              0.003689827319855491
+            ],
+            "HumTrans:F03": [
+              0.002825650109087057,
+              0.693980727464922
+            ],
+            "HumTrans:F04": [
+              0.05587425325647928,
+              0.6619160296642803
+            ],
+            "HumTrans:F05": [
+              4.68792181891331e-05,
+              0.0006982732465985464
+            ],
+            "HumTrans:M01": [
+              1.3462886120881498e-05,
+              0.0002692096665365777
+            ]
+          }
+        }
+      },
+      "jitter": {
+        "raw": {
+          "groups": [
+            {
+              "group": "HumTrans:F01",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.6280033588409424,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "HumTrans:F02",
+              "positive_mae_cents": 12.653055455949572,
+              "signed_response": 0.46357237009538543,
+              "original_mae_cents": 0.5212288722395897,
+              "outside_mae_cents": 1.0788690116670396,
+              "scoreable_pairs": 9
+            },
+            {
+              "group": "HumTrans:F03",
+              "positive_mae_cents": 5.844077519832119,
+              "signed_response": 0.8744866424991239,
+              "original_mae_cents": 0.7020071926526725,
+              "outside_mae_cents": 0.8043915331363678,
+              "scoreable_pairs": 31
+            },
+            {
+              "group": "HumTrans:F04",
+              "positive_mae_cents": 7.981111568212509,
+              "signed_response": 0.7560568626970052,
+              "original_mae_cents": 1.4865378737449646,
+              "outside_mae_cents": 1.388427023589611,
+              "scoreable_pairs": 40
+            },
+            {
+              "group": "HumTrans:F05",
+              "positive_mae_cents": 24.74998712539673,
+              "signed_response": 0.010038966454885667,
+              "original_mae_cents": 0.08925147354602814,
+              "outside_mae_cents": 0.02299993555061519,
+              "scoreable_pairs": 8
+            },
+            {
+              "group": "HumTrans:M01",
+              "positive_mae_cents": 22.828591028849285,
+              "signed_response": 0.0833390638193426,
+              "original_mae_cents": 0.010050963144749403,
+              "outside_mae_cents": 0.005159998234982292,
+              "scoreable_pairs": 12
+            },
+            {
+              "group": "S1",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.014254617970436811,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "S10",
+              "positive_mae_cents": 24.989544348283246,
+              "signed_response": 0.00041830286020492417,
+              "original_mae_cents": 0.07404251210391521,
+              "outside_mae_cents": 0.030335301533341408,
+              "scoreable_pairs": 22
+            },
+            {
+              "group": "S11",
+              "positive_mae_cents": 15.43749326467514,
+              "signed_response": 0.4477211404591799,
+              "original_mae_cents": 2.1064717769622803,
+              "outside_mae_cents": 0.9574664793908596,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S13",
+              "positive_mae_cents": 22.163271514992964,
+              "signed_response": 0.10873990086915192,
+              "original_mae_cents": 0.769869382182757,
+              "outside_mae_cents": 0.5450421067837038,
+              "scoreable_pairs": 38
+            },
+            {
+              "group": "S15",
+              "positive_mae_cents": 23.90503978729248,
+              "signed_response": 0.04595733263219396,
+              "original_mae_cents": 0.7475314736366272,
+              "outside_mae_cents": 0.47608842079838115,
+              "scoreable_pairs": 12
+            },
+            {
+              "group": "S20",
+              "positive_mae_cents": 25.020739912986755,
+              "signed_response": -0.0007746848486931412,
+              "original_mae_cents": 0.054626040160655975,
+              "outside_mae_cents": 0.056895471876487136,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S21",
+              "positive_mae_cents": null,
+              "signed_response": null,
+              "original_mae_cents": 0.008410107577219605,
+              "outside_mae_cents": null,
+              "scoreable_pairs": 0
+            },
+            {
+              "group": "S22",
+              "positive_mae_cents": 25.038711071014404,
+              "signed_response": -0.0016066279804363148,
+              "original_mae_cents": 0.06501376628875732,
+              "outside_mae_cents": 0.13344807125395164,
+              "scoreable_pairs": 16
+            },
+            {
+              "group": "S23",
+              "positive_mae_cents": 17.212219164921688,
+              "signed_response": 0.44745958453187573,
+              "original_mae_cents": 1.9131222367286682,
+              "outside_mae_cents": 1.2915050112284148,
+              "scoreable_pairs": 13
+            },
+            {
+              "group": "S25",
+              "positive_mae_cents": 14.743101959643157,
+              "signed_response": 0.45123725392572256,
+              "original_mae_cents": 2.714347799619039,
+              "outside_mae_cents": 0.9823241351253312,
+              "scoreable_pairs": 23
+            },
+            {
+              "group": "S28",
+              "positive_mae_cents": 20.272870920101802,
+              "signed_response": 0.22232209022331517,
+              "original_mae_cents": 0.5839563558499018,
+              "outside_mae_cents": 0.3883573397994041,
+              "scoreable_pairs": 30
+            },
+            {
+              "group": "S29",
+              "positive_mae_cents": 17.195950234522584,
+              "signed_response": 0.41625158789981065,
+              "original_mae_cents": 4.732175382040441,
+              "outside_mae_cents": 5.3501533674778505,
+              "scoreable_pairs": 122
+            },
+            {
+              "group": "S5",
+              "positive_mae_cents": 22.605956107378006,
+              "signed_response": 0.2415190041065216,
+              "original_mae_cents": 2.158267021179199,
+              "outside_mae_cents": 0.8196696111789117,
+              "scoreable_pairs": 26
+            },
+            {
+              "group": "S7",
+              "positive_mae_cents": 20.128383246335115,
+              "signed_response": 0.19129260729029987,
+              "original_mae_cents": 0.654098391532898,
+              "outside_mae_cents": 0.68450097062371,
+              "scoreable_pairs": 11
+            }
+          ],
+          "positive_singer_macro_mae_cents": 18.98647671943456,
+          "original_singer_macro_mae_cents": 1.001663329900087,
+          "raw_gate_passed": false
+        },
+        "positive": {
+          "boundary_cents": 0.2844272280422483,
+          "counter_detuning_error_cents": 18.95786208534737,
+          "by_group_boundary_and_response": {
+            "S5": [
+              0.5544545957818627,
+              20.727595512683575
+            ],
+            "S7": [
+              0.18113562430847774,
+              20.281235564838756
+            ],
+            "S10": [
+              0.0009966870963001963,
+              24.990191546353426
+            ],
+            "S11": [
+              0.08279625372961164,
+              15.364893138408661
+            ],
+            "S13": [
+              0.1166718814423994,
+              21.996826171875
+            ],
+            "S15": [
+              0.6992967327435812,
+              23.951927185058594
+            ],
+            "S20": [
+              0.0005839300356456079,
+              25.020840406417847
+            ],
+            "S22": [
+              0.005162421954082674,
+              25.037811160087585
+            ],
+            "S23": [
+              1.8939327872716463,
+              15.43608049245981
+            ],
+            "S25": [
+              0.3876295459011327,
+              16.157524606455926
+            ],
+            "S28": [
+              0.07657338645367417,
+              19.40767636299133
+            ],
+            "S29": [
+              0.30998520008727265,
+              16.17713957731841
+            ],
+            "HumTrans:F02": [
+              0.1122973199105925,
+              12.744975354936388
+            ],
+            "HumTrans:F03": [
+              0.05639638547455111,
+              6.110910127239842
+            ],
+            "HumTrans:F04": [
+              0.2745333282276988,
+              11.2393659055233
+            ],
+            "HumTrans:F05": [
+              0.024759051157161593,
+              24.77077054977417
+            ],
+            "HumTrans:M01": [
+              0.058057745142529406,
+              22.867891788482666
+            ]
+          }
+        },
+        "known_zero": {
+          "boundary_cents": 0.029022879922374893,
+          "counter_detuning_error_cents": 0.17721031304338636,
+          "by_group_boundary_and_response": {
+            "S5": [
+              0.0219199860181946,
+              0.07405605058346947
+            ],
+            "S7": [
+              0.06904540481892499,
+              0.011987052773210135
+            ],
+            "S10": [
+              0.0011216743521138349,
+              0.0012888917355501856
+            ],
+            "S11": [
+              0.0503757291007787,
+              0.045105950583092635
+            ],
+            "S13": [
+              0.023912592239579873,
+              0.06859668612818687
+            ],
+            "S15": [
+              0.02984485651055972,
+              0.39272020664066076
+            ],
+            "S20": [
+              0.008201119024306536,
+              0.0008306723411806161
+            ],
+            "S22": [
+              0.0022953646366659086,
+              0.12195782587514259
+            ],
+            "S23": [
+              0.05174565100325988,
+              0.019481577158260804
+            ],
+            "S25": [
+              0.014942595246754101,
+              0.4570467466002573
+            ],
+            "S28": [
+              0.031200195010751487,
+              0.0011478097721313437
+            ],
+            "S29": [
+              0.11772411397169726,
+              0.46263736079935536
+            ],
+            "HumTrans:F02": [
+              0.00859373425030046,
+              0.0037333868288745484
+            ],
+            "HumTrans:F03": [
+              0.012685566029000667,
+              0.6921934187412262
+            ],
+            "HumTrans:F04": [
+              0.04703346556052566,
+              0.6588391371042235
+            ],
+            "HumTrans:F05": [
+              0.0024359894450753927,
+              0.0006867056308692554
+            ],
+            "HumTrans:M01": [
+              0.0003109214618840876,
+              0.00026584244187688455
+            ]
+          }
+        }
+      }
+    }
+  },
+  "fit_health": {
+    "healthy_fits": 12,
+    "total_fits": 12,
+    "required": 11,
+    "threshold_anchor_lt": 0.3,
+    "passed": true,
+    "by_arm": {
+      "augmentation_only": {
+        "fold_1": {
+          "final_anchor": 0.06800462305545807,
+          "healthy": true,
+          "seconds": 177.37824039999396
+        },
+        "fold_2": {
+          "final_anchor": 0.23054400086402893,
+          "healthy": true,
+          "seconds": 176.1463350999984
+        },
+        "fold_3": {
+          "final_anchor": 0.1755398064851761,
+          "healthy": true,
+          "seconds": 170.0233360999846
+        },
+        "fold_4": {
+          "final_anchor": 0.13526833057403564,
+          "healthy": true,
+          "seconds": 170.75628149998374
+        }
+      },
+      "frame_only": {
+        "fold_1": {
+          "final_anchor": 0.1109888032078743,
+          "healthy": true,
+          "seconds": 164.03108919999795
+        },
+        "fold_2": {
+          "final_anchor": 0.22620348632335663,
+          "healthy": true,
+          "seconds": 184.80553709995002
+        },
+        "fold_3": {
+          "final_anchor": 0.23303870856761932,
+          "healthy": true,
+          "seconds": 165.58210249996046
+        },
+        "fold_4": {
+          "final_anchor": 0.1059875637292862,
+          "healthy": true,
+          "seconds": 169.90031709999312
+        }
+      },
+      "bpdr": {
+        "fold_1": {
+          "final_anchor": 0.16372235119342804,
+          "healthy": true,
+          "seconds": 173.11561019998044
+        },
+        "fold_2": {
+          "final_anchor": 0.170733243227005,
+          "healthy": true,
+          "seconds": 211.0090826000087
+        },
+        "fold_3": {
+          "final_anchor": 0.19585740566253662,
+          "healthy": true,
+          "seconds": 201.8609997999738
+        },
+        "fold_4": {
+          "final_anchor": 0.10238596051931381,
+          "healthy": true,
+          "seconds": 177.35366349999094
+        }
+      }
+    }
+  },
+  "advance_to_delivery": false,
+  "declaration_sha256": "359a77f662938f12e4403f7d38f88ef1ac2a7d874b8a9bc38dc924a3eb1ada14",
+  "production_eligible": false
+}

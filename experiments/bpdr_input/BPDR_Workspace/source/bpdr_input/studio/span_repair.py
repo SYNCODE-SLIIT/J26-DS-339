@@ -8,6 +8,7 @@ Implements the proposal's Phase 2 & Phase 3 safety contract (Proposal Figure 2, 
 - Re-verifies every modified span against the pitch tracker: if pitch error does not decrease,
   voicing drops, or any clipping appears, automatically rolls back that span to the original waveform.
 """
+import warnings
 from typing import Any, Dict, List, Optional, Sequence, Union
 import librosa
 import numpy as np
@@ -37,7 +38,12 @@ def _apply_span_pitch_shift(
     seg_pad = x[a_pad:b_pad].astype(np.float32)
 
     n_steps = float(shift_cents) / 100.0
-    shifted_pad = librosa.effects.pitch_shift(seg_pad, sr=sr, n_steps=n_steps, n_fft=1024, hop_length=256)
+    # librosa 1.0 warns about n_fft/hop_length reaching its phase vocoder (they still size the STFT, so
+    # they must stay) and numba emits a harmless cast warning inside librosa; silence only those two.
+    with warnings.catch_warnings():
+        warnings.filterwarnings('ignore', message=r'.*parameter is deprecated as of 1\.0.*', category=FutureWarning)
+        warnings.filterwarnings('ignore', message=r'invalid value encountered in cast', category=RuntimeWarning)
+        shifted_pad = librosa.effects.pitch_shift(seg_pad, sr=sr, n_steps=n_steps, n_fft=1024, hop_length=256)
     if len(shifted_pad) < len(seg_pad):
         shifted_pad = np.pad(shifted_pad, (0, len(seg_pad) - len(shifted_pad)))
     else:

@@ -1,3 +1,5 @@
+> **WARNING (24 Nov 2026): DRAFT, DO NOT CIRCULATE OR QUOTE.** This write-up predates the Claims Ledger in `deliverables/README.md`. Known problems: the "+110%" / "+0.330" gains use the `pyin_4096` baseline, ~88% of which is a frame-length (4096 vs 2048) effect (fair figure: +0.145 [+0.087, +0.201] vs `pesto_notes_from_track`, of which ~80% is the note rule plus heuristic edges); "Boundary-Pitch Disentangled FastTNet" is not supported (the `frame_only` arm is best, BPDR loss terms add +0.008, CI includes 0); "0% harmful distortion" was never measured; `studio_v1` was selected on the same 39 windows it is scored on. Use `Component1_Intent_Redesign_Brief_2026-11-22.md` section 13 instead.
+
 # Research Justification & Methodological Evolution Report
 **Project ID:** `J26-DS-339` — *Genre-Aware Automatic Vocal Melody Harmonization Using Hierarchical Deep Learning*  
 **Component 1 (Individual Scope):** *Vocal Input Validation and Minimal Musical Repair using Boundary-Pitch Disentangled Learning (BPDR)*  

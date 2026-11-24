@@ -26,6 +26,7 @@ from scipy.signal import find_peaks
 WS = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(WS / 'source'), str(WS)]
 
+from bpdr_input.reporting.provenance import relpath, sha256_file
 from bpdr_input.studio import boundary, clean, evidence as E
 from tools.analyze_r1_e2e import (
     N_RESAMPLES,
@@ -331,7 +332,8 @@ def run_benchmark(limit=None, include_pre_parity=False, snr_db=None):
     summary = summarize_benchmark(rows, methods)
     model_meta = {
         name: {
-            'checkpoint': str(path),
+            'checkpoint': relpath(path, WS),
+            'checkpoint_sha256': sha256_file(path),
             'nin': int(getattr(loaded_models[name], 'nin', 5)),
             'default_threshold': float(getattr(loaded_models[name], 'default_threshold', 0.8)),
         }

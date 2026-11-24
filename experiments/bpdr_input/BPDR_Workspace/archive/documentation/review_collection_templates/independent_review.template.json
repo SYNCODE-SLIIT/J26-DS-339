@@ -1,0 +1,40 @@
+{
+  "template_only": true,
+  "reviewer_id": null,
+  "reviewer_experience_record": null,
+  "independent_review_completed": false,
+  "blinding_key_accessed": false,
+  "source_suitability": {
+    "source_id": null,
+    "source_sha256": null,
+    "suitable_for_declared_reference_scope": null,
+    "allowed_decisions": ["yes", "no", "unsure"],
+    "stable_time_regions_seconds": [],
+    "intentional_expression_time_regions_seconds": [],
+    "technical_or_musical_concerns": null,
+    "decision_reason": null,
+    "reviewed_at": null
+  },
+  "paired_trial": {
+    "trial_id": null,
+    "reference_audio_id": null,
+    "version_x_id": null,
+    "version_y_id": null,
+    "closer_to_reference": null,
+    "allowed_preference_decisions": ["X", "Y", "no_meaningful_difference", "unsure"],
+    "x_preserves_tune_and_expression": null,
+    "y_preserves_tune_and_expression": null,
+    "x_new_audible_problem": null,
+    "y_new_audible_problem": null,
+    "problem_time_regions_seconds": [],
+    "problem_description": null,
+    "suitable_for_onward_use": null,
+    "comments": null,
+    "reviewed_at": null
+  },
+  "owner_only_fields_not_for_reviewer": [
+    "source_group", "model_condition", "injected_cents", "version_mapping",
+    "identity_control", "repeat_of", "technical_scores"
+  ],
+  "research_training_approval": false
+}

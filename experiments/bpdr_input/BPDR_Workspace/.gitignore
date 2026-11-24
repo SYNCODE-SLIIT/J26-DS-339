@@ -3,6 +3,13 @@
 /models_and_tools/
 /selected_model/
 
+# Archived experiment runs (about 6 GB of WAV/NPZ outputs, user recordings, paths too long for Windows).
+# The reports that describe them live in archive/documentation and deliverables/.
+/archive/experiments/
+/archive/**/*.whl
+/archive/**/*.npz
+/archive/**/*.wav
+
 # Generated runs, rendered audio, charts, reports and notebook runtimes.
 # Keep the scripts and instructions needed to rebuild the reading views.
 /results/*

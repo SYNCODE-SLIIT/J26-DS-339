@@ -145,7 +145,7 @@ def member(source, row):
 def prepare(destination):
     destination = Path(destination).resolve()
     component = next(p for p in Path(__file__).resolve().parents
-                     if p.name == "bpdr_input" and (p / "pyproject.toml").is_file())
+                     if (p / "pyproject.toml").is_file())
     workspace = (component / "BPDR_Workspace").resolve()
     if not destination.is_relative_to(workspace):
         raise ValueError("Dataset output must remain inside BPDR_Workspace")

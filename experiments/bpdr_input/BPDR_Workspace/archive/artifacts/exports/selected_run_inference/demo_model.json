@@ -1,0 +1,70 @@
+{
+  "version": "notebook-trained-preview-1",
+  "notebook_training": true,
+  "eligible_for_demo": true,
+  "validation_status": "exploratory_preview_failed_generalization_gate",
+  "research_gates_passed": false,
+  "requires_user_review": true,
+  "checkpoint": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\notebook_training\\2759404560ab4b559a633659d316bec0\\selected_model.joblib",
+  "checkpoint_sha256": "682f8e4839b80fa032a52769d6186ca349937e638ef4ddfd8bdf85278a3ec9b3",
+  "verification_sha256": "23d5b06a01d7b1ae1ce4e05de32ddf8018b1789c875561c79bf1e0aeb390ef4b",
+  "fit_receipt_sha256": "94f397aaa8228794ed25fceaeffe9021e09ad40150424d23a764a61002259ac8",
+  "scope": "Reproduced fixed ExtraTrees; reused development data; not validated natural-error repair",
+  "metrics": {
+    "model_type": "extra_trees",
+    "attempted_shifts": 16,
+    "audited_shifts": 4,
+    "singers_with_valid_shift_labels": 1,
+    "heldout_singers": 2,
+    "verified_improvements": 2,
+    "delivered_previews": 3,
+    "originals_preserved": 4,
+    "originals_tested": 4,
+    "input_mae_cents": 27.44190742699078,
+    "output_mae_cents": 14.663040953839834,
+    "error_reduction_fraction": 0.4656697610087467,
+    "by_singer": {
+      "female6": {
+        "attempted": 8,
+        "audited": 0,
+        "delivered_previews": 0,
+        "verified_improvements": 0,
+        "input_mae_cents": null,
+        "output_mae_cents": null,
+        "error_reduction_fraction": null
+      },
+      "male6": {
+        "attempted": 8,
+        "audited": 4,
+        "delivered_previews": 3,
+        "verified_improvements": 2,
+        "input_mae_cents": 27.44190742699078,
+        "output_mae_cents": 14.663040953839834,
+        "error_reduction_fraction": 0.4656697610087467
+      }
+    }
+  },
+  "operating_policy": {
+    "gain": 1.0,
+    "deadband_cents": 3.0
+  },
+  "demo_cases": [
+    {
+      "id": "learned_pitch",
+      "label": "Notebook-trained model: real voice with a controlled local shift",
+      "input": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc\\pilot_evaluation\\prepared\\02\\detuned_+30.wav",
+      "reference": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc\\pilot_evaluation\\prepared\\02\\original_working.wav",
+      "score_mask_path": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc\\pilot_evaluation\\prepared\\02\\targets_+30_NOT_MODEL_INPUT.npz",
+      "source_kind": "Post-hoc selected verified example from reused development pilot; reference/mask enter scoring only."
+    },
+    {
+      "id": "learned_original",
+      "label": "Notebook-trained model: preservation of an unchanged real voice",
+      "input": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\b4c64c3b861a48c494c092458716b4fc\\pilot_evaluation\\prepared\\02\\original_working.wav",
+      "reference": null,
+      "source_kind": "Original working audio from the reused development pilot."
+    }
+  ],
+  "evidence": "C:\\Users\\lnipu\\Projects\\Music Rp\\RP\\J26-DS-339\\experiments\\bpdr_input\\BPDR_Workspace\\results\\model_recovery\\notebook_training\\2759404560ab4b559a633659d316bec0\\evidence.json",
+  "example_selection": "First verified improvement in existing source/shift order; selected after replay."
+}

@@ -1,0 +1,361 @@
+{
+  "schema": "downstream_harmony_impact/0.1",
+  "n_windows": 39,
+  "n_singers": 14,
+  "chord_agreement_with_A1_chords": {
+    "pyin_4096": [
+      0.4794,
+      0.3693,
+      0.5961
+    ],
+    "pesto_notes_from_track": [
+      0.5068,
+      0.3474,
+      0.6703
+    ],
+    "studio_v1": [
+      0.5095,
+      0.4195,
+      0.607
+    ],
+    "studio_v1_aic_k3_oracle": [
+      0.5061,
+      0.4039,
+      0.6092
+    ]
+  },
+  "paired_minus_pyin_4096": {
+    "pesto_notes_from_track": [
+      0.0273,
+      -0.0534,
+      0.0967
+    ],
+    "studio_v1": [
+      0.0301,
+      -0.0786,
+      0.1514
+    ],
+    "studio_v1_aic_k3_oracle": [
+      0.0267,
+      -0.0876,
+      0.1515
+    ]
+  },
+  "not_computed": [
+    "strong_beat_melody_chord_compatibility (needs the downstream compatibility scorer)"
+  ],
+  "rows": [
+    {
+      "id": "vocadito_1",
+      "singer": "S1",
+      "pyin_4096": 0.05844155844155844,
+      "pesto_notes_from_track": 0.33766233766233766,
+      "studio_v1": 0.9415584415584416,
+      "studio_v1_aic_k3_oracle": 0.8701298701298701
+    },
+    {
+      "id": "vocadito_1__window01",
+      "singer": "S1",
+      "pyin_4096": 0.9090909090909091,
+      "pesto_notes_from_track": 0.8441558441558441,
+      "studio_v1": 0.9090909090909091,
+      "studio_v1_aic_k3_oracle": 0.9090909090909091
+    },
+    {
+      "id": "vocadito_1__window02",
+      "singer": "S1",
+      "pyin_4096": 0.14935064935064934,
+      "pesto_notes_from_track": 0.19480519480519481,
+      "studio_v1": 0.15584415584415584,
+      "studio_v1_aic_k3_oracle": 0.15584415584415584
+    },
+    {
+      "id": "vocadito_3",
+      "singer": "S1",
+      "pyin_4096": 1.0,
+      "pesto_notes_from_track": 0.8701298701298701,
+      "studio_v1": 0.8116883116883117,
+      "studio_v1_aic_k3_oracle": 1.0
+    },
+    {
+      "id": "vocadito_3__window01",
+      "singer": "S1",
+      "pyin_4096": 0.36363636363636365,
+      "pesto_notes_from_track": 0.987012987012987,
+      "studio_v1": 0.7922077922077922,
+      "studio_v1_aic_k3_oracle": 0.8376623376623377
+    },
+    {
+      "id": "vocadito_6",
+      "singer": "S5",
+      "pyin_4096": 0.43506493506493504,
+      "pesto_notes_from_track": 0.42857142857142855,
+      "studio_v1": 0.15584415584415584,
+      "studio_v1_aic_k3_oracle": 0.1038961038961039
+    },
+    {
+      "id": "vocadito_6__window01",
+      "singer": "S5",
+      "pyin_4096": 0.7857142857142857,
+      "pesto_notes_from_track": 0.6948051948051948,
+      "studio_v1": 0.6883116883116883,
+      "studio_v1_aic_k3_oracle": 0.7532467532467533
+    },
+    {
+      "id": "vocadito_8",
+      "singer": "S1",
+      "pyin_4096": 0.7467532467532467,
+      "pesto_notes_from_track": 0.9090909090909091,
+      "studio_v1": 0.922077922077922,
+      "studio_v1_aic_k3_oracle": 0.922077922077922
+    },
+    {
+      "id": "vocadito_8__window01",
+      "singer": "S1",
+      "pyin_4096": 0.9805194805194806,
+      "pesto_notes_from_track": 0.9805194805194806,
+      "studio_v1": 0.9805194805194806,
+      "studio_v1_aic_k3_oracle": 0.9805194805194806
+    },
+    {
+      "id": "vocadito_10",
+      "singer": "S7",
+      "pyin_4096": 0.2922077922077922,
+      "pesto_notes_from_track": 0.032467532467532464,
+      "studio_v1": 0.2857142857142857,
+      "studio_v1_aic_k3_oracle": 0.33116883116883117
+    },
+    {
+      "id": "vocadito_13",
+      "singer": "S10",
+      "pyin_4096": 0.6948051948051948,
+      "pesto_notes_from_track": 0.7727272727272727,
+      "studio_v1": 0.577922077922078,
+      "studio_v1_aic_k3_oracle": 0.7467532467532467
+    },
+    {
+      "id": "vocadito_13__window01",
+      "singer": "S10",
+      "pyin_4096": 0.44805194805194803,
+      "pesto_notes_from_track": 0.5974025974025974,
+      "studio_v1": 0.44155844155844154,
+      "studio_v1_aic_k3_oracle": 0.3961038961038961
+    },
+    {
+      "id": "vocadito_14",
+      "singer": "S11",
+      "pyin_4096": 0.23376623376623376,
+      "pesto_notes_from_track": 0.0,
+      "studio_v1": 0.5909090909090909,
+      "studio_v1_aic_k3_oracle": 0.5909090909090909
+    },
+    {
+      "id": "vocadito_18",
+      "singer": "S13",
+      "pyin_4096": 0.0,
+      "pesto_notes_from_track": 0.8571428571428571,
+      "studio_v1": 0.8571428571428571,
+      "studio_v1_aic_k3_oracle": 0.8571428571428571
+    },
+    {
+      "id": "vocadito_18__window01",
+      "singer": "S13",
+      "pyin_4096": 0.6883116883116883,
+      "pesto_notes_from_track": 0.2597402597402597,
+      "studio_v1": 0.7337662337662337,
+      "studio_v1_aic_k3_oracle": 0.6493506493506493
+    },
+    {
+      "id": "vocadito_18__window02",
+      "singer": "S13",
+      "pyin_4096": 0.17532467532467533,
+      "pesto_notes_from_track": 0.2077922077922078,
+      "studio_v1": 0.7142857142857143,
+      "studio_v1_aic_k3_oracle": 0.7142857142857143
+    },
+    {
+      "id": "vocadito_20",
+      "singer": "S15",
+      "pyin_4096": 0.7207792207792207,
+      "pesto_notes_from_track": 0.9025974025974026,
+      "studio_v1": 0.487012987012987,
+      "studio_v1_aic_k3_oracle": 0.37012987012987014
+    },
+    {
+      "id": "vocadito_25",
+      "singer": "S20",
+      "pyin_4096": 0.22077922077922077,
+      "pesto_notes_from_track": 0.12337662337662338,
+      "studio_v1": 0.18831168831168832,
+      "studio_v1_aic_k3_oracle": 0.14285714285714285
+    },
+    {
+      "id": "vocadito_26",
+      "singer": "S21",
+      "pyin_4096": 0.8506493506493507,
+      "pesto_notes_from_track": 0.935064935064935,
+      "studio_v1": 0.0,
+      "studio_v1_aic_k3_oracle": 0.0
+    },
+    {
+      "id": "vocadito_27",
+      "singer": "S22",
+      "pyin_4096": 0.5584415584415584,
+      "pesto_notes_from_track": 0.8116883116883117,
+      "studio_v1": 0.551948051948052,
+      "studio_v1_aic_k3_oracle": 0.6623376623376623
+    },
+    {
+      "id": "vocadito_28",
+      "singer": "S21",
+      "pyin_4096": 1.0,
+      "pesto_notes_from_track": 1.0,
+      "studio_v1": 1.0,
+      "studio_v1_aic_k3_oracle": 1.0
+    },
+    {
+      "id": "vocadito_29",
+      "singer": "S23",
+      "pyin_4096": 1.0,
+      "pesto_notes_from_track": 1.0,
+      "studio_v1": 1.0,
+      "studio_v1_aic_k3_oracle": 1.0
+    },
+    {
+      "id": "vocadito_31",
+      "singer": "S23",
+      "pyin_4096": 0.0,
+      "pesto_notes_from_track": 0.025974025974025976,
+      "studio_v1": 0.05194805194805195,
+      "studio_v1_aic_k3_oracle": 0.05194805194805195
+    },
+    {
+      "id": "vocadito_32",
+      "singer": "S25",
+      "pyin_4096": 0.3051948051948052,
+      "pesto_notes_from_track": 0.551948051948052,
+      "studio_v1": 0.5974025974025974,
+      "studio_v1_aic_k3_oracle": 0.5974025974025974
+    },
+    {
+      "id": "vocadito_32__window01",
+      "singer": "S25",
+      "pyin_4096": 0.0,
+      "pesto_notes_from_track": 0.05194805194805195,
+      "studio_v1": 0.3961038961038961,
+      "studio_v1_aic_k3_oracle": 0.05194805194805195
+    },
+    {
+      "id": "vocadito_32__window02",
+      "singer": "S25",
+      "pyin_4096": 0.35714285714285715,
+      "pesto_notes_from_track": 0.3051948051948052,
+      "studio_v1": 0.14285714285714285,
+      "studio_v1_aic_k3_oracle": 0.14285714285714285
+    },
+    {
+      "id": "vocadito_35",
+      "singer": "S28",
+      "pyin_4096": 0.7792207792207793,
+      "pesto_notes_from_track": 0.922077922077922,
+      "studio_v1": 0.922077922077922,
+      "studio_v1_aic_k3_oracle": 0.922077922077922
+    },
+    {
+      "id": "vocadito_36",
+      "singer": "S28",
+      "pyin_4096": 0.474025974025974,
+      "pesto_notes_from_track": 0.5974025974025974,
+      "studio_v1": 0.6298701298701299,
+      "studio_v1_aic_k3_oracle": 0.6298701298701299
+    },
+    {
+      "id": "vocadito_36__window01",
+      "singer": "S28",
+      "pyin_4096": 0.9155844155844156,
+      "pesto_notes_from_track": 0.8571428571428571,
+      "studio_v1": 1.0,
+      "studio_v1_aic_k3_oracle": 1.0
+    },
+    {
+      "id": "vocadito_37",
+      "singer": "S29",
+      "pyin_4096": 0.4935064935064935,
+      "pesto_notes_from_track": 0.2727272727272727,
+      "studio_v1": 0.5324675324675324,
+      "studio_v1_aic_k3_oracle": 0.6168831168831169
+    },
+    {
+      "id": "vocadito_37__window01",
+      "singer": "S29",
+      "pyin_4096": 0.0,
+      "pesto_notes_from_track": 0.07792207792207792,
+      "studio_v1": 0.42207792207792205,
+      "studio_v1_aic_k3_oracle": 0.01948051948051948
+    },
+    {
+      "id": "vocadito_37__window02",
+      "singer": "S29",
+      "pyin_4096": 0.0,
+      "pesto_notes_from_track": 0.0,
+      "studio_v1": 0.0,
+      "studio_v1_aic_k3_oracle": 0.0
+    },
+    {
+      "id": "vocadito_37__window03",
+      "singer": "S29",
+      "pyin_4096": 0.538961038961039,
+      "pesto_notes_from_track": 0.24025974025974026,
+      "studio_v1": 0.4090909090909091,
+      "studio_v1_aic_k3_oracle": 0.525974025974026
+    },
+    {
+      "id": "vocadito_38",
+      "singer": "S29",
+      "pyin_4096": 0.045454545454545456,
+      "pesto_notes_from_track": 0.4090909090909091,
+      "studio_v1": 0.2857142857142857,
+      "studio_v1_aic_k3_oracle": 0.12337662337662338
+    },
+    {
+      "id": "vocadito_38__window01",
+      "singer": "S29",
+      "pyin_4096": 0.05194805194805195,
+      "pesto_notes_from_track": 0.05194805194805195,
+      "studio_v1": 0.01948051948051948,
+      "studio_v1_aic_k3_oracle": 0.01948051948051948
+    },
+    {
+      "id": "vocadito_38__window02",
+      "singer": "S29",
+      "pyin_4096": 0.6818181818181818,
+      "pesto_notes_from_track": 0.5324675324675324,
+      "studio_v1": 0.05194805194805195,
+      "studio_v1_aic_k3_oracle": 0.2792207792207792
+    },
+    {
+      "id": "vocadito_39",
+      "singer": "S29",
+      "pyin_4096": 0.0,
+      "pesto_notes_from_track": 0.0,
+      "studio_v1": 0.0,
+      "studio_v1_aic_k3_oracle": 0.06493506493506493
+    },
+    {
+      "id": "vocadito_39__window01",
+      "singer": "S29",
+      "pyin_4096": 0.19480519480519481,
+      "pesto_notes_from_track": 0.045454545454545456,
+      "studio_v1": 0.512987012987013,
+      "studio_v1_aic_k3_oracle": 0.512987012987013
+    },
+    {
+      "id": "vocadito_39__window02",
+      "singer": "S29",
+      "pyin_4096": 0.45454545454545453,
+      "pesto_notes_from_track": 0.6558441558441559,
+      "studio_v1": 0.6233766233766234,
+      "studio_v1_aic_k3_oracle": 0.7987012987012987
+    }
+  ]
+}

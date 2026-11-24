@@ -32,6 +32,7 @@ import torch.nn as nn
 WS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(WS / "source"))
 
+from bpdr_input.reporting.provenance import relpath, sha256_file
 from bpdr_input.studio.repair_transformer import (
     BPDRRepairTransformer,
     build_single_view_features,
@@ -360,7 +361,8 @@ def main():
         "status": "SUCCESS",
         "experiment": "four_view_bpdr_split_merge_jitter_benchmark",
         "proposal_alignment": "Proposal Sections 1.3, 3.3, 3.6 (L_A + lambda_B*L_B + lambda_D*L_D + lambda_S*L_S) vs BERT-APC (Kim et al., 2026) split/merge limitation",
-        "checkpoint": str(CHECKPOINT_PATH),
+        "checkpoint": relpath(CHECKPOINT_PATH, WS),
+        "checkpoint_sha256": sha256_file(CHECKPOINT_PATH),
         "seeds": list(SEEDS),
         "summary_by_arm": summary_by_arm,
         "detailed_runs": results,

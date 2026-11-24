@@ -1,0 +1,21 @@
+{
+  "source_run": "2759404560ab4b559a633659d316bec0",
+  "checkpoint_sha256": "682f8e4839b80fa032a52769d6186ca349937e638ef4ddfd8bdf85278a3ec9b3",
+  "research_gates_passed": false,
+  "runtime_versions": {
+    "python": "3.12.14",
+    "scikit_learn": "1.9.1",
+    "joblib": "1.6.0",
+    "numpy": "2.5.3"
+  },
+  "files": {
+    "selected_model.joblib": "682f8e4839b80fa032a52769d6186ca349937e638ef4ddfd8bdf85278a3ec9b3",
+    "evidence.json": "151e53fabdd5c0facba3856c4cddfb1a00404e800c40a0d38de98d0947761165",
+    "declaration.json": "9a12015bbb60ff6b9aec51356d629689a5e9f44f087c6521b56169a803c8e56d",
+    "locked_selection.json": "7dd50cda471f3836088c41d5c8aa4f1f323053904b0da10b6ba08eb98d0e01d3",
+    "fit_receipt.json": "94f397aaa8228794ed25fceaeffe9021e09ad40150424d23a764a61002259ac8",
+    "demo_model.json": "3e60495e7167446d7e35b7eaf5b9620ff1f1a35b80da179c996949fd5cfae912",
+    "rendered_verification.json": "23d5b06a01d7b1ae1ce4e05de32ddf8018b1789c875561c79bf1e0aeb390ef4b",
+    "original_active_pointer.json": "a9d7b2bb330df561136d2d3cc4f6b9dd5e4a240cd4d14dc28bd1f49d0661d646"
+  }
+}

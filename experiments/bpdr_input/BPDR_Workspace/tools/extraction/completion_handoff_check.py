@@ -15,7 +15,7 @@ import sys
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from check_handoff import agreement,read_game
 
-COMPONENT=next(p for p in Path(__file__).resolve().parents if p.name == 'bpdr_input' and (p/'pyproject.toml').is_file())
+COMPONENT = next(p for p in Path(__file__).resolve().parents if (p / 'pyproject.toml').is_file())
 ASSETS=COMPONENT/'checkpoints/melody-extraction'
 
 

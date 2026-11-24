@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Component 1 — Active Intent Confirmation &amp; Vocal Preparation</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script type="module" src="/static/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-badge">J26-DS-339 · C1</span>
+      <span>Vocal Input Preparation &amp; Active Intent Confirmation</span>
+    </div>
+    <nav class="top-links" aria-label="Primary navigation">
+      <span id="session-pill" class="mono small muted">No active session</span>
+      <a href="/research">Panel Research View ↗</a>
+    </nav>
+  </header>
+
+  <main class="shell">
+    <nav class="stepper" aria-label="Progress steps">
+      <div class="step-pill active" data-step="1">1. Welcome</div>
+      <div class="step-pill" data-step="2">2. Room</div>
+      <div class="step-pill" data-step="3">3. Record</div>
+      <div class="step-pill" data-step="4">4. Verdict</div>
+      <div class="step-pill" data-step="5">5. Hear-back</div>
+      <div class="step-pill" data-step="6">6. Clarify</div>
+      <div class="step-pill" data-step="7">7. Review</div>
+      <div class="step-pill" data-step="8">8. Hand-off</div>
+    </nav>
+
+    <!-- Screen 1: Welcome & Privacy -->
+    <section id="screen-1" class="card" aria-labelledby="s1-title">
+      <div class="eyebrow">Step 1 of 8 · Welcome &amp; Privacy</div>
+      <h1 id="s1-title">Prepare your vocal melody before harmonization.</h1>
+      <p class="muted">
+        We check recording quality, extract pitch evidence, and ask a few quick A/B listening questions
+        so downstream models know what you meant rather than guessing.
+      </p>
+      <div class="rule-list">
+        <div class="rule-box">
+          <strong>One voice only</strong>
+          <span class="small muted">Sing or hum a single unaccompanied melody. No backing track or second voice.</span>
+        </div>
+        <div class="rule-box">
+          <strong>Up to 20 seconds</strong>
+          <span class="small muted">Longer recordings can be trimmed to their best 20 s phrase after your confirmation.</span>
+        </div>
+        <div class="rule-box">
+          <strong>24-hour deletion rule</strong>
+          <span class="small muted">Audio stays on this local machine, expires automatically after 24 hours, and can be deleted immediately at any time.</span>
+        </div>
+      </div>
+      <label class="btn-row" style="cursor:pointer;">
+        <input type="checkbox" id="consent-check">
+        <span>I understand the one-voice, 20 s scope and the 24-hour local retention rule.</span>
+      </label>
+      <div class="btn-row">
+        <button id="btn-start-session" class="btn btn-primary" disabled>Start session →</button>
+      </div>
+    </section>
+
+    <!-- Screen 2: Room Check -->
+    <section id="screen-2" class="card" hidden aria-labelledby="s2-title">
+      <div class="eyebrow">Step 2 of 8 · Room Check (Optional, 3 s)</div>
+      <h2 id="s2-title">Measure background room noise.</h2>
+      <p class="muted">
+        Stay silent for 3 seconds. This checks for hum or fan noise and supplies a voice-free noise reference.
+      </p>
+      <div class="btn-row">
+        <button id="btn-room-record" class="btn btn-primary">Record 3 s silence</button>
+        <button id="btn-room-skip" class="btn">Skip room check →</button>
+      </div>
+      <div id="room-result" class="notice" hidden role="status"></div>
+      <div class="btn-row" id="room-next-row" hidden>
+        <button id="btn-room-next" class="btn btn-primary">Continue to recording →</button>
+      </div>
+    </section>
+
+    <!-- Screen 3: Record or Upload -->
+    <section id="screen-3" class="card" hidden aria-labelledby="s3-title">
+      <div class="eyebrow">Step 3 of 8 · Record or Upload</div>
+      <h2 id="s3-title">Record or upload your sung/hummed phrase.</h2>
+      <p class="muted">
+        Microphone capture disables browser echo cancellation, noise suppression, and auto-gain so pitch evidence is preserved.
+      </p>
+
+      <div class="btn-row">
+        <button id="btn-mic-toggle" class="btn btn-record" aria-pressed="false">● Start Recording (max 20 s)</button>
+        <span id="rec-timer" class="mono">0.0 s / 20.0 s</span>
+      </div>
+
+      <div class="meter-wrap">
+        <div style="display:flex; justify-content:space-between; font-size:13px;">
+          <span>Input level: <strong id="meter-label">Idle</strong></span>
+          <span id="clip-flag" class="mono small muted">No clipping</span>
+        </div>
+        <div class="meter-bar-bg"><div id="meter-fill" class="meter-bar-fill"></div></div>
+      </div>
+
+      <div class="rule-list">
+        <div class="rule-box">
+          <strong>Upload WAV file</strong>
+          <input id="file-upload" type="file" accept=".wav,audio/wav" aria-label="Upload WAV file" style="margin-top:8px; width:100%;">
+        </div>
+        <div class="rule-box">
+          <strong>Or load a built-in example</strong>
+          <div style="display:flex; gap:8px; margin-top:8px;">
+            <select id="example-select" aria-label="Choose example recording" style="flex:1; background:#101918; color:var(--ink); border:1px solid var(--stroke); border-radius:6px; padding:6px;"></select>
+            <button id="btn-load-example" class="btn">Load</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="pre-send-box" hidden>
+        <h3>Preview before sending</h3>
+        <p id="pre-send-meta" class="small muted"></p>
+        <audio id="pre-send-audio" controls style="width:100%; margin:8px 0;"></audio>
+        <div id="trim-confirm-box" class="notice warn" hidden></div>
+        <div class="btn-row">
+          <button id="btn-analyze" class="btn btn-primary">Analyze recording →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen 4: Verdict -->
+    <section id="screen-4" class="card" hidden aria-labelledby="s4-title">
+      <div class="eyebrow">Step 4 of 8 · Input Quality Verdict</div>
+      <h2 id="s4-title">Evaluating recording...</h2>
+      <div id="analyze-progress-wrap">
+        <div class="progress-bar-bg"><div id="analyze-progress-fill" class="progress-bar-fill"></div></div>
+        <p id="analyze-progress-text" class="small muted">Running PESTO pitch evidence, spectral gate check, and FastTNet boundary hints...</p>
+      </div>
+      <div id="verdict-body" hidden>
+        <div id="verdict-badge" class="status-badge"></div>
+        <div id="verdict-reasons" class="notice"></div>
+        <div id="verdict-guidance" class="notice warn" hidden></div>
+        <div id="speech-fallback-box" class="notice" hidden>
+          <p><strong>Optional creative mode (outside research claim):</strong> convert spoken rhythm into a scale-quantized melody preview.</p>
+          <button id="btn-speech-preview" class="btn">Generate speech-to-melody preview</button>
+          <audio id="speech-preview-audio" controls hidden style="width:100%; margin-top:8px;"></audio>
+        </div>
+        <div class="btn-row">
+          <button id="btn-verdict-rerecord" class="btn">← Record or upload another take</button>
+          <button id="btn-verdict-next" class="btn btn-primary" hidden>Continue to hear-back →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen 5: Here is what I heard -->
+    <section id="screen-5" class="card" hidden aria-labelledby="s5-title">
+      <div class="eyebrow">Step 5 of 8 · Read-Only Extractor Hear-Back</div>
+      <h2 id="s5-title">Here is what I heard.</h2>
+      <p class="muted">
+        Compare your original voice with the read-only pitch synthesis from the shared extractor.
+        Dashed vertical lines show FastTNet boundary hints; shaded regions mark ambiguous spans.
+      </p>
+      <div class="canvas-box" id="hearback-svg-box"></div>
+      <div id="bpdr-multiview-summary" class="notice ok" hidden></div>
+      <div class="ab-grid">
+        <div class="ab-box">
+          <strong>Original recording</strong>
+          <p class="small muted">Your normalized mono vocal.</p>
+          <audio id="hb-orig-audio" controls></audio>
+        </div>
+        <div class="ab-box">
+          <strong>Synthesised hear-back (Read-only preview)</strong>
+          <p class="small muted">What the downstream extractor hears after FastTNet boundary hints.</p>
+          <audio id="hb-synth-audio" controls></audio>
+        </div>
+      </div>
+      <div class="notice">
+        <strong>Does this sound like your tune?</strong>
+      </div>
+      <div class="btn-row">
+        <button id="btn-hb-yes" class="btn btn-primary">Yes, sounds right → Finish</button>
+        <button id="btn-hb-clarify" class="btn">Not quite — clarify ambiguous moments →</button>
+      </div>
+    </section>
+
+    <!-- Screen 6: Clarify (Active Intent Confirmation) -->
+    <section id="screen-6" class="card" hidden aria-labelledby="s6-title">
+      <div class="eyebrow">Step 6 of 8 · Active Intent Confirmation</div>
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <h2 id="s6-title">Clarify ambiguous moments</h2>
+        <span id="clarify-progress" class="mono small">Card 1 of 3</span>
+      </div>
+      <div class="meter-wrap">
+        <div style="display:flex; justify-content:space-between; font-size:13px;">
+          <span>Calibrated melody trust: <strong id="trust-meter-text">—</strong></span>
+          <span class="mono small muted">Keys: [1] Option A · [2] Option B · [S] Skip</span>
+        </div>
+        <div class="meter-bar-bg"><div id="trust-meter-fill" class="meter-bar-fill"></div></div>
+      </div>
+
+      <div id="question-card-box"></div>
+    </section>
+
+    <!-- Screen 7: Review Changes -->
+    <section id="screen-7" class="card" hidden aria-labelledby="s7-title">
+      <div class="eyebrow">Step 7 of 8 · Review Bounded Pitch Centring</div>
+      <h2 id="s7-title">Review requested pitch centring</h2>
+      <p class="muted">
+        Only spans you marked "Centred" are adjusted (max ±35 cents, 25 ms crossfade).
+        Every edit is re-checked post-render; any span that does not improve rolls back automatically.
+      </p>
+      <div id="repair-review-list"></div>
+      <div class="btn-row">
+        <button id="btn-apply-recheck" class="btn btn-primary">Accept &amp; proceed to hand-off →</button>
+      </div>
+    </section>
+
+    <!-- Screen 8: Hand-off Receipt -->
+    <section id="screen-8" class="card" hidden aria-labelledby="s8-title">
+      <div class="eyebrow">Step 8 of 8 · Downstream Hand-off Receipt (v0.2)</div>
+      <h2 id="s8-title">Ready for downstream melody &amp; harmony components.</h2>
+      <div id="handoff-summary"></div>
+      <div class="canvas-box" id="trust-curve-box"></div>
+      <h3>Per-span Intent Map <span class="proposal-tag">PROPOSAL · Needs Vishwa Adoption</span></h3>
+      <div style="overflow-x:auto;">
+        <table class="data-table" id="intent-map-table"></table>
+      </div>
+      <details style="margin-top:16px;">
+        <summary style="cursor:pointer;">Inspect full hand-off JSON (bpdr_studio_handoff/0.2)</summary>
+        <pre id="handoff-json" class="json-pre"></pre>
+      </details>
+      <div class="btn-row">
+        <button id="btn-another-take" class="btn btn-primary">Record another take</button>
+        <button id="btn-delete-now" class="btn btn-danger">Delete my recording now</button>
+      </div>
+      <div id="delete-status" class="notice ok" hidden role="status"></div>
+    </section>
+  </main>
+</body>
+</html>

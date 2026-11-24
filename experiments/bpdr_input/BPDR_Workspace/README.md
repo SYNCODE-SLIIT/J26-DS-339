@@ -46,11 +46,14 @@
 
 ## Verification
 
-Run the active Component 1 verification suite from `BPDR_Workspace`:
+Run the full Component 1 verification suite (99 tests, last verified 24 Nov 2026; includes a launch smoke test) from `BPDR_Workspace`:
 
 ```powershell
-..\.venv\Scripts\python.exe -X utf8 -B -m unittest tests/test_studio.py tests/test_web_aic.py tests/test_evaluator_and_repair.py tests/test_analysis.py tests/test_workspace_layout.py
+$env:PYTHONPATH = "source"
+..\.venv\Scripts\python.exe -X utf8 -B -m unittest discover -s tests
 ```
+
+Use `discover`; running test files by path breaks `test_local_review_ui` (it imports a sibling test module). The faster core subset (57 tests) is `tests/test_studio.py tests/test_web_aic.py tests/test_evaluator_and_repair.py tests/test_analysis.py tests/test_workspace_layout.py`.
 
 ---
 
