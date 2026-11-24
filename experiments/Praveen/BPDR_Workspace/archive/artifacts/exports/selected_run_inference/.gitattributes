@@ -1,3 +1,0 @@
-# Loader receipts are hashed as bytes; checkout must not normalize their newlines.
-*.json -text whitespace=cr-at-eol
-*.joblib -text
